@@ -10,15 +10,12 @@ import { MenuVisibilityService } from '../../../../../core/services/management-s
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
 import { MenuItem, MenuGroup } from '../../../../interfaces/menu-item.interface';
 
-
-
-
 @Component({
   selector: 'app-side-nav-bar',
   standalone: true,
   imports: [CommonModule, RouterModule, NgbCollapseModule],
   templateUrl: './side-nav-bar.component.html',
-  styleUrls: ['./side-nav-bar.component.scss']
+  styleUrls: ['./side-nav-bar.component.scss'],
 })
 export class SideNavBarComponent implements OnInit {
   isOpen = true;
@@ -28,44 +25,633 @@ export class SideNavBarComponent implements OnInit {
   topLevelItems: MenuItem[] = [
     { label: 'Dashboard', icon: 'fas fa-home', route: '/panel/dashboard', isVisible: true },
     { label: 'Offers', icon: 'fa-solid fa-tag', route: '/panel/offers', isVisible: false },
-    { label: 'People', icon: 'fa-solid fa-people-group', route: '/panel/employes', isVisible: false },
-    { label: 'Jobs Details', icon: 'fa-solid fa-briefcase', route: '/panel/jobs-details', isVisible: false },
+    {
+      label: 'People',
+      icon: 'fa-solid fa-people-group',
+      route: '/panel/employes',
+      isVisible: false,
+    },
+    {
+      label: 'Jobs Details',
+      icon: 'fa-solid fa-briefcase',
+      route: '/panel/jobs-details',
+      isVisible: false,
+    },
     { label: 'Chat', icon: 'fa-regular fa-message', route: '/panel/chat', isVisible: false },
-    { label: 'Contacts', icon: 'fa-solid fa-address-book', route: '/panel/contact', isVisible: false }
+    {
+      label: 'Contacts',
+      icon: 'fa-solid fa-address-book',
+      route: '/panel/contact',
+      isVisible: false,
+    },
   ];
 
   menuGroups: MenuGroup[] = [
-  
     {
-      label: 'Tables',
-      icon: 'fa-solid fa-table-list',
-      isVisible: false,
+      label: 'Master Data',
+      icon: 'fa-solid fa-database',
+      isVisible: true,
       collapsed: true,
       children: [
-        { label: 'View All Lookup Table', route: '/panel/table/view-all-lookup-tables', isVisible: true },
-        { label: 'View All Lookup Enums', route: '/panel/table/view-all-lookup-enums', isVisible: true },
-        { label: 'View All Independent Tables', route: '/panel/table/view-all-independent-tables', isVisible: true }
-      ]
-    }
-    
+        {
+          label: 'General-Master-Data',
+          icon: 'fa-solid fa-layer-group',
+          isVisible: true,
+          collapsed: true,
+          children: [
+            {
+              label: 'Employees',
+              route: 'employees-master-data/view-all-employees',
+              icon: 'fa-regular fa-circle-dot',
+              isVisible: true,
+            },
+            {
+              label: 'Onboarding Employees',
+              route: 'employees-master-data/onboarding-employees',
+              icon: 'fa-regular fa-circle-dot',
+              isVisible: true,
+            },
+
+            {
+              label: 'GOSIID',
+              route: 'employees-master-data/view-all-gosiid',
+              icon: 'fa-regular fa-circle-dot',
+              isVisible: true,
+            },
+            {
+              label: 'Departments',
+              route: 'employees-master-data/view-all-departments',
+              isVisible: true,
+              icon: 'fa-regular fa-circle-dot',
+            },
+            {
+              label: 'Medical Insurance',
+              route: 'employees-master-data/view-all-medical-insurance',
+              isVisible: false,
+              icon: 'fa-solid fa-chevron-right',
+            },
+            {
+              label: 'Accommodation',
+              route: 'employees-master-data/view-all-accommodation',
+              isVisible: false,
+              icon: 'fa-solid fa-chevron-right',
+            },
+            { label: 'Loans', route: 'employees-master-data/view-all-loans', isVisible: false },
+            {
+              label: 'Employee Belongings',
+              route: 'employees-master-data/view-all-employee-belongings',
+              isVisible: false,
+              icon: 'fa-solid fa-chevron-right',
+            },
+            {
+              label: 'Employees Category',
+              route: 'employees-master-data/view-all-employees-category',
+              isVisible: false,
+              icon: 'fa-solid fa-chevron-right',
+            },
+            {
+              label: 'Project Transfer',
+              route: 'employees-master-data/view-all-project-transfer',
+              isVisible: false,
+              icon: 'fa-solid fa-chevron-right',
+            },
+          ],
+        },
+        {
+          label: 'Organizational-Master-Data',
+          icon: 'fa-solid fa-sitemap',
+          isVisible: true,
+          collapsed: true,
+          children: [
+            {
+              label: 'Employees',
+              route: 'employees-master-data/view-all-employees',
+              isVisible: true,
+            },
+            {
+              label: 'Onboarding Employees',
+              route: 'employees-master-data/onboarding-employees',
+              isVisible: true,
+            },
+
+            { label: 'GOSIID', route: 'employees-master-data/view-all-gosiid', isVisible: false },
+            {
+              label: 'Departments',
+              route: 'employees-master-data/view-all-departments',
+              isVisible: false,
+            },
+            {
+              label: 'Medical Insurance',
+              route: 'employees-master-data/view-all-medical-insurance',
+              isVisible: false,
+            },
+            {
+              label: 'Accommodation',
+              route: 'employees-master-data/view-all-accommodation',
+              isVisible: false,
+            },
+            { label: 'Loans', route: 'employees-master-data/view-all-loans', isVisible: false },
+            {
+              label: 'Employee Belongings',
+              route: 'employees-master-data/view-all-employee-belongings',
+              isVisible: false,
+            },
+            {
+              label: 'Employees Category',
+              route: 'employees-master-data/view-all-employees-category',
+              isVisible: false,
+            },
+            {
+              label: 'Project Transfer',
+              route: 'employees-master-data/view-all-project-transfer',
+              isVisible: false,
+            },
+          ],
+        },
+        {
+          label: 'OutSourcing-Master-Data',
+          icon: 'fa-solid fa-people-arrows',
+          isVisible: true,
+          collapsed: true,
+          children: [
+            {
+              label: 'Employees',
+              route: 'employees-master-data/view-all-employees',
+              isVisible: true,
+            },
+            {
+              label: 'Onboarding Employees',
+              route: 'employees-master-data/onboarding-employees',
+              isVisible: true,
+            },
+
+            { label: 'GOSIID', route: 'employees-master-data/view-all-gosiid', isVisible: false },
+            {
+              label: 'Departments',
+              route: 'employees-master-data/view-all-departments',
+              isVisible: false,
+            },
+            {
+              label: 'Medical Insurance',
+              route: 'employees-master-data/view-all-medical-insurance',
+              isVisible: false,
+            },
+            {
+              label: 'Accommodation',
+              route: 'employees-master-data/view-all-accommodation',
+              isVisible: false,
+            },
+            { label: 'Loans', route: 'employees-master-data/view-all-loans', isVisible: false },
+            {
+              label: 'Employee Belongings',
+              route: 'employees-master-data/view-all-employee-belongings',
+              isVisible: false,
+            },
+            {
+              label: 'Employees Category',
+              route: 'employees-master-data/view-all-employees-category',
+              isVisible: false,
+            },
+            {
+              label: 'Project Transfer',
+              route: 'employees-master-data/view-all-project-transfer',
+              isVisible: false,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      label: 'Employees',
+      icon: 'fas fa-user',
+      isVisible: true,
+      collapsed: true,
+      children: [
+        {
+          label: ' Employees-Master-Data',
+          icon: 'fas fa-angle-double-right',
+          isVisible: true,
+          collapsed: true,
+          children: [
+            {
+              label: 'Employees',
+              route: 'employees-master-data/view-all-employees',
+              isVisible: true,
+            },
+            {
+              label: 'Onboarding Employees',
+              route: 'employees-master-data/onboarding-employees',
+              isVisible: true,
+            },
+
+            { label: 'GOSIID', route: 'employees-master-data/view-all-gosiid', isVisible: false },
+            {
+              label: 'Departments',
+              route: 'employees-master-data/view-all-departments',
+              isVisible: false,
+            },
+            {
+              label: 'Medical Insurance',
+              route: 'employees-master-data/view-all-medical-insurance',
+              isVisible: false,
+            },
+            {
+              label: 'Accommodation',
+              route: 'employees-master-data/view-all-accommodation',
+              isVisible: false,
+            },
+            { label: 'Loans', route: 'employees-master-data/view-all-loans', isVisible: false },
+            {
+              label: 'Employee Belongings',
+              route: 'employees-master-data/view-all-employee-belongings',
+              isVisible: false,
+            },
+            {
+              label: 'Employees Category',
+              route: 'employees-master-data/view-all-employees-category',
+              isVisible: false,
+            },
+            {
+              label: 'Project Transfer',
+              route: 'employees-master-data/view-all-project-transfer',
+              isVisible: false,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      label: 'Recruitment',
+      icon: 'fa-solid fa-user-tie',
+      isVisible: true,
+      collapsed: true,
+      children: [
+        {
+          label: 'Recruitment',
+          icon: 'fa-solid fa-briefcase',
+          isVisible: true,
+          collapsed: true,
+          children: [
+            {
+              label: 'Requisition',
+              route: 'employees-master-data/view-all-employees',
+              icon: 'fa-solid fa-user-tie',
+              isVisible: true,
+            },
+            {
+              label: 'Candidate Information',
+              route: 'employees-master-data/onboarding-employees',
+              icon: 'fa-solid fa-id-card',
+              isVisible: true,
+            },
+
+            {
+              label: 'Screening',
+              route: 'employees-master-data/view-all-gosiid',
+              icon: 'fa-solid fa-filter',
+              isVisible: true,
+            },
+            {
+              label: 'Interview Scheduling',
+              route: 'employees-master-data/view-all-departments',
+              icon: 'fa-solid fa-calendar-check',
+              isVisible: true,
+            },
+            {
+              label: 'Interviews Result',
+              route: 'employees-master-data/view-all-medical-insurance',
+              icon: 'fa-solid fa-clipboard-check',
+              isVisible: false,
+            },
+          ],
+        },
+        {
+          label: 'Selection',
+          icon: 'fa-solid fa-user-check',
+          isVisible: true,
+          collapsed: true,
+          children: [
+            {
+              label: 'Offer Letter',
+              route: 'employees-master-data/view-all-employees',
+              icon: 'fa-solid fa-file-signature',
+              isVisible: true,
+            },
+            {
+              label: 'Contact',
+              route: 'employees-master-data/onboarding-employees',
+              icon: 'fa-solid fa-address-book',
+              isVisible: true,
+            },
+
+            {
+              label: 'Mobilization',
+              route: 'employees-master-data/view-all-gosiid',
+              icon: 'fa-solid fa-people-carry-box',
+              isVisible: true,
+            },
+            {
+              label: 'Joining',
+              route: 'employees-master-data/view-all-departments',
+              icon: 'fa-solid fa-user-plus',
+              isVisible: true,
+            },
+            {
+              label: 'Interview Report',
+              route: 'employees-master-data/view-all-medical-insurance',
+              icon: 'fa-solid fa-clipboard-list',
+              isVisible: false,
+            },
+            {
+              label: 'Selection',
+              route: 'employees-master-data/view-all-medical-insurance',
+              icon: 'fa-solid fa-check-double',
+              isVisible: false,
+            },
+          ],
+        },
+      ],
+    },
+    // Payroll Process Start
+    {
+      label: 'PayRoll',
+      icon: 'fa-solid fa-money-check-dollar',
+      isVisible: true,
+      collapsed: true,
+      children: [
+        {
+          label: 'Application',
+          icon: 'fa-solid fa-file-circle-plus',
+          isVisible: true,
+          collapsed: true,
+          children: [
+            {
+              label: 'Daily Sheet Time',
+              route: 'employees-master-data/view-all-employees',
+              icon: 'fa-solid fa-calendar-days',
+              isVisible: true,
+            },
+
+            {
+              label: 'Pending Application',
+              route: 'employees-master-data/view-all-gosiid',
+              icon: 'fa-solid fa-hourglass-half',
+              isVisible: true,
+            },
+            {
+              label: 'Department Change',
+              route: 'employees-master-data/view-all-departments',
+              icon: 'fa-solid fa-people-arrows',
+              isVisible: true,
+            },
+            {
+              label: 'Increment Arrears',
+              route: 'employees-master-data/view-all-medical-insurance',
+              icon: 'fa-solid fa-chart-line',
+              isVisible: true,
+            },
+          ],
+        },
+        {
+          label: 'PayRoll',
+          icon: 'fa-solid fa-user-check',
+          isVisible: true,
+          collapsed: true,
+          children: [
+            {
+              label: 'Pay Period',
+              route: 'employees-master-data/view-all-employees',
+              icon: 'fa-solid fa-calendar-alt',
+              isVisible: true,
+            },
+            {
+              label: 'PayRoll Process',
+              route: 'employees-master-data/onboarding-employees',
+              icon: 'fa-solid fa-gears',
+              isVisible: true,
+            },
+
+            {
+              label: 'Resignation/Termination',
+              route: 'employees-master-data/view-all-gosiid',
+              icon: 'fa-solid fa-user-slash',
+              isVisible: true,
+            },
+            {
+              label: 'Full & Final Settlement',
+              route: 'employees-master-data/view-all-departments',
+              icon: 'fa-solid fa-scale-balanced',
+              isVisible: true,
+            },
+            {
+              label: 'Increament/Arrear',
+              route: 'employees-master-data/view-all-medical-insurance',
+              icon: 'fa-solid fa-chart-line',
+              isVisible: true,
+            },
+            {
+              label: 'Salery Disbursment',
+              route: 'employees-master-data/view-all-medical-insurance',
+              icon: 'fa-solid fa-money-bill-transfer',
+              isVisible: true,
+            },
+            {
+              label: 'Leave Salery',
+              route: 'employees-master-data/view-all-medical-insurance',
+              icon: 'fa-solid fa-calendar-minus',
+              isVisible: true,
+            },
+          ],
+        },
+      ],
+    },
+    // Time Sheet Start
+    {
+      label: 'Time Sheet',
+      icon: 'fa-solid fa-clock',
+      isVisible: true,
+      collapsed: true,
+      children: [
+        {
+          label: 'Attendence',
+          icon: 'fa-solid fa-user-clock',
+          isVisible: true,
+          collapsed: true,
+          children: [
+            {
+              label: 'Daily Attence',
+              route: 'employees-master-data/view-all-employees',
+              icon: 'fa-solid fa-calendar-day',
+              isVisible: true,
+            },
+          ],
+        },
+      ],
+    },
+    // Report Process Start
+    {
+      label: 'Reports',
+      icon: 'fa-solid fa-chart-pie',
+      isVisible: true,
+      collapsed: true,
+      children: [
+        {
+          label: 'Hr Reports',
+          icon: 'fa-solid fa-folder-open',
+          isVisible: true,
+          collapsed: true,
+          children: [
+            {
+              label: 'Employee Profile',
+              route: 'employees-master-data/view-all-employees',
+              icon: 'fa-solid fa-id-badge',
+              isVisible: true,
+            },
+
+            {
+              label: 'Document Expiry',
+              route: 'employees-master-data/view-all-gosiid',
+              icon: 'fa-solid fa-file-circle-xmark',
+              isVisible: true,
+            },
+            {
+              label: 'Employees',
+              route: 'employees-master-data/view-all-departments',
+              icon: 'fa-solid fa-users',
+              isVisible: true,
+            },
+            {
+              label: 'Current Worker List',
+              route: 'employees-master-data/view-all-medical-insurance',
+              icon: 'fa-solid fa-user-check',
+              isVisible: true,
+            },
+            {
+              label: 'Staff List',
+              route: 'employees-master-data/view-all-medical-insurance',
+              icon: 'fa-solid fa-chart-line',
+              isVisible: true,
+            },
+            {
+              label: 'Attendance Reports',
+              route: 'employees-master-data/view-all-medical-insurance',
+              icon: 'fa-solid fa-chart-line',
+              isVisible: true,
+            },
+            {
+              label: 'Attendance By Category ',
+              route: 'employees-master-data/view-all-medical-insurance',
+              icon: 'fa-solid fa-chart-line',
+              isVisible: true,
+            },
+            {
+              label: ' leave Report',
+              route: 'employees-master-data/view-all-medical-insurance',
+              icon: 'fa-solid fa-chart-line',
+              isVisible: true,
+            },
+            {
+              label: 'Probation Report',
+              route: 'employees-master-data/view-all-medical-insurance',
+              icon: 'fa-solid fa-chart-line',
+              isVisible: true,
+            },
+            {
+              label: 'Appraisal',
+              route: 'employees-master-data/view-all-medical-insurance',
+              icon: 'fa-solid fa-chart-line',
+              isVisible: true,
+            },
+            {
+              label: 'Employees Family Details',
+              route: 'employees-master-data/view-all-medical-insurance',
+              icon: 'fa-solid fa-chart-line',
+              isVisible: true,
+            },
+            {
+              label: 'Overtime Report',
+              route: 'employees-master-data/view-all-medical-insurance',
+              icon: 'fa-solid fa-chart-line',
+              isVisible: true,
+            },
+            {
+              label: 'Employee Agreement',
+              route: 'employees-master-data/view-all-medical-insurance',
+              icon: 'fa-solid fa-chart-line',
+              isVisible: true,
+            },
+          ],
+        },
+        {
+          label: 'Reports',
+          icon: 'fa-solid fa-user-check',
+          isVisible: true,
+          collapsed: true,
+          children: [
+            {
+              label: 'Pay Period',
+              route: 'employees-master-data/view-all-employees',
+              icon: 'fa-solid fa-calendar-alt',
+              isVisible: true,
+            },
+            {
+              label: 'PayRoll Process',
+              route: 'employees-master-data/onboarding-employees',
+              icon: 'fa-solid fa-gears',
+              isVisible: true,
+            },
+
+            {
+              label: 'Resignation/Termination',
+              route: 'employees-master-data/view-all-gosiid',
+              icon: 'fa-solid fa-user-slash',
+              isVisible: true,
+            },
+            {
+              label: 'Full & Final Settlement',
+              route: 'employees-master-data/view-all-departments',
+              icon: 'fa-solid fa-scale-balanced',
+              isVisible: true,
+            },
+            {
+              label: 'Increament/Arrear',
+              route: 'employees-master-data/view-all-medical-insurance',
+              icon: 'fa-solid fa-chart-line',
+              isVisible: true,
+            },
+            {
+              label: 'Salery Disbursment',
+              route: 'employees-master-data/view-all-medical-insurance',
+              icon: 'fa-solid fa-money-bill-transfer',
+              isVisible: true,
+            },
+            {
+              label: 'Leave Salery',
+              route: 'employees-master-data/view-all-medical-insurance',
+              icon: 'fa-solid fa-calendar-minus',
+              isVisible: true,
+            },
+          ],
+        },
+      ],
+    },
   ];
 
-  constructor(private toggleService: ToggleService,
+  constructor(
+    private toggleService: ToggleService,
     private router: Router,
     private toastr: ToastrService,
     private SessionService: SessionService,
     private themeService: ThemeService,
-    private menuVisibilityService: MenuVisibilityService
-
-  ) { }
-
+    private menuVisibilityService: MenuVisibilityService,
+  ) {}
 
   ngOnInit() {
-    this.themeService.isLightTheme$.subscribe(value => {
+    this.themeService.isLightTheme$.subscribe((value) => {
       this.isDarkMode = !value;
     });
 
-    this.toggleService.sidebarOpen$.subscribe(open => {
+    this.toggleService.sidebarOpen$.subscribe((open) => {
       this.isOpen = open;
 
       // Collapse all menus when sidebar closes
@@ -75,15 +661,15 @@ export class SideNavBarComponent implements OnInit {
     });
 
     // Subscribe to menu visibility changes
-    this.menuVisibilityService.menuVisibility$.subscribe(config => {
-      Object.keys(config).forEach(label => {
+    this.menuVisibilityService.menuVisibility$.subscribe((config) => {
+      Object.keys(config).forEach((label) => {
         this.updateMenuVisibility(label, config[label]);
       });
     });
   }
 
   private collapseAllMenus() {
-    this.menuGroups.forEach(group => {
+    this.menuGroups.forEach((group) => {
       group.collapsed = true;
       if (group.children) {
         this.collapseChildren(group.children);
@@ -92,7 +678,7 @@ export class SideNavBarComponent implements OnInit {
   }
 
   private collapseChildren(items: MenuItem[]) {
-    items.forEach(item => {
+    items.forEach((item) => {
       if (item.collapsed !== undefined) {
         item.collapsed = true;
       }
@@ -101,8 +687,6 @@ export class SideNavBarComponent implements OnInit {
       }
     });
   }
-
-
 
   toggleGroup(group: MenuGroup) {
     if (!this.canToggle()) return;
@@ -118,14 +702,14 @@ export class SideNavBarComponent implements OnInit {
   // Method to update menu item visibility dynamically
   updateMenuVisibility(label: string, isVisible: boolean) {
     // Update top-level items
-    const topItem = this.topLevelItems.find(item => item.label === label);
+    const topItem = this.topLevelItems.find((item) => item.label === label);
     if (topItem) {
       topItem.isVisible = isVisible;
       return;
     }
 
     // Update menu groups
-    this.menuGroups.forEach(group => {
+    this.menuGroups.forEach((group) => {
       if (group.label === label) {
         group.isVisible = isVisible;
         return;
@@ -139,7 +723,7 @@ export class SideNavBarComponent implements OnInit {
   }
 
   private updateChildVisibility(items: MenuItem[], label: string, isVisible: boolean) {
-    items.forEach(item => {
+    items.forEach((item) => {
       if (item.label === label) {
         item.isVisible = isVisible;
         return;
