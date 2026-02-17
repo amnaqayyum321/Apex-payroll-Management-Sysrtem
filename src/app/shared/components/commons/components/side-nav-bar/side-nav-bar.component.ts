@@ -39,7 +39,7 @@ export class SideNavBarComponent implements OnInit {
     {
       label: 'Tables',
       icon: 'fa-solid fa-table-list',
-      isVisible: false,
+      isVisible: true,
       collapsed: true,
       children: [
         { label: 'View All Lookup Table', route: '/panel/table/view-all-lookup-tables', isVisible: true },
@@ -153,4 +153,6 @@ export class SideNavBarComponent implements OnInit {
   private canToggle(): boolean {
     return this.isOpen;
   }
+
+  
 }

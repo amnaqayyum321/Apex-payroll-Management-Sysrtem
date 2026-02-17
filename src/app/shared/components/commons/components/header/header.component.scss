@@ -3,8 +3,11 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  // border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   padding-inline: 10px;
+   border-radius: 4px; /* <-- full header rounded corners */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* optional shadow for 3D effect */
+  margin-top: -6px;   // -4px / -8px adjust as needed
 
   .button-group {
     display: flex;
@@ -28,8 +31,8 @@
     }
 
     button:hover {
-      background-color: #1274ac !important;
-      color: #ffffff !important;
+      background-color: var(--purple-1) !important;
+      color: white !important;
     }
   }
 
@@ -38,7 +41,7 @@
     width: 250px;
     border-radius: 10px;
     background-color: var(--second-primary-color);
-    color: #b5b5c3;
+    color: var(--white-color-1);
     border: none;
     outline: none;
     padding-inline-start: 10px;
@@ -55,7 +58,7 @@
     top: 50%;
     transform: translateY(-50%);
     /* center vertically */
-    color: #b5b5c3;
+    color: var(--text-secondary);
     cursor: pointer;
     font-size: 16px;
   }
@@ -79,7 +82,7 @@
 }
 
 .menu-btn:hover {
-  background-color: #518cae !important;
+  background-color: var(--purple-1) !important;
 
   span:nth-child(1) {
     background-color: var(--second-primary-color) !important;
@@ -87,7 +90,7 @@
 
   span:nth-child(2),
   span:nth-child(3) {
-    background-color: #ffffff44 !important;
+    background-color: var(--border-color) !important;
   }
 }
 
@@ -102,17 +105,17 @@
 
 /* First bar */
 .menu-btn span:nth-child(1) {
-  background-color: var(--purple-1);
+  background-color: var(--purple-1) !important;
 }
 
 .light-theme .menu-btn span:nth-child(1) {
-  background-color: #667085 !important;
+  background-color: white !important;
 }
 
 /* Second & third bars */
 .menu-btn span:nth-child(2),
 .menu-btn span:nth-child(3) {
-  background-color: #0080ff5e;
+  background-color: var(--light-purple);
 }
 
 .bell-btn {
@@ -324,9 +327,10 @@
 ::ng-deep .light-theme {
   .header {
     background-color: var(--second-primary-color);
-    border-bottom: 1px solid var(--border-color);
+    // border-bottom: 1px solid var(--border-color);
     margin-bottom: 15px;
-    border-radius: 12px;
+    border-radius: 4px;
+
   }
 
   .header .button-group button {
@@ -490,3 +494,5 @@
 .dropdown-btn::after {
   display: none !important; /* Remove default arrow */
 }
+
+
