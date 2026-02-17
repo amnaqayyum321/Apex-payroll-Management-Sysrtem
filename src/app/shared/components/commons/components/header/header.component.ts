@@ -11,15 +11,14 @@ import { NgbOffcanvas, NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { ToggleService } from '../../../../../core/services/management-services/ToggleService';
 import { ThemeService } from '../../../../../core/services/management-services/Theme.service';
 import { ToastrService } from 'ngx-toastr';
-import { ApiService } from '../../../../../core/services/apis/api.service';
 import { SessionService } from '../../../../../core/services/management-services/Session.service';
 import { HeaderModalComponent } from '../bootstrap-modals/header-modal/header-modal.component';
-import { ChatBoxCardComponent } from '../chat-box-card/chat-box-card.component';
 import { ResponsiveBotstrapSideNavBarComponent } from '../responsive-botstrap-side-nav-bar/responsive-botstrap-side-nav-bar.component';
+import { AuthService } from '../../../../../features/Auth/service/auth.service';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, NgbDropdownModule, HeaderModalComponent, ChatBoxCardComponent],
+  imports: [CommonModule, RouterModule, NgbDropdownModule, HeaderModalComponent],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
@@ -46,7 +45,7 @@ export class HeaderComponent {
     private SessionService: SessionService,
     private toggleService: ToggleService,
     public themeService: ThemeService,
-    private apiService: ApiService,
+    private authService: AuthService,
     private router: Router,
     private toastr: ToastrService,
     private offcanvasService: NgbOffcanvas
@@ -60,7 +59,7 @@ export class HeaderComponent {
   }
   logoutUser() {
 
-    this.apiService.logout().subscribe((res) => {
+    this.authService.logout().subscribe((res) => {
       this.toastr.success("Logout Successfully")
       this.SessionService.clearStorage()
       this.router.navigate(["/"])
@@ -115,12 +114,6 @@ export class HeaderComponent {
     }
   }
 
-  openChat() {
-    this.showChat = true;
-  }
 
-  closeChat() {
-    this.showChat = false;
-  }
 
 }

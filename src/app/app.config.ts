@@ -5,7 +5,7 @@ import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { routes } from './app.routes';
 import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideToastr } from 'ngx-toastr';
-import { AuthInterceptor } from './core/interceptors/auth.interceptor';
+import { AuthInterceptor } from './features/Auth/interceptors/auth.interceptor';
 import { DatePipe, HashLocationStrategy, LocationStrategy } from '@angular/common';
 export const appConfig: ApplicationConfig = {
   providers: [

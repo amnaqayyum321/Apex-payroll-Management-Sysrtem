@@ -6,9 +6,9 @@ import {
 import { catchError, throwError } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { environment } from '../../../environments/environment';
-import { ApiService } from '../services/apis/api.service';
-import { EncryptionService } from '../services/management-services/encryption.service';
+import { environment } from '../../../../environments/environment';
+import {  AuthService } from '../../Auth/service/auth.service';
+import { EncryptionService } from '../../../core/services/management-services/encryption.service';
 
 function closeAllModals() {
   // Find all open modals
@@ -100,7 +100,7 @@ function handleActionCode(code: string, message: string, toastr: ToastrService, 
 export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
   const toastr = inject(ToastrService);
   const router = inject(Router);
-  const apiService = inject(ApiService);
+  const authService = inject(AuthService);
   const encryptionService = inject(EncryptionService);
 
   const token = localStorage.getItem('token');
@@ -133,7 +133,7 @@ export const AuthInterceptor: HttpInterceptorFn = (req, next) => {
         localStorage.removeItem('deviceId');
         
         if (refreshToken) {
-          apiService.refreshToken(refreshToken).subscribe({
+          authService.refreshToken(refreshToken).subscribe({
             next: (response: any) => {
               localStorage.setItem('token', response.data.accessToken);
               localStorage.setItem('refreshToken', response.data.refreshToken);
