@@ -354,6 +354,22 @@ a.router-link-active {
   
   color: var(--purple-1) !important;
 }
+.subChild.icon {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-left: 30px;
+  font-size: 13px;
+
+  i {
+    font-size: 10px;
+    color: #9aa4b2; // soft gray
+  }
+
+  &.active i {
+    color: #3b82f6; // blue highlight
+  }
+}
 
 ::ng-deep .light-theme .sidebar .user-card {
   background-color: #ffffff;        // card white
