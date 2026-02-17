@@ -1,18 +1,23 @@
 .sidebar {
-  height: 97.5vh;
+  position: fixed; // stick to left side of screen
+  top: 0;
+  left: 0;
+  height: 100vh;
   width: 300px;
   background-color: var(--second-primary-color);
   color: var(--white-color-1);
-  // transition: width 0.35s ease, all 0.35s ease;
   overflow: hidden;
-  // border-radius: 5px;
+   box-shadow: 5px 0 12px rgba(0, 0, 0, 0.15);
+  transition: width 0.35s ease, box-shadow 0.35s ease;
+
+  border-radius: 0 35px 35px 0; // only right side rounded
   display: flex;
   flex-direction: column;
 }
 
 /* collapsed sidebar */
 .sidebar.closed {
-  width: 60px;
+  width: 80px;
 
   .user-card {
     display: none;
@@ -43,6 +48,16 @@
 
   .logo img {
     display: none;
+  }
+
+    a {
+    justify-content: center;   /* horizontal center */
+    padding: 12px 0;           /* left-right padding remove */
+  }
+
+  a i {
+    margin-right: 0 !important; /* icon ke side gap remove */
+    font-size: 18px;            /* optional: thoda prominent */
   }
 }
 
@@ -150,7 +165,16 @@
 
 /* rotate animation if needed */
 .chev-icon i {
-  transition: transform 0.2s ease;
+  display: inline-block;               // required for transform
+  transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); // smooth ease-out & bounce effect
+  transform-origin: center;            // rotate around center
+  color: var(--gray-color-2);
+  font-size: 10px;
+}
+
+/* rotation when open */
+.chev-icon i.rotated {
+  transform: rotate(90deg);           // > becomes v
 }
 
 /* logo */
@@ -182,9 +206,9 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background-color: var(--primary-color);
+  background-color:#1b2235;
   border: 2px solid var(--border-color);
-  border-radius: 3px;
+  border-radius: 15px;
   padding: 10px 15px;
   width: 220px;
   color: var(--white-color-1);
@@ -329,6 +353,16 @@ a.router-link-active {
 .dropdown-menu .dropdown-item:hover {
   
   color: var(--purple-1) !important;
+}
+
+::ng-deep .light-theme .sidebar .user-card {
+  background-color: #ffffff;        // card white
+  border: 1px solid #e5e7eb;        // soft border
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06); // subtle shadow
+  color: #2d3748;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04),
+              0 4px 8px rgba(16, 24, 40, 0.06);   // light soft shadow
+  transition: all 0.25s ease;
 }
 .subChild.icon {
   display: flex;

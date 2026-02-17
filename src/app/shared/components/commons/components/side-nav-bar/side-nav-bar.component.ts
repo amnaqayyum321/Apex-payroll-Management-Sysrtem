@@ -48,8 +48,13 @@ export class SideNavBarComponent implements OnInit {
 
   menuGroups: MenuGroup[] = [
     {
+<<<<<<< HEAD
       label: 'Master Data',
       icon: 'fa-solid fa-database',
+=======
+      label: 'Tables',
+      icon: 'fa-solid fa-table-list',
+>>>>>>> 7aca420191b811db0d8e040a183a908548c74530
       isVisible: true,
       collapsed: true,
       children: [
@@ -737,4 +742,6 @@ export class SideNavBarComponent implements OnInit {
   private canToggle(): boolean {
     return this.isOpen;
   }
+
+  
 }
