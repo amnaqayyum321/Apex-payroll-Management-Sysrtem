@@ -1,7 +1,7 @@
 <div class="user-form-container">
   <div class="user-form-card">
     <div class="form-header">
-      <h2 class="form-title">Create New Role</h2>
+      <h2 class="form-title">Update Role</h2>
       <p class="form-subtitle">Define role and assign permissions</p>
     </div>
 
@@ -64,6 +64,7 @@
                   <input
                     type="checkbox"
                     class="checkbox-style"
+                    [checked]="selectedPermissionsMap[perm]"
                     (change)="onPermissionChange(perm, $event)"
                   />
                   <span class="permission-label-text">{{ perm }}</span>
@@ -75,7 +76,7 @@
       </div>
 
       <div class="form-footer">
-        <button type="button" class="cancel-btn">Cancel</button>
+        <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
         <button type="submit" (click)="updateRolePermission()" class="submit-btn">Update</button>
       </div>
     </form>

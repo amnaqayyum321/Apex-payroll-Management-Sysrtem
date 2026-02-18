@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { LoaderService } from '../../../../core/services/management-services/loader.service';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { UsersAndRolesService } from '../../Services/user-roles';
 
 @Component({
@@ -20,16 +20,25 @@ export class ViewPermissions {
   roleName: string = '';
   description: string = '';
   publicId: string = '';
+  selectedPermissionsMap: { [key: string]: boolean } = {};
   constructor(
     private loader: LoaderService,
     private toastr: ToastrService,
-    private router: Router,
+    private route: ActivatedRoute,
     private userSv: UsersAndRolesService,
+    private router: Router,
   ) {}
   ngOnInit() {
-    this.GetRolePermission();
+    this.GetRolePermission(this.publicId);
+    this.route.queryParamMap.subscribe((params) => {
+      const publicId = params.get('publicId');
+      if (publicId) {
+        this.LoadRole(publicId);
+      }
+    });
   }
-  GetRolePermission() {
+
+  GetRolePermission(publicId: string) {
     this.userSv.GetpermissionRole().subscribe(
       (res: any) => {
         if (res.success) {
@@ -37,21 +46,27 @@ export class ViewPermissions {
             moduleName,
             permissions: res.data[moduleName],
           }));
-          console.log('Permission Role Get Successfully', res);
+          if (publicId) {
+            this.LoadRole(publicId);
+          }
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => console.log(err),
     );
   }
   onPermissionChange(permission: string, event: any) {
-    if (event.target.checked) {
-      this.selectedPermissions.push(permission);
+    const checked = event.target.checked;
+    this.selectedPermissionsMap[permission] = checked;
+
+    if (checked) {
+      if (!this.selectedPermissions.includes(permission)) {
+        this.selectedPermissions.push(permission);
+      }
     } else {
       this.selectedPermissions = this.selectedPermissions.filter((p) => p !== permission);
     }
   }
+
   LoadRole(publicId: string) {
     this.publicId = publicId;
     this.userSv.GetRoleByPublicId(publicId).subscribe((res: any) => {
@@ -60,14 +75,18 @@ export class ViewPermissions {
         this.roleCode = rolePermission.code;
         this.roleName = rolePermission.name;
         this.description = rolePermission.description;
-        this.selectedPermissions = rolePermission.permissionCodes;
-        console.log('Get Role Permission Get successfully', res);
+        this.selectedPermissionsMap = {};
+        rolePermission.permissionCodes.forEach((code: string) => {
+          this.selectedPermissionsMap[code] = true;
+        });
+        this.selectedPermissions = [...rolePermission.permissionCodes];
       } else {
         this.toastr.error('Role not found');
       }
     });
   }
   updateRolePermission() {
+    debugger;
     if (!this.roleCode || !this.roleName) {
       this.toastr.error('Role Code and Role Name are required');
     }
@@ -80,6 +99,7 @@ export class ViewPermissions {
       description: this.description,
       permissionCodes: this.selectedPermissions,
     };
+    console.log('final paylaod', UpdatePayloadRolePermission);
     this.loader.show();
     this.userSv.UpdateRoleByPublicId(this.publicId, UpdatePayloadRolePermission).subscribe(
       (res: any) => {
@@ -87,7 +107,9 @@ export class ViewPermissions {
         if (res.success) {
           this.toastr.success('Role updated successfully');
           this.ResetRoleUpdatePermissionForm();
-          this.router.navigate(['/panel/users-and-roles/view-roles']);
+          setTimeout(() => {
+            this.router.navigate(['/panel/users-and-roles/view-roles']);
+          }, 1500);
         } else {
           this.toastr.error(res.message || 'Something went wrong');
         }
@@ -102,5 +124,8 @@ export class ViewPermissions {
     this.roleName = '';
     this.description = '';
     this.selectedPermissions = [];
+  }
+  cancel() {
+    this.router.navigate(['/panel/users-and-roles/view-roles']);
   }
 }

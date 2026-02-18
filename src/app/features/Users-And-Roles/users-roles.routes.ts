@@ -6,27 +6,24 @@ import { CreateUser } from './users/create-user/create-user';
 import { ViewUsers } from './users/view-users/view-users';
 
 export const routes: Routes = [
-
   {
     path: 'create-role',
-    component: CreateRole
+    component: CreateRole,
   },
   {
     path: 'view-roles',
-    component: ViewRoles
+    component: ViewRoles,
   },
   {
     path: 'view-permissions',
-    component: ViewPermissions
+    component: ViewPermissions,
   },
   {
     path: 'create-user',
-    component: CreateUser
-  }
-  ,
+    component: CreateUser,
+  },
   {
     path: 'view-users',
-    component: ViewUsers
-  }
+    component: ViewUsers,
+  },
 ];
-

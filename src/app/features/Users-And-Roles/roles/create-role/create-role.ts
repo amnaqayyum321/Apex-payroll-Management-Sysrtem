@@ -93,4 +93,7 @@ export class CreateRole {
     this.description = '';
     this.selectedPermissions = [];
   }
+  cancel() {
+    this.router.navigate(['/panel/users-and-roles/view-roles']);
+  }
 }
