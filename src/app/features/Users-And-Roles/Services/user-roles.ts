@@ -20,4 +20,16 @@ export class UsersAndRolesService {
   getRoles(page: number, size: number): Observable<any> {
     return this.http.get(this.url + `admin/roles?page=${page}&size=${size}`);
   }
+  GetpermissionRole(): Observable<any> {
+    return this.http.get(this.url + 'admin/roles/permissions');
+  }
+  CreateRolePermission(data: any): Observable<any> {
+    return this.http.post(this.url + 'admin/roles', data);
+  }
+  GetRoleByPublicId(publicId: string): Observable<any> {
+    return this.http.get(this.url + `admin/roles/${publicId}`);
+  }
+  UpdateRoleByPublicId(publicId: string, data: any): Observable<any> {
+    return this.http.put(this.url + `admin/roles/${publicId}`, data);
+  }
 }
