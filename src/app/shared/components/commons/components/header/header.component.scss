@@ -7,7 +7,9 @@
   padding-inline: 10px;
    border-radius: 4px; /* <-- full header rounded corners */
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15); /* optional shadow for 3D effect */
-  margin-top: -6px;   // -4px / -8px adjust as needed
+  margin-top: -6px;
+  margin-left: 25px;   // -4px / -8px adjust as needed
+    // -4px / -8px adjust as needed
 
   .button-group {
     display: flex;

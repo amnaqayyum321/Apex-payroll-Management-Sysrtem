@@ -1,14 +1,23 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UsersAndRolesService {
-  constructor(private http: HttpClient) { }
-  getAllUser():Observable<any> {
-    return this.http.get('admin/users');
+  url: any;
+  constructor(private http: HttpClient) {
+    this.url = environment.apiBaseUrl;
   }
-
+  getAllUser(page: number, size: number): Observable<any> {
+    return this.http.get(this.url + `admin/users?page=${page}&size=${size}`);
+  }
+  CreatenewUser(data: any): Observable<any> {
+    return this.http.post(this.url + 'admin/users', data);
+  }
+  getRoles(page: number, size: number): Observable<any> {
+    return this.http.get(this.url + `admin/roles?page=${page}&size=${size}`);
+  }
 }

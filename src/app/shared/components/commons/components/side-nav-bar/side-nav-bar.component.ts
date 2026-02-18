@@ -29,26 +29,27 @@ export class SideNavBarComponent implements OnInit {
   menuGroups: MenuGroup[] = [
     {
       label: 'Setups',
-      icon: 'fa-solid fa-database',
+      icon: 'fa-solid fa-gear',
       isVisible: true,
       collapsed: true,
       children: [
         {
           label: 'User Setups',
-          icon: 'fa-solid fa-layer-group',
+          icon: 'fa-solid fa-user-circle',
           isVisible: true,
           collapsed: true,
           children: [
             {
               label: 'Users',
               route: 'users-and-roles/view-users',
-              icon: 'fa-regular fa-circle-dot',
+              icon: 'fa-solid fa-people-group',
               isVisible: true,
             },
+
             {
               label: 'Roles',
               route: 'users-and-roles/view-roles',
-              icon: 'fa-regular fa-circle-dot',
+              icon: 'fa-solid fa-user-shield',
               isVisible: true,
             },
           ],

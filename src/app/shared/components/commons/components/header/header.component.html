@@ -12,29 +12,25 @@
     </div>
   </div>
   <div class="button-group">
- 
     <button (click)="themeService.toggleLightTheme()">
-      <img [src]="
-          isDarkMode
-            ? '../../../../assets/moon.svg'
-            : '../../../../assets/sun.svg'
-        " alt="" [style.filter]="
+      <img
+        [src]="isDarkMode ? '../../../../assets/moon.svg' : '../../../../assets/sun.svg'"
+        alt=""
+        [style.filter]="
           isDarkMode
             ? 'invert(62%) sepia(84%) saturate(513%) hue-rotate(248deg) brightness(95%) contrast(90%)'
             : 'invert(0%) sepia(0%) saturate(100%) hue-rotate(0deg) brightness(100%) contrast(100%)'
-        " />
+        "
+      />
     </button>
 
-<div class="btn-group display-none-style">
-  <button class="dropdown-btn" (click)="logoutUser()">
-    <i class="fa-solid fa-right-from-bracket"></i> <!-- logout icon -->
-  </button>
-</div>
+    <div class="btn-group display-none-style me-4">
+      <button class="dropdown-btn" (click)="logoutUser()">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <!-- logout icon -->
+      </button>
+    </div>
   </div>
 </header>
 
-
 <app-header-modal></app-header-modal>
-
-
-
