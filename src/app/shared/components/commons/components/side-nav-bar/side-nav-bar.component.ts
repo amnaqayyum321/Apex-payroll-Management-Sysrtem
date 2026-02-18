@@ -24,37 +24,142 @@ export class SideNavBarComponent implements OnInit {
   // Dynamic menu structure
   topLevelItems: MenuItem[] = [
     { label: 'Dashboard', icon: 'fas fa-home', route: '/panel/dashboard', isVisible: true },
-    { label: 'Offers', icon: 'fa-solid fa-tag', route: '/panel/offers', isVisible: false },
-    {
-      label: 'People',
-      icon: 'fa-solid fa-people-group',
-      route: '/panel/employes',
-      isVisible: false,
-    },
-    {
-      label: 'Jobs Details',
-      icon: 'fa-solid fa-briefcase',
-      route: '/panel/jobs-details',
-      isVisible: false,
-    },
-    { label: 'Chat', icon: 'fa-regular fa-message', route: '/panel/chat', isVisible: false },
-    {
-      label: 'Contacts',
-      icon: 'fa-solid fa-address-book',
-      route: '/panel/contact',
-      isVisible: false,
-    },
   ];
 
   menuGroups: MenuGroup[] = [
     {
-<<<<<<< HEAD
+      label: 'Setups',
+      icon: 'fa-solid fa-database',
+      isVisible: true,
+      collapsed: true,
+      children: [
+        {
+          label: 'User Setups',
+          icon: 'fa-solid fa-layer-group',
+          isVisible: true,
+          collapsed: true,
+          children: [
+            {
+              label: 'Users',
+              route: 'users-and-roles/view-users',
+              icon: 'fa-regular fa-circle-dot',
+              isVisible: true,
+            },
+            {
+              label: 'Roles',
+              route: 'users-and-roles/view-roles',
+              icon: 'fa-regular fa-circle-dot',
+              isVisible: true,
+            },
+          ],
+        },
+        {
+          label: 'Configuration',
+          icon: 'fa-solid fa-sitemap',
+          isVisible: false,
+          collapsed: true,
+          children: [
+            {
+              label: 'Employees',
+              route: 'employees-master-data/view-all-employees',
+              isVisible: true,
+            },
+            {
+              label: 'Onboarding Employees',
+              route: 'employees-master-data/onboarding-employees',
+              isVisible: true,
+            },
+
+            { label: 'GOSIID', route: 'employees-master-data/view-all-gosii', isVisible: false },
+            {
+              label: 'Departments',
+              route: 'employees-master-data/view-all-departments',
+              isVisible: false,
+            },
+            {
+              label: 'Medical Insurance',
+              route: 'employees-master-data/view-all-medical-insurance',
+              isVisible: false,
+            },
+            {
+              label: 'Accommodation',
+              route: 'employees-master-data/view-all-accommodation',
+              isVisible: false,
+            },
+            { label: 'Loans', route: 'employees-master-data/view-all-loans', isVisible: false },
+            {
+              label: 'Employee Belongings',
+              route: 'employees-master-data/view-all-employee-belongings',
+              isVisible: false,
+            },
+            {
+              label: 'Employees Category',
+              route: 'employees-master-data/view-all-employees-category',
+              isVisible: false,
+            },
+            {
+              label: 'Project Transfer',
+              route: 'employees-master-data/view-all-project-transfer',
+              isVisible: false,
+            },
+          ],
+        },
+        {
+          label: 'OutSourcing-Master-Data',
+          icon: 'fa-solid fa-people-arrows',
+          isVisible: false,
+          collapsed: true,
+          children: [
+            {
+              label: 'Employees',
+              route: 'employees-master-data/view-all-employees',
+              isVisible: true,
+            },
+            {
+              label: 'Onboarding Employees',
+              route: 'employees-master-data/onboarding-employees',
+              isVisible: true,
+            },
+
+            { label: 'GOSIID', route: 'employees-master-data/view-all-gosiid', isVisible: false },
+            {
+              label: 'Departments',
+              route: 'employees-master-data/view-all-departments',
+              isVisible: false,
+            },
+            {
+              label: 'Medical Insurance',
+              route: 'employees-master-data/view-all-medical-insurance',
+              isVisible: false,
+            },
+            {
+              label: 'Accommodation',
+              route: 'employees-master-data/view-all-accommodation',
+              isVisible: false,
+            },
+            { label: 'Loans', route: 'employees-master-data/view-all-loans', isVisible: false },
+            {
+              label: 'Employee Belongings',
+              route: 'employees-master-data/view-all-employee-belongings',
+              isVisible: false,
+            },
+            {
+              label: 'Employees Category',
+              route: 'employees-master-data/view-all-employees-category',
+              isVisible: false,
+            },
+            {
+              label: 'Project Transfer',
+              route: 'employees-master-data/view-all-project-transfer',
+              isVisible: false,
+            },
+          ],
+        },
+      ],
+    },
+    {
       label: 'Master Data',
       icon: 'fa-solid fa-database',
-=======
-      label: 'Tables',
-      icon: 'fa-solid fa-table-list',
->>>>>>> 7aca420191b811db0d8e040a183a908548c74530
       isVisible: true,
       collapsed: true,
       children: [
@@ -742,6 +847,4 @@ export class SideNavBarComponent implements OnInit {
   private canToggle(): boolean {
     return this.isOpen;
   }
-
-  
 }
