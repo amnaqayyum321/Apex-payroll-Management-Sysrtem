@@ -6,8 +6,9 @@
       <span>View All Users</span>
     </div>
     <div>
-      <button class="creat-btn" [routerLink]="['/panel/users-and-roles/create-user']">
-        <i class="fa-solid fa-plus me-2 text-blue-600"></i> Create User
+      <button class="create-btn" [routerLink]="['/panel/users-and-roles/create-user']">
+        <i class="fa-solid fa-plus icon"></i>
+        Create User
       </button>
     </div>
   </div>
@@ -27,10 +28,7 @@
         </thead>
 
         <tbody>
-          <tr
-            *ngFor="let user of paginatedUsersList; let i = index"
-            class="bg-[#1e293b] hover:bg-[#27354a] rounded-lg"
-          >
+          <tr *ngFor="let user of paginatedUsersList; let i = index" class="bg-[#1e293b] hover:bg-[#27354a] rounded-lg">
             <td class="px-3 py-3 font-medium">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
             <td class="px-3 py-3 font-medium">{{ user.firstName }}</td>
             <td class="px-3 py-3 font-medium">{{ user.lastName }}</td>
@@ -41,11 +39,8 @@
             <td class="px-3 py-3 text-gray-400">
               <div ngbDropdown class="d-inline-block">
                 <!-- <button type="button" class="btn  p-0" ngbDropdownToggle> -->
-                <i
-                  ngbDropdownToggle
-                  class="fa-solid fa-ellipsis-vertical"
-                  style="color: var(--white-color-1); font-size: 18px; cursor: pointer"
-                ></i>
+                <i ngbDropdownToggle class="fa-solid fa-ellipsis-vertical"
+                  style="color: var(--white-color-1); font-size: 18px; cursor: pointer"></i>
                 <!-- </button> -->
                 <div ngbDropdownMenu class="dropdown-menu">
                   <button ngbDropdownItem routerLink="/panel/permissions/view-user-permissions">
@@ -71,11 +66,7 @@
             </a>
           </li>
 
-          <li
-            class="page-item"
-            *ngFor="let page of totalPagesArray"
-            [class.active]="page === currentPage"
-          >
+          <li class="page-item" *ngFor="let page of totalPagesArray" [class.active]="page === currentPage">
             <a class="page-link" (click)="changePage(page)">{{ page }}</a>
           </li>
 
