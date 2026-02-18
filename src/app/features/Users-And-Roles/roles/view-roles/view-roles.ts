@@ -10,9 +10,9 @@ import { UsersAndRolesService } from '../../Services/user-roles';
 @Component({
   selector: 'app-view-roles',
   standalone: true,
-  imports: [CommonModule, RouterModule, NgbDropdownModule,PaginationComponent],
+  imports: [CommonModule, RouterModule, NgbDropdownModule, PaginationComponent],
   templateUrl: './view-roles.html',
-  styleUrl: './view-roles.scss'
+  styleUrl: './view-roles.scss',
 })
 export class ViewRoles {
   usersList: any[] = [];
@@ -23,8 +23,8 @@ export class ViewRoles {
     private UsersAndRolesService: UsersAndRolesService,
     private toastr: ToastrService,
     private loader: LoaderService,
-    private router: Router
-  ) { }
+    private router: Router,
+  ) {}
 
   currentPage = 1;
   itemsPerPage = 7;
@@ -56,11 +56,9 @@ export class ViewRoles {
       error: (error) => {
         this.loader.hide();
         this.toastr.error('Error fetching roles list');
-      }
+      },
     });
   }
-
-
 
   changePage(page: number) {
     if (page < 1 || page > this.totalPages) return;
@@ -69,20 +67,16 @@ export class ViewRoles {
   }
 
   formatRoleName(role: string): string {
-    if (!role) return "";
+    if (!role) return '';
 
     return role
       .toLowerCase()
-      .replace(/_/g, " ")
+      .replace(/_/g, ' ')
       .replace(/\b\w/g, (c) => c.toUpperCase());
   }
   goToPermissions(user: any) {
-
-  this.router.navigate(
-    ['//panel/users-and-roles/view-permissions'],
-    {
-      queryParams: { publicId: user.publicId }
-    }
-  );
-}
+    this.router.navigate(['/panel/users-and-roles/view-permissions'], {
+      queryParams: { publicId: user.publicId },
+    });
+  }
 }
