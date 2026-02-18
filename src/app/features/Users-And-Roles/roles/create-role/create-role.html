@@ -1,68 +1,85 @@
 <div class="user-form-container">
-    <div class="user-form-card">
-        <div class="form-header">
-            <h2 class="form-title">Create New Role</h2>
-            <p class="form-subtitle">Define role and assign permissions</p>
+  <div class="user-form-card">
+    <div class="form-header">
+      <h2 class="form-title">Create New Role</h2>
+      <p class="form-subtitle">Define role and assign permissions</p>
+    </div>
+
+    <form class="user-form">
+      <!-- Role Basic Info -->
+      <div class="form-row">
+        <div class="form-group">
+          <label class="input-label">Role Code <span class="text-danger">*</span></label>
+          <input
+            type="text"
+            [(ngModel)]="roleCode"
+            class="form-input"
+            name="roleCode"
+            placeholder="Enter role code"
+          />
         </div>
 
-        <form class="user-form">
-            <!-- Role Basic Info -->
-            <div class="form-row">
-                <div class="form-group">
-                    <label class="input-label">Role Code <span class="text-danger">*</span></label>
-                    <input type="text" class="form-input" 
-                        placeholder="Enter role code" />
-                </div>
+        <div class="form-group">
+          <label class="input-label">Role Name <span class="text-danger">*</span></label>
+          <input
+            type="text"
+            [(ngModel)]="roleName"
+            class="form-input"
+            name="roleName"
+            placeholder="Enter role name"
+          />
+        </div>
+      </div>
 
-                <div class="form-group">
-                    <label class="input-label">Role Name <span class="text-danger">*</span></label>
-                    <input type="text" class="form-input" 
-                        placeholder="Enter role name" />
-                </div>
+      <div class="form-row">
+        <div class="form-group full-width">
+          <label class="input-label">Description</label>
+          <textarea
+            class="form-input"
+            name="description"
+            rows="3"
+            [(ngModel)]="description"
+            placeholder="Enter role description"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Permissions Section -->
+      <div class="permissions-section" style="max-height: 550px; overflow-y: auto">
+        <h3 class="section-title">Assign Permissions</h3>
+
+        <div class="module-container" *ngFor="let module of PermissionList">
+          <div class="module-header">
+            <div class="module-title">
+              <i class="fa-solid fa-chevron-right module-icon"></i>
+              <span>{{ module.moduleName }}</span>
             </div>
+            <div class="module-count">{{ module.permissions.length }} Permissions</div>
+          </div>
 
-            <div class="form-row">
-                <div class="form-group full-width">
-                    <label class="input-label">Description</label>
-                    <textarea class="form-input" name="description" rows="3"
-                        placeholder="Enter role description"></textarea>
-                </div>
+          <div class="module-permissions">
+            <div class="permission-grid">
+              <div class="permission-item" *ngFor="let perm of module.permissions">
+                <label class="checkbox-label">
+                  <input
+                    type="checkbox"
+                    class="checkbox-style"
+                    (change)="onPermissionChange(perm, $event)"
+                  />
+                  <span class="permission-label-text">{{ perm }}</span>
+                </label>
+              </div>
             </div>
+          </div>
+        </div>
+      </div>
 
-            <!-- Permissions Section -->
-            <div class="permissions-section">
-                <h3 class="section-title">Assign Permissions</h3>
-
-                <div class="module-container" >
-                    <div class="module-header">
-                        <div class="module-title">
-                            <i class="fa-solid fa-chevron-right module-icon"
-                                ></i>
-                            <span></span>
-                        </div>
-                        <div class="module-count">
-                            
-                        </div>
-                    </div>
-
-                    <div class="module-permissions" >
-                        <div class="permission-grid">
-                            <div class="permission-item" >
-                                <label class="checkbox-label">
-                                    <input type="checkbox" class="checkbox-style"
-                                       />
-                                    <span class="permission-label-text"></span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-footer">
-                <button type="button" class="cancel-btn">Cancel</button>
-                <button type="submit" class="submit-btn">Create Role</button>
-            </div>
-        </form>
-    </div>
+      <div class="form-footer">
+        <button type="button" class="cancel-btn">Cancel</button>
+        <button type="submit" (click)="SubmitRolePermission()" class="submit-btn">
+          Create Role
+        </button>
+      </div>
+    </form>
+  </div>
 </div>
