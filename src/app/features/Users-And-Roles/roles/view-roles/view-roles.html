@@ -7,7 +7,10 @@
             <span>View All Roles</span>
         </div>
         <div>
-            <button class="creat-btn" routerLink="/panel/users-and-roles/create-role">Create Role</button>
+             <button class="create-btn" [routerLink]="['/panel/users-and-roles/create-role']">
+        <i class="fa-solid fa-plus icon"></i>
+        Create User
+      </button>
         </div>
     </div>
     <section class="table-main-div ">
@@ -26,23 +29,23 @@
                 </thead>
 
                 <tbody>
-                    <tr 
+                    <tr *ngFor="let user of paginatedUsersList; let i = index"
                         class="bg-[#1e293b] hover:bg-[#27354a] rounded-lg">
-                        <td class="px-3 py-3 font-medium"></td>
-                        <td class="px-3 py-3 font-medium"></td>
-                        <td class="px-3 py-3 font-medium"></td>
-                        <td class="px-3 py-3 text-gray-400"></td>
+                        <td class="px-3 py-3 font-medium">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+                        <td class="px-3 py-3 font-medium">{{ user.name }}</td>
+                        <td class="px-3 py-3 font-medium">{{ user.code }}</td>
+                        <td class="px-3 py-3 text-gray-400">{{ user.createdDate | date:'short' }}</td>
                         <!-- <td class="px-3 py-3 text-gray-400">{{ user.phoneNumber }}</td> -->
                         <!-- <td class="px-3 py-3 text-gray-400">{{ formatRoleName(user.roleCode) }}</td> -->
 
-                        <!-- <td class="px-3 py-3 text-gray-400">
+                        <td class="px-3 py-3 text-gray-400">
 
-                            <div ngbDropdown class="d-inline-block"> -->
+                            <div ngbDropdown class="d-inline-block">
                                 <!-- <button type="button" class="btn  p-0" ngbDropdownToggle> -->
-                                <!-- <i ngbDropdownToggle class="fa-solid fa-ellipsis-vertical"
-                                    style="color: var(--white-color-1); font-size: 18px;cursor: pointer;"></i> -->
+                                <i ngbDropdownToggle class="fa-solid fa-ellipsis-vertical"
+                                    style="color: var(--white-color-1); font-size: 18px;cursor: pointer;"></i>
                                 <!-- </button> -->
-                                <!-- <div ngbDropdownMenu class="dropdown-menu">
+                                <div ngbDropdownMenu class="dropdown-menu">
                                     <button ngbDropdownItem (click)="goToPermissions(user)">view
                                         permissions</button>
                                     <button ngbDropdownItem hidden>Delete User</button>
@@ -50,7 +53,7 @@
                                 </div>
                             </div>
 
-                        </td> -->
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -58,11 +61,11 @@
         </div>
 
         <!-- ✅ Pagination -->
-        <!-- <app-pagination 
+        <app-pagination 
           [currentPage]="currentPage" 
           [totalPages]="totalPages" 
           [totalPagesArray]="totalPagesArray"
           (pageChange)="changePage($event)">
-        </app-pagination> -->
+        </app-pagination>
     </section>
 </section>
