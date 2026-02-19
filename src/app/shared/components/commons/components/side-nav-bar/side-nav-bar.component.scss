@@ -312,6 +312,8 @@
   overflow-y: auto;
   overflow-x: hidden;
   min-height: 0;
+  scrollbar-width: thin;
+    scrollbar-color: #8daac6 transparent;
 }
 
 .tabslist::-webkit-scrollbar {
@@ -320,11 +322,22 @@
 
 .tabslist::-webkit-scrollbar-track {
   background: transparent;
+  margin: 80px 0;
 }
-
+/* hover ya scroll par visible ho */
+.tabslist:hover::-webkit-scrollbar-thumb,
+.tabslist:focus::-webkit-scrollbar-thumb {
+  opacity: 1;
+}
 .tabslist::-webkit-scrollbar-thumb {
   background-color: #8daac6;
-  border-radius: 10px;
+    border-radius: 10px;
+  
+    /* sirf scroll karne par dikhe */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    min-height: 30px !important;
+    max-height: 30px !important;
 }
 
 /* active router link */
@@ -380,3 +393,4 @@ a.router-link-active {
               0 4px 8px rgba(16, 24, 40, 0.06);   // light soft shadow
   transition: all 0.25s ease;
 }
+

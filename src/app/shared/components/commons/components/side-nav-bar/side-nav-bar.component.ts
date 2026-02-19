@@ -63,11 +63,13 @@ export class SideNavBarComponent implements OnInit {
             {
               label: 'Employees',
               route: 'employees-master-data/view-all-employees',
+
               isVisible: true,
             },
             {
               label: 'Onboarding Employees',
               route: 'employees-master-data/onboarding-employees',
+
               isVisible: true,
             },
 
@@ -114,11 +116,13 @@ export class SideNavBarComponent implements OnInit {
             {
               label: 'Employees',
               route: 'employees-master-data/view-all-employees',
+              icon: 'fa-solid fa-users',
               isVisible: true,
             },
             {
               label: 'Onboarding Employees',
               route: 'employees-master-data/onboarding-employees',
+              icon: 'fa-solid fa-user-plus',
               isVisible: true,
             },
 
@@ -347,11 +351,13 @@ export class SideNavBarComponent implements OnInit {
             {
               label: 'Employees',
               route: 'employees-master-data/view-all-employees',
+              icon: 'fa-solid fa-users',
               isVisible: true,
             },
             {
               label: 'Onboarding Employees',
               route: 'employees-master-data/onboarding-employees',
+              icon: 'fa-solid fa-user-plus',
               isVisible: true,
             },
 
