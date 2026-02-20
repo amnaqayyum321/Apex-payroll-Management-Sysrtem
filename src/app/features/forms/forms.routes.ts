@@ -13,6 +13,7 @@ import { Projects } from './master-data/projects/projects';
 import { WorkSchedule } from './master-data/work-schedule/work-schedule';
 import { ViewDesignations } from './master-data/view-designations/view-designations';
 import { ViewDepartmentList } from './master-data/View-Department/view-department-list/view-department-list';
+import { ViewCompanyBranches } from './master-data/view-company-branches/view-company-branches';
 
 export const routes: Routes = [
   {
@@ -73,4 +74,8 @@ export const routes: Routes = [
 
   { path: 'work-schedule', component: WorkSchedule },
   { path: 'view-department-list', component: ViewDepartmentList },
+  { path: 'view-company-branches', component: ViewCompanyBranches },
+
+  
+
 ];

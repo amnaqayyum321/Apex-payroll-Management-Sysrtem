@@ -136,7 +136,7 @@ export class SideNavBarComponent implements OnInit {
 
             {
               label: 'Company',
-              route: 'forms/company',
+              route: 'forms/view-company-branches',
               icon: 'fa-solid fa-city',
               isVisible: true,
             },
