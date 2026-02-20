@@ -2,9 +2,10 @@ import { Component, HostListener } from '@angular/core';
 import { LoaderService } from '../../../../core/services/management-services/loader.service';
 import { UsersAndRolesService } from '../../../Users-And-Roles/Services/user-roles';
 import { ToastrService } from 'ngx-toastr';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { FormsService } from '../../Services/forms';
 
 @Component({
   selector: 'app-department',
@@ -13,102 +14,107 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './department.scss',
 })
 export class Department {
-  email: string = '';
-  firstName: string = '';
-  lastName: string = '';
-  roleCode: string = '';
-  phoneNumber: string = '';
-  address: string = '';
-  roles: any[] = [];
+  Code: string = '';
+  Name: string = '';
+  description: string = '';
   disabled: boolean = false;
-  isDropdownOpen: boolean = false;
-  selectedRole: string = '';
   currentPage: number = 0; // page number
   pageSize: number = 100;
+  publicId: string | null = null;
+  isEditMode = false;
   constructor(
     private loader: LoaderService,
-    private userSv: UsersAndRolesService,
+    private FormSv: FormsService,
     private toastr: ToastrService,
     private router: Router,
+    private route: ActivatedRoute,
   ) {}
+
   ngOnInit() {
-    this.loader.show();
-    this.GetAllRole();
+    this.publicId = this.route.snapshot.paramMap.get('id');
+    if (this.publicId) {
+      this.isEditMode = true;
+      this.loadSingleDepartment(this.publicId);
+    }
   }
-
-  toggleDropdown(event: Event) {
-    event.stopPropagation();
-    this.isDropdownOpen = !this.isDropdownOpen;
-  }
-
-  selectRole(role: any, event: Event) {
-    event.stopPropagation();
-    this.selectedRole = role.name;
-    this.roleCode = role.code;
-    this.isDropdownOpen = false;
-  }
-
-  @HostListener('document:click', ['$event'])
-  closeDropdown(event: Event) {
-    this.isDropdownOpen = false;
-  }
-  GetAllRole() {
-    this.userSv.getRoles(this.currentPage, this.pageSize).subscribe({
-      next: (response: any) => {
-        this.loader.hide();
-        this.roles = response.data;
-        console.log('All role', this.roles);
-      },
-      error: (error: any) => {
-        this.loader.hide();
-      },
-    });
-  }
-  createUser() {
-    if (!this.email || !this.firstName || !this.lastName || !this.roleCode) {
+  createDepartment() {
+    if (!this.Code || !this.Name) {
       this.toastr.error('Please fill in all required fields');
       return;
     }
     let payload = {
-      email: this.email,
-      firstName: this.firstName,
-      lastName: this.lastName,
-      roleCode: this.roleCode,
-      phoneNumber: this.phoneNumber,
-      address: this.address,
+      code: this.Code,
+      name: this.Name,
+      description: this.description,
     };
     this.loader.show();
     this.disabled = true;
-    this.userSv.CreatenewUser(payload).subscribe({
-      next: (response: any) => {
+    this.FormSv.CreateDepartment(payload).subscribe({
+      next: (res: any) => {
         this.loader.hide();
-        this.toastr.success('User created successfully', 'Success');
-        this.resetUserForm();
+        this.toastr.success('Department created successfully', 'Success');
+        this.resetDepartmentForm();
         setTimeout(() => {
-          this.router.navigate(['/panel/users-and-roles/view-users']);
+          this.router.navigate(['/panel/forms/view-department-list']);
         }, 1500);
       },
       error: (error: any) => {
         this.loader.hide();
         this.disabled = false;
         this.toastr.error(
-          error.error.message || 'Failed to create user. Please try again.',
+          error.error.message || 'Failed to create Department. Please try again.',
           'Error',
         );
       },
     });
   }
-  resetUserForm() {
-    this.email = '';
-    this.firstName = '';
-    this.lastName = '';
-    this.roleCode = '';
-    this.phoneNumber = '';
-    this.address = '';
-    this.selectedRole = '';
+  resetDepartmentForm() {
+    this.Code = '';
+    this.Name = '';
+    this.description = '';
+
     this.disabled = false;
   }
   cancel() {
     this.router.navigate(['/panel/forms/view-department-list']);
+  }
+  loadSingleDepartment(publicId: string) {
+    this.loader.show();
+    this.FormSv.getDepartementById(publicId!).subscribe({
+      next: (res: any) => {
+        this.loader.hide();
+        this.Code = res.data.code;
+        this.Name = res.data.name;
+        this.description = res.data.description;
+      },
+      error: () => {
+        this.loader.hide();
+        this.toastr.error('Failed to load department');
+      },
+    });
+  }
+  updateDepartment() {
+    const payload = {
+      code: this.Code,
+      name: this.Name,
+      description: this.description,
+    };
+
+    this.loader.show();
+
+    this.FormSv.UpdateDepartment(this.publicId!, payload).subscribe({
+      next: () => {
+        this.loader.hide();
+        this.toastr.success('Department updated');
+        this.resetDepartmentForm();
+        setTimeout(() => {
+          this.router.navigate(['/panel/forms/view-department-list']);
+        }, 1500);
+      },
+      error: () => {
+        this.loader.hide();
+        this.toastr.error('Department Update failed');
+      },
+    });
   }
 }

@@ -5,6 +5,7 @@ import { LoaderService } from '../../../../../core/services/management-services/
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { FormsService } from '../../../Services/forms';
 
 @Component({
   selector: 'app-view-department-list',
@@ -18,7 +19,7 @@ export class ViewDepartmentList {
   totalPagesCount: number = 0;
 
   constructor(
-    private getAllUser: UsersAndRolesService,
+    private FormSv: FormsService,
     private toastr: ToastrService,
     private loader: LoaderService,
   ) {}
@@ -34,19 +35,18 @@ export class ViewDepartmentList {
   get totalPagesArray() {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
-
   ngOnInit() {
     this.loadDepartment();
   }
-
   loadDepartment() {
+    debugger;
     this.loader.show();
     const backendPage = this.currentPage - 1;
-    this.getAllUser.getAllUser(backendPage, this.itemsPerPage).subscribe({
+    this.FormSv.GetDepartment(backendPage, this.itemsPerPage).subscribe({
       next: (response: any) => {
         this.loader.hide();
         this.DepartmentList = response.data;
-        console.log(this.DepartmentList);
+        console.log('Department list', this.DepartmentList);
         this.totalItems = response.paginator.totalItems;
         this.totalPagesCount = response.paginator.totalPages;
         this.currentPage = response.paginator.currentPage + 1; // Backend 0-indexed

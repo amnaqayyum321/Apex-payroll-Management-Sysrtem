@@ -4,7 +4,7 @@ import { FormsService } from '../../Services/forms';
 import { LoaderService } from '../../../../core/services/management-services/loader.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import {  RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -28,7 +28,7 @@ export class ViewDesignations {
   itemsPerPage = 7;
   paginatedDesigationList: any[] = [];
   publicId: string | null = null;
-isEditMode = false;
+  isEditMode = false;
 
 
   get totalPages() {
@@ -79,29 +79,27 @@ isEditMode = false;
   }
 
   deleteDesignation(publicId: string) {
-  if (!confirm('Are you sure you want to delete this designation?')) return;
+    if (!confirm('Are you sure you want to delete this designation?')) return;
 
-  this.loader.show();
+    this.loader.show();
 
-  this.formsService.deleteDesignation(publicId).subscribe({
-    next: () => {
-      this.loader.hide();
-      this.toastr.success('Designation deleted');
-      this.loadDesigantions();
-    },
-    error: () => {
-      this.loader.hide();
-      this.toastr.error('Delete failed');
-    }
-  });
-}
+    this.formsService.deleteDesignation(publicId).subscribe({
+      next: () => {
+        this.loader.hide();
+        this.toastr.success('Designation deleted');
+        this.loadDesigantions();
+      },
+      error: () => {
+        this.loader.hide();
+        this.toastr.error('Delete failed');
+      },
+    });
+  }
 
-toggleActive(user: any) {
-  this.loader.show();
+  toggleActive(user: any) {
+    this.loader.show();
 
-  this.formsService
-    .toggleDesignationActive(user.publicId, !user.isActive)
-    .subscribe({
+    this.formsService.toggleDesignationActive(user.publicId, !user.isActive).subscribe({
       next: () => {
         this.loader.hide();
         this.toastr.success('Status updated');
@@ -110,26 +108,23 @@ toggleActive(user: any) {
       error: () => {
         this.loader.hide();
         this.toastr.error('Failed to update status');
-      }
+      },
     });
-}
+  }
 
-restoreDesignation(publicId: string) {
-  this.loader.show();
+  restoreDesignation(publicId: string) {
+    this.loader.show();
 
-  this.formsService.restoreDesignation(publicId).subscribe({
-    next: () => {
-      this.loader.hide();
-      this.toastr.success('Designation restored');
-      this.loadDesigantions();
-    },
-    error: () => {
-      this.loader.hide();
-      this.toastr.error('Restore failed');
-    }
-  });
-}
-
-
-
+    this.formsService.restoreDesignation(publicId).subscribe({
+      next: () => {
+        this.loader.hide();
+        this.toastr.success('Designation restored');
+        this.loadDesigantions();
+      },
+      error: () => {
+        this.loader.hide();
+        this.toastr.error('Restore failed');
+      },
+    });
+  }
 }
