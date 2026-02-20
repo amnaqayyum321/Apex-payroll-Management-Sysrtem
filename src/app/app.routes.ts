@@ -19,12 +19,14 @@ export const routes: Routes = [
     path: 'panel', component: LayOutOneComponent, children: [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', loadChildren: () => import('./features/dashboard/dashboard-routes').then(m => m.routes) },
-      { path: 'users-and-roles', loadChildren: () => import('./features/Users-And-Roles/users-roles.routes').then(m => m.routes) }
+      { path: 'users-and-roles', loadChildren: () => import('./features/Users-And-Roles/users-roles.routes').then(m => m.routes) },
+      { path: 'forms', loadChildren: () => import('./features/forms/forms.routes').then(m => m.routes) }
 
-     
-      
 
-   
+
+
+
+
 
 
 

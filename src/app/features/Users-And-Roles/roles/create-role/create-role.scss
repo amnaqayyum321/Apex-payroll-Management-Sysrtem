@@ -32,6 +32,13 @@
     }
 }
 
+.header-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--border-color);
+  margin: 10px 0 25px 0;
+  opacity: 0.6;
+}
 .form-title {
     color: var(--white-color-1);
     font-size: 23px;
@@ -82,11 +89,38 @@
 }
 
 .permissions-section {
-    margin-top: 30px;
-    padding-top: 30px;
-    border-top: 1px solid var(--border-color);
+   margin-top: 30px;
+  padding-top: 30px;
+  border-top: 1px solid var(--border-color);
+  max-height: 550px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 4px;
 }
 
+/* Thin modern scrollbar */
+.permissions-section::-webkit-scrollbar {
+  width: 6px;
+}
+
+.permissions-section::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.permissions-section::-webkit-scrollbar-thumb {
+  background: rgba(150,150,160,0.35);
+  border-radius: 10px;
+}
+
+.permissions-section::-webkit-scrollbar-thumb:hover {
+  background: rgba(140,140,160,0.6);
+}
+
+/* Firefox */
+.permissions-section {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(140,140,160,0.4) transparent;
+}
 .section-title {
     color: var(--white-color-1);
     font-size: 20px;
@@ -112,7 +146,11 @@
     transition: background-color 0.2s ease;
 
     &:hover {
-        background-color: rgba(97, 147, 233, 0.05);
+        background: linear-gradient(
+    90deg,
+    rgba(255,255,255,0.03),
+    rgba(255,255,255,0.01)
+  );
     }
 }
 
@@ -170,6 +208,9 @@
     padding: 8px;
     border-radius: 4px;
     transition: background-color 0.2s ease;
+    .checkbox-label:hover {
+  background: rgba(255,255,255,0.04);
+}
 
 }
 
@@ -212,8 +253,8 @@
 }
 
 textarea.form-input {
-    resize: vertical;
-    min-height: 80px;
+ padding: 10px 14px;
+  min-height: 90px;
 }
 
 .form-group {
@@ -223,32 +264,29 @@ textarea.form-input {
 }
 
 .input-label {
-    color: var(--white-color-1);
-    font-size: 14px;
-    font-weight: 500;
-    opacity: 0.9;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
 }
 
 .form-input {
-    width: 100%;
-    padding: 9px 16px;
-    border-radius: 6px;
-    border: 1px solid var(--border-color);
-    background-color: var(--second-primary-color);
-    color: var(--white-color-1);
-    font-size: 15px;
-    transition: all 0.3s ease;
-    outline: none;
+   height: 42px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  padding: 0 14px;
+  font-size: 14px;
+  background: var(--second-primary-color);
+  outline: none;
+  color: var(--text-primary);
 
-    &::placeholder {
-        color: var(--white-color-1);
-        opacity: 0.5;
-    }
+  &::placeholder {
+    color: #98a2b3;
+  }
 
-    &:focus {
-        box-shadow: 0 0 0 3px rgba(112, 71, 238, 0.1);
-    }
-
+  &:focus {
+    border-color: var(--border-color);
+    background: var(--primary-color);
+  }
     &:hover {
         border-color: rgba(255, 255, 255, 0.2);
     }
@@ -378,55 +416,43 @@ select.form-input[size] {
     }
 }
 
-.submit-btn {
-   padding: 8px 16px;
-  border-radius: 4px;
-  border: none;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  height: 36px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-    background-color: var(--purple-1);
-    color: white;
-      &:hover {
-       transform: translateY(-2px);
-    }
-
-    @media (max-width: 768px) {
-        padding: 12px;
-        font-size: 15px;
-    }
-}
-
 .cancel-btn {
-    //   flex: 1;
-    padding: 8px 16px;
-  border-radius: 4px;
-  border: none;
-  font-size: 14px;
+  height: 42px;
+  padding: 0 22px;
+  border-radius: 22px;
+  border: 1px solid var(--border-color);
+  background: var(--red-color);
+  color: white;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.3s ease;
-  height: 36px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-    background-color: var(--red-color);
-    color: white;
-      &:hover {
-       transform: translateY(-2px);
-    }
+   &:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+  }
 
-    
-
-    @media (max-width: 768px) {
-        padding: 12px;
-        font-size: 15px;
-    }
+  &:active {
+    transform: scale(0.97);
+    box-shadow: none;
+  }
 }
 
+.submit-btn {
+  height: 42px;
+  padding: 0 22px;
+  border-radius: 22px;
+  border: 1px solid var(--border-color);
+  background: var(--purple-1);
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+    &:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.02);
+  }
+
+  &:active {
+    transform: scale(0.97);
+    box-shadow: none;
+  }
+}
 

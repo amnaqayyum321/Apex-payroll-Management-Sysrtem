@@ -107,59 +107,7 @@ export class SideNavBarComponent implements OnInit {
             },
           ],
         },
-        {
-          label: 'OutSourcing-Master-Data',
-          icon: 'fa-solid fa-people-arrows',
-          isVisible: false,
-          collapsed: true,
-          children: [
-            {
-              label: 'Employees',
-              route: 'employees-master-data/view-all-employees',
-              icon: 'fa-solid fa-users',
-              isVisible: true,
-            },
-            {
-              label: 'Onboarding Employees',
-              route: 'employees-master-data/onboarding-employees',
-              icon: 'fa-solid fa-user-plus',
-              isVisible: true,
-            },
-
-            { label: 'GOSIID', route: 'employees-master-data/view-all-gosiid', isVisible: false },
-            {
-              label: 'Departments',
-              route: 'employees-master-data/view-all-departments',
-              isVisible: false,
-            },
-            {
-              label: 'Medical Insurance',
-              route: 'employees-master-data/view-all-medical-insurance',
-              isVisible: false,
-            },
-            {
-              label: 'Accommodation',
-              route: 'employees-master-data/view-all-accommodation',
-              isVisible: false,
-            },
-            { label: 'Loans', route: 'employees-master-data/view-all-loans', isVisible: false },
-            {
-              label: 'Employee Belongings',
-              route: 'employees-master-data/view-all-employee-belongings',
-              isVisible: false,
-            },
-            {
-              label: 'Employees Category',
-              route: 'employees-master-data/view-all-employees-category',
-              isVisible: false,
-            },
-            {
-              label: 'Project Transfer',
-              route: 'employees-master-data/view-all-project-transfer',
-              isVisible: false,
-            },
-          ],
-        },
+       
       ],
     },
     {
@@ -175,232 +123,108 @@ export class SideNavBarComponent implements OnInit {
           collapsed: true,
           children: [
             {
-              label: 'Employees',
-              route: 'employees-master-data/view-all-employees',
-              icon: 'fa-regular fa-circle-dot',
+              label: 'Department',
+              route: 'forms/department',
+              icon: 'fa-solid fa-building',
               isVisible: true,
             },
             {
-              label: 'Onboarding Employees',
-              route: 'employees-master-data/onboarding-employees',
-              icon: 'fa-regular fa-circle-dot',
+              label: 'Designation',
+              route: 'forms/designation',
+              icon: 'fa-solid fa-id-badge',
               isVisible: true,
             },
 
             {
-              label: 'GOSIID',
-              route: 'employees-master-data/view-all-gosiid',
-              icon: 'fa-regular fa-circle-dot',
+              label: 'Company',
+              route: 'forms/company',
+              icon: 'fa-solid fa-city',
               isVisible: true,
             },
             {
-              label: 'Departments',
-              route: 'employees-master-data/view-all-departments',
+              label: 'Pay Period',
+              route: 'forms/pay-period',
               isVisible: true,
-              icon: 'fa-regular fa-circle-dot',
+              icon: 'fa-solid fa-calendar-days',
             },
             {
-              label: 'Medical Insurance',
-              route: 'employees-master-data/view-all-medical-insurance',
-              isVisible: false,
-              icon: 'fa-solid fa-chevron-right',
+              label: 'Work Schedule',
+              route: 'forms/work-schedule',
+              isVisible: true,
+              icon: 'fa-solid fa-clock',
             },
             {
-              label: 'Accommodation',
-              route: 'employees-master-data/view-all-accommodation',
-              isVisible: false,
-              icon: 'fa-solid fa-chevron-right',
+              label: 'Projects',
+              route: 'forms/projects',
+              isVisible: true,
+              icon: 'fa-solid fa-project-diagram',
             },
-            { label: 'Loans', route: 'employees-master-data/view-all-loans', isVisible: false },
+         
             {
-              label: 'Employee Belongings',
-              route: 'employees-master-data/view-all-employee-belongings',
-              isVisible: false,
-              icon: 'fa-solid fa-chevron-right',
-            },
-            {
-              label: 'Employees Category',
-              route: 'employees-master-data/view-all-employees-category',
-              isVisible: false,
-              icon: 'fa-solid fa-chevron-right',
-            },
-            {
-              label: 'Project Transfer',
-              route: 'employees-master-data/view-all-project-transfer',
-              isVisible: false,
-              icon: 'fa-solid fa-chevron-right',
-            },
+              label: 'Loan Types',
+              route: 'forms/loan-types',
+              isVisible: true,
+              icon: 'fa-solid fa-money-bill-wave',
+            }
+          
           ],
         },
         {
-          label: 'Organizational-Master-Data',
-          icon: 'fa-solid fa-sitemap',
+          label: 'Attendence-Master-Data',
+          icon: 'fa-solid fa-clipboard-user',
           isVisible: true,
           collapsed: true,
           children: [
+               {
+              label: 'Leaves',
+              route: 'forms/leaves',
+              isVisible: true,
+              icon: 'fa-solid fa-calendar-check',
+            },
             {
-              label: 'Employees',
-              route: 'employees-master-data/view-all-employees',
+              label: 'Leave Application',
+              route: 'forms/leave-application',
+              icon: 'fa-solid fa-file-signature',
               isVisible: true,
             },
             {
-              label: 'Onboarding Employees',
-              route: 'employees-master-data/onboarding-employees',
-              isVisible: true,
-            },
-
-            { label: 'GOSIID', route: 'employees-master-data/view-all-gosiid', isVisible: false },
-            {
-              label: 'Departments',
-              route: 'employees-master-data/view-all-departments',
-              isVisible: false,
-            },
-            {
-              label: 'Medical Insurance',
-              route: 'employees-master-data/view-all-medical-insurance',
-              isVisible: false,
-            },
-            {
-              label: 'Accommodation',
-              route: 'employees-master-data/view-all-accommodation',
-              isVisible: false,
-            },
-            { label: 'Loans', route: 'employees-master-data/view-all-loans', isVisible: false },
-            {
-              label: 'Employee Belongings',
-              route: 'employees-master-data/view-all-employee-belongings',
-              isVisible: false,
-            },
-            {
-              label: 'Employees Category',
-              route: 'employees-master-data/view-all-employees-category',
-              isVisible: false,
-            },
-            {
-              label: 'Project Transfer',
-              route: 'employees-master-data/view-all-project-transfer',
-              isVisible: false,
-            },
-          ],
-        },
-        {
-          label: 'OutSourcing-Master-Data',
-          icon: 'fa-solid fa-people-arrows',
-          isVisible: true,
-          collapsed: true,
-          children: [
-            {
-              label: 'Employees',
-              route: 'employees-master-data/view-all-employees',
-              isVisible: true,
-            },
-            {
-              label: 'Onboarding Employees',
-              route: 'employees-master-data/onboarding-employees',
+              label: 'Leaves Master Data',
+              route: 'forms/leaves-master-data',
+              icon: 'fa-solid fa-file-alt',
               isVisible: true,
             },
 
-            { label: 'GOSIID', route: 'employees-master-data/view-all-gosiid', isVisible: false },
             {
-              label: 'Departments',
-              route: 'employees-master-data/view-all-departments',
-              isVisible: false,
-            },
-            {
-              label: 'Medical Insurance',
-              route: 'employees-master-data/view-all-medical-insurance',
-              isVisible: false,
-            },
-            {
-              label: 'Accommodation',
-              route: 'employees-master-data/view-all-accommodation',
-              isVisible: false,
-            },
-            { label: 'Loans', route: 'employees-master-data/view-all-loans', isVisible: false },
-            {
-              label: 'Employee Belongings',
-              route: 'employees-master-data/view-all-employee-belongings',
-              isVisible: false,
-            },
-            {
-              label: 'Employees Category',
-              route: 'employees-master-data/view-all-employees-category',
-              isVisible: false,
-            },
-            {
-              label: 'Project Transfer',
-              route: 'employees-master-data/view-all-project-transfer',
-              isVisible: false,
-            },
+              label: 'Shifts',
+              route: 'forms/shifts',
+              icon: 'fa-solid fa-clock',
+              isVisible: true,
+            }
           ],
         },
-      ],
-    },
-    {
-      label: 'Employees',
-      icon: 'fas fa-user',
-      isVisible: true,
-      collapsed: true,
-      children: [
-        {
+         {
           label: ' Employees-Master-Data',
-          icon: 'fas fa-angle-double-right',
+          icon: 'fa-solid fa-users',
           isVisible: true,
           collapsed: true,
           children: [
             {
               label: 'Employees',
               route: 'employees-master-data/view-all-employees',
-              icon: 'fa-solid fa-users',
+              icon: 'fa-solid fa-user-tie',
               isVisible: true,
-            },
-            {
-              label: 'Onboarding Employees',
-              route: 'employees-master-data/onboarding-employees',
-              icon: 'fa-solid fa-user-plus',
-              isVisible: true,
-            },
-
-            { label: 'GOSIID', route: 'employees-master-data/view-all-gosiid', isVisible: false },
-            {
-              label: 'Departments',
-              route: 'employees-master-data/view-all-departments',
-              isVisible: false,
-            },
-            {
-              label: 'Medical Insurance',
-              route: 'employees-master-data/view-all-medical-insurance',
-              isVisible: false,
-            },
-            {
-              label: 'Accommodation',
-              route: 'employees-master-data/view-all-accommodation',
-              isVisible: false,
-            },
-            { label: 'Loans', route: 'employees-master-data/view-all-loans', isVisible: false },
-            {
-              label: 'Employee Belongings',
-              route: 'employees-master-data/view-all-employee-belongings',
-              isVisible: false,
-            },
-            {
-              label: 'Employees Category',
-              route: 'employees-master-data/view-all-employees-category',
-              isVisible: false,
-            },
-            {
-              label: 'Project Transfer',
-              route: 'employees-master-data/view-all-project-transfer',
-              isVisible: false,
-            },
+            }
+            
           ],
         },
+     
       ],
     },
+  
     {
       label: 'Recruitment',
       icon: 'fa-solid fa-user-tie',
-      isVisible: true,
+      isVisible: false,
       collapsed: true,
       children: [
         {
@@ -493,7 +317,7 @@ export class SideNavBarComponent implements OnInit {
     {
       label: 'PayRoll',
       icon: 'fa-solid fa-money-check-dollar',
-      isVisible: true,
+      isVisible: false,
       collapsed: true,
       children: [
         {
@@ -586,13 +410,13 @@ export class SideNavBarComponent implements OnInit {
     {
       label: 'Time Sheet',
       icon: 'fa-solid fa-clock',
-      isVisible: true,
+      isVisible: false,
       collapsed: true,
       children: [
         {
           label: 'Attendence',
           icon: 'fa-solid fa-user-clock',
-          isVisible: true,
+          isVisible: false,
           collapsed: true,
           children: [
             {
@@ -609,7 +433,7 @@ export class SideNavBarComponent implements OnInit {
     {
       label: 'Reports',
       icon: 'fa-solid fa-chart-pie',
-      isVisible: true,
+      isVisible: false,
       collapsed: true,
       children: [
         {

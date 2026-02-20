@@ -2,8 +2,8 @@
   <div class="user-form-card">
     <div class="form-header">
       <h2 class="form-title">Create New Role</h2>
-      <p class="form-subtitle">Define role and assign permissions</p>
     </div>
+    <div class="header-divider"></div>
 
     <form class="user-form">
       <!-- Role Basic Info -->
@@ -75,8 +75,8 @@
       </div>
 
       <div class="form-footer">
-        <button type="button" class="cancel-btn">Cancel</button>
-        <button type="submit" (click)="SubmitRolePermission()" class="submit-btn">
+        <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
+        <button type="submit-btn" (click)="SubmitRolePermission()" class="submit-btn">
           Create Role
         </button>
       </div>
