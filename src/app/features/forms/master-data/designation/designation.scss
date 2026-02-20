@@ -243,3 +243,21 @@ textarea {
     box-shadow: none;
   }
 }
+
+.reset-btn {
+      background: var(--primary-color);
+      color: var(--purple-1);
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+
+      &:hover {
+        background: var(--purple-1);
+        color: white;
+      }
+    }

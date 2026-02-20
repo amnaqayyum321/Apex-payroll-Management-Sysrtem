@@ -30,6 +30,7 @@ export class ViewDesignations {
   publicId: string | null = null;
   isEditMode = false;
 
+
   get totalPages() {
     return this.totalPagesCount || Math.ceil(this.totalItems / this.itemsPerPage);
   }
