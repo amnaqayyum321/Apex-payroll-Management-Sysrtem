@@ -14,6 +14,8 @@ import { WorkSchedule } from './master-data/work-schedule/work-schedule';
 import { ViewDesignations } from './master-data/view-designations/view-designations';
 import { ViewDepartmentList } from './master-data/View-Department/view-department-list';
 import { ViewPayPeriod } from './master-data/view-Pay-period-List/view-pay-period';
+import { ViewCompanyBranches } from './master-data/view-company-branches/view-company-branches';
+
 export const routes: Routes = [
   {
     path: 'leave-application',
@@ -77,4 +79,5 @@ export const routes: Routes = [
 
   { path: 'work-schedule', component: WorkSchedule },
   { path: 'view-department-list', component: ViewDepartmentList },
+  { path: 'view-company-branches', component: ViewCompanyBranches },
 ];

@@ -60,7 +60,6 @@ export class Designation {
       return;
     }
     let payload = {
-      email: this.email,
       code: this.code,
       name: this.name,
       description: this.description,

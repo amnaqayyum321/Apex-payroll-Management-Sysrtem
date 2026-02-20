@@ -55,6 +55,19 @@ export class FormsService {
   getDepartementById(publicId: string): Observable<any> {
     return this.http.get(this.url + `admin/departments/${publicId}`);
   }
+
+  getAllComapnyBranches(page: number, size: number): Observable<any> {
+    return this.http.get(this.url + `admin/company-branches?page=${page}&size=${size}`);
+  }
+  createCompanyBranch(data: any): Observable<any> {
+    return this.http.post(this.url + 'admin/company-branches', data);
+  }
+  UpdateCompanyBranch(PublicId: string, data: any): Observable<any> {
+    return this.http.put(this.url + `admin/company-branches/${PublicId}`, data);
+  }
+  getCompanyBranchById(publicId: string): Observable<any> {
+    return this.http.get(this.url + `admin/company-branches/${publicId}`);
+  }
   GetPayperiod(page: number, size: number): Observable<any> {
     return this.http.get(this.url + `admin/pay-periods?page=${page}&size=${size}`);
   }
