@@ -23,32 +23,23 @@
             <th class="px-3 py-2">Actions</th>
           </tr>
         </thead>
-
         <tbody>
           <tr
-            *ngFor="let user of paginatedDepartmentList; let i = index"
+            *ngFor="let dep of paginatedDepartmentList; let i = index"
             class="bg-[#1e293b] hover:bg-[#27354a] rounded-lg"
           >
             <td class="px-3 py-3 font-medium">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
-            <td class="px-3 py-3 font-medium">{{ user.firstName }}</td>
-            <td class="px-3 py-3 font-medium">{{ user.lastName }}</td>
-            <td class="px-3 py-3 text-gray-400">{{ user.email }}</td>
+            <td class="px-3 py-3 font-medium">{{ dep.code }}</td>
+            <td class="px-3 py-3 font-medium">{{ dep.name }}</td>
+
             <td class="px-3 py-3 text-gray-400">
               <div ngbDropdown class="d-inline-block">
-                <!-- <button type="button" class="btn  p-0" ngbDropdownToggle> -->
                 <i
-                  ngbDropdownToggle
-                  class="fa-solid fa-ellipsis-vertical"
-                  style="color: var(--white-color-1); font-size: 18px; cursor: pointer"
+                  class="fa-solid fa-pen-to-square"
+                  style="color: #4ade80; cursor: pointer"
+                  title="Edit Department"
+                  [routerLink]="['/panel/forms/department', dep.publicId]"
                 ></i>
-                <!-- </button> -->
-                <div ngbDropdownMenu class="dropdown-menu">
-                  <button ngbDropdownItem routerLink="/panel/permissions/view-user-permissions">
-                    view permissions
-                  </button>
-                  <button ngbDropdownItem>Delete Department</button>
-                  <button ngbDropdownItem>View Department</button>
-                </div>
               </div>
             </td>
           </tr>

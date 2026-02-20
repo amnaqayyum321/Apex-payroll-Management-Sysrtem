@@ -2,7 +2,9 @@
   <div class="user-card">
     <!-- Header -->
     <div class="card-header">
-      <h3>Create Department</h3>
+      <h3>
+        <h3>{{ isEditMode ? 'Update Department' : 'Create Department' }}</h3>
+      </h3>
     </div>
     <div class="header-divider"></div>
 
@@ -13,10 +15,10 @@
           <label class="form-label">Code</label>
           <input
             type="text"
-            placeholder="Enter First Name..."
-            [(ngModel)]="firstName"
+            placeholder="Enter Code..."
+            [(ngModel)]="Code"
             class="form-control"
-            name="firstName"
+            name="Code"
           />
         </div>
         <div class="col-md-6">
@@ -25,8 +27,8 @@
             type="text"
             class="form-control"
             placeholder="Enter Name..."
-            [(ngModel)]="lastName"
-            name="lastName"
+            [(ngModel)]="Name"
+            name="Name"
           />
         </div>
       </div>
@@ -34,18 +36,24 @@
         <div class="col-12">
           <label class="form-label">Description </label>
           <textarea
-            type="email"
+            type="text"
             class="form-control"
             placeholder="Enter Description..."
-            [(ngModel)]="email"
-            name="email"
+            [(ngModel)]="description"
+            name="description"
           ></textarea>
         </div>
       </div>
       <!-- Footer buttons -->
       <div class="form-actions">
         <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
-        <button type="submit" class="submit-btn" (click)="createUser()">Create</button>
+        <button
+          type="submit"
+          class="submit-btn"
+          (click)="isEditMode ? updateDepartment() : createDepartment()"
+        >
+          {{ isEditMode ? 'Update' : 'Create' }}
+        </button>
       </div>
     </form>
   </div>

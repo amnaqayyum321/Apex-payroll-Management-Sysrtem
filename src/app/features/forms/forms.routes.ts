@@ -40,6 +40,10 @@ export const routes: Routes = [
     component: Department,
   },
   {
+    path: 'department/:id',
+    component: Department,
+  },
+  {
     path: 'designation',
     component: Designation,
   },

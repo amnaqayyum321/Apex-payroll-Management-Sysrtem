@@ -85,6 +85,24 @@ input {
     background: var(--primary-color);
   }
 }
+textarea {
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  font-size: 14px;
+  background: var(--second-primary-color);
+  outline: none;
+  color: var(--text-primary);   /* 👈 typed text color */
+
+
+  &::placeholder {
+    color: #98a2b3;
+  }
+
+  &:focus {
+    border-color: var(--border-color);
+    background: var(--primary-color);
+  }
+}
 
 /* Dropdown */
 .custom-dropdown {

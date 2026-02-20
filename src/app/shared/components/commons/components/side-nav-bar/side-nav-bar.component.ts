@@ -107,7 +107,6 @@ export class SideNavBarComponent implements OnInit {
             },
           ],
         },
-       
       ],
     },
     {
@@ -124,7 +123,7 @@ export class SideNavBarComponent implements OnInit {
           children: [
             {
               label: 'Department',
-              route: 'forms/department',
+              route: 'forms/view-department-list',
               icon: 'fa-solid fa-building',
               isVisible: true,
             },
@@ -159,14 +158,13 @@ export class SideNavBarComponent implements OnInit {
               isVisible: true,
               icon: 'fa-solid fa-project-diagram',
             },
-         
+
             {
               label: 'Loan Types',
               route: 'forms/loan-types',
               isVisible: true,
               icon: 'fa-solid fa-money-bill-wave',
-            }
-          
+            },
           ],
         },
         {
@@ -175,7 +173,7 @@ export class SideNavBarComponent implements OnInit {
           isVisible: true,
           collapsed: true,
           children: [
-               {
+            {
               label: 'Leaves',
               route: 'forms/leaves',
               isVisible: true,
@@ -199,10 +197,10 @@ export class SideNavBarComponent implements OnInit {
               route: 'forms/shifts',
               icon: 'fa-solid fa-clock',
               isVisible: true,
-            }
+            },
           ],
         },
-         {
+        {
           label: ' Employees-Master-Data',
           icon: 'fa-solid fa-users',
           isVisible: true,
@@ -213,14 +211,12 @@ export class SideNavBarComponent implements OnInit {
               route: 'employees-master-data/view-all-employees',
               icon: 'fa-solid fa-user-tie',
               isVisible: true,
-            }
-            
+            },
           ],
         },
-     
       ],
     },
-  
+
     {
       label: 'Recruitment',
       icon: 'fa-solid fa-user-tie',

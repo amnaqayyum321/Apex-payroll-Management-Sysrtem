@@ -1,56 +1,60 @@
 <div class="user-form-wrapper">
   <div class="user-card">
-
     <!-- Header -->
     <div class="card-header">
-      <h3>Create Designation</h3>
-
+      <h3>{{ isEditMode ? 'Update Designation ' : 'Create Designation' }}</h3>
     </div>
     <div class="header-divider"></div>
 
     <form class="user-form">
-
       <!-- ROW 1 -->
-      <div class="form-grid">
-        <div class="form-group">
-          <label>Code</label>
-          <input type="text" placeholder="Enter Code..." [(ngModel)]="code" name="code" />
-        </div>
-
-        <div class="form-group">
-          <label>Name</label>
-          <input type="text" placeholder="Enter Name..." [(ngModel)]="name" name="name" />
-        </div>
-      
-
-       
-
-        
-        
-
-        <div class="form-group">
-          <label >Description</label>
+      <div class="row">
+        <div class="col-md-6">
+          <label class="form-label">Code</label>
           <input
             type="text"
-            class="form-input"
+            class="form-control"
+            placeholder="Enter Code..."
+            [(ngModel)]="code"
+            name="code"
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter Name..."
+            [(ngModel)]="name"
+            name="name"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <label class="form-label">Description</label>
+          <textarea
+            type="text"
+            class="form-control"
             [(ngModel)]="description"
             name="description"
             placeholder="Enter description"
-          />
+          ></textarea>
+        </div>
       </div>
 
-
+      <!-- Footer buttons -->
+      <div class="form-actions">
+        <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
+        <button
+          type="submit"
+          class="submit-btn"
+          (click)="isEditMode ? updateDesignation() : createDesignation()"
+        >
+          {{ isEditMode ? 'Update' : 'Create' }}
+        </button>
+      </div>
+    </form>
   </div>
-
-<!-- Footer buttons -->
-<div class="form-actions">
-  <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
-<button type="submit"
-        class="submit-btn"
-        (click)="isEditMode ? updateDesignation() : createDesignation()">
-  {{ isEditMode ? 'Update' : 'Create' }}
-</button></div>
-
-</form>
-</div>
 </div>

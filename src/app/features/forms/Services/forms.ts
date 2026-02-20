@@ -15,38 +15,44 @@ export class FormsService {
   CreatenewDesignation(data: any): Observable<any> {
     return this.http.post(this.url + 'admin/designations', data);
   }
-   getAllDesignations(page: number, size: number): Observable<any> {
+  getAllDesignations(page: number, size: number): Observable<any> {
     return this.http.get(this.url + `admin/designations?page=${page}&size=${size}`);
   }
 
   // Update Designation
-updateDesignation(publicId: string, data: any): Observable<any> {
-  return this.http.put(this.url + `admin/designations/${publicId}`, data);
-}
+  updateDesignation(publicId: string, data: any): Observable<any> {
+    return this.http.put(this.url + `admin/designations/${publicId}`, data);
+  }
 
-// Soft Delete
-deleteDesignation(publicId: string): Observable<any> {
-  return this.http.delete(this.url + `admin/designations/${publicId}`);
-}
+  // Soft Delete
+  deleteDesignation(publicId: string): Observable<any> {
+    return this.http.delete(this.url + `admin/designations/${publicId}`);
+  }
 
-// Toggle Active
-toggleDesignationActive(publicId: string, active: boolean): Observable<any> {
-  return this.http.patch(
-    this.url + `admin/designations/${publicId}/active`,
-    { active }
-  );
-}
+  // Toggle Active
+  toggleDesignationActive(publicId: string, active: boolean): Observable<any> {
+    return this.http.patch(this.url + `admin/designations/${publicId}/active`, { active });
+  }
 
-// Restore
-restoreDesignation(publicId: string): Observable<any> {
-  return this.http.patch(
-    this.url + `admin/designations/${publicId}/restore`,
-    {}
-  );
-}
+  // Restore
+  restoreDesignation(publicId: string): Observable<any> {
+    return this.http.patch(this.url + `admin/designations/${publicId}/restore`, {});
+  }
 
-getDesignationById(publicId: string): Observable<any> {
-  return this.http.get(this.url + `admin/designations/${publicId}`);
-}
+  getDesignationById(publicId: string): Observable<any> {
+    return this.http.get(this.url + `admin/designations/${publicId}`);
+  }
 
+  GetDepartment(page: number, size: number): Observable<any> {
+    return this.http.get(this.url + `admin/departments?page=${page}&size=${size}`);
+  }
+  CreateDepartment(data: any): Observable<any> {
+    return this.http.post(this.url + 'admin/departments', data);
+  }
+  UpdateDepartment(PublicId: string, data: any): Observable<any> {
+    return this.http.put(this.url + `admin/departments/${PublicId}`, data);
+  }
+  getDepartementById(publicId: string): Observable<any> {
+    return this.http.get(this.url + `admin/departments/${publicId}`);
+  }
 }
