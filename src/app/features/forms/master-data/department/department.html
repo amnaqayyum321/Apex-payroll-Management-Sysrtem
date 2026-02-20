@@ -1,1 +1,52 @@
-<p>department works!</p>
+<div class="user-form-wrapper">
+  <div class="user-card">
+    <!-- Header -->
+    <div class="card-header">
+      <h3>Create Department</h3>
+    </div>
+    <div class="header-divider"></div>
+
+    <form class="user-form">
+      <!-- ROW 1 -->
+      <div class="row">
+        <div class="col-md-6">
+          <label class="form-label">Code</label>
+          <input
+            type="text"
+            placeholder="Enter First Name..."
+            [(ngModel)]="firstName"
+            class="form-control"
+            name="firstName"
+          />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter Name..."
+            [(ngModel)]="lastName"
+            name="lastName"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <label class="form-label">Description </label>
+          <textarea
+            type="email"
+            class="form-control"
+            placeholder="Enter Description..."
+            [(ngModel)]="email"
+            name="email"
+          ></textarea>
+        </div>
+      </div>
+      <!-- Footer buttons -->
+      <div class="form-actions">
+        <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
+        <button type="submit" class="submit-btn" (click)="createUser()">Create</button>
+      </div>
+    </form>
+  </div>
+</div>

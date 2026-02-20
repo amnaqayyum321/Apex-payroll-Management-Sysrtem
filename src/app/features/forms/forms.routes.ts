@@ -11,7 +11,11 @@ import { LoanTypes } from './master-data/loan-types/loan-types';
 import { PayPeriod } from './master-data/pay-period/pay-period';
 import { Projects } from './master-data/projects/projects';
 import { WorkSchedule } from './master-data/work-schedule/work-schedule';
+<<<<<<< Updated upstream
 import { ViewDesignations } from './master-data/view-designations/view-designations';
+=======
+import { ViewDepartmentList } from './master-data/View-Department/view-department-list/view-department-list';
+>>>>>>> Stashed changes
 
 export const routes: Routes = [
   {
@@ -38,26 +42,27 @@ export const routes: Routes = [
     path: 'department',
     component: Department,
   },
-    {
+  {
     path: 'designation',
     component: Designation,
   },
-    {
+  {
     path: 'leaves',
     component: Leaves,
   },
-    {
+  {
     path: 'loan-types',
     component: LoanTypes,
   },
-    {
+  {
     path: 'pay-period',
     component: PayPeriod,
   },
-    {
+  {
     path: 'projects',
     component: Projects,
   },
+<<<<<<< Updated upstream
 {path: 'work-schedule',
     component: WorkSchedule,
 }  ,
@@ -74,4 +79,8 @@ export const routes: Routes = [
   
   
 
+=======
+  { path: 'work-schedule', component: WorkSchedule },
+  { path: 'view-department-list', component: ViewDepartmentList },
+>>>>>>> Stashed changes
 ];
