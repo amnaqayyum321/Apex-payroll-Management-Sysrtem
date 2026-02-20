@@ -12,8 +12,8 @@ import { PayPeriod } from './master-data/pay-period/pay-period';
 import { Projects } from './master-data/projects/projects';
 import { WorkSchedule } from './master-data/work-schedule/work-schedule';
 import { ViewDesignations } from './master-data/view-designations/view-designations';
-import { ViewDepartmentList } from './master-data/View-Department/view-department-list/view-department-list';
-
+import { ViewDepartmentList } from './master-data/View-Department/view-department-list';
+import { ViewPayPeriod } from './master-data/view-Pay-period-List/view-pay-period';
 export const routes: Routes = [
   {
     path: 'leave-application',
@@ -58,6 +58,10 @@ export const routes: Routes = [
   {
     path: 'pay-period',
     component: PayPeriod,
+  },
+  {
+    path: 'view-Pay-period-List',
+    component: ViewPayPeriod,
   },
   {
     path: 'projects',

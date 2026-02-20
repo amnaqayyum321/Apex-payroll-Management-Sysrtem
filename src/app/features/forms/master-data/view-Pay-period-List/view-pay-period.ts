@@ -1,20 +1,19 @@
 import { Component } from '@angular/core';
-import { UsersAndRolesService } from '../../../../Users-And-Roles/Services/user-roles';
+import { FormsService } from '../../Services/forms';
 import { ToastrService } from 'ngx-toastr';
-import { LoaderService } from '../../../../../core/services/management-services/loader.service';
+import { LoaderService } from '../../../../core/services/management-services/loader.service';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
-import { FormsService } from '../../../Services/forms';
 
 @Component({
-  selector: 'app-view-department-list',
-  imports: [CommonModule, FormsModule, RouterModule],
-  templateUrl: './view-department-list.html',
-  styleUrl: './view-department-list.scss',
+  selector: 'app-pay-period',
+  imports: [RouterModule, CommonModule, FormsModule],
+  templateUrl: './view-pay-period.html',
+  styleUrl: './view-pay-period.scss',
 })
-export class ViewDepartmentList {
-  DepartmentList: any[] = [];
+export class ViewPayPeriod {
+  PayPeriodtList: any[] = [];
   totalItems: number = 0;
   totalPagesCount: number = 0;
 
@@ -26,7 +25,7 @@ export class ViewDepartmentList {
 
   currentPage = 1;
   itemsPerPage = 7;
-  paginatedDepartmentList: any[] = [];
+  paginatedPayPeriodtList: any[] = [];
 
   get totalPages() {
     return this.totalPagesCount || Math.ceil(this.totalItems / this.itemsPerPage);
@@ -36,21 +35,21 @@ export class ViewDepartmentList {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
   ngOnInit() {
-    this.loadDepartment();
+    this.loadPayPeriod();
   }
-  loadDepartment() {
+  loadPayPeriod() {
     debugger;
     this.loader.show();
     const backendPage = this.currentPage - 1;
-    this.FormSv.GetDepartment(backendPage, this.itemsPerPage).subscribe({
+    this.FormSv.GetPayperiod(backendPage, this.itemsPerPage).subscribe({
       next: (response: any) => {
         this.loader.hide();
-        this.DepartmentList = response.data;
-        console.log('Department list', this.DepartmentList);
+        this.PayPeriodtList = response.data;
+        console.log('PayPeriodt list', this.PayPeriodtList);
         this.totalItems = response.paginator.totalItems;
         this.totalPagesCount = response.paginator.totalPages;
         this.currentPage = response.paginator.currentPage + 1; // Backend 0-indexed
-        this.paginatedDepartmentList = this.DepartmentList;
+        this.paginatedPayPeriodtList = this.PayPeriodtList;
       },
       error: (error) => {
         this.loader.hide();
@@ -62,6 +61,6 @@ export class ViewDepartmentList {
   changePage(page: number) {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
-    this.loadDepartment();
+    this.loadPayPeriod();
   }
 }

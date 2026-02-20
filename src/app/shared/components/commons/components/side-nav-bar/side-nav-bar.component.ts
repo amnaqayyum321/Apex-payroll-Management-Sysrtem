@@ -142,7 +142,7 @@ export class SideNavBarComponent implements OnInit {
             },
             {
               label: 'Pay Period',
-              route: 'forms/pay-period',
+              route: 'forms/view-Pay-period-List',
               isVisible: true,
               icon: 'fa-solid fa-calendar-days',
             },

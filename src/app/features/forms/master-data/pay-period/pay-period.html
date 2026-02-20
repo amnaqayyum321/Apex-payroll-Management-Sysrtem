@@ -1,1 +1,100 @@
-<p>pay-period works!</p>
+<div class="user-form-wrapper">
+  <div class="user-card">
+    <!-- Header -->
+    <div class="card-header">
+      <h3>
+        <h3>{{ isEditMode ? 'Update PayPeriod' : 'Create PayPeriod' }}</h3>
+      </h3>
+    </div>
+    <div class="header-divider"></div>
+
+    <form class="user-form">
+      <!-- ROW 1 -->
+      <div class="row">
+        <div class="col-md-6">
+          <label class="form-label">Code</label>
+          <input
+            type="text"
+            placeholder="Enter Code..."
+            [(ngModel)]="Code"
+            class="form-control"
+            name="Code"
+          />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter Name..."
+            [(ngModel)]="Name"
+            name="Name"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <label class="form-label">Start Date</label>
+          <div class="input-group">
+            <!-- ✅ input-group wrap karo -->
+            <input
+              type="text"
+              placeholder="yyyy-mm-dd"
+              class="form-control"
+              ngbDatepicker
+              #sd="ngbDatepicker"
+              [(ngModel)]="startDate"
+              name="startDate"
+            />
+            <button class="btn btn-outline-secondary" type="button" (click)="sd.toggle()">
+              <i class="fa-solid fa-calendar-days"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <label class="form-label">End Date</label>
+          <div class="input-group">
+            <!-- ✅ input-group wrap karo -->
+            <input
+              type="text"
+              placeholder="yyyy-mm-dd"
+              name="endDate"
+              ngbDatepicker
+              #ed="ngbDatepicker"
+              class="form-control"
+              [(ngModel)]="endDate"
+            />
+            <button class="btn btn-outline-secondary" type="button" (click)="ed.toggle()">
+              <i class="fa-solid fa-calendar-days"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <label for="remarks" class="form-label">Remarks</label>
+          <textarea
+            name="remarks"
+            id="remarks"
+            class="form-control"
+            rows="3"
+            [(ngModel)]="remarks"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Footer buttons -->
+      <div class="form-actions">
+        <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
+        <button
+          type="submit"
+          class="submit-btn"
+          (click)="isEditMode ? updateDepartment() : createPayPeriod()"
+        >
+          {{ isEditMode ? 'Update' : 'Create' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

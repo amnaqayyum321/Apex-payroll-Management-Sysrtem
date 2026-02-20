@@ -55,4 +55,16 @@ export class FormsService {
   getDepartementById(publicId: string): Observable<any> {
     return this.http.get(this.url + `admin/departments/${publicId}`);
   }
+  GetPayperiod(page: number, size: number): Observable<any> {
+    return this.http.get(this.url + `admin/pay-periods?page=${page}&size=${size}`);
+  }
+  CreatePayperiod(data: any): Observable<any> {
+    return this.http.post(this.url + 'admin/pay-periods', data);
+  }
+  UpdatePayperiod(PublicId: string, data: any): Observable<any> {
+    return this.http.put(this.url + `admin/pay-periods/${PublicId}`, data);
+  }
+  getPayperiodbyId(publicId: string): Observable<any> {
+    return this.http.get(this.url + `admin/pay-periods/${publicId}`);
+  }
 }
