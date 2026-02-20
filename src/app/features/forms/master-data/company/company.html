@@ -1,1 +1,91 @@
-<p>company works!</p>
+<div class="user-form-wrapper">
+  <div class="user-card">
+    <!-- Header -->
+    <div class="card-header">
+      <h3>
+        <h3>{{ isEditMode ? 'Update Company Branch' : 'Create Company Branch' }}</h3>
+      </h3>
+    </div>
+    <div class="header-divider"></div>
+
+    <form class="user-form">
+      <!-- ROW 1 -->
+      <div class="row">
+        <div class="col-md-6">
+          <label class="form-label">Code</label>
+          <input
+            type="text"
+            placeholder="Enter Code..."
+            [(ngModel)]="code"
+            class="form-control"
+            name="Code"
+          />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter Name..."
+            [(ngModel)]="name"
+            name="Name"
+          />
+        </div>
+
+         <div class="col-md-6">
+          <label class="form-label">Code</label>
+          <input
+            type="text"
+            placeholder="Enter Internet Address..."
+            [(ngModel)]="internetAddress"
+            class="form-control"
+            name="InternetAddress"
+          />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Email Address</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter Email Address..."
+            [(ngModel)]="emailAddress"
+            name="EmailAddress"
+          />
+        </div>
+          <div class="col-md-6">
+          <label class="form-label">Telephone</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter Telephone..."
+            [(ngModel)]="telephone"
+            name="Telephone"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <label class="form-label">Description </label>
+          <textarea
+            type="text"
+            class="form-control"
+            placeholder="Enter Description..."
+            [(ngModel)]="description"
+            name="description"
+          ></textarea>
+        </div>
+      </div>
+      <!-- Footer buttons -->
+      <div class="form-actions">
+        <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
+        <button
+          type="submit"
+          class="submit-btn"
+          (click)="isEditMode ? updateCompanyBranch() : createCompanyBranch()"
+        >
+          {{ isEditMode ? 'Update' : 'Create' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
