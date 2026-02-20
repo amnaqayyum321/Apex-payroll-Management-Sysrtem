@@ -130,7 +130,7 @@ export class SideNavBarComponent implements OnInit {
             },
             {
               label: 'Designation',
-              route: 'forms/designation',
+              route: 'forms/view-designations',
               icon: 'fa-solid fa-id-badge',
               isVisible: true,
             },

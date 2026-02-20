@@ -11,6 +11,7 @@ import { LoanTypes } from './master-data/loan-types/loan-types';
 import { PayPeriod } from './master-data/pay-period/pay-period';
 import { Projects } from './master-data/projects/projects';
 import { WorkSchedule } from './master-data/work-schedule/work-schedule';
+import { ViewDesignations } from './master-data/view-designations/view-designations';
 
 export const routes: Routes = [
   {
@@ -59,7 +60,15 @@ export const routes: Routes = [
   },
 {path: 'work-schedule',
     component: WorkSchedule,
-}  
+}  ,
+{path: 'view-designations',
+  component: ViewDesignations,
+},
+
+{
+  path: 'designation/:id',
+  component: Designation,
+}
   
   
   
