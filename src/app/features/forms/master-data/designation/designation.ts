@@ -14,7 +14,6 @@ import { FormsModule } from '@angular/forms';
 })
 export class Designation {
 
-  email: string = '';
     code: string = '';
     name: string = '';
     description: string = '';
@@ -63,7 +62,6 @@ isEditMode = false;
         return;
       }
       let payload = {
-        email: this.email,
         code: this.code,
         name: this.name,
         description: this.description,
