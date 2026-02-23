@@ -9,6 +9,12 @@
     <div class="header-divider"></div>
 
     <form class="user-form">
+      <div class="row">
+        <div class="col-12 d-flex justify-content-end align-items-center gap-2">
+          <label class="form-label mb-0">Active</label>
+          <input name="status" [(ngModel)]="status" type="checkbox" />
+        </div>
+      </div>
       <!-- ROW 1 -->
       <div class="row">
         <div class="col-md-6">
@@ -36,38 +42,14 @@
         <div class="col-6">
           <label class="form-label">Start Date</label>
           <div class="input-group">
-            <!-- ✅ input-group wrap karo -->
-            <input
-              type="text"
-              placeholder="yyyy-mm-dd"
-              class="form-control"
-              ngbDatepicker
-              #sd="ngbDatepicker"
-              [(ngModel)]="startDate"
-              name="startDate"
-            />
-            <button class="btn btn-outline-secondary" type="button" (click)="sd.toggle()">
-              <i class="fa-solid fa-calendar-days"></i>
-            </button>
+            <input type="date" class="form-control" [(ngModel)]="startDate" name="startDate" />
           </div>
         </div>
 
         <div class="col-6">
           <label class="form-label">End Date</label>
           <div class="input-group">
-            <!-- ✅ input-group wrap karo -->
-            <input
-              type="text"
-              placeholder="yyyy-mm-dd"
-              name="endDate"
-              ngbDatepicker
-              #ed="ngbDatepicker"
-              class="form-control"
-              [(ngModel)]="endDate"
-            />
-            <button class="btn btn-outline-secondary" type="button" (click)="ed.toggle()">
-              <i class="fa-solid fa-calendar-days"></i>
-            </button>
+            <input type="date" class="form-control" [(ngModel)]="endDate" name="endDate" />
           </div>
         </div>
       </div>

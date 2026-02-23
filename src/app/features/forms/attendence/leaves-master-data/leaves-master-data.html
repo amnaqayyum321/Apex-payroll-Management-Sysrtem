@@ -1,1 +1,127 @@
-<p>leaves-master-data works!</p>
+<div class="user-form-wrapper">
+  <div class="user-card">
+    <!-- Header -->
+    <div class="card-header">
+      <h3>{{ isEditMode ? 'Update Leaves Master Data' : 'Create New Leaves Master Data' }}</h3>
+      <p>
+        {{
+          isEditMode
+            ? 'Update the leave master data details'
+            : 'Fill in the details to create new leaves master data'
+        }}
+      </p>
+    </div>
+    <div class="header-divider"></div>
+
+    <form class="user-form">
+      <div class="row">
+        <div class="col-12 d-flex justify-content-end align-items-center gap-2">
+          <label class="form-label mb-0">Active</label>
+          <input name="active" [(ngModel)]="active" type="checkbox" />
+        </div>
+      </div>
+      <!-- ROW 1: Code & Leave Name -->
+      <div class="row">
+        <div class="col-md-6">
+          <label class="form-label">Code</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter code"
+            [(ngModel)]="code"
+            name="code"
+          />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Leave Name</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter leave name"
+            [(ngModel)]="name"
+            name="name"
+          />
+        </div>
+      </div>
+
+      <!-- ROW 2: Total Leaves & Max Leaves in Month -->
+      <div class="row">
+        <div class="col-md-6">
+          <label class="form-label">Total Leaves</label>
+          <input
+            type="number"
+            class="form-control"
+            placeholder="Enter total leaves"
+            [(ngModel)]="totalLeavesPerYear"
+            name="totalLeavesPerYear"
+            min="0"
+          />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Max Leaves in Month</label>
+          <input
+            type="number"
+            class="form-control"
+            placeholder="Enter max leaves in month"
+            [(ngModel)]="maxLeaveApplyInMonth"
+            name="maxLeaveApplyInMonth"
+            min="0"
+          />
+        </div>
+      </div>
+
+      <!-- ROW 3: Checkboxes -->
+      <div class="row">
+        <div class="col-md-4">
+          <div class="checkbox-wrapper">
+            <input
+              type="checkbox"
+              id="isCarryForward"
+              [(ngModel)]="isCarryForward"
+              name="isCarryForward"
+            />
+            <label for="carryForward">Carry Forward</label>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="checkbox-wrapper">
+            <input
+              type="checkbox"
+              id="isEncashable"
+              [(ngModel)]="isEncashable"
+              name="isEncashable"
+            />
+            <label for="encashable">Encashable</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROW 4: Remarks -->
+      <div class="row">
+        <div class="col-12">
+          <label class="form-label">Remarks</label>
+          <textarea
+            class="form-control"
+            placeholder="Enter your feedback and remarks here..."
+            [(ngModel)]="remarks"
+            name="remarks"
+            rows="4"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Footer buttons -->
+      <div class="form-actions">
+        <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
+        <button
+          type="submit"
+          class="submit-btn"
+          [disabled]="disabled"
+          (click)="isEditMode ? updateLeave() : createLeave()"
+        >
+          {{ isEditMode ? 'Update Leaves Master Data' : 'Create Leaves Master Data' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

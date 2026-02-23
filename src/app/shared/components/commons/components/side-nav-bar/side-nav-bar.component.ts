@@ -154,7 +154,7 @@ export class SideNavBarComponent implements OnInit {
             },
             {
               label: 'Projects',
-              route: 'forms/projects',
+              route: 'forms/view-projects',
               isVisible: true,
               icon: 'fa-solid fa-project-diagram',
             },
@@ -187,7 +187,7 @@ export class SideNavBarComponent implements OnInit {
             },
             {
               label: 'Leaves Master Data',
-              route: 'forms/leaves-master-data',
+              route: 'forms/view-leaves-master-list',
               icon: 'fa-solid fa-file-alt',
               isVisible: true,
             },

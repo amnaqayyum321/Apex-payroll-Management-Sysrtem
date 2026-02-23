@@ -15,6 +15,8 @@ import { ViewDesignations } from './master-data/view-designations/view-designati
 import { ViewDepartmentList } from './master-data/View-Department/view-department-list';
 import { ViewPayPeriod } from './master-data/view-Pay-period-List/view-pay-period';
 import { ViewCompanyBranches } from './master-data/view-company-branches/view-company-branches';
+import { ViewProjectList } from './master-data/view-project-list/view-project-list';
+import { ViewLeaveTypeList } from './attendence/view-leave-type-list/view-leave-type-list';
 
 export const routes: Routes = [
   {
@@ -25,6 +27,15 @@ export const routes: Routes = [
     path: 'leaves-master-data',
     component: LeavesMasterData,
   },
+  {
+    path: 'leaves-master-data/:id',
+    component: LeavesMasterData,
+  },
+  {
+    path: 'view-leaves-master-list',
+    component: ViewLeaveTypeList,
+  },
+
   {
     path: 'shifts',
     component: Shifts,
@@ -66,8 +77,20 @@ export const routes: Routes = [
     component: ViewPayPeriod,
   },
   {
+    path: 'pay-period/:id',
+    component: PayPeriod,
+  },
+  {
     path: 'projects',
     component: Projects,
+  },
+  {
+    path: 'projects/:id',
+    component: Projects,
+  },
+  {
+    path: 'view-projects',
+    component: ViewProjectList,
   },
   { path: 'work-schedule', component: WorkSchedule },
   { path: 'view-designations', component: ViewDesignations },

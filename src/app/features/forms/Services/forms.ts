@@ -43,8 +43,8 @@ export class FormsService {
     return this.http.get(this.url + `admin/designations/${publicId}`);
   }
 
-  GetDepartment(page: number, size: number): Observable<any> {
-    return this.http.get(this.url + `admin/departments?page=${page}&size=${size}`);
+  GetDepartment(page: number, size: number, filter: string = 'ALL'): Observable<any> {
+    return this.http.get(this.url + `admin/departments?filter=${filter}&page=${page}&size=${size}`);
   }
   CreateDepartment(data: any): Observable<any> {
     return this.http.post(this.url + 'admin/departments', data);
@@ -68,9 +68,10 @@ export class FormsService {
   getCompanyBranchById(publicId: string): Observable<any> {
     return this.http.get(this.url + `admin/company-branches/${publicId}`);
   }
-  GetPayperiod(page: number, size: number): Observable<any> {
-    return this.http.get(this.url + `admin/pay-periods?page=${page}&size=${size}`);
+  GetPayperiod(page: number, size: number, filter: string = 'ALL'): Observable<any> {
+    return this.http.get(this.url + `admin/pay-periods?filter=${filter}&page=${page}&size=${size}`);
   }
+
   CreatePayperiod(data: any): Observable<any> {
     return this.http.post(this.url + 'admin/pay-periods', data);
   }
@@ -79,5 +80,34 @@ export class FormsService {
   }
   getPayperiodbyId(publicId: string): Observable<any> {
     return this.http.get(this.url + `admin/pay-periods/${publicId}`);
+  }
+  GetEmployees(page: number, size: number, filter: string = 'ALL'): Observable<any> {
+    return this.http.get(this.url + `employees/lookup?filter=${filter}&page=${page}&size=${size}`);
+  }
+  GetProject(page: number, size: number, filter: string = 'ALL'): Observable<any> {
+    return this.http.get(this.url + `admin/projects?filter=${filter}&page=${page}&size=${size}`);
+  }
+
+  CreateProject(data: any): Observable<any> {
+    return this.http.post(this.url + 'admin/projects', data);
+  }
+  UpdateProject(PublicId: string, data: any): Observable<any> {
+    return this.http.put(this.url + `admin/projects/${PublicId}`, data);
+  }
+  getProjectById(publicId: string): Observable<any> {
+    return this.http.get(this.url + `admin/projects/${publicId}`);
+  }
+  GetLeaveType(page: number, size: number, filter: string = 'ALL'): Observable<any> {
+    return this.http.get(this.url + `admin/leave-types?filter=${filter}&page=${page}&size=${size}`);
+  }
+
+  CreateLeaveType(data: any): Observable<any> {
+    return this.http.post(this.url + 'admin/leave-types', data);
+  }
+  UpdateLeaveType(PublicId: string, data: any): Observable<any> {
+    return this.http.put(this.url + `admin/leave-types/${PublicId}`, data);
+  }
+  getLeaveTypeById(publicId: string): Observable<any> {
+    return this.http.get(this.url + `admin/leave-types/${publicId}`);
   }
 }
