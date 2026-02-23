@@ -1,7 +1,6 @@
 import { Routes } from '@angular/router';
 import { LeaveApplication } from './attendence/leave-application/leave-application';
 import { LeavesMasterData } from './attendence/leaves-master-data/leaves-master-data';
-import { Shifts } from './attendence/shifts/shifts';
 import { Employees } from './employees-masterdata/employees/employees';
 import { Company } from './master-data/company/company';
 import { Department } from './master-data/department/department';
@@ -15,8 +14,9 @@ import { ViewDesignations } from './master-data/view-designations/view-designati
 import { ViewDepartmentList } from './master-data/View-Department/view-department-list';
 import { ViewPayPeriod } from './master-data/view-Pay-period-List/view-pay-period';
 import { ViewCompanyBranches } from './master-data/view-company-branches/view-company-branches';
-import { ViewProjectList } from './master-data/view-project-list/view-project-list';
-import { ViewLeaveTypeList } from './attendence/view-leave-type-list/view-leave-type-list';
+import { ViewShifts } from './attendence/view-shifts/view-shifts';
+import { Shift } from './attendence/shift/shift';
+import { ViewWorkSchedule } from './master-data/view-work-schedule/view-work-schedule';
 
 export const routes: Routes = [
   {
@@ -28,17 +28,8 @@ export const routes: Routes = [
     component: LeavesMasterData,
   },
   {
-    path: 'leaves-master-data/:id',
-    component: LeavesMasterData,
-  },
-  {
-    path: 'view-leaves-master-list',
-    component: ViewLeaveTypeList,
-  },
-
-  {
-    path: 'shifts',
-    component: Shifts,
+    path: 'shift',
+    component: Shift,
   },
   {
     path: 'employees',
@@ -99,8 +90,16 @@ export const routes: Routes = [
     path: 'designation/:id',
     component: Designation,
   },
+  {
+    path: 'company/:id',
+    component: Company,
+  },
 
   { path: 'work-schedule', component: WorkSchedule },
   { path: 'view-department-list', component: ViewDepartmentList },
   { path: 'view-company-branches', component: ViewCompanyBranches },
+  { path: 'view-shifts', component: ViewShifts },
+  { path: 'shift/:id', component: Shift },
+  { path: 'work-schedule/:id', component: WorkSchedule },
+  { path: 'view-work-schedule', component: ViewWorkSchedule },
 ];
