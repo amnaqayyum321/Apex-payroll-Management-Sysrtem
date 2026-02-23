@@ -45,11 +45,12 @@ export class ViewDepartmentList {
     this.FormSv.GetDepartment(backendPage, this.itemsPerPage).subscribe({
       next: (response: any) => {
         this.loader.hide();
+        console.log('Raw data sample:', response.data[0]);
         this.DepartmentList = response.data;
         console.log('Department list', this.DepartmentList);
         this.totalItems = response.paginator.totalItems;
         this.totalPagesCount = response.paginator.totalPages;
-        this.currentPage = response.paginator.currentPage + 1; // Backend 0-indexed
+        this.currentPage = response.paginator.currentPage + 1;
         this.paginatedDepartmentList = this.DepartmentList;
       },
       error: (error) => {

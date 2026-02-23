@@ -22,6 +22,7 @@ export class Department {
   pageSize: number = 100;
   publicId: string | null = null;
   isEditMode = false;
+  active: boolean = false;
   constructor(
     private loader: LoaderService,
     private FormSv: FormsService,
@@ -46,6 +47,7 @@ export class Department {
       code: this.Code,
       name: this.Name,
       description: this.description,
+      active: this.active,
     };
     this.loader.show();
     this.disabled = true;
@@ -72,20 +74,23 @@ export class Department {
     this.Code = '';
     this.Name = '';
     this.description = '';
-
+    this.active = true;
     this.disabled = false;
   }
   cancel() {
     this.router.navigate(['/panel/forms/view-department-list']);
   }
   loadSingleDepartment(publicId: string) {
+    debugger;
     this.loader.show();
     this.FormSv.getDepartementById(publicId!).subscribe({
       next: (res: any) => {
+        console.log('API response:', res.data);
         this.loader.hide();
         this.Code = res.data.code;
         this.Name = res.data.name;
         this.description = res.data.description;
+        this.active = res.data.isActive;
       },
       error: () => {
         this.loader.hide();
@@ -98,10 +103,9 @@ export class Department {
       code: this.Code,
       name: this.Name,
       description: this.description,
+      active: this.active ? true : false,
     };
-
     this.loader.show();
-
     this.FormSv.UpdateDepartment(this.publicId!, payload).subscribe({
       next: () => {
         this.loader.hide();
@@ -110,7 +114,9 @@ export class Department {
         setTimeout(() => {
           this.router.navigate(['/panel/forms/view-department-list']);
         }, 1500);
+        console.log('Active from API:', this.active);
       },
+
       error: () => {
         this.loader.hide();
         this.toastr.error('Department Update failed');
