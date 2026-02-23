@@ -148,7 +148,7 @@ export class SideNavBarComponent implements OnInit {
             },
             {
               label: 'Work Schedule',
-              route: 'forms/work-schedule',
+              route: 'forms/view-work-schedule',
               isVisible: true,
               icon: 'fa-solid fa-clock',
             },
@@ -194,7 +194,7 @@ export class SideNavBarComponent implements OnInit {
 
             {
               label: 'Shifts',
-              route: 'forms/shifts',
+              route: 'forms/view-shifts',
               icon: 'fa-solid fa-clock',
               isVisible: true,
             },

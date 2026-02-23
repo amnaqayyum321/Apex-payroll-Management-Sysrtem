@@ -81,7 +81,6 @@ export class Department {
     this.router.navigate(['/panel/forms/view-department-list']);
   }
   loadSingleDepartment(publicId: string) {
-    debugger;
     this.loader.show();
     this.FormSv.getDepartementById(publicId!).subscribe({
       next: (res: any) => {

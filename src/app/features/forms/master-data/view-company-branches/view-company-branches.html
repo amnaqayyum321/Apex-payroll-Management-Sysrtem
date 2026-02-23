@@ -9,7 +9,7 @@
     <div>
       <button class="create-btn" [routerLink]="['/panel/forms/company']">
         <i class="fa-solid fa-plus icon"></i>
-        Create Designation
+        Create Company Branch
       </button>
     </div>
     
@@ -22,7 +22,7 @@
             <th class="px-3 py-2">#</th>
             <th class="px-3 py-2"> Code</th>
             <th class="px-3 py-2"> Name</th>
-            <th class="px-3 py-2">Email Address</th>
+            <th class="px-3 py-2">Status</th>
             <th class="px-3 py-2">Actions</th>
           </tr>
         </thead>
@@ -35,14 +35,20 @@
             <td class="px-3 py-3 font-medium">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
             <td class="px-3 py-3 font-medium">{{ user.code }}</td>
             <td class="px-3 py-3 font-medium">{{ user.name }}</td>
-            <td class="px-3 py-3 font-medium">{{ user.emailAddress }}</td>
-
+            <td class="px-3 py-3 font-medium">
+  <span
+    class="status-badge"
+    [ngClass]="user.isActive ? 'active-badge' : 'inactive-badge'"
+  >
+    {{ user.isActive ? 'Active' : 'Inactive' }}
+  </span>
+</td>
             <td class="px-3 py-3 font-medium">
               <!-- Edit -->
               <i
                 class="fa-solid fa-pen-to-square"
                 style="color: #4ade80; cursor: pointer"
-                title="Edit Department"
+                title="Edit Company Branch"
                 [routerLink]="['/panel/forms/company', user.publicId]"
               ></i>
 

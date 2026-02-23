@@ -38,7 +38,6 @@ export class ViewPayPeriod {
     this.loadPayPeriod();
   }
   loadPayPeriod() {
-    debugger;
     this.loader.show();
     const backendPage = this.currentPage - 1;
     this.FormSv.GetPayperiod(backendPage, this.itemsPerPage).subscribe({

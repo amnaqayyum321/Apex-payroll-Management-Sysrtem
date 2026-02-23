@@ -11,8 +11,16 @@
     <form class="user-form">
       <div class="row">
         <div class="col-12 d-flex justify-content-end align-items-center gap-2">
-          <label class="form-label mb-0">Active</label>
-          <input name="active" [(ngModel)]="active" type="checkbox" />
+         <label class="checkbox-container">
+  Active
+  <input
+    type="checkbox"
+    class="custom-checkbox"
+    [(ngModel)]="active"
+    name="active"
+  />
+  <span class="checkmark"></span>
+</label>
         </div>
       </div>
       <!-- ROW 1 -->
