@@ -22,9 +22,11 @@ export class PayPeriod {
   pageSize: number = 100;
   publicId: string | null = null;
   isEditMode = false;
-  startDate: NgbDateStruct | null = null;
-  endDate: NgbDateStruct | null = null;
+  startDate: string | null = null;
+  endDate: string | null = null;
   remarks = '';
+  status: boolean = false;
+  current = new Date();
   constructor(
     private loader: LoaderService,
     private FormSv: FormsService,
@@ -37,7 +39,7 @@ export class PayPeriod {
     this.publicId = this.route.snapshot.paramMap.get('id');
     if (this.publicId) {
       this.isEditMode = true;
-      this.loadSingleDepartment(this.publicId);
+      this.loadSinglePayPeriod(this.publicId);
     }
   }
   createPayPeriod() {
@@ -48,50 +50,56 @@ export class PayPeriod {
     let payload = {
       code: this.Code,
       name: this.Name,
-      startDate: this.formatDate(this.startDate),
-      endDate: this.formatDate(this.endDate),
+      startDate: this.startDate,
+      endDate: this.endDate,
       remarks: this.remarks,
+      status: this.status ? 'ACTIVE' : 'INACTIVE',
     };
     console.log(payload);
     this.loader.show();
     this.disabled = true;
-    this.FormSv.CreateDepartment(payload).subscribe({
+    this.FormSv.CreatePayperiod(payload).subscribe({
       next: (res: any) => {
         this.loader.hide();
-        this.toastr.success('Department created successfully', 'Success');
-        this.resetDepartmentForm();
+        this.toastr.success('Payperiod created successfully', 'Success');
+        this.resetPayperiodForm();
         setTimeout(() => {
-          this.router.navigate(['/panel/forms/view-department-list']);
+          this.router.navigate(['/panel/forms/view-Pay-period-List']);
         }, 1500);
       },
       error: (error: any) => {
         this.loader.hide();
         this.disabled = false;
         this.toastr.error(
-          error.error.message || 'Failed to create Department. Please try again.',
+          error.error.message || 'Failed to create Payperiod. Please try again.',
           'Error',
         );
       },
     });
   }
-  resetDepartmentForm() {
+  resetPayperiodForm() {
     this.Code = '';
     this.Name = '';
     this.description = '';
-
+    this.status = false;
+    this.remarks = '';
     this.disabled = false;
   }
   cancel() {
     this.router.navigate(['/panel/forms/view-Pay-period-List']);
   }
-  loadSingleDepartment(publicId: string) {
+  loadSinglePayPeriod(publicId: string) {
     this.loader.show();
-    this.FormSv.getDepartementById(publicId!).subscribe({
+    this.FormSv.getPayperiodbyId(publicId!).subscribe({
       next: (res: any) => {
         this.loader.hide();
         this.Code = res.data.code;
         this.Name = res.data.name;
         this.description = res.data.description;
+        this.status = res.data.status?.toUpperCase() === 'ACTIVE';
+        this.remarks = res.data.remarks;
+        this.startDate = res.data.startDate;
+        this.endDate = res.data.endDate;
       },
       error: () => {
         this.loader.hide();
@@ -104,22 +112,26 @@ export class PayPeriod {
       code: this.Code,
       name: this.Name,
       description: this.description,
+      remarks: this.remarks,
+      status: this.status ? 'ACTIVE' : 'INACTIVE',
+      startDate: this.startDate,
+      endDate: this.endDate,
     };
 
     this.loader.show();
 
-    this.FormSv.UpdateDepartment(this.publicId!, payload).subscribe({
+    this.FormSv.UpdatePayperiod(this.publicId!, payload).subscribe({
       next: () => {
         this.loader.hide();
-        this.toastr.success('Department updated');
-        this.resetDepartmentForm();
+        this.toastr.success('PayPeriod updated');
+        this.resetPayperiodForm();
         setTimeout(() => {
-          this.router.navigate(['/panel/forms/view-department-list']);
+          this.router.navigate(['/panel/forms/view-Pay-period-List']);
         }, 1500);
       },
       error: () => {
         this.loader.hide();
-        this.toastr.error('Department Update failed');
+        this.toastr.error('PayPeriod Update failed');
       },
     });
   }
@@ -129,5 +141,14 @@ export class PayPeriod {
       2,
       '0',
     )}`;
+  }
+  parseDate(dateStr: string | null): NgbDateStruct | null {
+    if (!dateStr) return null;
+    const d = new Date(dateStr);
+    return {
+      year: d.getFullYear(),
+      month: d.getMonth() + 1,
+      day: d.getDate(),
+    };
   }
 }

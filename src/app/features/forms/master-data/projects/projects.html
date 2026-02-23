@@ -1,1 +1,88 @@
-<p>projects works!</p>
+<div class="user-form-wrapper">
+  <div class="user-card">
+    <div class="card-header">
+      <h3>{{ isEditMode ? 'Update Project' : 'Create Project' }}</h3>
+    </div>
+    <div class="header-divider"></div>
+    <form class="user-form">
+      <div class="row">
+        <div class="col-12 d-flex justify-content-end align-items-center gap-2">
+          <label class="form-label mb-0">Active</label>
+          <input name="status" [(ngModel)]="status" type="checkbox" />
+        </div>
+      </div>
+      <!-- ROW 1 -->
+      <div class="row">
+        <div class="col-md-6">
+          <label class="form-label">Code</label>
+          <input
+            type="text"
+            placeholder="Enter Code..."
+            [(ngModel)]="Code"
+            class="form-control"
+            name="Code"
+          />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter Name..."
+            [(ngModel)]="Name"
+            name="Name"
+          />
+        </div>
+      </div>
+      <!-- ROW 2 -->
+      <div class="row">
+        <!-- ✅ Manager Selection Type -->
+        <div class="col-md-6">
+          <label class="form-label">Manager Type</label>
+          <select
+            class="form-select"
+            [(ngModel)]="managerMode"
+            name="managerMode"
+            (ngModelChange)="onManagerTypeChange()"
+          >
+            <option value="SELF">Self</option>
+            <option value="SELECTED">Employee (Select manually)</option>
+          </select>
+        </div>
+        <div class="col-md-6" *ngIf="managerMode === 'SELECTED'">
+          <label class="form-label">Project Manager</label>
+          <select class="form-select" [(ngModel)]="managerPublicId" name="managerPublicId">
+            <option value="">-- Select Manager --</option>
+            <option *ngFor="let emp of employeeList" [value]="emp.publicId">
+              {{ emp.fullName }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <!-- ROW 3 -->
+      <div class="row">
+        <div class="col-md-12">
+          <label class="form-label">Description</label>
+          <textarea
+            class="form-control"
+            placeholder="Enter Description..."
+            [(ngModel)]="description"
+            name="description"
+          ></textarea>
+        </div>
+      </div>
+      <!-- Footer buttons -->
+      <div class="form-actions">
+        <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
+        <button
+          type="submit"
+          class="submit-btn"
+          (click)="isEditMode ? updateDepartment() : createDepartment()"
+        >
+          {{ isEditMode ? 'Update' : 'Create' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
