@@ -11,15 +11,15 @@ export class FormsService {
   constructor(private http: HttpClient) {
     this.url = environment.apiBaseUrl;
   }
-// designation
+  // designation
   CreatenewDesignation(data: any): Observable<any> {
     return this.http.post(this.url + 'admin/designations', data);
   }
- getAllDesignations(page: number, size: number, filter: string = 'ALL'): Observable<any> {
-  return this.http.get(
-    `${this.url}admin/designations?filter=${filter}&page=${page}&size=${size}`
-  );
-}
+  getAllDesignations(page: number, size: number, filter: string = 'ALL'): Observable<any> {
+    return this.http.get(
+      `${this.url}admin/designations?filter=${filter}&page=${page}&size=${size}`,
+    );
+  }
   updateDesignation(publicId: string, data: any): Observable<any> {
     return this.http.put(this.url + `admin/designations/${publicId}`, data);
   }
@@ -27,6 +27,8 @@ export class FormsService {
   getDesignationById(publicId: string): Observable<any> {
     return this.http.get(this.url + `admin/designations/${publicId}`);
   }
+
+  // Department
 
   // Department
 
@@ -45,10 +47,10 @@ export class FormsService {
 
   // Company Branches
   getAllComapnyBranches(page: number, size: number, filter: string = 'ALL'): Observable<any> {
-  return this.http.get(
-    `${this.url}admin/company-branches?filter=${filter}&page=${page}&size=${size}`
-  );
-}
+    return this.http.get(
+      `${this.url}admin/company-branches?filter=${filter}&page=${page}&size=${size}`,
+    );
+  }
   createCompanyBranch(data: any): Observable<any> {
     return this.http.post(this.url + 'admin/company-branches', data);
   }
@@ -58,10 +60,8 @@ export class FormsService {
   getCompanyBranchById(publicId: string): Observable<any> {
     return this.http.get(this.url + `admin/company-branches/${publicId}`);
   }
-
-  // Pay Period
-  GetPayperiod(page: number, size: number, filter: string = 'ALL'): Observable<any> {
-    return this.http.get(this.url + `admin/pay-periods?filter=${filter}&page=${page}&size=${size}`);
+  GetPayperiod(page: number, size: number): Observable<any> {
+    return this.http.get(this.url + `admin/pay-periods?page=${page}&size=${size}`);
   }
 
   CreatePayperiod(data: any): Observable<any> {

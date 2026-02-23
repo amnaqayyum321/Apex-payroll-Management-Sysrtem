@@ -39,8 +39,9 @@ export const routes: Routes = [
   },
 
   {
-    path: 'shifts',
-    component: Shifts,
+    
+    path: 'shift',
+    component: Shift,
   },
   {
     path: 'employees',
@@ -101,7 +102,7 @@ export const routes: Routes = [
     path: 'designation/:id',
     component: Designation,
   },
-    {
+  {
     path: 'company/:id',
     component: Company,
   },
@@ -109,9 +110,8 @@ export const routes: Routes = [
   { path: 'work-schedule', component: WorkSchedule },
   { path: 'view-department-list', component: ViewDepartmentList },
   { path: 'view-company-branches', component: ViewCompanyBranches },
-  {path : 'view-shifts', component: ViewShifts},
-  {path : 'shift/:id', component: Shift},
-  {path : 'work-schedule/:id', component: WorkSchedule  },
-{path : 'view-work-schedule', component: ViewWorkSchedule}
+  { path: 'view-shifts', component: ViewShifts },
+  { path: 'shift/:id', component: Shift },
+  { path: 'work-schedule/:id', component: WorkSchedule },
+  { path: 'view-work-schedule', component: ViewWorkSchedule },
 ];
-
