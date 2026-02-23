@@ -86,7 +86,6 @@ export class ViewPermissions {
     });
   }
   updateRolePermission() {
-    debugger;
     if (!this.roleCode || !this.roleName) {
       this.toastr.error('Role Code and Role Name are required');
     }

@@ -1,1 +1,148 @@
-<p>work-schedule works!</p>
+<div class="user-form-wrapper">
+    <div class="user-card">
+        <!-- Header -->
+        <div class="card-header">
+            <h3>{{ isEditMode ? 'Update Shift ' : 'Create Shift' }}</h3>
+        </div>
+        <div class="d-flex gap-2">
+            <button class="reset-btn" (click)="resetShiftForm()">
+                <i class="fa fa-refresh"></i> Reset
+            </button>
+        </div>
+        <div class="header-divider"></div>
+
+        <form class="user-form" (ngSubmit)="isEditMode ? updateWorkSchedule() : createWorkSchedule()">
+
+            <div class="row">
+                <div class="col-12 d-flex justify-content-end align-items-center gap-2">
+                    <label class="checkbox-container">
+  Active
+  <input
+    type="checkbox"
+    class="custom-checkbox"
+    [(ngModel)]="active"
+    name="active"
+  />
+  <span class="checkmark"></span>
+</label>
+                </div>
+            </div>
+
+            <!-- ROW 1 -->
+            <div class="row">
+                <div class="col-md-6">
+  <label class="form-label">Pay Period</label>
+ <select [(ngModel)]="payPeriodPublicId"
+        name="payPeriodPublicId">
+
+  <option value="">Select Pay Period</option>
+
+  <option *ngFor="let p of payPeriodList"
+          [value]="p.publicId">
+    {{ p.name }}
+  </option>
+
+</select>
+</div>
+
+                
+            </div>
+
+            <!-- Description -->
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control" [(ngModel)]="remarks" name="remarks"></textarea>
+                </div>
+            </div>
+
+            <!-- TABLE -->
+            <section class="table-main-div">
+
+                <div class="rounded-2xl text-gray-200 overflow-x-auto pt-4">
+                    <table class="min-w-full text-sm border-separate border-spacing-y-2">
+                        <thead>
+                            <tr>
+                                <th class="px-3 py-2">Work Date</th>
+                                <th class="px-3 py-2">Day Name</th>
+                                <th class="px-3 py-2">Day Type</th>
+                                <th class="px-3 py-2">Holiday Reason</th>
+                                <th class="px-3 py-2">Shift</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+<tr *ngFor="let day of days; let i = index">
+
+  <td>
+    <input type="date"
+           [(ngModel)]="day.workDate"
+           name="workDate{{i}}"
+           class="form-control">
+  </td>
+  <!-- Week Day Dropdown -->
+  <td>
+    <select class="form-control"
+            [(ngModel)]="day.weekDay"
+            name="weekDay{{i}}">
+      <option value="">Select Day</option>
+      <option *ngFor="let d of weekDays"
+              [value]="d">
+        {{ d }}
+      </option>
+    </select>
+  </td>
+ 
+
+  <!-- Day Type Enum Dropdown -->
+  <td>
+    <select class="form-control"
+            [(ngModel)]="day.dayType"
+            name="dayType{{i}}">
+      <option *ngFor="let type of dayTypes"
+              [value]="type">
+        {{ type }}
+      </option>
+    </select>
+  </td>
+
+  <!-- Holiday Reason -->
+  <td>
+    <input type="text"
+           [(ngModel)]="day.holidayReason"
+           name="holidayReason{{i}}"
+           class="form-control">
+  </td>
+
+  <!-- Shift Dropdown -->
+  <td>
+ <select [(ngModel)]="day.shiftPublicId"
+        name="shiftPublicId{{i}}">
+
+  <option value="">Select Shift</option>
+
+  <option *ngFor="let s of shiftsList"
+          [value]="s.publicId">
+    {{ s.name }}
+  </option>
+
+</select>
+  </td>
+
+</tr>
+</tbody>
+                    </table>
+                </div>
+            </section>
+
+
+            <!-- Buttons -->
+            <div class="form-actions mt-3">
+                <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
+
+                <button type="submit" class="submit-btn">
+                    {{ isEditMode ? 'Update Shift' : 'Create Shift' }}
+                </button>
+            </div>
+
+        </form>

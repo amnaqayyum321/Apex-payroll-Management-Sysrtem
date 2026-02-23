@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LoaderService } from '../../../../core/services/management-services/loader.service';
 import { FormsService } from '../../Services/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -7,25 +7,25 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-company',
+  selector: 'app-shift',
   imports: [CommonModule, FormsModule],
-  templateUrl: './company.html',
-  styleUrl: './company.scss',
+  standalone: true,
+  templateUrl: './shift.html',
+  styleUrl: './shift.scss',
 })
-export class Company {
+export class Shift implements OnInit {
 
+  email: string = '';
   code: string = '';
   name: string = '';
-  emailAddress: string = '';
-  internetAddress: string = '';
-  telephone: string = '';
-  description: string = '';
-  disabled: boolean = true;
+  remarks: string = '';
+  disabled: boolean = false;
   currentPage: number = 0; // page number
   pageSize: number = 100;
   publicId: string | null = null;
   isEditMode = false;
   active: boolean = true;
+  days: any[] = [];
 
   constructor(
     private loader: LoaderService,
@@ -35,105 +35,126 @@ export class Company {
     private route: ActivatedRoute,
   ) { }
   ngOnInit() {
-    // this.loader.show();
     this.publicId = this.route.snapshot.paramMap.get('id');
+
+    this.initializeDays();
 
     if (this.publicId) {
       this.isEditMode = true;
-      this.loadSingleCompanyBranch();
+      this.loadSingleShift();
     }
   }
 
-  loadSingleCompanyBranch() {
+
+  initializeDays() {
+    const weekDays = [
+      'MONDAY',
+      'TUESDAY',
+      'WEDNESDAY',
+      'THURSDAY',
+      'FRIDAY',
+      'SATURDAY',
+      'SUNDAY',
+    ];
+
+    this.days = weekDays.map((day) => ({
+      weekDay: day,
+      startTime: '',
+      endTime: '',
+      breakHours: 0,
+      isWeekOff: false,
+    }));
+  }
+  loadSingleShift() {
     this.loader.show();
-    this.formsService.getCompanyBranchById(this.publicId!).subscribe({
+    this.formsService.getShiftById(this.publicId!).subscribe({
       next: (res: any) => {
         this.loader.hide();
+
         this.code = res.data.code;
         this.name = res.data.name;
-        this.emailAddress = res.data.emailAddress;
-        this.internetAddress = res.data.internetAddress;
-        this.telephone = res.data.telephone;
-        this.description = res.data.description;
+        this.remarks = res.data.remarks;
+
+        // ✅ FIXED
+        console.log(res.data.active);
         this.active = res.data.isActive;
+        if (res.data.days?.length) {
+          this.days = res.data.days;
+        } else {
+          this.initializeDays();
+        }
       },
       error: () => {
         this.loader.hide();
-        this.toastr.error('Failed to load company branch');
+        this.toastr.error('Failed to load shift');
       },
     });
   }
 
-  createCompanyBranch() {
-    if (!this.code || !this.name || !this.description) {
+  createShift() {
+    if (!this.code || !this.name || !this.remarks) {
       this.toastr.error('Please fill in all required fields');
       return;
     }
     let payload = {
       code: this.code,
       name: this.name,
-      emailAddress: this.emailAddress,
-      internetAddress: this.internetAddress,
-      telephone: this.telephone,
-      description: this.description,
+      remarks: this.remarks,
       active: this.active,
+      days: this.days
 
     };
     this.loader.show();
     this.disabled = true;
-    this.formsService.createCompanyBranch(payload).subscribe({
+    this.formsService.CreatenewShift(payload).subscribe({
       next: (response: any) => {
         this.loader.hide();
-        this.toastr.success('Company branch created successfully', 'Success');
-        this.resetCompanyBranchForm();
+        this.toastr.success('Shift created successfully', 'Success');
+        this.resetShiftForm();
         setTimeout(() => {
-          this.router.navigate(['/panel/forms/view-company-branches']);
+          this.router.navigate(['/panel/forms/view-shifts']);
         }, 1500);
       },
       error: (error: any) => {
         this.loader.hide();
         this.disabled = false;
         this.toastr.error(
-          error.error.message || 'Failed to create company branch. Please try again.',
+          error.error.message || 'Failed to create shift. Please try again.',
           'Error',
         );
       },
     });
   }
-  resetCompanyBranchForm() {
+  resetShiftForm() {
     this.code = '';
     this.name = '';
-    this.emailAddress = '';
-    this.internetAddress = '';
-    this.telephone = '';
-    this.description = '';
+    this.remarks = '';
     this.active = true;
     this.disabled = false;
-
+    this.days = [];
+    this.initializeDays();
   }
   cancel() {
-    this.router.navigate(['/panel/forms/view-company-branches']);
+    this.router.navigate(['/panel/forms/view-shifts']);
   }
 
-  updateCompanyBranch() {
+  updateShift() {
     const payload = {
       code: this.code,
       name: this.name,
-      description: this.description,
-      active: this.active ? true : false,
-      emailAddress: this.emailAddress,
-      internetAddress: this.internetAddress,
-      telephone: this.telephone,
+      remarks: this.remarks,
+      active: this.active,
+      days: this.days
     };
 
     this.loader.show();
 
-    this.formsService.UpdateCompanyBranch(this.publicId!, payload).subscribe({
+    this.formsService.updateShift(this.publicId!, payload).subscribe({
       next: () => {
         this.loader.hide();
-        this.toastr.success('Company branch updated');
-        this.resetCompanyBranchForm();
-        this.router.navigate(['/panel/forms/view-company-branches']);
+        this.toastr.success('Shift updated');
+        this.resetShiftForm();
+        this.router.navigate(['/panel/forms/view-shifts']);
       },
       error: () => {
         this.loader.hide();
@@ -141,4 +162,5 @@ export class Company {
       },
     });
   }
+
 }

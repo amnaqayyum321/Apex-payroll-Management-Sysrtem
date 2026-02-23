@@ -17,10 +17,13 @@ export class Designation {
   code: string = '';
   name: string = '';
   description: string = '';
+   disabled: boolean = false;
   currentPage: number = 0; // page number
   pageSize: number = 100;
   publicId: string | null = null;
   isEditMode = false;
+    active: boolean = false;
+
   constructor(
     private loader: LoaderService,
     private formsService: FormsService,
@@ -46,6 +49,7 @@ export class Designation {
         this.code = res.data.code;
         this.name = res.data.name;
         this.description = res.data.description;
+        this.active = res.data.isActive;
       },
       error: () => {
         this.loader.hide();
@@ -63,8 +67,11 @@ export class Designation {
       code: this.code,
       name: this.name,
       description: this.description,
+      active: this.active,
+      
     };
     this.loader.show();
+    this.disabled = true;
     this.formsService.CreatenewDesignation(payload).subscribe({
       next: (response: any) => {
         this.loader.hide();
@@ -76,6 +83,7 @@ export class Designation {
       },
       error: (error: any) => {
         this.loader.hide();
+          this.disabled = false;
         this.toastr.error(
           error.error.message || 'Failed to create designation. Please try again.',
           'Error',
@@ -87,6 +95,9 @@ export class Designation {
     this.code = '';
     this.name = '';
     this.description = '';
+     this.active = true;
+    this.disabled = false;
+
   }
   cancel() {
     this.router.navigate(['/panel/forms/view-designations']);
@@ -97,6 +108,7 @@ export class Designation {
       code: this.code,
       name: this.name,
       description: this.description,
+      active: this.active ? true : false,
     };
 
     this.loader.show();

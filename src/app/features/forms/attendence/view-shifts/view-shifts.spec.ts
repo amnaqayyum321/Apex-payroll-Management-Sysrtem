@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { Shifts } from './shifts';
+import { ViewShifts } from './view-shifts';
 
-describe('Shifts', () => {
-  let component: Shifts;
-  let fixture: ComponentFixture<Shifts>;
+describe('ViewShifts', () => {
+  let component: ViewShifts;
+  let fixture: ComponentFixture<ViewShifts>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [Shifts]
+      imports: [ViewShifts]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(Shifts);
+    fixture = TestBed.createComponent(ViewShifts);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

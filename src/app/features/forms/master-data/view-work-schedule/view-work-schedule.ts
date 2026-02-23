@@ -1,20 +1,21 @@
 import { Component } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
 import { FormsService } from '../../Services/forms';
 import { LoaderService } from '../../../../core/services/management-services/loader.service';
+import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: 'app-view-designations',
-  imports: [CommonModule, FormsModule, RouterModule, NgbDropdownModule],
-  templateUrl: './view-designations.html',
-  styleUrl: './view-designations.scss',
+  selector: 'app-view-work-schedule',
+  imports: [CommonModule,FormsModule, RouterModule, NgbDropdownModule],
+  templateUrl: './view-work-schedule.html',
+  styleUrl: './view-work-schedule.scss',
 })
-export class ViewDesignations {
-  DesignationsList: any[] = [];
+export class ViewWorkSchedule {
+
+   DesignationsList: any[] = [];
   totalItems: number = 0;
   totalPagesCount: number = 0;
 
@@ -46,7 +47,7 @@ export class ViewDesignations {
   loadDesigantions() {
     this.loader.show();
     const backendPage = this.currentPage - 1;
-    this.formsService.getAllDesignations(backendPage, this.itemsPerPage,  'ALL').subscribe({
+    this.formsService.getAllWorkSchedules(backendPage, this.itemsPerPage,  'ALL').subscribe({
       next: (response: any) => {
         this.loader.hide();
         this.DesignationsList = response.data;
@@ -77,6 +78,5 @@ export class ViewDesignations {
       .replace(/_/g, ' ')
       .replace(/\b\w/g, (c) => c.toUpperCase());
   }
-
 
 }

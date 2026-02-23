@@ -219,3 +219,75 @@ textarea {
     box-shadow: none;
   }
 }
+
+
+/* ========================= */
+/* MODERN CHECKBOX */
+/* ========================= */
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  user-select: none;
+}
+
+/* Hide default checkbox */
+.custom-checkbox {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Custom box */
+.checkmark {
+  height: 20px;
+  width: 20px;
+  background-color: var(--primary-color);
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  transition: all 0.25s ease;
+  display: inline-block;
+  position: relative;
+}
+
+/* Check icon */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* When checked */
+.custom-checkbox:checked + .checkmark {
+  background: var(--purple-1);
+  border-color: var(--purple-1);
+  box-shadow: 0 4px 10px rgba(71, 110, 144, 0.3);
+}
+
+.custom-checkbox:checked + .checkmark:after {
+  display: block;
+  animation: checkAnim 0.2s ease-in-out;
+}
+
+/* Animation */
+@keyframes checkAnim {
+  from {
+    transform: rotate(45deg) scale(0);
+  }
+  to {
+    transform: rotate(45deg) scale(1);
+  }
+}

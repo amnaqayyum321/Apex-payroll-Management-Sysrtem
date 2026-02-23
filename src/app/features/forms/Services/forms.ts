@@ -11,37 +11,24 @@ export class FormsService {
   constructor(private http: HttpClient) {
     this.url = environment.apiBaseUrl;
   }
-
+// designation
   CreatenewDesignation(data: any): Observable<any> {
     return this.http.post(this.url + 'admin/designations', data);
   }
-  getAllDesignations(page: number, size: number): Observable<any> {
-    return this.http.get(this.url + `admin/designations?page=${page}&size=${size}`);
-  }
-
-  // Update Designation
+ getAllDesignations(page: number, size: number, filter: string = 'ALL'): Observable<any> {
+  return this.http.get(
+    `${this.url}admin/designations?filter=${filter}&page=${page}&size=${size}`
+  );
+}
   updateDesignation(publicId: string, data: any): Observable<any> {
     return this.http.put(this.url + `admin/designations/${publicId}`, data);
-  }
-
-  // Soft Delete
-  deleteDesignation(publicId: string): Observable<any> {
-    return this.http.delete(this.url + `admin/designations/${publicId}`);
-  }
-
-  // Toggle Active
-  toggleDesignationActive(publicId: string, active: boolean): Observable<any> {
-    return this.http.patch(this.url + `admin/designations/${publicId}/active`, { active });
-  }
-
-  // Restore
-  restoreDesignation(publicId: string): Observable<any> {
-    return this.http.patch(this.url + `admin/designations/${publicId}/restore`, {});
   }
 
   getDesignationById(publicId: string): Observable<any> {
     return this.http.get(this.url + `admin/designations/${publicId}`);
   }
+
+  // Department
 
   GetDepartment(page: number, size: number): Observable<any> {
     return this.http.get(this.url + `admin/departments?page=${page}&size=${size}`);
@@ -56,9 +43,12 @@ export class FormsService {
     return this.http.get(this.url + `admin/departments/${publicId}`);
   }
 
-  getAllComapnyBranches(page: number, size: number): Observable<any> {
-    return this.http.get(this.url + `admin/company-branches?page=${page}&size=${size}`);
-  }
+  // Company Branches
+  getAllComapnyBranches(page: number, size: number, filter: string = 'ALL'): Observable<any> {
+  return this.http.get(
+    `${this.url}admin/company-branches?filter=${filter}&page=${page}&size=${size}`
+  );
+}
   createCompanyBranch(data: any): Observable<any> {
     return this.http.post(this.url + 'admin/company-branches', data);
   }
@@ -68,6 +58,8 @@ export class FormsService {
   getCompanyBranchById(publicId: string): Observable<any> {
     return this.http.get(this.url + `admin/company-branches/${publicId}`);
   }
+
+  // Pay Period
   GetPayperiod(page: number, size: number): Observable<any> {
     return this.http.get(this.url + `admin/pay-periods?page=${page}&size=${size}`);
   }
@@ -80,4 +72,43 @@ export class FormsService {
   getPayperiodbyId(publicId: string): Observable<any> {
     return this.http.get(this.url + `admin/pay-periods/${publicId}`);
   }
+
+  // Shifts
+
+  // CREATE SHIFT
+  CreatenewShift(data: any): Observable<any> {
+    return this.http.post(this.url + 'admin/shifts', data);
+  }
+ getAllShifts(page: number, size: number, filter: string = 'ALL'): Observable<any> {
+  return this.http.get(
+    `${this.url}admin/shifts?filter=${filter}&page=${page}&size=${size}`
+  );
+}
+  updateShift(publicId: string, data: any): Observable<any> {
+    return this.http.put(this.url + `admin/shifts/${publicId}`, data);
+  }
+
+  getShiftById(publicId: string): Observable<any> {
+    return this.http.get(this.url + `admin/shifts/${publicId}`);
+  }
+
+
+
+  // work schedule
+    CreateWorkSchedule(data: any): Observable<any> {
+    return this.http.post(this.url + 'admin/work-schedules', data);
+  }
+ getAllWorkSchedules(page: number, size: number, filter: string = 'ALL'): Observable<any> {
+  return this.http.get(
+    `${this.url}admin/work-schedules?filter=${filter}&page=${page}&size=${size}`
+  );
+}
+  updateWorkSchedule(publicId: string, data: any): Observable<any> {
+    return this.http.put(this.url + `admin/work-schedules/${publicId}`, data);
+  }
+
+  getWorkScheduleById(publicId: string): Observable<any> {
+    return this.http.get(this.url + `admin/work-schedules/${publicId}`);
+  }
+
 }

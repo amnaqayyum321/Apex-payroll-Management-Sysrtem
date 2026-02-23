@@ -17,7 +17,6 @@ import { FormsModule } from '@angular/forms';
 })
 export class ViewCompanyBranches {
 
-
   CompanyBranchesList: any[] = [];
   totalItems: number = 0;
   totalPagesCount: number = 0;
@@ -44,13 +43,13 @@ export class ViewCompanyBranches {
   }
 
   ngOnInit() {
-    this.loadCompanyBranches();
+    this.loadDesigantions();
   }
 
-  loadCompanyBranches() {
+  loadDesigantions() {
     this.loader.show();
     const backendPage = this.currentPage - 1;
-    this.formsService.getAllComapnyBranches(backendPage, this.itemsPerPage).subscribe({
+    this.formsService.getAllComapnyBranches(backendPage, this.itemsPerPage,  'ALL').subscribe({
       next: (response: any) => {
         this.loader.hide();
         this.CompanyBranchesList = response.data;
@@ -70,7 +69,7 @@ export class ViewCompanyBranches {
   changePage(page: number) {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
-    this.loadCompanyBranches();
+    this.loadDesigantions();
   }
 
   formatRoleName(role: string): string {
@@ -82,22 +81,11 @@ export class ViewCompanyBranches {
       .replace(/\b\w/g, (c) => c.toUpperCase());
   }
 
- 
-  toggleActive(user: any) {
-    this.loader.show();
 
-    this.formsService.toggleDesignationActive(user.publicId, !user.isActive).subscribe({
-      next: () => {
-        this.loader.hide();
-        this.toastr.success('Status updated');
-        this.loadCompanyBranches();
-      },
-      error: () => {
-        this.loader.hide();
-        this.toastr.error('Failed to update status');
-      },
-    });
-  }
+
+
+
+
 
   
 
