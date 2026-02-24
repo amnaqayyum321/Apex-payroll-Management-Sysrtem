@@ -24,6 +24,8 @@ import { EmployeeCategory } from './employees-masterdata/employee-category/emplo
 import { ViewEmployeeCategoryList } from './employees-masterdata/view-employee-category-list/view-employee-category-list';
 import { ViewLeaveTypeList } from './attendence/view-leave-type-list/view-leave-type-list';
 import { ViewLeaves } from './attendence/view-leaves/view-leaves';
+import { IDType } from './master-data/id-type/id-type';
+import { ViewIDTypeList } from './master-data/view-id-type-list/view-id-type-list';
 
 export const routes: Routes = [
   {
@@ -118,6 +120,18 @@ export const routes: Routes = [
   {
     path: 'view-projects',
     component: ViewProjectList,
+  },
+  {
+    path: 'id-type',
+    component: IDType,
+  },
+  {
+    path: 'id-type/:id',
+    component: IDType,
+  },
+  {
+    path: 'view-id-type-list',
+    component: ViewIDTypeList,
   },
   { path: 'work-schedule', component: WorkSchedule },
   { path: 'view-designations', component: ViewDesignations },
