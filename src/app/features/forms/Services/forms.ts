@@ -198,22 +198,6 @@ export class FormsService {
   getLeaveEntitlementById(publicId: string): Observable<any> {
     return this.http.get(this.url + `admin/leave-entitlements/${publicId}`);
   }
-  // ID-Type
-  GetIDType(page: number, size: number, filter: string = 'ALL'): Observable<any> {
-    return this.http.get(this.url + `admin/id-types?filter=${filter}&page=${page}&size=${size}`);
-  }
-
-  CreateIDType(data: any): Observable<any> {
-    return this.http.post(this.url + 'admin/id-types', data);
-  }
-  UpdateIDType(PublicId: string, data: any): Observable<any> {
-    return this.http.put(this.url + `admin/id-types/${PublicId}`, data);
-  }
-  getIDTypeById(publicId: string): Observable<any> {
-    return this.http.get(this.url + `admin/id-types/${publicId}`);
-  }
-
-
 
   // Employee Grade
   GetEmployeeGrade(page: number, size: number, filter: string = 'ALL'): Observable<any> {
