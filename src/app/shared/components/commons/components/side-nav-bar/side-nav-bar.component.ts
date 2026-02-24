@@ -175,7 +175,7 @@ export class SideNavBarComponent implements OnInit {
           children: [
             {
               label: 'Leaves',
-              route: 'forms/leaves',
+              route: 'forms/view-leaves',
               isVisible: true,
               icon: 'fa-solid fa-calendar-check',
             },
@@ -186,7 +186,7 @@ export class SideNavBarComponent implements OnInit {
               isVisible: true,
             },
             {
-              label: 'Leaves Master Data',
+              label: 'Leave Type',
               route: 'forms/view-leaves-master-list',
               icon: 'fa-solid fa-file-alt',
               isVisible: true,

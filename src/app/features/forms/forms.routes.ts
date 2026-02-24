@@ -19,6 +19,7 @@ import { Shift } from './attendence/shift/shift';
 import { ViewWorkSchedule } from './master-data/view-work-schedule/view-work-schedule';
 import { ViewProjectList } from './master-data/view-project-list/view-project-list';
 import { ViewLeaveTypeList } from './attendence/view-leave-type-list/view-leave-type-list';
+import { ViewLeaves } from './attendence/view-leaves/view-leaves';
 
 export const routes: Routes = [
   {
@@ -114,4 +115,9 @@ export const routes: Routes = [
   { path: 'shift/:id', component: Shift },
   { path: 'work-schedule/:id', component: WorkSchedule },
   { path: 'view-work-schedule', component: ViewWorkSchedule },
+  {path: 'view-leaves', component: ViewLeaves},
+    {
+    path: 'leaves/:id',
+    component: Leaves,
+  },
 ];
