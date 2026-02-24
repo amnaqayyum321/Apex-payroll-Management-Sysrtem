@@ -4,7 +4,7 @@ import { CreateRequistion } from './Onboarding-forms/create-requistion/create-re
 
 export const routes: Routes = [
   {
-    path: 'create-requistion',
+    path: 'create-requisition',
     component: CreateRequistion,
   }
   

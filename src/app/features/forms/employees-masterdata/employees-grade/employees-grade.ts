@@ -1,19 +1,19 @@
+import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { LoaderService } from '../../../../core/services/management-services/loader.service';
 import { ToastrService } from 'ngx-toastr';
-import { ActivatedRoute, Router } from '@angular/router';
 import { FormsService } from '../../Services/forms';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
-  selector: 'app-designation',
+  selector: 'app-employees-grade',
   imports: [CommonModule, FormsModule],
-  templateUrl: './designation.html',
-  styleUrl: './designation.scss',
+  templateUrl: './employees-grade.html',
+  styleUrl: './employees-grade.scss',
 })
-export class Designation {
-  code: string = '';
+export class EmployeesGrade {
+    code: string = '';
   name: string = '';
   description: string = '';
    disabled: boolean = false;
@@ -36,13 +36,13 @@ export class Designation {
 
     if (this.publicId) {
       this.isEditMode = true;
-      this.loadSingleDesignation();
+      this.loadSingleEmployeeGrade();
     }
   }
 
-  loadSingleDesignation() {
+  loadSingleEmployeeGrade() {
     this.loader.show();
-    this.formsService.getDesignationById(this.publicId!).subscribe({
+    this.formsService.getEmployeeGradeById(this.publicId!).subscribe({
       next: (res: any) => {
         this.loader.hide();
         this.code = res.data.code;
@@ -57,7 +57,7 @@ export class Designation {
     });
   }
 
-  createDesignation() {
+  createEmployeesGrde() {
     if (!this.code || !this.name || !this.description) {
       this.toastr.error('Please fill in all required fields');
       return;
@@ -71,26 +71,26 @@ export class Designation {
     };
     this.loader.show();
     this.disabled = true;
-    this.formsService.CreatenewDesignation(payload).subscribe({
+    this.formsService.CreateEmployeeGrade(payload).subscribe({
       next: (response: any) => {
         this.loader.hide();
-        this.toastr.success('Designation created successfully', 'Success');
-        this.resetDesignationForm();
+        this.toastr.success('Employee Grade created successfully', 'Success');
+        this.resetEmployeeGradeForm();
         setTimeout(() => {
-          this.router.navigate(['/panel/forms/view-designations']);
+          this.router.navigate(['/panel/forms/view-employees-grade-list']);
         }, 1500);
       },
       error: (error: any) => {
         this.loader.hide();
           this.disabled = false;
         this.toastr.error(
-          error.error.message || 'Failed to create designation. Please try again.',
+          error.error.message || 'Failed to create employee grade. Please try again.',
           'Error',
         );
       },
     });
   }
-  resetDesignationForm() {
+  resetEmployeeGradeForm() {
     this.code = '';
     this.name = '';
     this.description = '';
@@ -99,10 +99,10 @@ export class Designation {
 
   }
   cancel() {
-    this.router.navigate(['/panel/forms/view-designations']);
+    this.router.navigate(['/panel/forms/view-employees-grade-list']);
   }
 
-  updateDesignation() {
+  updateEmployeeGrade() {
     const payload = {
       code: this.code,
       name: this.name,
@@ -112,12 +112,12 @@ export class Designation {
 
     this.loader.show();
 
-    this.formsService.updateDesignation(this.publicId!, payload).subscribe({
+    this.formsService.UpdateEmployeeGrade(this.publicId!, payload).subscribe({
       next: () => {
         this.loader.hide();
-        this.toastr.success('Designation updated');
-        this.resetDesignationForm();
-        this.router.navigate(['/panel/forms/view-designations']);
+        this.toastr.success('Employee Grade updated');
+        this.resetEmployeeGradeForm();
+        this.router.navigate(['/panel/forms/view-employees-grade-list']);
       },
       error: () => {
         this.loader.hide();
@@ -125,4 +125,5 @@ export class Designation {
       },
     });
   }
+
 }

@@ -149,7 +149,7 @@ export class SideNavBarComponent implements OnInit {
             {
               label: 'Work Schedule',
               route: 'forms/view-work-schedule',
-              isVisible: true,
+              isVisible: false,
               icon: 'fa-solid fa-clock',
             },
             {
@@ -160,9 +160,16 @@ export class SideNavBarComponent implements OnInit {
             },
 
             {
+              label: 'Job Tite',
+              route: 'forms/view-job-title-list',
+              isVisible: true,
+              icon: 'fa-solid fa-id-badge',
+            },
+
+            {
               label: 'Loan Types',
               route: 'forms/loan-types',
-              isVisible: true,
+              isVisible: false,
               icon: 'fa-solid fa-money-bill-wave',
             },
             {
@@ -197,7 +204,7 @@ export class SideNavBarComponent implements OnInit {
               label: 'Leave Application',
               route: 'forms/leave-application',
               icon: 'fa-solid fa-file-signature',
-              isVisible: true,
+              isVisible: false,
             },
             {
               label: 'Leave Type',
@@ -224,15 +231,43 @@ export class SideNavBarComponent implements OnInit {
               label: 'Employees',
               route: 'form/view-all-employees',
               icon: 'fa-solid fa-user-tie',
+              isVisible: false,
+            },
+            {
+              label: 'Employees Category',
+              route: 'forms/view-employee-category-list',
+              icon: 'fa-solid fa-sitemap',
               isVisible: true,
             },
             {
-              label: 'Employees-Category',
-              route: 'forms/view-employee-category-list',
-              icon: 'fa-solid fa-user-tie',
+              label: 'Employees Grade',
+              route: 'forms/view-employees-grade-list',
+              icon: 'fa-solid fa-ranking-star',
+              isVisible: true,
+            },
+            {
+              label: 'Belonging Types',
+              route: 'forms/view-belonging-types-list',
+              icon: 'fa-solid fa-shapes',
               isVisible: true,
             },
           ],
+        },
+      ],
+    },
+
+    // onboarding
+    {
+      label: 'Onboarding',
+      icon: 'fa-solid fa-user-plus',
+      isVisible: true,
+      collapsed: true,
+      children: [
+        {
+          label: 'Requistion',
+          route: 'onboarding/create-requisition',
+          icon: 'fa-solid fa-file-circle-plus',
+          isVisible: true,
         },
       ],
     },

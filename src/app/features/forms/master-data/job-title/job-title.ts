@@ -1,18 +1,18 @@
 import { Component } from '@angular/core';
 import { LoaderService } from '../../../../core/services/management-services/loader.service';
+import { FormsService } from '../../Services/forms';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormsService } from '../../Services/forms';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-designation',
-  imports: [CommonModule, FormsModule],
-  templateUrl: './designation.html',
-  styleUrl: './designation.scss',
+  selector: 'app-job-title',
+  imports: [CommonModule,FormsModule],
+  templateUrl: './job-title.html',
+  styleUrl: './job-title.scss',
 })
-export class Designation {
+export class JobTitle {
   code: string = '';
   name: string = '';
   description: string = '';
@@ -36,13 +36,13 @@ export class Designation {
 
     if (this.publicId) {
       this.isEditMode = true;
-      this.loadSingleDesignation();
+      this.loadSingleJobTitle();
     }
   }
 
-  loadSingleDesignation() {
+  loadSingleJobTitle() {
     this.loader.show();
-    this.formsService.getDesignationById(this.publicId!).subscribe({
+    this.formsService.getJobTitleById(this.publicId!).subscribe({
       next: (res: any) => {
         this.loader.hide();
         this.code = res.data.code;
@@ -57,7 +57,7 @@ export class Designation {
     });
   }
 
-  createDesignation() {
+  createJobTitle() {
     if (!this.code || !this.name || !this.description) {
       this.toastr.error('Please fill in all required fields');
       return;
@@ -71,11 +71,11 @@ export class Designation {
     };
     this.loader.show();
     this.disabled = true;
-    this.formsService.CreatenewDesignation(payload).subscribe({
+    this.formsService.CreateJobTitle(payload).subscribe({
       next: (response: any) => {
         this.loader.hide();
-        this.toastr.success('Designation created successfully', 'Success');
-        this.resetDesignationForm();
+        this.toastr.success('Job Title created successfully', 'Success');
+        this.resetJobTitleForm();
         setTimeout(() => {
           this.router.navigate(['/panel/forms/view-designations']);
         }, 1500);
@@ -84,13 +84,13 @@ export class Designation {
         this.loader.hide();
           this.disabled = false;
         this.toastr.error(
-          error.error.message || 'Failed to create designation. Please try again.',
+          error.error.message || 'Failed to create Job Title. Please try again.',
           'Error',
         );
       },
     });
   }
-  resetDesignationForm() {
+  resetJobTitleForm() {
     this.code = '';
     this.name = '';
     this.description = '';
@@ -99,10 +99,10 @@ export class Designation {
 
   }
   cancel() {
-    this.router.navigate(['/panel/forms/view-designations']);
+    this.router.navigate(['/panel/forms/view-job-title-list']);
   }
 
-  updateDesignation() {
+  updateJobTitle() {
     const payload = {
       code: this.code,
       name: this.name,
@@ -112,12 +112,12 @@ export class Designation {
 
     this.loader.show();
 
-    this.formsService.updateDesignation(this.publicId!, payload).subscribe({
+    this.formsService.UpdateJobTitle(this.publicId!, payload).subscribe({
       next: () => {
         this.loader.hide();
         this.toastr.success('Designation updated');
-        this.resetDesignationForm();
-        this.router.navigate(['/panel/forms/view-designations']);
+        this.resetJobTitleForm();
+        this.router.navigate(['/panel/forms/view-job-title-list']);
       },
       error: () => {
         this.loader.hide();
@@ -125,4 +125,5 @@ export class Designation {
       },
     });
   }
+
 }
