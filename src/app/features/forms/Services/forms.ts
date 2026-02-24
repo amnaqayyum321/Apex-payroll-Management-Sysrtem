@@ -60,8 +60,9 @@ export class FormsService {
   getCompanyBranchById(publicId: string): Observable<any> {
     return this.http.get(this.url + `admin/company-branches/${publicId}`);
   }
-  GetPayperiod(page: number, size: number): Observable<any> {
-    return this.http.get(this.url + `admin/pay-periods?page=${page}&size=${size}`);
+  // Pay Period
+  GetPayperiod(page: number, size: number, filter: string = 'ALL'): Observable<any> {
+    return this.http.get(this.url + `admin/pay-periods?filter=${filter}&page=${page}&size=${size}`);
   }
 
 // pay period
@@ -77,8 +78,7 @@ export class FormsService {
   GetEmployees(page: number, size: number, filter: string = 'ALL'): Observable<any> {
     return this.http.get(this.url + `employees/lookup?filter=${filter}&page=${page}&size=${size}`);
   }
-
-  // project
+  // Project
   GetProject(page: number, size: number, filter: string = 'ALL'): Observable<any> {
     return this.http.get(this.url + `admin/projects?filter=${filter}&page=${page}&size=${size}`);
   }
@@ -94,6 +94,7 @@ export class FormsService {
   }
 
   // leavetype
+  // Leave Type
   GetLeaveType(page: number, size: number, filter: string = 'ALL'): Observable<any> {
     return this.http.get(this.url + `admin/leave-types?filter=${filter}&page=${page}&size=${size}`);
   }
@@ -140,6 +141,39 @@ export class FormsService {
 
   getWorkScheduleById(publicId: string): Observable<any> {
     return this.http.get(this.url + `admin/work-schedules/${publicId}`);
+  }
+  // Pay Element
+  GetPayElement(page: number, size: number, filter: string = 'ALL'): Observable<any> {
+    return this.http.get(
+      this.url + `admin/pay-elements?filter=${filter}&page=${page}&size=${size}`,
+    );
+  }
+
+  CreatePayElement(data: any): Observable<any> {
+    return this.http.post(this.url + 'admin/pay-elements', data);
+  }
+  UpdatePayElement(PublicId: string, data: any): Observable<any> {
+    return this.http.put(this.url + `admin/pay-elements/${PublicId}`, data);
+  }
+  getPayElementById(publicId: string): Observable<any> {
+    return this.http.get(this.url + `admin/pay-elements/${publicId}`);
+  }
+  // Employee Category
+  GetEmployeeCaterogy(page: number, size: number, filter: string = 'ALL'): Observable<any> {
+    return this.http.get(
+      this.url + `admin/employee-categories?filter=${filter}&page=${page}&size=${size}`,
+    );
+  }
+
+  CreateEmployeeCaterogy(data: any): Observable<any> {
+    return this.http.post(this.url + 'admin/employee-categories', data);
+  }
+  UpdateEmployeeCaterogy(PublicId: string, data: any): Observable<any> {
+    return this.http.put(this.url + `admin/employee-categories/${PublicId}`, data);
+  }
+  getEmployeeCaterogyById(publicId: string): Observable<any> {
+    return this.http.get(this.url + `admin/employee-categories/${publicId}`);
+  }
   }
 
   // leave entitlements

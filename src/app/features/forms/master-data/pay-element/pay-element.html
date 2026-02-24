@@ -1,0 +1,112 @@
+<div class="user-form-wrapper">
+  <div class="user-card">
+    <!-- Header -->
+    <div class="card-header">
+      <h3>
+        <h3>{{ isEditMode ? 'Update Pay Element' : 'Create Pay Element' }}</h3>
+      </h3>
+    </div>
+    <div class="header-divider"></div>
+
+    <form class="user-form">
+      <div class="row">
+        <div class="col-12 d-flex justify-content-end align-items-center gap-4">
+          <!-- Active -->
+          <label class="checkbox-container">
+            Active
+            <input type="checkbox" class="custom-checkbox" [(ngModel)]="active" name="active" />
+            <span class="checkmark"></span>
+          </label>
+
+          <!-- Taxable -->
+          <label class="checkbox-container">
+            Taxable
+            <input type="checkbox" class="custom-checkbox" [(ngModel)]="taxable" name="taxable" />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      </div>
+      <!-- ROW 1 -->
+      <div class="row">
+        <div class="col-md-6">
+          <label class="form-label">Code</label>
+          <input
+            type="text"
+            placeholder="Enter Code..."
+            [(ngModel)]="Code"
+            class="form-control"
+            name="Code"
+          />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter Name..."
+            [(ngModel)]="Name"
+            name="Name"
+          />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4">
+          <label for="" class="form-label">Element Type</label>
+          <select name="elementType" [(ngModel)]="elementType" id="elementType" class="form-select">
+            <option value=""></option>
+            <option *ngFor="let type of elementTypes" [value]="type">{{ type }}</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="" class="form-label">Element Nature</label>
+          <select
+            name="elementNature"
+            [(ngModel)]="elementNature"
+            id="elementNature"
+            class="form-select"
+          >
+            <option value=""></option>
+            <option *ngFor="let nature of elementNatures" [value]="nature">{{ nature }}</option>
+          </select>
+        </div>
+        <div class="col-md-4">
+          <label for="" class="form-label">Element Category</label>
+          <select
+            name="elementCategory"
+            [(ngModel)]="elementCategory"
+            id="elementCategory"
+            class="form-select"
+          >
+            <option value=""></option>
+            <option *ngFor="let category of elementCategories" [value]="category">
+              {{ category }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <label class="form-label">Description </label>
+          <textarea
+            type="text"
+            class="form-control"
+            placeholder="Enter Description..."
+            [(ngModel)]="description"
+            name="description"
+          ></textarea>
+        </div>
+      </div>
+      <!-- Footer buttons -->
+      <div class="form-actions">
+        <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
+        <button
+          type="submit"
+          class="submit-btn"
+          (click)="isEditMode ? updatePayElement() : createPayElement()"
+        >
+          {{ isEditMode ? 'Update' : 'Create' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
