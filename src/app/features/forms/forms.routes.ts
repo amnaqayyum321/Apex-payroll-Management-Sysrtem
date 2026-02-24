@@ -23,13 +23,10 @@ import { PayElement } from './master-data/pay-element/pay-element';
 import { ViewPayElementList } from './master-data/view-pay-element-list/view-pay-element-list';
 import { EmployeeCategory } from './employees-masterdata/employee-category/employee-category';
 import { ViewEmployeeCategoryList } from './employees-masterdata/view-employee-category-list/view-employee-category-list';
+import { ViewLeaveTypeList } from './attendence/view-leave-type-list/view-leave-type-list';
 import { ViewLeaves } from './attendence/view-leaves/view-leaves';
-import { EmployeesGrade } from './employees-masterdata/employees-grade/employees-grade';
-import { ViewEmployeesGradeList } from './employees-masterdata/view-employees-grade-list/view-employees-grade-list';
-import { BelongingTypes } from './employees-masterdata/belonging-types/belonging-types';
-import { ViewBelongingTypesList } from './employees-masterdata/view-belonging-types-list/view-belonging-types-list';
-import { JobTitle } from './master-data/job-title/job-title';
-import { ViewJobTitleList } from './master-data/view-job-title-list/view-job-title-list';
+import { IDType } from './master-data/id-type/id-type';
+import { ViewIDTypeList } from './master-data/view-id-type-list/view-id-type-list';
 
 export const routes: Routes = [
   {
@@ -48,6 +45,15 @@ export const routes: Routes = [
     path: 'view-leaves-master-list',
     component: ViewLeaveTypeList,
   },
+  {
+    path: 'leaves-master-data/:id',
+    component: LeavesMasterData,
+  },
+  {
+    path: 'view-leaves-master-list',
+    component: ViewLeaveTypeList,
+  },
+
   {
     path: 'shift',
     component: Shift,
@@ -116,6 +122,18 @@ export const routes: Routes = [
     path: 'view-projects',
     component: ViewProjectList,
   },
+  {
+    path: 'id-type',
+    component: IDType,
+  },
+  {
+    path: 'id-type/:id',
+    component: IDType,
+  },
+  {
+    path: 'view-id-type-list',
+    component: ViewIDTypeList,
+  },
   { path: 'work-schedule', component: WorkSchedule },
   { path: 'view-designations', component: ViewDesignations },
   { path: 'pay-element', component: PayElement },
@@ -137,8 +155,8 @@ export const routes: Routes = [
   { path: 'shift/:id', component: Shift },
   { path: 'work-schedule/:id', component: WorkSchedule },
   { path: 'view-work-schedule', component: ViewWorkSchedule },
-  {path: 'view-leaves', component: ViewLeaves},
-    {
+  { path: 'view-leaves', component: ViewLeaves },
+  {
     path: 'leaves/:id',
     component: Leaves,
   },

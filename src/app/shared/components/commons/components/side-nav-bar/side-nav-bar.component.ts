@@ -180,6 +180,13 @@ export class SideNavBarComponent implements OnInit {
               isVisible: true,
               icon: 'fa-solid fa-coins',
             },
+            {
+              label: 'ID Type',
+              route: 'forms/view-id-type-list',
+
+              isVisible: true,
+              icon: 'fa-solid fa-id-card',
+            },
           ],
         },
         {
@@ -251,26 +258,22 @@ export class SideNavBarComponent implements OnInit {
       ],
     },
 
-// onboarding 
-{
-  label: 'Onboarding',
-  icon: 'fa-solid fa-user-plus',
-  isVisible: true,
-  collapsed: true,
-  children: [
+    // onboarding
     {
-      label: 'Requistion',
-      route: 'onboarding/create-requisition',
-      icon: 'fa-solid fa-file-circle-plus',
-      isVisible: true
-    }
-  ]
-},
-    
-      
-    
+      label: 'Onboarding',
+      icon: 'fa-solid fa-user-plus',
+      isVisible: true,
+      collapsed: true,
+      children: [
+        {
+          label: 'Requistion',
+          route: 'onboarding/create-requisition',
+          icon: 'fa-solid fa-file-circle-plus',
+          isVisible: true,
+        },
+      ],
+    },
 
-   
     // Payroll Process Start
     {
       label: 'PayRoll',

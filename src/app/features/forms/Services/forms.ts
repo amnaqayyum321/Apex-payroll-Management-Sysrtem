@@ -28,8 +28,6 @@ export class FormsService {
     return this.http.get(this.url + `admin/designations/${publicId}`);
   }
 
-
-
   // Department
 
   GetDepartment(page: number, size: number, filter: string = 'ALL'): Observable<any> {
@@ -65,7 +63,7 @@ export class FormsService {
     return this.http.get(this.url + `admin/pay-periods?filter=${filter}&page=${page}&size=${size}`);
   }
 
-// pay period
+  // pay period
   CreatePayperiod(data: any): Observable<any> {
     return this.http.post(this.url + 'admin/pay-periods', data);
   }
@@ -79,6 +77,8 @@ export class FormsService {
     return this.http.get(this.url + `employees/lookup?filter=${filter}&page=${page}&size=${size}`);
   }
   // Project
+
+  // project
   GetProject(page: number, size: number, filter: string = 'ALL'): Observable<any> {
     return this.http.get(this.url + `admin/projects?filter=${filter}&page=${page}&size=${size}`);
   }
@@ -92,6 +92,7 @@ export class FormsService {
   getProjectById(publicId: string): Observable<any> {
     return this.http.get(this.url + `admin/projects/${publicId}`);
   }
+  // Leave Type
 
   // leavetype
   // Leave Type
@@ -177,11 +178,11 @@ export class FormsService {
   
 
   // leave entitlements
-  GetEmployeesForLeaveEntilements(page: number, size: number): Observable<any>{
-    return this.http.get(this.url + `employees?page=${page}&size=${size}` )
+  GetEmployeesForLeaveEntilements(page: number, size: number): Observable<any> {
+    return this.http.get(this.url + `employees?page=${page}&size=${size}`);
   }
 
-    CreateLeaves(data: any): Observable<any> {
+  CreateLeaves(data: any): Observable<any> {
     return this.http.post(this.url + 'admin/leave-entitlements', data);
   }
   getAllLeaves(page: number, size: number, filter: string = 'ALL'): Observable<any> {
@@ -197,6 +198,23 @@ export class FormsService {
     return this.http.get(this.url + `admin/leave-entitlements/${publicId}`);
   }
   getLeaveEntitlementById(publicId: string): Observable<any> {
+    return this.http.get(this.url + `admin/leave-entitlements/${publicId}`);
+  }
+  // ID-Type
+  GetIDType(page: number, size: number, filter: string = 'ALL'): Observable<any> {
+    return this.http.get(this.url + `admin/id-types?filter=${filter}&page=${page}&size=${size}`);
+  }
+
+  CreateIDType(data: any): Observable<any> {
+    return this.http.post(this.url + 'admin/id-types', data);
+  }
+  UpdateIDType(PublicId: string, data: any): Observable<any> {
+    return this.http.put(this.url + `admin/id-types/${PublicId}`, data);
+  }
+  getIDTypeById(publicId: string): Observable<any> {
+    return this.http.get(this.url + `admin/id-types/${publicId}`);
+  }
+}
   return this.http.get(this.url + `admin/leave-entitlements/${publicId}`);
 }
 
