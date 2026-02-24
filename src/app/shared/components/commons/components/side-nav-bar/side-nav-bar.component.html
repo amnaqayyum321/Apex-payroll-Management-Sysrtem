@@ -103,13 +103,14 @@
               </div>
 
               <!-- If child is a simple link -->
-              <a
-                *ngIf="!child.children && child.isVisible && child.route"
-                [routerLink]="child.route"
-                routerLinkActive="active"
-              >
-                <span>{{ child.label }}</span>
-              </a>
+             <a *ngIf="!child.children && child.isVisible && child.route"
+   [routerLink]="child.route"
+   routerLinkActive="active">
+
+  <i *ngIf="child.icon" [class]="child.icon"></i>
+  <span>{{ child.label }}</span>
+
+</a>
 
               <!-- If child is a simple link without route -->
               <a *ngIf="!child.children && child.isVisible && !child.route">
