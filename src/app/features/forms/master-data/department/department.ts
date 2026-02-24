@@ -22,7 +22,7 @@ export class Department {
   pageSize: number = 100;
   publicId: string | null = null;
   isEditMode = false;
-  active: boolean = false;
+  active: boolean = true;
   constructor(
     private loader: LoaderService,
     private FormSv: FormsService,

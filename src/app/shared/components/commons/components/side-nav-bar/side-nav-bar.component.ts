@@ -149,7 +149,7 @@ export class SideNavBarComponent implements OnInit {
             {
               label: 'Work Schedule',
               route: 'forms/view-work-schedule',
-              isVisible: true,
+              isVisible: false,
               icon: 'fa-solid fa-clock',
             },
             {
@@ -159,10 +159,18 @@ export class SideNavBarComponent implements OnInit {
               icon: 'fa-solid fa-project-diagram',
             },
 
+             {
+              label: 'Job Tite',
+              route: 'forms/view-job-title-list',
+              isVisible: true,
+              icon: 'fa-solid fa-id-badge',
+            },
+
+
             {
               label: 'Loan Types',
               route: 'forms/loan-types',
-              isVisible: true,
+              isVisible: false,
               icon: 'fa-solid fa-money-bill-wave',
             },
             {
@@ -190,7 +198,7 @@ export class SideNavBarComponent implements OnInit {
               label: 'Leave Application',
               route: 'forms/leave-application',
               icon: 'fa-solid fa-file-signature',
-              isVisible: true,
+              isVisible: false,
             },
             {
               label: 'Leave Type',
@@ -205,6 +213,7 @@ export class SideNavBarComponent implements OnInit {
               icon: 'fa-solid fa-clock',
               isVisible: true,
             },
+
           ],
         },
         {
@@ -217,12 +226,24 @@ export class SideNavBarComponent implements OnInit {
               label: 'Employees',
               route: 'form/view-all-employees',
               icon: 'fa-solid fa-user-tie',
-              isVisible: true,
+              isVisible: false,
             },
             {
-              label: 'Employees-Category',
+              label: 'Employees Category',
               route: 'forms/view-employee-category-list',
-              icon: 'fa-solid fa-user-tie',
+              icon: 'fa-solid fa-sitemap',
+              isVisible: true,
+            },
+             {
+              label: 'Employees Grade',
+              route: 'forms/view-employees-grade-list',
+              icon: 'fa-solid fa-ranking-star',
+              isVisible: true,
+            },
+              {
+              label: 'Belonging Types',
+              route: 'forms/view-belonging-types-list',
+              icon: 'fa-solid fa-shapes',
               isVisible: true,
             },
           ],
@@ -239,7 +260,7 @@ export class SideNavBarComponent implements OnInit {
   children: [
     {
       label: 'Requistion',
-      route: '/onboarding/create-requistion',
+      route: 'onboarding/create-requisition',
       icon: 'fa-solid fa-file-circle-plus',
       isVisible: true
     }

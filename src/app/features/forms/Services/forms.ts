@@ -174,7 +174,7 @@ export class FormsService {
   getEmployeeCaterogyById(publicId: string): Observable<any> {
     return this.http.get(this.url + `admin/employee-categories/${publicId}`);
   }
-  }
+  
 
   // leave entitlements
   GetEmployeesForLeaveEntilements(page: number, size: number): Observable<any>{
@@ -199,4 +199,60 @@ export class FormsService {
   getLeaveEntitlementById(publicId: string): Observable<any> {
   return this.http.get(this.url + `admin/leave-entitlements/${publicId}`);
 }
+
+
+  // Employee Grade
+  GetEmployeeGrade(page: number, size: number, filter: string = 'ALL'): Observable<any> {
+    return this.http.get(
+      this.url + `admin/employee-grades?filter=${filter}&page=${page}&size=${size}`,
+    );
+  }
+
+  CreateEmployeeGrade(data: any): Observable<any> {
+    return this.http.post(this.url + 'admin/employee-grades', data);
+  }
+  UpdateEmployeeGrade(PublicId: string, data: any): Observable<any> {
+    return this.http.put(this.url + `admin/employee-grades/${PublicId}`, data);
+  }
+  getEmployeeGradeById(publicId: string): Observable<any> {
+    return this.http.get(this.url + `admin/employee-grades/${publicId}`);
+  }
+
+
+   //  Belonging Types
+  GetBelongingTypes(page: number, size: number, filter: string = 'ALL'): Observable<any> {
+    return this.http.get(
+      this.url + `admin/belonging-types?filter=${filter}&page=${page}&size=${size}`,
+    );
+  }
+
+  CreateBelongingType(data: any): Observable<any> {
+    return this.http.post(this.url + 'admin/belonging-types', data);
+  }
+  UpdateBelongingType(PublicId: string, data: any): Observable<any> {
+    return this.http.put(this.url + `admin/belonging-types/${PublicId}`, data);
+  }
+  getBelongingTypeById(publicId: string): Observable<any> {
+    return this.http.get(this.url + `admin/belonging-types/${publicId}`);
+  }
+
+// job title 
+ //  Belonging Types
+  GetJobTitle(page: number, size: number, filter: string = 'ALL'): Observable<any> {
+    return this.http.get(
+      this.url + `admin/job-titles?filter=${filter}&page=${page}&size=${size}`,
+    );
+  }
+
+  CreateJobTitle(data: any): Observable<any> {
+    return this.http.post(this.url + 'admin/job-titles', data);
+  }
+  UpdateJobTitle(PublicId: string, data: any): Observable<any> {
+    return this.http.put(this.url + `admin/job-titles/${PublicId}`, data);
+  }
+  getJobTitleById(publicId: string): Observable<any> {
+    return this.http.get(this.url + `admin/job-titles/${publicId}`);
+  }
+
 }
+
