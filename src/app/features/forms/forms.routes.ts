@@ -17,6 +17,7 @@ import { ViewCompanyBranches } from './master-data/view-company-branches/view-co
 import { ViewShifts } from './attendence/view-shifts/view-shifts';
 import { Shift } from './attendence/shift/shift';
 import { ViewWorkSchedule } from './master-data/view-work-schedule/view-work-schedule';
+import { ViewProjectList } from './master-data/view-project-list/view-project-list';
 
 export const routes: Routes = [
   {
