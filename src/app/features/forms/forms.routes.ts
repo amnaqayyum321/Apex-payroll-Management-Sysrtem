@@ -18,6 +18,11 @@ import { ViewShifts } from './attendence/view-shifts/view-shifts';
 import { Shift } from './attendence/shift/shift';
 import { ViewWorkSchedule } from './master-data/view-work-schedule/view-work-schedule';
 import { ViewProjectList } from './master-data/view-project-list/view-project-list';
+import { ViewLeaveTypeList } from './attendence/view-leave-type-list/view-leave-type-list';
+import { PayElement } from './master-data/pay-element/pay-element';
+import { ViewPayElementList } from './master-data/view-pay-element-list/view-pay-element-list';
+import { EmployeeCategory } from './employees-masterdata/employee-category/employee-category';
+import { ViewEmployeeCategoryList } from './employees-masterdata/view-employee-category-list/view-employee-category-list';
 
 export const routes: Routes = [
   {
@@ -29,12 +34,32 @@ export const routes: Routes = [
     component: LeavesMasterData,
   },
   {
+    path: 'leaves-master-data/:id',
+    component: LeavesMasterData,
+  },
+  {
+    path: 'view-leaves-master-list',
+    component: ViewLeaveTypeList,
+  },
+  {
     path: 'shift',
     component: Shift,
   },
   {
     path: 'employees',
     component: Employees,
+  },
+  {
+    path: 'employees-category',
+    component: EmployeeCategory,
+  },
+  {
+    path: 'employees-category/:id',
+    component: EmployeeCategory,
+  },
+  {
+    path: 'view-employee-category-list',
+    component: ViewEmployeeCategoryList,
   },
   {
     path: 'company',
@@ -86,7 +111,9 @@ export const routes: Routes = [
   },
   { path: 'work-schedule', component: WorkSchedule },
   { path: 'view-designations', component: ViewDesignations },
-
+  { path: 'pay-element', component: PayElement },
+  { path: 'pay-element/:id', component: PayElement },
+  { path: 'view-pay-element', component: ViewPayElementList },
   {
     path: 'designation/:id',
     component: Designation,

@@ -32,14 +32,12 @@
             <td class="px-3 py-3 font-medium">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
             <td class="px-3 py-3 font-medium">{{ dep.code }}</td>
             <td class="px-3 py-3 font-medium">{{ dep.name }}</td>
-
             <td class="px-3 py-3 font-medium">
               <span
-                [style.background-color]="dep.isActive === true ? '#dcfce7' : '#fee2e2'"
-                [style.color]="dep.isActive === true ? '#16a34a' : '#dc2626'"
-                style="padding: 4px 10px; border-radius: 20px; font-weight: bold; font-size: 12px"
+                class="status-badge"
+                [ngClass]="dep.isActive ? 'active-badge' : 'inactive-badge'"
               >
-                {{ dep.isActive }}
+                {{ dep.isActive ? 'Active' : 'Inactive' }}
               </span>
             </td>
 

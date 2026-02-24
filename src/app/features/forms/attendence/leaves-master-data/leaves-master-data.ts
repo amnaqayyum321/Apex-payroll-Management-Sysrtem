@@ -119,15 +119,17 @@ export class LeavesMasterData {
   }
 
   loadSingleLeave(publicId: string) {
+    debugger;
     this.loader.show();
     this.FormSv.getLeaveTypeById(publicId).subscribe({
       next: (res: any) => {
+        console.log('Single leave response:', res);
         this.loader.hide();
         this.code = res.data.code;
         this.name = res.data.name;
         this.totalLeavesPerYear = res.data.totalLeavesPerYear;
         this.maxLeaveApplyInMonth = res.data.maxLeaveApplyInMonth;
-        this.active = res.data.isActive;
+        this.active = res.data.isActive === true;
         this.isCarryForward = res.data.isCarryForward;
         this.isEncashable = res.data.isEncashable;
         this.remarks = res.data.remarks || '';

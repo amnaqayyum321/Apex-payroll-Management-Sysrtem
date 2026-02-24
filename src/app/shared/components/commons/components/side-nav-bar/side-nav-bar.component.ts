@@ -165,6 +165,13 @@ export class SideNavBarComponent implements OnInit {
               isVisible: true,
               icon: 'fa-solid fa-money-bill-wave',
             },
+            {
+              label: 'Pay Element',
+              route: 'forms/view-pay-element',
+
+              isVisible: true,
+              icon: 'fa-solid fa-coins',
+            },
           ],
         },
         {
@@ -208,7 +215,13 @@ export class SideNavBarComponent implements OnInit {
           children: [
             {
               label: 'Employees',
-              route: 'employees-master-data/view-all-employees',
+              route: 'form/view-all-employees',
+              icon: 'fa-solid fa-user-tie',
+              isVisible: true,
+            },
+            {
+              label: 'Employees-Category',
+              route: 'forms/view-employee-category-list',
               icon: 'fa-solid fa-user-tie',
               isVisible: true,
             },
