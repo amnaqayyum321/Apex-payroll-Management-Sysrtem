@@ -32,6 +32,8 @@ export class FormsService {
 
   // Department
 
+  // Department
+
   GetDepartment(page: number, size: number, filter: string = 'ALL'): Observable<any> {
     return this.http.get(this.url + `admin/departments?filter=${filter}&page=${page}&size=${size}`);
   }
@@ -109,11 +111,9 @@ export class FormsService {
   CreatenewShift(data: any): Observable<any> {
     return this.http.post(this.url + 'admin/shifts', data);
   }
- getAllShifts(page: number, size: number, filter: string = 'ALL'): Observable<any> {
-  return this.http.get(
-    `${this.url}admin/shifts?filter=${filter}&page=${page}&size=${size}`
-  );
-}
+  getAllShifts(page: number, size: number, filter: string = 'ALL'): Observable<any> {
+    return this.http.get(`${this.url}admin/shifts?filter=${filter}&page=${page}&size=${size}`);
+  }
   updateShift(publicId: string, data: any): Observable<any> {
     return this.http.put(this.url + `admin/shifts/${publicId}`, data);
   }
@@ -122,17 +122,15 @@ export class FormsService {
     return this.http.get(this.url + `admin/shifts/${publicId}`);
   }
 
-
-
   // work schedule
-    CreateWorkSchedule(data: any): Observable<any> {
+  CreateWorkSchedule(data: any): Observable<any> {
     return this.http.post(this.url + 'admin/work-schedules', data);
   }
- getAllWorkSchedules(page: number, size: number, filter: string = 'ALL'): Observable<any> {
-  return this.http.get(
-    `${this.url}admin/work-schedules?filter=${filter}&page=${page}&size=${size}`
-  );
-}
+  getAllWorkSchedules(page: number, size: number, filter: string = 'ALL'): Observable<any> {
+    return this.http.get(
+      `${this.url}admin/work-schedules?filter=${filter}&page=${page}&size=${size}`,
+    );
+  }
   updateWorkSchedule(publicId: string, data: any): Observable<any> {
     return this.http.put(this.url + `admin/work-schedules/${publicId}`, data);
   }
@@ -140,5 +138,4 @@ export class FormsService {
   getWorkScheduleById(publicId: string): Observable<any> {
     return this.http.get(this.url + `admin/work-schedules/${publicId}`);
   }
-
 }
