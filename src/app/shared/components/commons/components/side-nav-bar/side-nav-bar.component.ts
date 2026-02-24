@@ -159,13 +159,12 @@ export class SideNavBarComponent implements OnInit {
               icon: 'fa-solid fa-project-diagram',
             },
 
-             {
+            {
               label: 'Job Tite',
               route: 'forms/view-job-title-list',
               isVisible: true,
               icon: 'fa-solid fa-id-badge',
             },
-
 
             {
               label: 'Loan Types',
@@ -220,7 +219,6 @@ export class SideNavBarComponent implements OnInit {
               icon: 'fa-solid fa-clock',
               isVisible: true,
             },
-
           ],
         },
         {
@@ -241,19 +239,35 @@ export class SideNavBarComponent implements OnInit {
               icon: 'fa-solid fa-sitemap',
               isVisible: true,
             },
-             {
+            {
               label: 'Employees Grade',
               route: 'forms/view-employees-grade-list',
               icon: 'fa-solid fa-ranking-star',
               isVisible: true,
             },
-              {
+            {
               label: 'Belonging Types',
               route: 'forms/view-belonging-types-list',
               icon: 'fa-solid fa-shapes',
               isVisible: true,
             },
           ],
+        },
+      ],
+    },
+
+    // onboarding
+    {
+      label: 'Onboarding',
+      icon: 'fa-solid fa-user-plus',
+      isVisible: true,
+      collapsed: true,
+      children: [
+        {
+          label: 'Requistion',
+          route: 'onboarding/create-requisition',
+          icon: 'fa-solid fa-file-circle-plus',
+          isVisible: true,
         },
       ],
     },

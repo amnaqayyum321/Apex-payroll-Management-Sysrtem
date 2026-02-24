@@ -18,13 +18,20 @@ import { ViewShifts } from './attendence/view-shifts/view-shifts';
 import { Shift } from './attendence/shift/shift';
 import { ViewWorkSchedule } from './master-data/view-work-schedule/view-work-schedule';
 import { ViewProjectList } from './master-data/view-project-list/view-project-list';
-import { ViewLeaveTypeList } from './attendence/view-leave-type-list/view-leave-type-list';
 import { PayElement } from './master-data/pay-element/pay-element';
 import { ViewPayElementList } from './master-data/view-pay-element-list/view-pay-element-list';
 import { EmployeeCategory } from './employees-masterdata/employee-category/employee-category';
 import { ViewEmployeeCategoryList } from './employees-masterdata/view-employee-category-list/view-employee-category-list';
 import { ViewLeaveTypeList } from './attendence/view-leave-type-list/view-leave-type-list';
 import { ViewLeaves } from './attendence/view-leaves/view-leaves';
+import { ViewLeaveTypeList } from './attendence/view-leave-type-list/view-leave-type-list';
+import { ViewLeaves } from './attendence/view-leaves/view-leaves';
+import { EmployeesGrade } from './employees-masterdata/employees-grade/employees-grade';
+import { ViewEmployeesGradeList } from './employees-masterdata/view-employees-grade-list/view-employees-grade-list';
+import { BelongingTypes } from './employees-masterdata/belonging-types/belonging-types';
+import { ViewBelongingTypesList } from './employees-masterdata/view-belonging-types-list/view-belonging-types-list';
+import { JobTitle } from './master-data/job-title/job-title';
+import { ViewJobTitleList } from './master-data/view-job-title-list/view-job-title-list';
 import { IDType } from './master-data/id-type/id-type';
 import { ViewIDTypeList } from './master-data/view-id-type-list/view-id-type-list';
 
@@ -160,15 +167,15 @@ export const routes: Routes = [
     path: 'leaves/:id',
     component: Leaves,
   },
-    {
+  {
     path: 'employees-grade',
     component: EmployeesGrade,
   },
-    {
+  {
     path: 'employees-grade/:id',
     component: EmployeesGrade,
   },
-    {
+  {
     path: 'view-employees-grade-list',
     component: ViewEmployeesGradeList,
   },
@@ -176,23 +183,23 @@ export const routes: Routes = [
     path: 'belonging-type',
     component: BelongingTypes,
   },
-    {
+  {
     path: 'belonging-type/:id',
     component: BelongingTypes,
   },
-    {
+  {
     path: 'view-belonging-types-list',
     component: ViewBelongingTypesList,
   },
-    {
+  {
     path: 'job-title',
     component: JobTitle,
   },
-    {
+  {
     path: 'job-title/:id',
     component: JobTitle,
   },
-    {
+  {
     path: 'view-job-title-list',
     component: ViewJobTitleList,
   },

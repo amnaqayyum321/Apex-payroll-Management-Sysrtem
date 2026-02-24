@@ -92,7 +92,6 @@ export class FormsService {
   getProjectById(publicId: string): Observable<any> {
     return this.http.get(this.url + `admin/projects/${publicId}`);
   }
-  // Leave Type
 
   // leavetype
   // Leave Type
@@ -175,7 +174,6 @@ export class FormsService {
   getEmployeeCaterogyById(publicId: string): Observable<any> {
     return this.http.get(this.url + `admin/employee-categories/${publicId}`);
   }
-  
 
   // leave entitlements
   GetEmployeesForLeaveEntilements(page: number, size: number): Observable<any> {
@@ -214,9 +212,7 @@ export class FormsService {
   getIDTypeById(publicId: string): Observable<any> {
     return this.http.get(this.url + `admin/id-types/${publicId}`);
   }
-}
-  return this.http.get(this.url + `admin/leave-entitlements/${publicId}`);
-}
+
 
 
   // Employee Grade
@@ -236,8 +232,7 @@ export class FormsService {
     return this.http.get(this.url + `admin/employee-grades/${publicId}`);
   }
 
-
-   //  Belonging Types
+  //  Belonging Types
   GetBelongingTypes(page: number, size: number, filter: string = 'ALL'): Observable<any> {
     return this.http.get(
       this.url + `admin/belonging-types?filter=${filter}&page=${page}&size=${size}`,
@@ -254,12 +249,10 @@ export class FormsService {
     return this.http.get(this.url + `admin/belonging-types/${publicId}`);
   }
 
-// job title 
- //  Belonging Types
+  // job title
+  //  Belonging Types
   GetJobTitle(page: number, size: number, filter: string = 'ALL'): Observable<any> {
-    return this.http.get(
-      this.url + `admin/job-titles?filter=${filter}&page=${page}&size=${size}`,
-    );
+    return this.http.get(this.url + `admin/job-titles?filter=${filter}&page=${page}&size=${size}`);
   }
 
   CreateJobTitle(data: any): Observable<any> {
@@ -271,6 +264,4 @@ export class FormsService {
   getJobTitleById(publicId: string): Observable<any> {
     return this.http.get(this.url + `admin/job-titles/${publicId}`);
   }
-
 }
-
