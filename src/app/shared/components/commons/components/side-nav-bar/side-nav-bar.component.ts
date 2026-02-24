@@ -182,7 +182,7 @@ export class SideNavBarComponent implements OnInit {
           children: [
             {
               label: 'Leaves',
-              route: 'forms/leaves',
+              route: 'forms/view-leaves',
               isVisible: true,
               icon: 'fa-solid fa-calendar-check',
             },
@@ -193,7 +193,7 @@ export class SideNavBarComponent implements OnInit {
               isVisible: true,
             },
             {
-              label: 'Leaves Master Data',
+              label: 'Leave Type',
               route: 'forms/view-leaves-master-list',
               icon: 'fa-solid fa-file-alt',
               isVisible: true,
@@ -230,98 +230,26 @@ export class SideNavBarComponent implements OnInit {
       ],
     },
 
+// onboarding 
+{
+  label: 'Onboarding',
+  icon: 'fa-solid fa-user-plus',
+  isVisible: true,
+  collapsed: true,
+  children: [
     {
-      label: 'Recruitment',
-      icon: 'fa-solid fa-user-tie',
-      isVisible: false,
-      collapsed: true,
-      children: [
-        {
-          label: 'Recruitment',
-          icon: 'fa-solid fa-briefcase',
-          isVisible: true,
-          collapsed: true,
-          children: [
-            {
-              label: 'Requisition',
-              route: 'employees-master-data/view-all-employees',
-              icon: 'fa-solid fa-user-tie',
-              isVisible: true,
-            },
-            {
-              label: 'Candidate Information',
-              route: 'employees-master-data/onboarding-employees',
-              icon: 'fa-solid fa-id-card',
-              isVisible: true,
-            },
+      label: 'Requistion',
+      route: '/onboarding/create-requistion',
+      icon: 'fa-solid fa-file-circle-plus',
+      isVisible: true
+    }
+  ]
+},
+    
+      
+    
 
-            {
-              label: 'Screening',
-              route: 'employees-master-data/view-all-gosiid',
-              icon: 'fa-solid fa-filter',
-              isVisible: true,
-            },
-            {
-              label: 'Interview Scheduling',
-              route: 'employees-master-data/view-all-departments',
-              icon: 'fa-solid fa-calendar-check',
-              isVisible: true,
-            },
-            {
-              label: 'Interviews Result',
-              route: 'employees-master-data/view-all-medical-insurance',
-              icon: 'fa-solid fa-clipboard-check',
-              isVisible: false,
-            },
-          ],
-        },
-        {
-          label: 'Selection',
-          icon: 'fa-solid fa-user-check',
-          isVisible: true,
-          collapsed: true,
-          children: [
-            {
-              label: 'Offer Letter',
-              route: 'employees-master-data/view-all-employees',
-              icon: 'fa-solid fa-file-signature',
-              isVisible: true,
-            },
-            {
-              label: 'Contact',
-              route: 'employees-master-data/onboarding-employees',
-              icon: 'fa-solid fa-address-book',
-              isVisible: true,
-            },
-
-            {
-              label: 'Mobilization',
-              route: 'employees-master-data/view-all-gosiid',
-              icon: 'fa-solid fa-people-carry-box',
-              isVisible: true,
-            },
-            {
-              label: 'Joining',
-              route: 'employees-master-data/view-all-departments',
-              icon: 'fa-solid fa-user-plus',
-              isVisible: true,
-            },
-            {
-              label: 'Interview Report',
-              route: 'employees-master-data/view-all-medical-insurance',
-              icon: 'fa-solid fa-clipboard-list',
-              isVisible: false,
-            },
-            {
-              label: 'Selection',
-              route: 'employees-master-data/view-all-medical-insurance',
-              icon: 'fa-solid fa-check-double',
-              isVisible: false,
-            },
-          ],
-        },
-      ],
-    },
+   
     // Payroll Process Start
     {
       label: 'PayRoll',

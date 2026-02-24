@@ -30,8 +30,6 @@ export class FormsService {
 
   // Department
 
-  // Department
-
   GetDepartment(page: number, size: number, filter: string = 'ALL'): Observable<any> {
     return this.http.get(this.url + `admin/departments?filter=${filter}&page=${page}&size=${size}`);
   }
@@ -65,6 +63,7 @@ export class FormsService {
     return this.http.get(this.url + `admin/pay-periods?filter=${filter}&page=${page}&size=${size}`);
   }
 
+  // pay period
   CreatePayperiod(data: any): Observable<any> {
     return this.http.post(this.url + 'admin/pay-periods', data);
   }
@@ -78,6 +77,8 @@ export class FormsService {
     return this.http.get(this.url + `employees/lookup?filter=${filter}&page=${page}&size=${size}`);
   }
   // Project
+
+  // project
   GetProject(page: number, size: number, filter: string = 'ALL'): Observable<any> {
     return this.http.get(this.url + `admin/projects?filter=${filter}&page=${page}&size=${size}`);
   }
@@ -92,6 +93,8 @@ export class FormsService {
     return this.http.get(this.url + `admin/projects/${publicId}`);
   }
   // Leave Type
+
+  // leavetype
   GetLeaveType(page: number, size: number, filter: string = 'ALL'): Observable<any> {
     return this.http.get(this.url + `admin/leave-types?filter=${filter}&page=${page}&size=${size}`);
   }
@@ -170,5 +173,29 @@ export class FormsService {
   }
   getEmployeeCaterogyById(publicId: string): Observable<any> {
     return this.http.get(this.url + `admin/employee-categories/${publicId}`);
+  }
+
+  // leave entitlements
+  GetEmployeesForLeaveEntilements(page: number, size: number): Observable<any> {
+    return this.http.get(this.url + `employees?page=${page}&size=${size}`);
+  }
+
+  CreateLeaves(data: any): Observable<any> {
+    return this.http.post(this.url + 'admin/leave-entitlements', data);
+  }
+  getAllLeaves(page: number, size: number, filter: string = 'ALL'): Observable<any> {
+    return this.http.get(
+      `${this.url}admin/leave-entitlements?filter=${filter}&page=${page}&size=${size}`,
+    );
+  }
+  updateLeaves(publicId: string, data: any): Observable<any> {
+    return this.http.put(this.url + `admin/leave-entitlements/${publicId}`, data);
+  }
+
+  getWorkLeavesById(publicId: string): Observable<any> {
+    return this.http.get(this.url + `admin/leave-entitlements/${publicId}`);
+  }
+  getLeaveEntitlementById(publicId: string): Observable<any> {
+    return this.http.get(this.url + `admin/leave-entitlements/${publicId}`);
   }
 }

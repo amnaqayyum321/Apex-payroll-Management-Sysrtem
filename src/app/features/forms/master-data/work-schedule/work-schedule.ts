@@ -40,10 +40,7 @@ export class WorkSchedule implements OnInit {
     'SUNDAY'
   ];
 
-  workSchedule = {
-    payPeriodPublicId: '',
-    shiftPublicId: ''
-  };
+ 
 
   constructor(
     private loader: LoaderService,
@@ -95,7 +92,7 @@ export class WorkSchedule implements OnInit {
   createWorkSchedule() {
 
     const payload = {
-      payPeriodPublicId: this.workSchedule.payPeriodPublicId,
+payPeriodPublicId: this.payPeriodPublicId,
       remarks: this.remarks,
       active: this.active,
       days: this.days
