@@ -8,20 +8,20 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-belonging-types',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './belonging-types.html',
   styleUrl: './belonging-types.scss',
 })
 export class BelongingTypes {
-     code: string = '';
+  code: string = '';
   name: string = '';
   description: string = '';
-   disabled: boolean = false;
+  disabled: boolean = false;
   currentPage: number = 0; // page number
   pageSize: number = 100;
   publicId: string | null = null;
   isEditMode = false;
-    active: boolean = true;
+  active: boolean = true;
 
   constructor(
     private loader: LoaderService,
@@ -67,7 +67,6 @@ export class BelongingTypes {
       name: this.name,
       description: this.description,
       active: this.active,
-      
     };
     this.loader.show();
     this.disabled = true;
@@ -77,12 +76,12 @@ export class BelongingTypes {
         this.toastr.success('Employee Grade created successfully', 'Success');
         this.resetBelongingTypesForm();
         setTimeout(() => {
-          this.router.navigate(['/panel/forms/view-employees-grade-list']);
+          this.router.navigate(['/panel/forms/view-belonging-types-list']);
         }, 1500);
       },
       error: (error: any) => {
         this.loader.hide();
-          this.disabled = false;
+        this.disabled = false;
         this.toastr.error(
           error.error.message || 'Failed to create employee grade. Please try again.',
           'Error',
@@ -94,9 +93,8 @@ export class BelongingTypes {
     this.code = '';
     this.name = '';
     this.description = '';
-     this.active = true;
+    this.active = true;
     this.disabled = false;
-
   }
   cancel() {
     this.router.navigate(['/panel/forms/view-belonging-types-list']);
@@ -125,5 +123,4 @@ export class BelongingTypes {
       },
     });
   }
-
 }
