@@ -2,7 +2,7 @@
     <div class="user-card">
         <!-- Header -->
         <div class="card-header">
-            <h3>{{ isEditMode ? 'Update Shift ' : 'Create Shift' }}</h3>
+            <h3>{{ isEditMode ? 'Update Work Schedule ' : 'Create Work Schedule' }}</h3>
         </div>
         <div class="d-flex gap-2">
             <button class="reset-btn" (click)="resetShiftForm()">
@@ -16,7 +16,7 @@
             <div class="row">
                 <div class="col-12 d-flex justify-content-end align-items-center gap-2">
                     <label class="checkbox-container">
-  Actyive   
+  Active   
   <input
     type="checkbox"
     class="custom-checkbox"
@@ -33,7 +33,8 @@
                 <div class="col-md-6">
   <label class="form-label">Pay Period</label>
  <select [(ngModel)]="payPeriodPublicId"
-        name="payPeriodPublicId">
+        name="payPeriodPublicId"
+        (change)="onPayPeriodChange()">
 
   <option value="">Select Pay Period</option>
 
@@ -45,6 +46,41 @@
 </select>
 </div>
 
+<div class="row mt-3">
+  <div class="col-md-6">
+    <label class="form-label">Select Shifts</label>
+
+    <!-- Dropdown -->
+    <select class="form-control"
+            (change)="addShift($event)">
+      <option value="">Select Shift</option>
+
+      <option *ngFor="let s of shiftsList"
+              [value]="s.publicId">
+        {{ s.name }}
+      </option>
+
+    </select>
+
+    <!-- Selected Shifts List -->
+    <div class="selected-shifts mt-2" *ngIf="selectedShifts.length > 0">
+
+      <div class="shift-tag"
+           *ngFor="let shift of selectedShifts">
+
+        {{ shift.name }}
+
+        <span class="remove-btn"
+              (click)="removeShift(shift.publicId)">
+          ✖
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
                 
             </div>
 
@@ -66,35 +102,35 @@
                                 <th class="px-3 py-2">Work Date</th>
                                 <th class="px-3 py-2">Day Name</th>
                                 <th class="px-3 py-2">Day Type</th>
-                                <th class="px-3 py-2">Holiday Reason</th>
-                                <th class="px-3 py-2">Shift</th>
+                                <th class="px-3 py-2">Remarks</th>
                             </tr>
                         </thead>
 
-                        <tbody>
-<tr *ngFor="let day of days; let i = index">
+<tbody>
+<tr *ngFor="let day of days; let i = index  trackBy: trackByIndex" >
 
+  <!-- Work Date (Readonly) -->
   <td>
     <input type="date"
            [(ngModel)]="day.workDate"
            name="workDate{{i}}"
-           class="form-control">
+           class="form-control"
+           readonly>
   </td>
-  <!-- Week Day Dropdown -->
+
+  <!-- Day Name -->
   <td>
     <select class="form-control"
-            [(ngModel)]="day.weekDay"
-            name="weekDay{{i}}">
-      <option value="">Select Day</option>
+            [(ngModel)]="day.dayName"
+            name="dayName{{i}}">
       <option *ngFor="let d of weekDays"
               [value]="d">
         {{ d }}
       </option>
     </select>
   </td>
- 
 
-  <!-- Day Type Enum Dropdown -->
+  <!-- Day Type -->
   <td>
     <select class="form-control"
             [(ngModel)]="day.dayType"
@@ -106,32 +142,16 @@
     </select>
   </td>
 
-  <!-- Holiday Reason -->
+  <!-- Remarks -->
   <td>
     <input type="text"
-           [(ngModel)]="day.holidayReason"
-           name="holidayReason{{i}}"
+           [(ngModel)]="day.remarks"
+           name="remarks{{i}}"
            class="form-control">
   </td>
 
-  <!-- Shift Dropdown -->
-  <td>
- <select [(ngModel)]="day.shiftPublicId"
-        name="shiftPublicId{{i}}">
-
-  <option value="">Select Shift</option>
-
-  <option *ngFor="let s of shiftsList"
-          [value]="s.publicId">
-    {{ s.name }}
-  </option>
-
-</select>
-  </td>
-
 </tr>
-</tbody>
-                    </table>
+</tbody>          </table>
                 </div>
             </section>
 
@@ -141,7 +161,7 @@
                 <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
 
                 <button type="submit" class="submit-btn">
-                    {{ isEditMode ? 'Update Shift' : 'Create Shift' }}
+                    {{ isEditMode ? 'Update ' : 'Create ' }}
                 </button>
             </div>
 

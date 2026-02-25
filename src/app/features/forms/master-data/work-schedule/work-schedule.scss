@@ -436,3 +436,27 @@ table tbody tr td {
     transform: rotate(45deg) scale(1);
   }
 }
+
+
+
+.selected-shifts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.shift-tag {
+  background: #007bff;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.remove-btn {
+  cursor: pointer;
+  font-weight: bold;
+}
