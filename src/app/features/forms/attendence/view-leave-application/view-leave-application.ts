@@ -2,18 +2,18 @@ import { Component } from '@angular/core';
 import { FormsService } from '../../Services/forms';
 import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../../../../core/services/management-services/loader.service';
+import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-view-leaves',
-  imports: [CommonModule, FormsModule, RouterModule],
-  templateUrl: './view-leaves.html',
-  styleUrl: './view-leaves.scss',
+  selector: 'app-view-leave-application',
+  imports: [RouterModule, CommonModule, FormsModule],
+  templateUrl: './view-leave-application.html',
+  styleUrl: './view-leave-application.scss',
 })
-export class ViewLeaves {
-  LeavesList: any[] = [];
+export class ViewLeaveApplication {
+  LeavesApplicationList: any[] = [];
   totalItems: number = 0;
   totalPagesCount: number = 0;
 
@@ -25,7 +25,7 @@ export class ViewLeaves {
 
   currentPage = 1;
   itemsPerPage = 7;
-  paginatedLeavesList: any[] = [];
+  paginatedLeavesApplicationList: any[] = [];
   publicId: string | null = null;
   isEditMode = false;
 
@@ -44,19 +44,19 @@ export class ViewLeaves {
   loadLeaves() {
     this.loader.show();
     const backendPage = this.currentPage - 1;
-    this.formsService.getAllLeaves(backendPage, this.itemsPerPage, 'ALL').subscribe({
+    this.formsService.GetLeaveApplication(backendPage, this.itemsPerPage, 'ALL').subscribe({
       next: (response: any) => {
         this.loader.hide();
-        this.LeavesList = response.data;
-        console.log(this.LeavesList);
+        this.LeavesApplicationList = response.data;
+        console.log(this.LeavesApplicationList);
         this.totalItems = response.paginator.totalItems;
         this.totalPagesCount = response.paginator.totalPages;
         this.currentPage = response.paginator.currentPage + 1; // Backend 0-indexed
-        this.paginatedLeavesList = this.LeavesList;
+        this.paginatedLeavesApplicationList = this.LeavesApplicationList;
       },
       error: (error) => {
         this.loader.hide();
-        this.toastr.error('Error fetching leaves list');
+        this.toastr.error('Error fetching leaves Application list');
       },
     });
   }

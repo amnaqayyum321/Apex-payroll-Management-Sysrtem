@@ -14,7 +14,6 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './leaves.scss',
 })
 export class Leaves implements OnInit {
-
   employeePublicId: string = '';
   leaveTypePublicId: string = '';
   totalLeavesPerYear: number = 0;
@@ -49,25 +48,25 @@ export class Leaves implements OnInit {
     }
   }
 
-getEmployees() {
-  this.formsService
-    .GetEmployeesForLeaveEntilements(this.currentPage, this.pageSize)
-    .subscribe((res: any) => {
-      console.log('EMP RESPONSE:', res);
-      this.employees = res?.data?.content || res?.data || res?.content || res || [];
-      console.log('EMP ARRAY:', this.employees);
-    });
-}
+  getEmployees() {
+    this.formsService
+      .GetEmployeesForLeaveEntilements(this.currentPage, this.pageSize)
+      .subscribe((res: any) => {
+        console.log('EMP RESPONSE:', res);
+        this.employees = res?.data?.content || res?.data || res?.content || res || [];
+        console.log('EMP ARRAY:', this.employees);
+      });
+  }
 
-getLeaveTypes() {
-  this.formsService
-    .GetLeaveType(this.currentPage, this.pageSize, 'ACTIVE')
-    .subscribe((res: any) => {
-      console.log('LEAVE RESPONSE:', res);
-      this.leaveTypes = res?.data?.content || res?.data || res?.content || res || [];
-      console.log('LEAVE ARRAY:', this.leaveTypes);
-    });
-}
+  getLeaveTypes() {
+    this.formsService
+      .GetLeaveType(this.currentPage, this.pageSize, 'ACTIVE')
+      .subscribe((res: any) => {
+        console.log('LEAVE RESPONSE:', res);
+        this.leaveTypes = res?.data?.content || res?.data || res?.content || res || [];
+        console.log('LEAVE ARRAY:', this.leaveTypes);
+      });
+  }
 
   // 🔹 Create
   createLeave() {
@@ -81,7 +80,8 @@ getLeaveTypes() {
       leaveTypePublicId: this.leaveTypePublicId,
       totalLeavesPerYear: this.totalLeavesPerYear,
       remarks: this.remarks,
-active: this.active,     };
+      active: this.active,
+    };
 
     this.loader.show();
 
@@ -113,62 +113,62 @@ active: this.active,     };
   }
 
   // 🔹 Load Single (Edit Mode)
-loadSingleLeave() {
-  this.loader.show();
+  loadSingleLeave() {
+    this.loader.show();
 
-  this.formsService.getLeaveEntitlementById(this.publicId!).subscribe({
-    next: (res: any) => {
-      this.loader.hide();
+    this.formsService.getLeaveEntitlementById(this.publicId!).subscribe({
+      next: (res: any) => {
+        this.loader.hide();
 
-      const data = res?.data;   // ✅ REMOVE [0]
+        const data = res?.data; // ✅ REMOVE [0]
 
-      if (!data) {
-        this.toastr.error('No record found');
-        return;
-      }
+        if (!data) {
+          this.toastr.error('No record found');
+          return;
+        }
 
-      this.employeePublicId = data.employeePublicId;
-      this.leaveTypePublicId = data.leaveTypePublicId;
-      this.totalLeavesPerYear = data.totalLeavesPerYear;
-      this.remarks = data.remarks;
-      this.active = data.isActive;   // backend field
-    },
-    error: () => {
-      this.loader.hide();
-      this.toastr.error('Failed to load data');
-    },
-  });
-}
-
- updateLeave() {
-
-  if (!this.employeePublicId || !this.leaveTypePublicId) {
-    this.toastr.error('Employee and Leave Type are required');
-    return;
+        this.employeePublicId = data.employeePublicId;
+        this.leaveTypePublicId = data.leaveTypePublicId;
+        this.totalLeavesPerYear = data.totalLeavesPerYear;
+        this.remarks = data.remarks;
+        this.active = data.isActive; // backend field
+      },
+      error: () => {
+        this.loader.hide();
+        this.toastr.error('Failed to load data');
+      },
+    });
   }
 
-  const payload = {
-    employeePublicId: this.employeePublicId,
-    leaveTypePublicId: this.leaveTypePublicId,
-    totalLeavesPerYear: this.totalLeavesPerYear,
-    remarks: this.remarks,
-active: this.active,   };
+  updateLeave() {
+    if (!this.employeePublicId || !this.leaveTypePublicId) {
+      this.toastr.error('Employee and Leave Type are required');
+      return;
+    }
 
-  console.log("UPDATE PAYLOAD:", payload);
+    const payload = {
+      employeePublicId: this.employeePublicId,
+      leaveTypePublicId: this.leaveTypePublicId,
+      totalLeavesPerYear: this.totalLeavesPerYear,
+      remarks: this.remarks,
+      active: this.active,
+    };
 
-  this.loader.show();
+    console.log('UPDATE PAYLOAD:', payload);
 
-  this.formsService.updateLeaves(this.publicId!, payload).subscribe({
-    next: () => {
-      this.loader.hide();
-      this.toastr.success('Updated Successfully');
-      this.router.navigate(['/panel/forms/view-leaves']);
-    },
-    error: (err) => {
-      this.loader.hide();
-      console.log("ERROR:", err);
-      this.toastr.error(err.error?.message || 'Update failed');
-    },
-  });
-}
+    this.loader.show();
+
+    this.formsService.updateLeaves(this.publicId!, payload).subscribe({
+      next: () => {
+        this.loader.hide();
+        this.toastr.success('Updated Successfully');
+        this.router.navigate(['/panel/forms/view-leaves']);
+      },
+      error: (err) => {
+        this.loader.hide();
+        console.log('ERROR:', err);
+        this.toastr.error(err.error?.message || 'Update failed');
+      },
+    });
+  }
 }

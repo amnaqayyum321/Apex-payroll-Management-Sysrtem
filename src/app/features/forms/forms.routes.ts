@@ -32,11 +32,20 @@ import { JobTitle } from './master-data/job-title/job-title';
 import { ViewJobTitleList } from './master-data/view-job-title-list/view-job-title-list';
 import { IDType } from './master-data/id-type/id-type';
 import { ViewIDTypeList } from './master-data/view-id-type-list/view-id-type-list';
+import { ViewLeaveApplication } from './attendence/view-leave-application/view-leave-application';
 
 export const routes: Routes = [
   {
     path: 'leave-application',
     component: LeaveApplication,
+  },
+  {
+    path: 'leave-application/:id',
+    component: LeaveApplication,
+  },
+  {
+    path: 'view-leave-application',
+    component: ViewLeaveApplication,
   },
   {
     path: 'leaves-master-data',

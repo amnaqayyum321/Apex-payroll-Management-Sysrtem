@@ -22,7 +22,7 @@ export class Department {
   pageSize: number = 100;
   publicId: string | null = null;
   isEditMode = false;
-  active: boolean = true;
+  active: boolean = false;
   constructor(
     private loader: LoaderService,
     private FormSv: FormsService,
@@ -102,7 +102,7 @@ export class Department {
       code: this.Code,
       name: this.Name,
       description: this.description,
-      active: this.active ? true : false,
+      active: this.active,
     };
     this.loader.show();
     this.FormSv.UpdateDepartment(this.publicId!, payload).subscribe({

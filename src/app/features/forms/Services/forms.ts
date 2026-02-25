@@ -262,4 +262,20 @@ export class FormsService {
   getIDTypeById(publicId: string): Observable<any> {
     return this.http.get(this.url + `admin/id-types/${publicId}`);
   }
+  //Leave Application
+  GetLeaveApplication(page: number, size: number, filter: string = 'ALL'): Observable<any> {
+    return this.http.get(
+      this.url + `payroll/leave-applications?filter=${filter}&page=${page}&size=${size}`,
+    );
+  }
+
+  CreateLeaveApplication(data: any): Observable<any> {
+    return this.http.post(this.url + 'payroll/leave-applications', data);
+  }
+  UpdateLeaveApplication(PublicId: string, data: any): Observable<any> {
+    return this.http.put(this.url + `payroll/leave-applications/${PublicId}`, data);
+  }
+  getLeaveApplicationById(publicId: string): Observable<any> {
+    return this.http.get(this.url + `payroll/leave-applications/${publicId}`);
+  }
 }

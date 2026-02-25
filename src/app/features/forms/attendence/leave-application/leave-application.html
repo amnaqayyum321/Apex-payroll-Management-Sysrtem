@@ -1,1 +1,93 @@
-<p>leave-application works!</p>
+<div class="user-form-wrapper">
+  <div class="user-card">
+    <!-- Header -->
+    <div class="card-header">
+      <h3>{{ isEditMode ? 'Update leave-application' : 'Create leave-application' }}</h3>
+    </div>
+    <div class="header-divider"></div>
+
+    <form class="user-form">
+      <!-- <div class="row">
+        <div class="col-12 d-flex justify-content-end align-items-center gap-2">
+          <label class="checkbox-container">
+            Active
+            <input type="checkbox" class="custom-checkbox" [(ngModel)]="active" name="active" />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      </div> -->
+      <!-- ROW 1 -->
+      <div class="row">
+        <div class="col-md-6">
+          <label class="form-label">Name</label>
+          <input
+            type="text"
+            placeholder="Enter Name..."
+            [(ngModel)]="name"
+            class="form-control"
+            name="name"
+          />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Leave Type</label>
+          <select
+            type="text"
+            class="form-select"
+            [(ngModel)]="leaveTypePublicId"
+            name="leaveTypePublicId"
+          >
+            <option *ngFor="let leave of LeaveTypeList" [value]="leave.publicId">
+              {{ leave.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <label class="form-label">Employee </label>
+          <select class="form-select" [(ngModel)]="employeePublicId" name="employeePublicId">
+            <option *ngFor="let emp of EmployeeList" [value]="emp.publicId">
+              {{ emp.fullName }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Leave Mode </label>
+          <select class="form-select" [(ngModel)]="leaveMode" name="leaveMode">
+            <option value="FULL_DAY">FULL_DAY</option>
+            <option value="HALF_DAY">HALF_DAY</option>
+            <option value="QUARTER_DAY">QUARTER_DAY</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <label class="form-label">Start Date </label>
+          <input type="date" class="form-control" [(ngModel)]="fromDate" name="fromDate" />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">End Date </label>
+          <input type="date" class="form-control" [(ngModel)]="toDate" name="toDate" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <label class="form-label" for="remarks">Remarks</label>
+          <textarea class="form-control" name="remarks" id="remarks" [(ngModel)]="remarks">
+          </textarea>
+        </div>
+      </div>
+      <!-- Footer buttons -->
+      <div class="form-actions">
+        <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
+        <button
+          type="submit"
+          class="submit-btn"
+          (click)="isEditMode ? updateLeaveApplication() : createleaveapplication()"
+        >
+          {{ isEditMode ? 'Update' : 'Create' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
