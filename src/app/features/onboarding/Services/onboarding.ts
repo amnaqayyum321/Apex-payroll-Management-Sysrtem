@@ -103,9 +103,9 @@ export class OnboardingService {
   CreatenewJobRequisition(data: any): Observable<any> {
     return this.http.post(this.url + 'recruitment/job-requisitions', data);
   }
-   getAllJobRequisition(page: number, size: number, status: string = 'ALL'): Observable<any> {
+   getAllJobRequisition(page: number, size: number): Observable<any> {
     return this.http.get(
-      `${this.url}recruitment/job-requisitions?status=${status}&page=${page}&size=${size}`,
+      `${this.url}recruitment/job-requisitions?page=${page}&size=${size}`,
     );
   }
   updateJobRequisition(publicId: string, data: any): Observable<any> {
