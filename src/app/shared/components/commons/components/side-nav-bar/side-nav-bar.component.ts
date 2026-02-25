@@ -109,6 +109,7 @@ export class SideNavBarComponent implements OnInit {
         },
       ],
     },
+    // masterdata
     {
       label: 'Master Data',
       icon: 'fa-solid fa-database',
@@ -256,23 +257,83 @@ export class SideNavBarComponent implements OnInit {
       ],
     },
 
- 
 
     // onboarding
-    {
+     {
       label: 'Onboarding',
       icon: 'fa-solid fa-user-plus',
       isVisible: true,
       collapsed: true,
       children: [
         {
+          label: 'Recruitment',
+          icon: 'fa-solid fa-user-tie',
+          isVisible: true,
+          collapsed: true,
+          children: [
+             {
           label: 'Requistion',
           route: 'onboarding/view-req-list',
           icon: 'fa-solid fa-file-circle-plus',
           isVisible: true,
         },
+         {
+          label: 'Candidate',
+          route: 'onboarding/view-candidate-list',
+          icon: 'fa-solid fa-user',
+          isVisible: true,
+        },
+         {
+          label: 'Interview Panel',
+          route: 'onboarding/view-interview-panel-list',
+          icon: 'fa-solid fa-handshake',
+          isVisible: true,
+        },
+          {
+          label: 'Interview',
+          route: 'onboarding/view-interviews-list',
+          icon: 'fa-solid fa-calendar-check',
+          isVisible: true,
+        },
+          {
+          label: 'Interview Feedback',
+          route: 'onboarding/view-interview-feedback-list',
+          icon: 'fa-solid fa-file-lines',
+          isVisible: true,
+        },
+
+          
+          ],
+        },
+        {
+          label: 'Selection',
+          icon: 'fa-solid fa-check-circle',
+          isVisible: true,
+          collapsed: true,
+          children: [
+            {
+              label: 'Candidate Application',
+              route: 'onboarding/view-candidate-application-list',
+              isVisible: true,
+              icon: 'fa-solid fa-stream',
+            },
+              {
+              label: 'Offers',
+              route: 'onboarding/view-offers-list',
+              isVisible: true,
+              icon: 'fa-solid fa-envelope-open-text',
+            },
+            
+            
+          ],
+        }
+        
       ],
     },
+
+ 
+
+  
 
     // Payroll Process Start
     {
