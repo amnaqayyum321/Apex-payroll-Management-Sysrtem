@@ -36,15 +36,12 @@
             <td class="px-3 py-3 font-medium">{{ user.employeeName }}</td>
             <td class="px-3 py-3 font-medium">{{ user.employeeCode }}</td>
             <td class="px-3 py-3 font-medium">{{ user.leaveTypeName }}</td>
+            <td class="px-3 py-3 font-medium">{{ user.totalLeavesPerYear }}</td>
 
-            <td class="px-3 py-3 font-medium">
-              <span
-                class="status-badge"
-                [ngClass]="user.isActive ? 'active-badge' : 'inactive-badge'"
-              >
-                {{ user.isActive ? 'Active' : 'Inactive' }}
-              </span>
-            </td>
+
+
+
+            
             <!-- <td class="px-3 py-3 font-medium">
               <i
                 class="fa-solid fa-pen-to-square"

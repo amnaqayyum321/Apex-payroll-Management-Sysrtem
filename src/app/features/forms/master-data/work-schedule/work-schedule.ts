@@ -159,6 +159,7 @@ updateWorkSchedule() {
 
   this.formsService.getWorkScheduleById(this.publicId!).subscribe({
     next: (res: any) => {
+      
 
       this.loader.hide();
 
@@ -172,12 +173,15 @@ updateWorkSchedule() {
       this.shiftPublicIds = data.shifts.map((s: any) => s.publicId);
       this.selectedShifts = data.shifts;
 
-this.days = data.days.map((d: any) => ({
+const mappedDays = data.days.map((d: any) => ({
   workDate: d.workDate,
   dayName: d.dayName,
   dayType: d.dayType,
   remarks: d.remarks || ''
-}));    },
+}));
+
+this.days = this.removeDuplicateDates(mappedDays);
+   },
     error: () => {
       this.loader.hide();
       this.toastr.error('Failed to load');

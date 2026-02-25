@@ -202,9 +202,9 @@ export class SideNavBarComponent implements OnInit {
             },
             {
               label: 'Leave Application',
-              route: 'forms/view-leave-application',
+              route: 'forms/leave-application',
               icon: 'fa-solid fa-file-signature',
-              isVisible: true,
+              isVisible: false,
             },
             {
               label: 'Leave Type',
@@ -256,6 +256,8 @@ export class SideNavBarComponent implements OnInit {
       ],
     },
 
+ 
+
     // onboarding
     {
       label: 'Onboarding',
@@ -265,25 +267,9 @@ export class SideNavBarComponent implements OnInit {
       children: [
         {
           label: 'Requistion',
-          route: 'onboarding/create-requisition',
+          route: 'onboarding/view-req-list',
           icon: 'fa-solid fa-file-circle-plus',
           isVisible: true,
-        },
-      ],
-    },
-
-    // onboarding
-    {
-      label: 'Onboarding',
-      icon: 'fa-solid fa-user-plus',
-      isVisible: false,
-      collapsed: true,
-      children: [
-        {
-          label: 'Requistion',
-          route: 'onboarding/create-requisition',
-          icon: 'fa-solid fa-file-circle-plus',
-          isVisible: false,
         },
       ],
     },
