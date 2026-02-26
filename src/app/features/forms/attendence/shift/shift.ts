@@ -14,7 +14,6 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './shift.scss',
 })
 export class Shift implements OnInit {
-
   email: string = '';
   code: string = '';
   name: string = '';
@@ -24,7 +23,7 @@ export class Shift implements OnInit {
   pageSize: number = 100;
   publicId: string | null = null;
   isEditMode = false;
-  active: boolean = true;
+  active: boolean = false;
   days: any[] = [];
 
   constructor(
@@ -33,7 +32,7 @@ export class Shift implements OnInit {
     private toastr: ToastrService,
     private router: Router,
     private route: ActivatedRoute,
-  ) { }
+  ) {}
   ngOnInit() {
     this.publicId = this.route.snapshot.paramMap.get('id');
 
@@ -45,17 +44,8 @@ export class Shift implements OnInit {
     }
   }
 
-
   initializeDays() {
-    const weekDays = [
-      'MONDAY',
-      'TUESDAY',
-      'WEDNESDAY',
-      'THURSDAY',
-      'FRIDAY',
-      'SATURDAY',
-      'SUNDAY',
-    ];
+    const weekDays = ['MONDAY', 'TUESDAY', 'WEDNESDAY', 'THURSDAY', 'FRIDAY', 'SATURDAY', 'SUNDAY'];
 
     this.days = weekDays.map((day) => ({
       weekDay: day,
@@ -101,8 +91,7 @@ export class Shift implements OnInit {
       name: this.name,
       remarks: this.remarks,
       active: this.active,
-      days: this.days
-
+      days: this.days,
     };
     this.loader.show();
     this.disabled = true;
@@ -144,7 +133,7 @@ export class Shift implements OnInit {
       name: this.name,
       remarks: this.remarks,
       active: this.active,
-      days: this.days
+      days: this.days,
     };
 
     this.loader.show();
@@ -162,5 +151,4 @@ export class Shift implements OnInit {
       },
     });
   }
-
 }

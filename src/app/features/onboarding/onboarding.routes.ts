@@ -14,68 +14,89 @@ import { ViewInterviewFeedbackList } from './Onboarding-forms/view-interview-fee
 import { Offer } from './Onboarding-forms/offer/offer';
 import { ViewOffersList } from './Onboarding-forms/view-offers-list/view-offers-list';
 
-
 export const routes: Routes = [
   {
     path: 'create-requisition',
     component: CreateRequistion,
   },
-    {
+  {
+    path: 'create-requisition/:id',
+    component: CreateRequistion,
+  },
+  {
     path: 'view-req-list',
     component: ViewReqList,
   },
-   {
+  {
     path: 'candidate',
     component: Candidate,
   },
-    {
+  {
+    path: 'candidate/:id',
+    component: Candidate,
+  },
+  {
     path: 'view-candidate-list',
     component: ViewCandidateList,
   },
-   {
+  {
     path: 'interviews',
     component: Interviews,
   },
-    {
+  {
+    path: 'interviews/:id',
+    component: Interviews,
+  },
+  {
     path: 'view-interviews-list',
     component: ViewInterviewsList,
   },
-   {
+  {
     path: 'candidate-application',
     component: CandidateApplication,
   },
-    {
+  {
+    path: 'candidate-application/:id',
+    component: CandidateApplication,
+  },
+  {
     path: 'view-candidate-application-list',
     component: ViewCandidateApplicationList,
   },
-   {
+  {
     path: 'interview-panel',
     component: InterviewPanel,
   },
-   {
+  {
     path: 'interview-panel/:id',
     component: InterviewPanel,
   },
-    {
+  {
     path: 'view-interview-panel-list',
     component: ViewInterviewPannelList,
   },
-  
-   {
+  {
     path: 'interview-feedback',
     component: InterviewFeedback,
   },
-    {
+  {
+    path: 'interview-feedback/:id',
+    component: InterviewFeedback,
+  },
+  {
     path: 'view-interview-feedback-list',
     component: ViewInterviewFeedbackList,
   },
-   {
+  {
     path: 'offers',
     component: Offer,
   },
-    {
+  {
+    path: 'offers/:id',
+    component: Offer,
+  },
+  {
     path: 'view-offers-list',
     component: ViewOffersList,
-  }
-  
+  },
 ];

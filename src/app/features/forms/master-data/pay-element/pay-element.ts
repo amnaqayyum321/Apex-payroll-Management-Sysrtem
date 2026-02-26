@@ -24,7 +24,7 @@ export class PayElement {
   pageSize: number = 100;
   publicId: string | null = null;
   isEditMode = false;
-  active: boolean = true;
+  active: boolean = false;
   taxable: boolean = false;
   elementTypes = ['ADDITION', 'DEDUCTION'];
   elementNatures = ['FIXED', 'VARIABLE'];

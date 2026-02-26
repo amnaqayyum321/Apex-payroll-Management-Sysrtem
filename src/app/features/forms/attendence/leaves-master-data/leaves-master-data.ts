@@ -21,7 +21,7 @@ export class LeavesMasterData {
   isCarryForward: boolean = false;
   isEncashable: boolean = false;
   remarks: string = '';
-  active: boolean = true;
+  active: boolean = false;
   disabled: boolean = false;
   publicId: string | null = null;
   isEditMode: boolean = false;

@@ -16,12 +16,12 @@ export class Designation {
   code: string = '';
   name: string = '';
   description: string = '';
-   disabled: boolean = false;
+  disabled: boolean = false;
   currentPage: number = 0; // page number
   pageSize: number = 100;
   publicId: string | null = null;
   isEditMode = false;
-    active: boolean = true;
+  active: boolean = false;
 
   constructor(
     private loader: LoaderService,
@@ -67,7 +67,6 @@ export class Designation {
       name: this.name,
       description: this.description,
       active: this.active,
-      
     };
     this.loader.show();
     this.disabled = true;
@@ -82,7 +81,7 @@ export class Designation {
       },
       error: (error: any) => {
         this.loader.hide();
-          this.disabled = false;
+        this.disabled = false;
         this.toastr.error(
           error.error.message || 'Failed to create designation. Please try again.',
           'Error',
@@ -94,9 +93,8 @@ export class Designation {
     this.code = '';
     this.name = '';
     this.description = '';
-     this.active = true;
+    this.active = true;
     this.disabled = false;
-
   }
   cancel() {
     this.router.navigate(['/panel/forms/view-designations']);
