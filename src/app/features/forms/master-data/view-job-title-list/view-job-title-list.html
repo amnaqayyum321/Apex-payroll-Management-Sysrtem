@@ -5,14 +5,13 @@
       <span style="font-weight: 700; color: #566f9e">-</span>
       <span>View All Job Titles</span>
     </div>
-    
+
     <div>
       <button class="create-btn" [routerLink]="['/panel/forms/job-title']">
         <i class="fa-solid fa-plus icon"></i>
         Create Job Title
       </button>
     </div>
-    
   </div>
   <section class="table-main-div">
     <div class="rounded-2xl text-gray-200 overflow-x-auto pt-4">
@@ -20,8 +19,8 @@
         <thead>
           <tr class="text-gray-400 text-left text-xs uppercase tracking-wider">
             <th class="px-3 py-2">#</th>
-            <th class="px-3 py-2">Designation Code</th>
-            <th class="px-3 py-2">Designation Name</th>
+            <th class="px-3 py-2">Job title Code</th>
+            <th class="px-3 py-2">Job title Name</th>
             <th class="px-3 py-2">Status</th>
             <th class="px-3 py-2">Actions</th>
           </tr>
@@ -36,13 +35,13 @@
             <td class="px-3 py-3 font-medium">{{ user.code }}</td>
             <td class="px-3 py-3 font-medium">{{ user.name }}</td>
             <td class="px-3 py-3 font-medium">
-  <span
-    class="status-badge"
-    [ngClass]="user.isActive ? 'active-badge' : 'inactive-badge'"
-  >
-    {{ user.isActive ? 'Active' : 'Inactive' }}
-  </span>
-</td>
+              <span
+                class="status-badge"
+                [ngClass]="user.isActive ? 'active-badge' : 'inactive-badge'"
+              >
+                {{ user.isActive ? 'Active' : 'Inactive' }}
+              </span>
+            </td>
             <td class="px-3 py-3 font-medium">
               <!-- Edit -->
               <i

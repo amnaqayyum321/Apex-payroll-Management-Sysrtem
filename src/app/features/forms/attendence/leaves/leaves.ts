@@ -18,7 +18,7 @@ export class Leaves implements OnInit {
   leaveTypePublicId: string = '';
   totalLeavesPerYear: number = 0;
   remarks: string = '';
-  active: boolean = true;
+  active: boolean = false;
 
   employees: any[] = [];
   leaveTypes: any[] = [];

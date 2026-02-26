@@ -35,9 +35,8 @@
 
             <td class="px-3 py-3 font-medium">
               <span
-                [style.background-color]="leaveType.isActive === true ? '#dcfce7' : '#fee2e2'"
-                [style.color]="leaveType.isActive === true ? '#16a34a' : '#dc2626'"
-                style="padding: 4px 10px; border-radius: 20px; font-weight: bold; font-size: 12px"
+                class="status-badge"
+                [ngClass]="leaveType.isActive ? 'active-badge' : 'inactive-badge'"
               >
                 {{ leaveType.isActive ? 'Active' : 'Inactive' }}
               </span>

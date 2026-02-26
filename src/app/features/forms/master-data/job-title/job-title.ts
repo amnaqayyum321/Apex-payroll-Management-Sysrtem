@@ -8,7 +8,7 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-job-title',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './job-title.html',
   styleUrl: './job-title.scss',
 })
@@ -16,12 +16,12 @@ export class JobTitle {
   code: string = '';
   name: string = '';
   description: string = '';
-   disabled: boolean = false;
+  disabled: boolean = false;
   currentPage: number = 0; // page number
   pageSize: number = 100;
   publicId: string | null = null;
   isEditMode = false;
-    active: boolean = true;
+  active: boolean = false;
 
   constructor(
     private loader: LoaderService,
@@ -67,7 +67,6 @@ export class JobTitle {
       name: this.name,
       description: this.description,
       active: this.active,
-      
     };
     this.loader.show();
     this.disabled = true;
@@ -77,12 +76,12 @@ export class JobTitle {
         this.toastr.success('Job Title created successfully', 'Success');
         this.resetJobTitleForm();
         setTimeout(() => {
-          this.router.navigate(['/panel/forms/view-designations']);
+          this.router.navigate(['/panel/forms/view-job-title-list']);
         }, 1500);
       },
       error: (error: any) => {
         this.loader.hide();
-          this.disabled = false;
+        this.disabled = false;
         this.toastr.error(
           error.error.message || 'Failed to create Job Title. Please try again.',
           'Error',
@@ -94,9 +93,8 @@ export class JobTitle {
     this.code = '';
     this.name = '';
     this.description = '';
-     this.active = true;
+    this.active = true;
     this.disabled = false;
-
   }
   cancel() {
     this.router.navigate(['/panel/forms/view-job-title-list']);
@@ -125,5 +123,4 @@ export class JobTitle {
       },
     });
   }
-
 }

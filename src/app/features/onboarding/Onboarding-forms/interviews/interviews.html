@@ -1,1 +1,192 @@
-<p>interviews works!</p>
+<div class="user-form-wrapper">
+  <div class="user-card">
+    <!-- Header -->
+    <div class="card-header">
+      <h3>{{ isEditMode ? 'Update Interview' : 'Create Interview' }}</h3>
+    </div>
+    <div class="header-divider"></div>
+
+    <form class="user-form">
+      <!-- ROW 1: Code & Name -->
+      <div class="row">
+        <div class="col-md-6">
+          <label class="form-label">Code <span class="text-danger">*</span></label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter Code..."
+            [(ngModel)]="code"
+            name="code"
+          />
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Name <span class="text-danger">*</span></label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter Name..."
+            [(ngModel)]="name"
+            name="name"
+          />
+        </div>
+      </div>
+
+      <!-- ROW 2: Application & Remarks -->
+      <div class="row">
+        <div class="col-md-6">
+          <label class="form-label">Application <span class="text-danger">*</span></label>
+          <select
+            class="form-control"
+            [(ngModel)]="applicationPublicId"
+            name="applicationPublicId"
+            (ngModelChange)="onApplicationChange()"
+          >
+            <option value="">-- Select Application --</option>
+            <option *ngFor="let app of applicationList" [value]="app.publicId">
+              {{ app.candidateName }}
+            </option>
+          </select>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label">Remarks</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter Remarks..."
+            [(ngModel)]="remarks"
+            name="remarks"
+          />
+        </div>
+      </div>
+
+      <!-- Sessions Header -->
+      <div class="header-divider mt-3"></div>
+      <div class="d-flex justify-content-between align-items-center my-3">
+        <h5 class="mb-0">
+          Interview Sessions
+          <span class="badge bg-primary ms-2">{{ sessions.length }}</span>
+        </h5>
+        <button type="button" class="submit-btn" (click)="addSession()">+ Add Session</button>
+      </div>
+
+      <!-- Sessions Loop -->
+      <div *ngFor="let session of sessions; let i = index">
+        <div class="mb-3 p-3 border rounded">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h6 class="mb-0">Session {{ i + 1 }}</h6>
+            <button type="button" class="cancel-btn" (click)="removeSession(i)">Remove</button>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <label class="form-label">Panel</label>
+              <select
+                class="form-control"
+                [(ngModel)]="session.panelPublicId"
+                [name]="'panelPublicId_' + i"
+              >
+                <option value="">-- Select Panel --</option>
+                <option *ngFor="let panel of panelList" [value]="panel.publicId">
+                  {{ panel.name }}
+                </option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Interview Date</label>
+              <input
+                type="date"
+                class="form-control"
+                [(ngModel)]="session.interviewDate"
+                [name]="'interviewDate_' + i"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <label class="form-label">Start Time</label>
+              <input
+                type="time"
+                class="form-control"
+                [(ngModel)]="session.startTime"
+                [name]="'startTime_' + i"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">End Time</label>
+              <input
+                type="time"
+                class="form-control"
+                [(ngModel)]="session.endTime"
+                [name]="'endTime_' + i"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <label class="form-label">Location</label>
+              <select class="form-control" [(ngModel)]="session.location" [name]="'location_' + i">
+                <option *ngFor="let loc of locationOptions" [value]="loc">{{ loc }}</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Meeting URL</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter Meeting URL..."
+                [(ngModel)]="session.meetingUrl"
+                [name]="'meetingUrl_' + i"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <label class="form-label">Result</label>
+              <select class="form-control" [(ngModel)]="session.result" [name]="'result_' + i">
+                <option *ngFor="let res of resultOptions" [value]="res">{{ res }}</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Status</label>
+              <select class="form-control" [(ngModel)]="session.status" [name]="'status_' + i">
+                <option *ngFor="let st of statusOptions" [value]="st">{{ st }}</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Session ROW 5: Line Number & Remarks -->
+          <div class="row">
+            <div class="col-md-6">
+              <label class="form-label">Line Number</label>
+              <input
+                type="number"
+                class="form-control"
+                placeholder="Enter Line Number..."
+                [(ngModel)]="session.lineNumber"
+                [name]="'lineNumber_' + i"
+                min="0"
+              />
+            </div>
+            <div class="col-md-6">
+              <label class="form-label">Session Remarks</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Enter Session Remarks..."
+                [(ngModel)]="session.remarks"
+                [name]="'sessionRemarks_' + i"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Buttons -->
+      <div class="form-actions">
+        <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
+        <button type="button" class="submit-btn" [disabled]="disabled" (click)="saveInterview()">
+          {{ isEditMode ? 'Add Session & Update' : 'Create Interview' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

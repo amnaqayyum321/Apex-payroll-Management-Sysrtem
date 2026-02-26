@@ -1,1 +1,152 @@
-<p>view-interviews-list works!</p>
+<section class="container-fluid p-0">
+  <div class="d-flex justify-content-between mb-3">
+    <div class="page-title">
+      <i class="fa-solid fa-house"></i>
+      <span style="font-weight: 700; color: #566f9e">-</span>
+      <span>View All Interview</span>
+    </div>
+    <div>
+      <button class="create-btn" [routerLink]="['/panel/onboarding/interviews']">
+        <i class="fa-solid fa-plus icon"></i>
+        Create Interview
+      </button>
+    </div>
+  </div>
+
+  <section class="table-main-div">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Candidate</th>
+            <th>Requisition</th>
+            <th>Remarks</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let interview of paginatedInterviewList; let i = index">
+            <!-- Main Row -->
+            <tr>
+              <td>{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+              <td>{{ interview.code }}</td>
+              <td>{{ interview.name }}</td>
+              <td>{{ interview.candidateName }}</td>
+              <td>{{ interview.requisitionCode }}</td>
+              <td>{{ interview.remarks }}</td>
+              <td>
+                <span
+                  class="status-badge"
+                  [ngClass]="{
+                    'approved-badge': interview.status === 'SCHEDULED',
+                    'pending-badge': interview.status === 'PENDING',
+                    'rejected-badge': interview.status === 'CANCELLED',
+                  }"
+                >
+                  {{ interview.status }}
+                </span>
+              </td>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <button
+                    class="btn btn-sm btn-outline-info"
+                    (click)="toggleSessions(interview.publicId)"
+                  >
+                    <i class="fa-solid fa-list me-1"></i>
+                    Sessions
+                    <span class="badge bg-primary ms-1">{{ interview.sessions?.length || 0 }}</span>
+                  </button>
+                  <i
+                    class="fa-solid fa-pen-to-square"
+                    style="color: #4ade80; cursor: pointer; font-size: 16px"
+                    [routerLink]="['/panel/onboarding/interviews', interview.publicId]"
+                  >
+                  </i>
+                </div>
+              </td>
+            </tr>
+
+            <!-- Sessions Expandable Row -->
+            <tr *ngIf="expandedInterviewId === interview.publicId" class="table-secondary">
+              <td colspan="8" class="p-0">
+                <div class="p-3">
+                  <h6 class="mb-3 fw-semibold">
+                    <i class="fa-solid fa-list me-2"></i>Sessions for {{ interview.name }}
+                  </h6>
+                  <table class="table table-bordered table-sm mb-0">
+                    <thead class="table-dark">
+                      <tr>
+                        <th>#</th>
+                        <th>Panel</th>
+                        <th>Date</th>
+                        <th>Start</th>
+                        <th>End</th>
+                        <th>Location</th>
+                        <th>Result</th>
+                        <th>Status</th>
+                        <th>Remarks</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let session of interview.sessions; let j = index">
+                        <td>{{ j + 1 }}</td>
+                        <td>{{ session.panelName }}</td>
+                        <td>{{ session.interviewDate }}</td>
+                        <td>{{ session.startTime }}</td>
+                        <td>{{ session.endTime }}</td>
+                        <td>{{ session.location }}</td>
+                        <td>
+                          <span
+                            class="status-badge"
+                            [ngClass]="{
+                              'approved-badge': session.result === 'PASSED',
+                              'pending-badge': session.result === 'SCHEDULED',
+                              'rejected-badge': session.result === 'FAILED',
+                              'draft-badge': session.result === 'CANCELLED',
+                            }"
+                          >
+                            {{ session.result }}
+                          </span>
+                        </td>
+                        <td>{{ session.status }}</td>
+                        <td>{{ session.remarks }}</td>
+                      </tr>
+                      <tr *ngIf="!interview.sessions || interview.sessions.length === 0">
+                        <td colspan="9" class="text-center text-muted">No sessions found</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Pagination -->
+    <div class="d-flex justify-content-end mt-3 me-3">
+      <nav aria-label="Page navigation">
+        <ul class="pagination">
+          <li class="page-item" [class.disabled]="currentPage === 1">
+            <a class="page-link" (click)="changePage(currentPage - 1)">&laquo;</a>
+          </li>
+          <li
+            class="page-item"
+            *ngFor="let page of totalPagesArray"
+            [class.active]="page === currentPage"
+          >
+            <a class="page-link" (click)="changePage(page)">{{ page }}</a>
+          </li>
+          <li class="page-item" [class.disabled]="currentPage === totalPages">
+            <a class="page-link" (click)="changePage(currentPage + 1)">&raquo;</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </section>
+</section>

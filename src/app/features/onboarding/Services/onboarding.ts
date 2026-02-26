@@ -15,10 +15,8 @@ export class OnboardingService {
   CreatenewCandidateApplication(data: any): Observable<any> {
     return this.http.post(this.url + 'recruitment/applications', data);
   }
-  getAllCandidateApplications(page: number, size: number, status: string = 'ALL'): Observable<any> {
-    return this.http.get(
-      `${this.url}recruitment/applications?status=${status}&page=${page}&size=${size}`,
-    );
+  getAllCandidateApplications(page: number, size: number): Observable<any> {
+    return this.http.get(`${this.url}recruitment/applications?&page=${page}&size=${size}`);
   }
   updateCandidateApplication(publicId: string, data: any): Observable<any> {
     return this.http.put(this.url + `recruitment/applications/${publicId}`, data);
@@ -28,30 +26,26 @@ export class OnboardingService {
     return this.http.get(this.url + `recruitment/applications/${publicId}`);
   }
 
-
-    // INTERVIEWS 
+  // INTERVIEWS
   CreatenewInterviews(data: any): Observable<any> {
     return this.http.post(this.url + 'recruitment/interviews', data);
   }
-   getAllInterviews(page: number, size: number, status: string = 'ALL'): Observable<any> {
-    return this.http.get(
-      `${this.url}recruitment/interviews?status=${status}&page=${page}&size=${size}`,
-    );
+  getAllInterviews(page: number, size: number): Observable<any> {
+    return this.http.get(`${this.url}recruitment/interviews?&page=${page}&size=${size}`);
   }
   updateInterviews(publicId: string, data: any): Observable<any> {
     return this.http.put(this.url + `recruitment/interviews/${publicId}`, data);
   }
 
-  getInterviewsById(publicId: string): Observable<any> {
-    return this.http.get(this.url + `recruitment/interviews/${publicId}`);
+  getInterviewsById(applicationPublicId: string): Observable<any> {
+    return this.http.get(this.url + `recruitment/interviews/${applicationPublicId}`);
   }
-  
 
   // INTERVIEW PANEL
-   CreatenewInterviewPanel(data: any): Observable<any> {
+  CreatenewInterviewPanel(data: any): Observable<any> {
     return this.http.post(this.url + 'recruitment/interview-panels', data);
   }
-   getAllInterviewPanel(page: number, size: number, filter: string = 'ALL'): Observable<any> {
+  getAllInterviewPanel(page: number, size: number, filter: string = 'ALL'): Observable<any> {
     return this.http.get(
       `${this.url}recruitment/interview-panels?filter=${filter}&page=${page}&size=${size}`,
     );
@@ -65,10 +59,10 @@ export class OnboardingService {
   }
 
   // OFFERS
-   CreatenewOffer(data: any): Observable<any> {
+  CreatenewOffer(data: any): Observable<any> {
     return this.http.post(this.url + 'recruitment/offers', data);
   }
-   getAllOffer(page: number, size: number, status: string = 'ALL'): Observable<any> {
+  getAllOffer(page: number, size: number, status: string = 'ALL'): Observable<any> {
     return this.http.get(
       `${this.url}recruitment/offers?status=${status}&page=${page}&size=${size}`,
     );
@@ -81,12 +75,11 @@ export class OnboardingService {
     return this.http.get(this.url + `recruitment/offers/${publicId}`);
   }
 
-
-    // CANDIDATES
-   CreatenewCandidate(data: any): Observable<any> {
+  // CANDIDATES
+  CreatenewCandidate(data: any): Observable<any> {
     return this.http.post(this.url + 'recruitment/candidates', data);
   }
-   getAllCandidate(page: number, size: number, filter: string = 'ALL'): Observable<any> {
+  getAllCandidate(page: number, size: number, filter: string = 'ALL'): Observable<any> {
     return this.http.get(
       `${this.url}recruitment/candidates?filter=${filter}&page=${page}&size=${size}`,
     );
@@ -99,14 +92,12 @@ export class OnboardingService {
     return this.http.get(this.url + `recruitment/candidates/${publicId}`);
   }
 
-      // INTERVIEWS 
+  // INTERVIEWS
   CreatenewJobRequisition(data: any): Observable<any> {
     return this.http.post(this.url + 'recruitment/job-requisitions', data);
   }
-   getAllJobRequisition(page: number, size: number): Observable<any> {
-    return this.http.get(
-      `${this.url}recruitment/job-requisitions?page=${page}&size=${size}`,
-    );
+  getAllJobRequisition(page: number, size: number): Observable<any> {
+    return this.http.get(`${this.url}recruitment/job-requisitions?page=${page}&size=${size}`);
   }
   updateJobRequisition(publicId: string, data: any): Observable<any> {
     return this.http.put(this.url + `recruitment/job-requisitions/${publicId}`, data);
@@ -115,5 +106,4 @@ export class OnboardingService {
   getJobRequisitionById(publicId: string): Observable<any> {
     return this.http.get(this.url + `recruitment/job-requisitions/${publicId}`);
   }
-
 }

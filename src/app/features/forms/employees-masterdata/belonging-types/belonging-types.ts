@@ -21,7 +21,7 @@ export class BelongingTypes {
   pageSize: number = 100;
   publicId: string | null = null;
   isEditMode = false;
-  active: boolean = true;
+  active: boolean = false;
 
   constructor(
     private loader: LoaderService,

@@ -13,7 +13,6 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './company.scss',
 })
 export class Company {
-
   code: string = '';
   name: string = '';
   emailAddress: string = '';
@@ -25,7 +24,7 @@ export class Company {
   pageSize: number = 100;
   publicId: string | null = null;
   isEditMode = false;
-  active: boolean = true;
+  active: boolean = false;
 
   constructor(
     private loader: LoaderService,
@@ -33,7 +32,7 @@ export class Company {
     private toastr: ToastrService,
     private router: Router,
     private route: ActivatedRoute,
-  ) { }
+  ) {}
   ngOnInit() {
     // this.loader.show();
     this.publicId = this.route.snapshot.paramMap.get('id');
@@ -77,7 +76,6 @@ export class Company {
       telephone: this.telephone,
       description: this.description,
       active: this.active,
-
     };
     this.loader.show();
     this.disabled = true;
@@ -109,7 +107,6 @@ export class Company {
     this.description = '';
     this.active = true;
     this.disabled = false;
-
   }
   cancel() {
     this.router.navigate(['/panel/forms/view-company-branches']);
