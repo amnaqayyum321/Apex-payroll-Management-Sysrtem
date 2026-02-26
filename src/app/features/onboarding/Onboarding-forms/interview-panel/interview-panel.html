@@ -1,1 +1,165 @@
-<p>interview-panel works!</p>
+<div class="user-form-wrapper">
+  <div class="user-card">
+    <div class="card-header">
+      <h3>
+        {{ isEditMode ? 'Update Interview Panel' : 'Create Interview Panel' }}
+      </h3>
+    </div>
+
+    <div class="header-divider"></div>
+
+    <form class="user-form" (ngSubmit)="isEditMode ? updatePanel() : createPanel()">
+
+      <!-- ACTIVE -->
+      <div class="row mb-3">
+        <div class="col-12 d-flex justify-content-end">
+          <label class="checkbox-container">
+            Active
+            <input type="checkbox"
+              [(ngModel)]="active"
+              name="active" />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      </div>
+
+      <!-- CODE / NAME -->
+      <div class="row">
+        <div class="col-md-4">
+          <label>Code</label>
+          <input type="text" class="form-control"
+            [(ngModel)]="code" name="code" />
+        </div>
+
+        <div class="col-md-4">
+          <label>Name</label>
+          <input type="text" class="form-control"
+            [(ngModel)]="name" name="name" />
+        </div>
+
+        <div class="col-md-4">
+          <label>Remarks</label>
+          <input type="text" class="form-control"
+            [(ngModel)]="remarks" name="remarks" />
+        </div>
+      </div>
+
+      <hr />
+
+   <!-- ================= MEMBERS SECTION ================= -->
+<div class="members-section">
+
+  <h5 class="section-title">Members</h5>
+
+  <!-- ===== MEMBER FORM ROW ===== -->
+  <div class="row member-fields">
+    <div class="col-md-4">
+      <label>Employee</label>
+      <select class="form-control"
+        [(ngModel)]="member.employeePublicId"
+        name="employee">
+        <option value="">Select Employee</option>
+        <option *ngFor="let emp of employees"
+          [value]="emp.publicId">
+          {{ emp.fullName }}
+        </option>
+      </select>
+    </div>
+
+    <div class="col-md-4">
+      <label>Responsibility</label>
+      <input type="text"
+        class="form-control"
+        [(ngModel)]="member.responsibility"
+        name="responsibility" />
+    </div>
+
+     <div class="col-md-4">
+      <label>Line Number</label>
+      <input type="number"
+        class="form-control"
+        [(ngModel)]="member.lineNumber"
+        name="lineNumber" />
+    </div>
+    <div class="col-md-4">
+      <label>Status</label>
+      <select class="form-control"
+        [(ngModel)]="member.status"
+        name="status">
+        <option value="ACTIVE">ACTIVE</option>
+        <option value="INACTIVE">INACTIVE</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- ===== ADD BUTTON BELOW FIELDS ===== -->
+  <div class="add-member-wrapper">
+    <button type="button"
+      class="add-member-btn"
+      (click)="addOrUpdateMember()">
+      {{ editMemberIndex !== null ? 'Update Member' : 'Add Member' }}
+    </button>
+  </div>
+
+  <!-- ===== TABLE ===== -->
+  <div class="table-wrapper" *ngIf="members.length > 0">
+    <table class="custom-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Employee</th>
+          <th>Status</th>
+          <th class="text-center">Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <tr *ngFor="let m of members; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ m.fullName }}</td>
+          <td>
+            <span class="status-badge"
+              [ngClass]="m.status === 'ACTIVE' ? 'active-badge' : 'inactive-badge'">
+              {{ m.status }}
+            </span>
+          </td>
+          <td   type="button"class="text-center">
+            <div class="action-btn-group">
+                <button class="btn-edit"
+                  type="button"
+                  (click)="editMember(i)">
+                  Edit
+                </button>
+
+                <button class="btn-delete"
+                  type="button"
+                  (click)="deleteMember(i)">
+                  Delete
+                </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+      <!-- FOOTER -->
+      <div class="form-actions mt-3">
+        <button type="button"
+          class="cancel-btn"
+          (click)="cancel()">
+          Cancel
+        </button>
+
+        <button type="submit"
+          class="submit-btn"
+           [disabled]="disabled">
+          {{ isEditMode ? 'Update' : 'Create' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

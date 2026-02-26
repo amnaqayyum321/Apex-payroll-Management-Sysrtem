@@ -23,7 +23,7 @@ export class Projects {
   pageSize: number = 100;
   publicId: string | null = null;
   isEditMode = false;
-  status: boolean = false;
+  status: boolean = true;
   employeeList: any[] = [];
 
   constructor(

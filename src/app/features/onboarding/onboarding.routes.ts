@@ -52,10 +52,15 @@ export const routes: Routes = [
     path: 'interview-panel',
     component: InterviewPanel,
   },
+   {
+    path: 'interview-panel/:id',
+    component: InterviewPanel,
+  },
     {
     path: 'view-interview-panel-list',
     component: ViewInterviewPannelList,
   },
+  
    {
     path: 'interview-feedback',
     component: InterviewFeedback,
