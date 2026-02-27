@@ -13,6 +13,7 @@ import { InterviewFeedback } from './Onboarding-forms/interview-feedback/intervi
 import { ViewInterviewFeedbackList } from './Onboarding-forms/view-interview-feedback-list/view-interview-feedback-list';
 import { Offer } from './Onboarding-forms/offer/offer';
 import { ViewOffersList } from './Onboarding-forms/view-offers-list/view-offers-list';
+import { RequisitionsApproval } from './Onboarding-forms/requisitions-approval/requisitions-approval';
 
 export const routes: Routes = [
   {
@@ -99,4 +100,9 @@ export const routes: Routes = [
     path: 'view-offers-list',
     component: ViewOffersList,
   },
+   {
+    path: 'requisition-approval',
+    component: RequisitionsApproval,
+  },
+
 ];

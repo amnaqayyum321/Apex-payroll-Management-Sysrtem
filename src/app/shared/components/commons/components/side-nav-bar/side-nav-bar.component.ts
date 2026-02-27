@@ -277,6 +277,12 @@ export class SideNavBarComponent implements OnInit {
           icon: 'fa-solid fa-file-circle-plus',
           isVisible: true,
         },
+        {
+          label: 'Requistion Approval',
+          route: 'onboarding/requisition-approval',
+          icon: 'fa-solid fa-file-circle-plus',
+          isVisible: true,
+        },
          {
           label: 'Candidate',
           route: 'onboarding/view-candidate-list',

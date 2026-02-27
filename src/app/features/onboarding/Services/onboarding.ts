@@ -15,9 +15,20 @@ export class OnboardingService {
   CreatenewCandidateApplication(data: any): Observable<any> {
     return this.http.post(this.url + 'recruitment/applications', data);
   }
-  getAllCandidateApplications(page: number, size: number): Observable<any> {
-    return this.http.get(`${this.url}recruitment/applications?&page=${page}&size=${size}`);
+ getAllCandidateApplications(
+  page: number,
+  size: number,
+  status?: string
+): Observable<any> {
+
+  let url = `${this.url}recruitment/applications?page=${page}&size=${size}`;
+
+  if (status) {
+    url += `&status=${status}`;
   }
+
+  return this.http.get(url);
+}
   updateCandidateApplication(publicId: string, data: any): Observable<any> {
     return this.http.put(this.url + `recruitment/applications/${publicId}`, data);
   }
@@ -106,4 +117,12 @@ export class OnboardingService {
   getJobRequisitionById(publicId: string): Observable<any> {
     return this.http.get(this.url + `recruitment/job-requisitions/${publicId}`);
   }
+
+
+updateRequisitionStatus(publicId: string, status: string) {
+  return this.http.patch(
+    `${this.url}recruitment/job-requisitions/${publicId}/status?status=${status}`,
+    {}
+  );
+}
 }
