@@ -196,13 +196,12 @@ export class Interviews {
   }
 
   buildUpdatePayload() {
-    const newSessions = this.sessions.filter((s) => !s.publicId);
     return {
       code: this.code,
       name: this.name,
       applicationPublicId: this.applicationPublicId,
       remarks: this.remarks,
-      sessions: newSessions.map((s) => ({
+      sessions: this.sessions.map((s) => ({
         ...s,
         startTime: this.formatTime(s.startTime),
         endTime: this.formatTime(s.endTime),

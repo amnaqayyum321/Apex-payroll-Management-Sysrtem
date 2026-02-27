@@ -1,1 +1,904 @@
-<p>candidate works!</p>
+<!-- Candidate Form Container -->
+<div class="candidates-form-container" *ngIf="title === 'create' || title === 'edit'">
+  <div class="candidates-form-card">
+    <div class="form-header">
+      <h2 class="form-title">
+        {{ title === 'create' ? 'Create New Candidate' : 'Edit Candidate' }}
+      </h2>
+      <p class="form-subtitle">
+        {{ title === 'create' ? 'Define a new candidate' : 'Modify candidate details' }}
+      </p>
+    </div>
+    <div class="form-section">
+      <h3 class="section-heading">Basic Details</h3>
+      <form>
+        <div class="form-row">
+          <!-- Code -->
+          <div class="form-group">
+            <label>Code*</label>
+            <input
+              type="text"
+              class="form-input"
+              name="code"
+              ngModel
+              required
+              [disabled]="title === 'edit'"
+            />
+          </div>
+          <!-- First Name -->
+          <div class="form-group">
+            <label>First Name *</label>
+            <input type="text" class="form-input" name="firstName" ngModel required />
+          </div>
+
+          <!-- Last Name -->
+          <div class="form-group">
+            <label>Last Name *</label>
+            <input type="text" class="form-input" name="lastName" ngModel required />
+          </div>
+
+          <!-- Email -->
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" class="form-input" name="email" ngModel />
+          </div>
+
+          <!-- Contact 1 -->
+          <div class="form-group">
+            <label>Contact Number 1</label>
+            <input type="text" class="form-input" name="contact1" ngModel />
+          </div>
+
+          <!-- Contact 2 -->
+          <div class="form-group">
+            <label>Contact Number 2</label>
+            <input type="text" class="form-input" name="contact2" ngModel />
+          </div>
+
+          <!-- DOB -->
+          <div class="form-group">
+            <label>Date of Birth</label>
+            <input type="date" class="form-input" name="dob" ngModel />
+          </div>
+
+          <!-- Gender -->
+          <div class="form-group">
+            <label>Gender</label>
+            <select class="form-input" name="gender" ngModel>
+              <option value="">Select Gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <!-- LinkedIn -->
+          <div class="form-group">
+            <label>LinkedIn URL</label>
+            <input type="url" class="form-input" name="linkedinUrl" ngModel />
+          </div>
+
+          <!-- Religion -->
+          <div class="form-group">
+            <label>Religion</label>
+            <select class="form-input" name="religion" ngModel>
+              <option value="">Select Religion</option>
+            </select>
+          </div>
+
+          <!-- Country -->
+          <div class="form-group">
+            <label>Country</label>
+            <select class="form-input" name="country" ngModel>
+              <option value="">Select Country</option>
+            </select>
+          </div>
+
+          <!-- City -->
+          <div class="form-group">
+            <label>City</label>
+            <input type="text" class="form-input" name="city" ngModel />
+          </div>
+        </div>
+        <div class="form-actions-footer">
+          <button type="button" class="btn-cancel-action" (click)="cancelForm()">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+            Cancel
+          </button>
+          <button type="submit" class="btn-submit-action">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M12 5v14M5 12l7 7 7-7" *ngIf="title === 'create'" />
+              <path d="M20 6L9 17l-5-5" *ngIf="title === 'edit'" />
+            </svg>
+            {{ title === 'create' ? 'Create Candidate' : 'Update Candidate' }}
+          </button>
+        </div>
+      </form>
+    </div>
+    <!-- ================= TABS ================= -->
+    <div class="horizontal-tabs" *ngIf="sidebarTabs.length > 0">
+      <div class="tabs-container">
+        <!-- Dynamic Tab Buttons -->
+        <div
+          *ngFor="let tab of sidebarTabs"
+          class="tab-button"
+          [class.active]="activeTabId === tab.id"
+          (click)="setTab(tab.id)"
+        >
+          {{ tab.title }}
+        </div>
+      </div>
+
+      <!-- Dynamic Tab Content -->
+      <div class="form-section tab-content-section" *ngIf="activeTab === 'experience'">
+        <h3 class="section-heading mb-3">Experience</h3>
+
+        <div class="row g-3">
+          <div class="col-md-6">
+            <label class="form-label">Company Name <span class="text-danger">*</span></label>
+            <input
+              type="text"
+              class="form-control"
+              name="companyName"
+              [(ngModel)]="expForm.companyName"
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Position <span class="text-danger">*</span></label>
+            <input
+              type="text"
+              class="form-control"
+              name="position"
+              [(ngModel)]="expForm.position"
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">From Date <span class="text-danger">*</span></label>
+            <input
+              type="date"
+              class="form-control"
+              name="fromDate"
+              [(ngModel)]="expForm.fromDate"
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">To Date <span class="text-danger">*</span></label>
+            <input
+              type="date"
+              class="form-control"
+              name="toDate"
+              [(ngModel)]="expForm.toDate"
+              [disabled]="expForm.isContinue"
+            />
+          </div>
+
+          <div class="col-md-6">
+            <label class="form-label">Last Salary Drawn</label>
+            <input type="number" class="form-control" name="salary" [(ngModel)]="expForm.salary" />
+          </div>
+
+          <div class="col-md-6 d-flex align-items-end pb-2">
+            <div class="continue-checkbox-wrapper">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="isContinue"
+                name="isContinue"
+                [(ngModel)]="expForm.isContinue"
+              />
+              <label class="form-check-label ms-2" for="isContinue"> Currently Working Here </label>
+            </div>
+          </div>
+
+          <div class="col-12">
+            <label class="form-label">Remarks</label>
+            <textarea
+              class="form-control"
+              name="expRemarks"
+              rows="3"
+              [(ngModel)]="expForm.expRemarks"
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="form-actions-footer">
+          <button type="button" class="btn-submit-action me-3" (click)="addExperience()">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M12 5v14M5 12l7 7 7-7" />
+            </svg>
+            Add Experience
+          </button>
+        </div>
+
+        <!-- Runtime Table -->
+        <div class="experience-table-wrapper mt-1" *ngIf="experienceList.length > 0">
+          <div class="table-header-bar" *ngIf="activeTab === 'experience'">
+            <span class="table-title">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z" />
+                <path d="M16 3H8a2 2 0 00-2 2v2h12V5a2 2 0 00-2-2z" />
+              </svg>
+              Experience Records
+            </span>
+            <span class="table-count">{{ experienceList.length }} record(s)</span>
+          </div>
+
+          <div class="table-responsive">
+            <table class="exp-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Company</th>
+                  <th>Position</th>
+                  <th>From</th>
+                  <th>To</th>
+                  <th>Salary</th>
+                  <th>Status</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let exp of experienceList; let i = index" class="exp-row">
+                  <td>{{ i + 1 }}</td>
+                  <td>
+                    <span class="company-name">{{ exp.companyName }}</span>
+                  </td>
+                  <td>{{ exp.position }}</td>
+                  <td>{{ exp.fromDate | date: 'dd MMM yyyy' }}</td>
+                  <td>
+                    <span *ngIf="!exp.isContinue">{{ exp.toDate | date: 'dd MMM yyyy' }}</span>
+                    <span *ngIf="exp.isContinue" class="badge-present">Present</span>
+                  </td>
+                  <td>
+                    <span *ngIf="exp.salary">{{ exp.salary | number }}</span>
+                    <span *ngIf="!exp.salary" class="text-muted">—</span>
+                  </td>
+                  <td>
+                    <span class="badge-status" [class.current]="exp.isContinue">
+                      {{ exp.isContinue ? 'Current' : 'Past' }}
+                    </span>
+                  </td>
+                  <td>
+                    <button class="btn-remove" (click)="removeExperience(i)" title="Remove">
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <polyline points="3 6 5 6 21 6" />
+                        <path d="M19 6l-1 14H6L5 6" />
+                        <path d="M10 11v6M14 11v6" />
+                        <path d="M9 6V4h6v2" />
+                      </svg>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="empty-hint" *ngIf="experienceList.length === 0 && activeTab === 'experience'">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 8v4M12 16h.01" />
+          </svg>
+          Fill the form above and click <strong>Add Experience</strong> to add records
+        </div>
+      </div>
+      <!-- Skills Tabs -->
+      <div class="form-section tab-content-section" *ngIf="activeTab === 'skills'">
+        <h3 class="section-heading mb-3">Skills</h3>
+
+        <div class="row g-3">
+          <!-- Skill Name -->
+          <div class="col-md-6">
+            <label class="form-label">Skill Name <span class="text-danger">*</span></label>
+            <input
+              type="text"
+              class="form-control"
+              name="skillName"
+              [(ngModel)]="skillForm.skillName"
+              placeholder="e.g. Angular, Python..."
+            />
+          </div>
+
+          <!-- Skill Rating -->
+          <div class="col-md-6">
+            <label class="form-label">Skill Rating <span class="text-danger">*</span></label>
+            <select class="form-control" name="skillRating" [(ngModel)]="skillForm.skillRating">
+              <option [value]="r" *ngFor="let r of [1, 2, 3, 4, 5]">
+                {{ r }} —
+                {{
+                  r === 1
+                    ? 'Beginner'
+                    : r === 2
+                      ? 'Elementary'
+                      : r === 3
+                        ? 'Intermediate'
+                        : r === 4
+                          ? 'Advanced'
+                          : 'Expert'
+                }}
+              </option>
+            </select>
+          </div>
+
+          <!-- Remarks -->
+          <div class="col-12">
+            <label class="form-label">Remarks</label>
+            <textarea
+              class="form-control"
+              name="skillRemarks"
+              rows="3"
+              [(ngModel)]="skillForm.skillRemarks"
+              placeholder="Any additional notes..."
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="form-actions-footer">
+          <button type="button" class="btn-cancel-action" (click)="cancelForm()">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M18 6L6 18M6 6l12 12" />
+            </svg>
+            Cancel
+          </button>
+
+          <button type="button" class="btn-submit-action me-3" (click)="addSkill()">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M12 5v14M5 12l7 7 7-7" />
+            </svg>
+            Add Skill
+          </button>
+        </div>
+
+        <!-- Runtime Table -->
+        <div class="experience-table-wrapper mt-4" *ngIf="skillList.length > 0">
+          <div class="table-header-bar">
+            <span class="table-title">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M9 11l3 3L22 4" />
+                <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />
+              </svg>
+              Skill Records
+            </span>
+            <span class="table-count">{{ skillList.length }} record(s)</span>
+          </div>
+
+          <div class="table-responsive">
+            <table class="exp-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Skill Name</th>
+                  <th>Rating</th>
+                  <th>Level</th>
+                  <th>Remarks</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let skill of skillList; let i = index" class="exp-row">
+                  <td>{{ i + 1 }}</td>
+                  <td>
+                    <span class="company-name">{{ skill.skillName }}</span>
+                  </td>
+                  <td>
+                    <!-- Star Rating Display -->
+                    <span class="star-display">
+                      <span
+                        *ngFor="let s of [1, 2, 3, 4, 5]"
+                        [class.filled]="s <= skill.skillRating"
+                        >★</span
+                      >
+                    </span>
+                  </td>
+                  <td>
+                    <span
+                      class="badge-level"
+                      [class.l1]="skill.skillRating === 1"
+                      [class.l2]="skill.skillRating === 2"
+                      [class.l3]="skill.skillRating === 3"
+                      [class.l4]="skill.skillRating === 4"
+                      [class.l5]="skill.skillRating === 5"
+                    >
+                      {{
+                        skill.skillRating === 1
+                          ? 'Beginner'
+                          : skill.skillRating === 2
+                            ? 'Elementary'
+                            : skill.skillRating === 3
+                              ? 'Intermediate'
+                              : skill.skillRating === 4
+                                ? 'Advanced'
+                                : 'Expert'
+                      }}
+                    </span>
+                  </td>
+                  <td>
+                    <span *ngIf="skill.skillRemarks">{{ skill.skillRemarks }}</span>
+                    <span *ngIf="!skill.skillRemarks" class="text-muted">—</span>
+                  </td>
+                  <td>
+                    <button class="btn-remove" (click)="removeSkill(i)" title="Remove">
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <polyline points="3 6 5 6 21 6" />
+                        <path d="M19 6l-1 14H6L5 6" />
+                        <path d="M10 11v6M14 11v6" />
+                        <path d="M9 6V4h6v2" />
+                      </svg>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- Empty Hint -->
+        <div class="empty-hint" *ngIf="skillList.length === 0 && activeTab === 'skills'">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 8v4M12 16h.01" />
+          </svg>
+          Fill the form above and click <strong>Add Skill</strong> to add records
+        </div>
+      </div>
+      <!-- Qualification Tabs -->
+      <div class="form-section tab-content-section" *ngIf="activeTab === 'qualification'">
+        <h3 class="section-heading mb-3">Qualification</h3>
+
+        <div class="row g-3">
+          <!-- Qualification Name -->
+          <div class="col-md-6">
+            <label class="form-label">Qualification Name <span class="text-danger">*</span></label>
+            <input
+              type="text"
+              class="form-control"
+              name="qualificationName"
+              [(ngModel)]="qualForm.qualificationName"
+              placeholder="e.g. Bachelor of Science..."
+            />
+          </div>
+
+          <!-- Institute -->
+          <div class="col-md-6">
+            <label class="form-label">Institute <span class="text-danger">*</span></label>
+            <input
+              type="text"
+              class="form-control"
+              name="institute"
+              [(ngModel)]="qualForm.institute"
+              placeholder="e.g. University of Punjab..."
+            />
+          </div>
+
+          <!-- Passing Year -->
+          <div class="col-md-6">
+            <label class="form-label">Passing Year <span class="text-danger">*</span></label>
+            <input
+              type="text"
+              class="form-control"
+              name="passingYear"
+              [(ngModel)]="qualForm.passingYear"
+              [disabled]="qualForm.isStudying"
+              placeholder="e.g. 2022"
+            />
+          </div>
+
+          <!-- Grade / CGPA -->
+          <div class="col-md-6">
+            <label class="form-label">Grade / CGPA</label>
+            <input
+              type="text"
+              class="form-control"
+              name="grade"
+              [(ngModel)]="qualForm.grade"
+              placeholder="e.g. A+ or 3.8"
+            />
+          </div>
+
+          <!-- Currently Studying Checkbox -->
+          <div class="col-md-12 d-flex align-items-center">
+            <div class="continue-checkbox-wrapper">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                id="isStudying"
+                name="isStudying"
+                [(ngModel)]="qualForm.isStudying"
+              />
+              <label class="form-check-label ms-2" for="isStudying">
+                Currently Studying Here
+              </label>
+            </div>
+          </div>
+
+          <!-- Remarks -->
+          <div class="col-12">
+            <label class="form-label">Remarks</label>
+            <textarea
+              class="form-control"
+              name="qualRemarks"
+              rows="3"
+              [(ngModel)]="qualForm.qualRemarks"
+              placeholder="Any additional notes..."
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="form-actions-footer">
+          <button type="button" class="btn-submit-action me-3" (click)="addQualification()">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M12 5v14M5 12l7 7 7-7" />
+            </svg>
+            Add Qualification
+          </button>
+        </div>
+        <!-- Runtime Table -->
+        <div class="experience-table-wrapper mt-4" *ngIf="qualificationList.length > 0">
+          <div class="table-header-bar">
+            <span class="table-title">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
+                <path d="M6 12v5c0 2 4 3 6 3s6-1 6-3v-5" />
+              </svg>
+              Qualification Records
+            </span>
+            <span class="table-count">{{ qualificationList.length }} record(s)</span>
+          </div>
+
+          <div class="table-responsive">
+            <table class="exp-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Qualification</th>
+                  <th>Institute</th>
+                  <th>Passing Year</th>
+                  <th>Grade / CGPA</th>
+                  <th>Status</th>
+                  <th>Remarks</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let qual of qualificationList; let i = index" class="exp-row">
+                  <td>{{ i + 1 }}</td>
+                  <td>
+                    <span class="company-name">{{ qual.qualificationName }}</span>
+                  </td>
+                  <td>{{ qual.institute }}</td>
+                  <td>
+                    <span *ngIf="!qual.isStudying">{{ qual.passingYear }}</span>
+                    <span *ngIf="qual.isStudying" class="badge-present">Ongoing</span>
+                  </td>
+                  <td>
+                    <span *ngIf="qual.grade" class="grade-badge">{{ qual.grade }}</span>
+                    <span *ngIf="!qual.grade" class="text-muted">—</span>
+                  </td>
+                  <td>
+                    <span class="badge-status" [class.current]="qual.isStudying">
+                      {{ qual.isStudying ? 'Studying' : 'Completed' }}
+                    </span>
+                  </td>
+                  <td>
+                    <span *ngIf="qual.qualRemarks">{{ qual.qualRemarks }}</span>
+                    <span *ngIf="!qual.qualRemarks" class="text-muted">—</span>
+                  </td>
+                  <td>
+                    <button class="btn-remove" (click)="removeQualification(i)" title="Remove">
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <polyline points="3 6 5 6 21 6" />
+                        <path d="M19 6l-1 14H6L5 6" />
+                        <path d="M10 11v6M14 11v6" />
+                        <path d="M9 6V4h6v2" />
+                      </svg>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Empty Hint -->
+        <div
+          class="empty-hint"
+          *ngIf="qualificationList.length === 0 && activeTab === 'qualification'"
+        >
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 8v4M12 16h.01" />
+          </svg>
+          Fill the form above and click <strong>Add Qualification</strong> to add records
+        </div>
+      </div>
+      <!-- Attachment Tabs -->
+      <div class="form-section tab-content-section" *ngIf="activeTab === 'attachment'">
+        <h3 class="section-heading mb-3">Attachment</h3>
+
+        <div class="row g-3">
+          <!-- File Upload -->
+          <div class="col-md-6">
+            <label class="form-label">File <span class="text-danger">*</span></label>
+            <div class="file-upload-wrapper">
+              <input
+                type="file"
+                id="attachFile"
+                class="file-input-hidden"
+                (change)="onFileSelected($event)"
+              />
+              <label for="attachFile" class="file-upload-label">
+                <div class="file-upload-icon">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                  >
+                    <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                    <polyline points="17 8 12 3 7 8" />
+                    <line x1="12" y1="3" x2="12" y2="15" />
+                  </svg>
+                </div>
+                <div class="file-upload-text">
+                  <span class="file-upload-main" *ngIf="!attachForm.file">
+                    Click to upload file
+                  </span>
+                  <span class="file-upload-main file-selected" *ngIf="attachForm.file">
+                    {{ attachForm.file.name }}
+                  </span>
+                  <span class="file-upload-sub" *ngIf="!attachForm.file">
+                    PDF, DOC, XLS, PNG, JPG supported
+                  </span>
+                  <span class="file-upload-sub" *ngIf="attachForm.file">
+                    {{ getFileSize(attachForm.file.size) }}
+                  </span>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          <!-- Remarks -->
+          <div class="col-md-6">
+            <label class="form-label">Remarks <span class="text-danger">*</span></label>
+            <textarea
+              class="form-control"
+              name="attachRemarks"
+              rows="4"
+              [(ngModel)]="attachForm.remarks"
+              placeholder="Describe this attachment..."
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="form-actions-footer">
+          <button type="button" class="btn-submit-action me-3" (click)="addAttachment()">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M12 5v14M5 12l7 7 7-7" />
+            </svg>
+            Add Attachment
+          </button>
+        </div>
+
+        <!-- Runtime Table -->
+        <div class="experience-table-wrapper mt-4" *ngIf="attachmentList.length > 0">
+          <div class="table-header-bar">
+            <span class="table-title">
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path
+                  d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66L9.41 17.41a2 2 0 01-2.83-2.83l8.49-8.48"
+                />
+              </svg>
+              Attachment Records
+            </span>
+            <span class="table-count">{{ attachmentList.length }} record(s)</span>
+          </div>
+
+          <div class="table-responsive">
+            <table class="exp-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>File</th>
+                  <th>Type</th>
+                  <th>Size</th>
+                  <th>Remarks</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let att of attachmentList; let i = index" class="exp-row">
+                  <td>{{ i + 1 }}</td>
+                  <td>
+                    <div class="file-name-cell">
+                      <!-- File Type Icon -->
+                      <span
+                        class="file-icon-badge"
+                        [class.pdf]="att.fileType === 'pdf'"
+                        [class.img]="att.fileType === 'img'"
+                        [class.doc]="att.fileType === 'doc'"
+                        [class.xls]="att.fileType === 'xls'"
+                        [class.file]="att.fileType === 'file'"
+                      >
+                        {{ att.fileType | uppercase }}
+                      </span>
+                      <span class="company-name">{{ att.fileName }}</span>
+                    </div>
+                  </td>
+                  <td>
+                    <span class="badge-status">{{ att.fileType | uppercase }}</span>
+                  </td>
+                  <td>{{ att.fileSize }}</td>
+                  <td>
+                    <span *ngIf="att.remarks">{{ att.remarks }}</span>
+                    <span *ngIf="!att.remarks" class="text-muted">—</span>
+                  </td>
+                  <td>
+                    <button class="btn-remove" (click)="removeAttachment(i)" title="Remove">
+                      <svg
+                        width="14"
+                        height="14"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                      >
+                        <polyline points="3 6 5 6 21 6" />
+                        <path d="M19 6l-1 14H6L5 6" />
+                        <path d="M10 11v6M14 11v6" />
+                        <path d="M9 6V4h6v2" />
+                      </svg>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Empty Hint -->
+        <div class="empty-hint" *ngIf="attachmentList.length === 0 && activeTab === 'attachment'">
+          <svg
+            width="20"
+            height="20"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.5"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 8v4M12 16h.01" />
+          </svg>
+          Select a file and click <strong>Add Attachment</strong> to add records
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
