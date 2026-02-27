@@ -11,7 +11,7 @@ import { InterviewPanel } from './Onboarding-forms/interview-panel/interview-pan
 import { ViewInterviewPannelList } from './Onboarding-forms/view-interview-pannel-list/view-interview-pannel-list';
 import { InterviewFeedback } from './Onboarding-forms/interview-feedback/interview-feedback';
 import { ViewInterviewFeedbackList } from './Onboarding-forms/view-interview-feedback-list/view-interview-feedback-list';
-import { Offer } from './Onboarding-forms/offer/offer';
+import { Offers } from './Onboarding-forms/offer/offer';
 import { ViewOffersList } from './Onboarding-forms/view-offers-list/view-offers-list';
 import { RequisitionsApproval } from './Onboarding-forms/requisitions-approval/requisitions-approval';
 
@@ -90,11 +90,11 @@ export const routes: Routes = [
   },
   {
     path: 'offers',
-    component: Offer,
+    component: Offers,
   },
   {
     path: 'offers/:id',
-    component: Offer,
+    component: Offers,
   },
   {
     path: 'view-offers-list',

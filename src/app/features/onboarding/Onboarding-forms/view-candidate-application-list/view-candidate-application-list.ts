@@ -39,7 +39,6 @@ export class ViewCandidateApplicationList {
     this.loadProject();
   }
   loadProject() {
-    debugger;
     this.loader.show();
     const backendPage = this.currentPage - 1;
     this.onboarding.getAllCandidateApplications(backendPage, this.itemsPerPage).subscribe({

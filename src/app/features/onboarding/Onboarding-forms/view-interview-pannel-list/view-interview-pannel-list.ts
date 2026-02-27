@@ -41,7 +41,6 @@ export class ViewInterviewPannelList {
     this.loadProject();
   }
   loadProject() {
-    debugger;
     this.loader.show();
     const backendPage = this.currentPage - 1;
     this.Onboarding.getAllInterviewPanel(backendPage, this.itemsPerPage).subscribe({

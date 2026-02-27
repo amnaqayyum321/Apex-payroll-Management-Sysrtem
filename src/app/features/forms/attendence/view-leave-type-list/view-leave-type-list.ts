@@ -38,7 +38,6 @@ export class ViewLeaveTypeList {
     this.loadDepartment();
   }
   loadDepartment() {
-    debugger;
     this.loader.show();
     const backendPage = this.currentPage - 1;
     this.FormSv.GetLeaveType(backendPage, this.itemsPerPage).subscribe({

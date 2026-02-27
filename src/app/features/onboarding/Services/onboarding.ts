@@ -73,11 +73,16 @@ export class OnboardingService {
   CreatenewOffer(data: any): Observable<any> {
     return this.http.post(this.url + 'recruitment/offers', data);
   }
-  getAllOffer(page: number, size: number, status: string = 'ALL'): Observable<any> {
-    return this.http.get(
-      `${this.url}recruitment/offers?status=${status}&page=${page}&size=${size}`,
-    );
+getAllOffer(page: number, size: number, status?: string) {
+
+  let url = `${this.url}recruitment/offers?page=${page}&size=${size}`;
+
+  if (status) {
+    url += `&status=${status}`;
   }
+
+  return this.http.get(url);
+}
   updateOffer(publicId: string, data: any): Observable<any> {
     return this.http.put(this.url + `recruitment/offers/${publicId}`, data);
   }

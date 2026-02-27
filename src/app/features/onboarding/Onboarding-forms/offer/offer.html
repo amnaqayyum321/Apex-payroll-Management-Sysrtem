@@ -1,1 +1,180 @@
-<p>offer works!</p>
+<div class="user-form-wrapper">
+  <div class="user-card">
+
+    <!-- Header -->
+    <div class="card-header">
+      <h3>{{ isEditMode ? 'Update Offer' : 'Create Offer' }}</h3>
+    </div>
+
+    <div class="d-flex gap-2">
+      <button class="reset-btn" (click)="resetForm()">
+        <i class="fa fa-refresh"></i> Reset
+      </button>
+    </div>
+
+    <div class="header-divider"></div>
+
+    <form class="user-form">
+
+      <!-- ============================= -->
+      <!-- 🔵 MAIN OFFER DETAILS SECTION -->
+      <!-- ============================= -->
+
+      <h5 class="section-title">Offer Details</h5>
+
+      <div class="row">
+        <div class="col-md-6">
+          <label>Code</label>
+          <input type="text" class="form-control"
+                 [(ngModel)]="code" name="code" />
+        </div>
+
+        <div class="col-md-6">
+          <label>Name</label>
+          <input type="text" class="form-control"
+                 [(ngModel)]="name" name="name" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <label>Application</label>
+          <select class="form-control"
+                  [(ngModel)]="applicationPublicId"
+                  name="applicationPublicId">
+            <option value="">Select Application</option>
+            <option *ngFor="let app of applications"
+                    [value]="app.publicId">
+              {{ app.candidateName }}
+            </option>
+          </select>
+        </div>
+
+        <div class="col-md-6">
+          <label>Offer Date</label>
+          <input type="date" class="form-control"
+                 [(ngModel)]="offerDate" name="offerDate" />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">
+          <label>Expiry Date</label>
+          <input type="date" class="form-control"
+                 [(ngModel)]="expiryDate" name="expiryDate" />
+        </div>
+
+        <div class="col-md-4">
+          <label>Joining Date</label>
+          <input type="date" class="form-control"
+                 [(ngModel)]="joiningDate" name="joiningDate" />
+        </div>
+
+        <div class="col-md-4">
+          <label>Remarks</label>
+          <input type="text" class="form-control"
+                 [(ngModel)]="remarks" name="remarks" />
+        </div>
+      </div>
+
+      <!-- ============================= -->
+      <!-- 🟣 SALARY ROWS SECTION -->
+      <!-- ============================= -->
+
+      <div class="header-divider"></div>
+      <h5 class="section-title">Salary Structure</h5>
+
+      <div *ngFor="let row of salaryRows; let i = index"
+           class="salary-row-card">
+
+        <div class="row">
+
+          <div class="col-md-3">
+            <label>Pay Element</label>
+            <select class="form-control"
+                    [(ngModel)]="row.payElementPublicId"
+                    name="payElement{{i}}">
+              <option value="">Select</option>
+              <option *ngFor="let pe of payElements"
+                      [value]="pe.publicId">
+                {{ pe.name }}
+              </option>
+            </select>
+          </div>
+
+          <div class="col-md-2">
+            <label>Amount</label>
+            <input type="number" class="form-control"
+                   [(ngModel)]="row.amount"
+                   name="amount{{i}}" />
+          </div>
+
+          <div class="col-md-2">
+            <label>Currency</label>
+            <input type="text" class="form-control"
+                   [(ngModel)]="row.currency"
+                   name="currency{{i}}" />
+          </div>
+
+          <div class="col-md-2">
+            <label>Frequency</label>
+            <select class="form-control"
+                    [(ngModel)]="row.payFrequency"
+                    name="frequency{{i}}">
+              <option value="MONTHLY">MONTHLY</option>
+              <option value="WEEKLY">WEEKLY</option>
+              <option value="BI_WEEKLY">BI_WEEKLY</option>
+              <option value="HOURLY">HOURLY</option>
+            </select>
+          </div>
+
+          <div class="col-md-2">
+            <label>Status</label>
+            <select class="form-control"
+                    [(ngModel)]="row.status"
+                    name="status{{i}}">
+              <option value="ACTIVE">ACTIVE</option>
+              <option value="INACTIVE">INACTIVE</option>
+              <option value="CANCELLED">CANCELLED</option>
+            </select>
+          </div>
+
+          <div class="col-md-1 d-flex align-items-end">
+            <button type="button"
+                    class="btn btn-danger btn-sm"
+                    (click)="removeRow(i)">
+              ✕
+            </button>
+          </div>
+
+        </div>
+
+      </div>
+
+      <button type="button"
+              class="btn btn-outline-light mt-2"
+              (click)="addRow()">
+        + Add Salary Row
+      </button>
+
+      <!-- ============================= -->
+      <!-- ACTION BUTTONS -->
+      <!-- ============================= -->
+
+      <div class="form-actions">
+        <button type="button"
+                class="cancel-btn"
+                (click)="cancel()">
+          Cancel
+        </button>
+
+        <button type="button"
+                class="submit-btn"
+                (click)="isEditMode ? updateOffer() : createOffer()">
+          {{ isEditMode ? 'Update' : 'Create' }}
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>

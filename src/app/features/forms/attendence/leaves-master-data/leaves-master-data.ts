@@ -119,7 +119,6 @@ export class LeavesMasterData {
   }
 
   loadSingleLeave(publicId: string) {
-    debugger;
     this.loader.show();
     this.FormSv.getLeaveTypeById(publicId).subscribe({
       next: (res: any) => {

@@ -41,7 +41,6 @@ export class ViewInterviewsList {
     this.expandedInterviewId = this.expandedInterviewId === publicId ? null : publicId;
   }
   loadRequisition() {
-    debugger;
     this.loader.show();
     const backendPage = this.currentPage - 1;
     this.onBoardingSV.getAllInterviews(backendPage, this.itemsPerPage).subscribe({

@@ -39,7 +39,6 @@ export class ViewReqList {
     this.loadRequisition();
   }
   loadRequisition() {
-    debugger;
     this.loader.show();
     const backendPage = this.currentPage - 1;
     this.onBoardingSV.getAllJobRequisition(backendPage, this.itemsPerPage).subscribe({

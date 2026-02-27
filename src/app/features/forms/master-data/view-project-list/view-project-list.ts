@@ -38,7 +38,6 @@ export class ViewProjectList {
     this.loadProject();
   }
   loadProject() {
-    debugger;
     this.loader.show();
     const backendPage = this.currentPage - 1;
     this.FormSv.GetProject(backendPage, this.itemsPerPage).subscribe({
