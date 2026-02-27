@@ -12,48 +12,69 @@
 
       <!-- ACTIVE -->
       <div class="row mb-3">
-        <div class="col-12 d-flex justify-content-end">
-          <label class="checkbox-container">
-            Active
-            <input type="checkbox"
-              [(ngModel)]="active"
-              name="active" />
-            <span class="checkmark"></span>
-          </label>
+        <div class="col-12 d-flex justify-content-end align-items-center gap-2">
+         <label class="checkbox-container">
+  Active
+  <input
+    type="checkbox"
+    class="custom-checkbox"
+    [(ngModel)]="active"
+    name="active"
+  />
+  <span class="checkmark"></span>
+</label>
         </div>
       </div>
 
       <!-- CODE / NAME -->
+         <!-- ROW 1 -->
       <div class="row">
-        <div class="col-md-4">
-          <label>Code</label>
-          <input type="text" class="form-control"
-            [(ngModel)]="code" name="code" />
+        <div class="col-md-6">
+          <label class="form-label">Code</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter Code..."
+            [(ngModel)]="code"
+            name="code"
+          />
         </div>
 
-        <div class="col-md-4">
-          <label>Name</label>
-          <input type="text" class="form-control"
-            [(ngModel)]="name" name="name" />
+        <div class="col-md-6">
+          <label class="form-label">Name</label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter Name..."
+            [(ngModel)]="name"
+            name="name"
+          />
         </div>
-
-        <div class="col-md-4">
-          <label>Remarks</label>
-          <input type="text" class="form-control"
-            [(ngModel)]="remarks" name="remarks" />
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <label class="form-label">Description</label>
+          <textarea
+            type="text"
+            class="form-control"
+            [(ngModel)]="remarks"
+            name="remarks"
+            placeholder="Enter Remarks"
+          ></textarea>
         </div>
       </div>
 
       <hr />
 
    <!-- ================= MEMBERS SECTION ================= -->
+<!-- ================= MEMBERS SECTION ================= -->
 <div class="members-section">
 
   <h5 class="section-title">Members</h5>
 
   <!-- ===== MEMBER FORM ROW ===== -->
   <div class="row member-fields">
-    <div class="col-md-4">
+    <div class="col-md-6">
       <label>Employee</label>
       <select class="form-control"
         [(ngModel)]="member.employeePublicId"
@@ -66,7 +87,7 @@
       </select>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-6">
       <label>Responsibility</label>
       <input type="text"
         class="form-control"
@@ -74,14 +95,15 @@
         name="responsibility" />
     </div>
 
-     <div class="col-md-4">
+    <div class="col-md-6">
       <label>Line Number</label>
       <input type="number"
         class="form-control"
         [(ngModel)]="member.lineNumber"
         name="lineNumber" />
     </div>
-    <div class="col-md-4">
+    
+    <div class="col-md-6">
       <label>Status</label>
       <select class="form-control"
         [(ngModel)]="member.status"
@@ -106,36 +128,35 @@
     <table class="custom-table">
       <thead>
         <tr>
-          <th>#</th>
-          <th>Employee</th>
-          <th>Status</th>
-          <th class="text-center">Actions</th>
+          <th class="text-left">#</th>
+          <th class="text-left">Employee</th>
+          <th class="text-left">Status</th>
+          <th class="text-left">Actions</th>  <!-- Changed from text-center to text-left -->
         </tr>
       </thead>
 
       <tbody>
         <tr *ngFor="let m of members; let i = index">
-          <td>{{ i + 1 }}</td>
-          <td>{{ m.fullName }}</td>
-          <td>
+          <td class="text-left">{{ i + 1 }}</td>
+          <td class="text-left">{{ m.fullName }}</td>
+          <td class="text-left">
             <span class="status-badge"
               [ngClass]="m.status === 'ACTIVE' ? 'active-badge' : 'inactive-badge'">
               {{ m.status }}
             </span>
           </td>
-          <td   type="button"class="text-center">
-            <div class="action-btn-group">
-                <button class="btn-edit"
-                  type="button"
-                  (click)="editMember(i)">
-                  Edit
-                </button>
-
-                <button class="btn-delete"
-                  type="button"
-                  (click)="deleteMember(i)">
-                  Delete
-                </button>
+          <td class="text-left">  <!-- Changed from text-center to text-left -->
+            <div class="action-btn-group action-btn-left">  <!-- Added new class -->
+              <button class="btn-edit"
+                type="button"
+                (click)="editMember(i)">
+                Edit
+              </button>
+              <button class="btn-delete"
+                type="button"
+                (click)="deleteMember(i)">
+                Delete
+              </button>
             </div>
           </td>
         </tr>
