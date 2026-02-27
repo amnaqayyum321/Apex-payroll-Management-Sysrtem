@@ -15,7 +15,7 @@
         <th class="px-3 py-2">Code</th>
         <th class="px-3 py-2">Name</th>
         <th class="px-3 py-2">Status</th>
-        <th class="px-3 py-2">Status</th>
+        <th class="px-3 py-2">Update Status</th>
       </tr>
     </thead>
     <tbody>
@@ -39,11 +39,17 @@
   </span>
 </td>
         <td class="px-3 py-3 font-medium">
-          <button class="btn btn-success btn-sm"
-                  (click)="openApprovalModal(req)"
-                  [disabled]="STATUS_FLOW[req.status]?.length === 0">
-            Approve
-          </button>
+   <button class="btn btn-success btn-sm fixed-btn"
+        (click)="openApprovalModal(req)"
+        [disabled]="STATUS_FLOW[req.status]?.length === 0"
+        [ngClass]="{
+          'btn-success': STATUS_FLOW[req.status]?.length !== 0,
+          'btn-secondary': STATUS_FLOW[req.status]?.length === 0
+        }">
+
+  {{ STATUS_FLOW[req.status]?.length === 0 ? 'Updated' : 'Update' }}
+
+</button>
         </td>
       </tr>
     </tbody>
@@ -95,7 +101,7 @@
 
     <!-- Dropdown -->
     <select class="form-select mt-3" [(ngModel)]="selectedStatus">
-      <option value="">Select Status</option>
+      <option value="">Update Status</option>
       <option *ngFor="let status of allowedStatuses" [value]="status">
         {{ status }}
       </option>
