@@ -8,6 +8,7 @@ import { LoaderService } from '../../../../core/services/management-services/loa
 import { PaginationComponent } from '../../../../shared/components/commons/components/pagination/pagination.component';
 import { OnboardingService } from '../../Services/onboarding';
 import { FormsService } from '../../../forms/Services/forms';
+import { CountryCityService, ICountry } from '../../../../Service/country';
 interface Tab {
   id: string;
   title: string;
@@ -51,6 +52,10 @@ export class Candidate {
   title: 'create' | 'edit' = 'create';
   activeTabId: string = 'experience';
   activeTab: string = 'experience';
+  countries: ICountry[] = [];
+  cities: string[] = [];
+  selectedCountry: string = '';
+  selectedCity: string = '';
   experienceList: ExperienceEntry[] = [];
   sidebarTabs: Tab[] = [
     { id: 'experience', title: 'Experience' },
@@ -96,6 +101,7 @@ export class Candidate {
     private onboardingService: OnboardingService,
     private formsService: FormsService,
     private activatedRoute: ActivatedRoute,
+    private countryCityService: CountryCityService,
   ) {}
 
   // filteredRequisitions() {
@@ -106,11 +112,16 @@ export class Candidate {
   //     this.requisition.department.toLowerCase().includes(this.searchText.toLowerCase())
   //   );
   // }
-
+  ngOnInit() {
+    this.countries = this.countryCityService.getCountries();
+  }
   hideForm() {
     this.resetForm();
   }
-
+  onCountryChange(countryCode: string): void {
+    this.cities = this.countryCityService.getCitiesByCountryCode(countryCode);
+    this.selectedCity = '';
+  }
   cancelForm() {
     // this.hideForm();
     this.router.navigate(['/panel/onboarding/view-all-candidates']);

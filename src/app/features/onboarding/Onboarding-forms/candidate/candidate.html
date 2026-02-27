@@ -89,15 +89,25 @@
           <!-- Country -->
           <div class="form-group">
             <label>Country</label>
-            <select class="form-input" name="country" ngModel>
-              <option value="">Select Country</option>
+            <select
+              [(ngModel)]="selectedCountry"
+              name="country"
+              (change)="onCountryChange(selectedCountry)"
+              class="form-input"
+              name="country"
+              ngModel
+            >
+              <option *ngFor="let c of countries" [value]="c.code">{{ c.name }}</option>
             </select>
           </div>
 
           <!-- City -->
           <div class="form-group">
             <label>City</label>
-            <input type="text" class="form-input" name="city" ngModel />
+            <select [(ngModel)]="selectedCity" name="city" type="text" class="form-input" ngModel>
+              <option value="">Select City</option>
+              <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
+            </select>
           </div>
         </div>
         <div class="form-actions-footer">
