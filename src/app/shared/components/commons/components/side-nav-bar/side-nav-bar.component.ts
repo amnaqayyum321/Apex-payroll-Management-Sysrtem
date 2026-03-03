@@ -288,6 +288,12 @@ export class SideNavBarComponent implements OnInit {
               icon: 'fa-solid fa-list-check',
               isVisible: true,
             },
+              {
+              label: 'Candidate Approval',
+              route: 'onboarding/candidates-approval',
+              icon: 'fa-solid fa-list-check',
+              isVisible: true,
+            },
             {
               label: 'Candidates',
               route: 'onboarding/view-candidate-list',
@@ -312,6 +318,8 @@ export class SideNavBarComponent implements OnInit {
               icon: 'fa-solid fa-file-lines',
               isVisible: true,
             },
+             
+          
           ],
         },
         {
@@ -331,6 +339,12 @@ export class SideNavBarComponent implements OnInit {
               route: 'onboarding/view-offers-list',
               isVisible: true,
               icon: 'fa-solid fa-award',
+            },
+               {
+              label: 'Offers Approval',
+              route: 'onboarding/offers-approval',
+              icon: 'fa-solid fa-list-check',
+              isVisible: true,
             },
           ],
         },

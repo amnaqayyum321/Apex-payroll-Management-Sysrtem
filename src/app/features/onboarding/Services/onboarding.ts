@@ -28,6 +28,13 @@ export class OnboardingService {
     return this.http.put(this.url + `recruitment/applications/${publicId}`, data);
   }
 
+ updateApplicationStatus(publicId: string, status: string) {
+  return this.http.patch(
+    `${this.url}recruitment/applications/${publicId}/status?status=${status}`,
+    {}
+  );
+}
+
   getCandidateApplicationById(publicId: string): Observable<any> {
     return this.http.get(this.url + `recruitment/applications/${publicId}`);
   }
@@ -90,6 +97,12 @@ export class OnboardingService {
   getOfferById(publicId: string): Observable<any> {
     return this.http.get(this.url + `recruitment/offers/${publicId}`);
   }
+  updateOfferStatus(publicId: string, status: string) {
+  return this.http.patch(
+    `${this.url}recruitment/offers/${publicId}/status?status=${status}`,
+    {}
+  );
+}
 
   // CANDIDATES
   CreatenewCandidate(data: any): Observable<any> {

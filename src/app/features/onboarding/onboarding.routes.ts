@@ -15,6 +15,8 @@ import { Offers } from './Onboarding-forms/offer/offer';
 import { ViewOffersList } from './Onboarding-forms/view-offers-list/view-offers-list';
 import { RequisitionsApproval } from './Onboarding-forms/requisitions-approval/requisitions-approval';
 import { InterviewApproval } from './Onboarding-forms/interview-approval/interview-approval';
+import { CandidatesApproval } from './Onboarding-forms/candidates-approval/candidates-approval';
+import { OffersApproval } from './Onboarding-forms/offers-approval/offers-approval';
 
 export const routes: Routes = [
   {
@@ -113,4 +115,14 @@ export const routes: Routes = [
     path: 'interview-approval',
     component: InterviewApproval,
   },
+   {
+    path: 'candidates-approval',
+    component: CandidatesApproval,
+  },
+     {
+    path: 'offers-approval',
+    component: OffersApproval,
+  },
+
+
 ];
