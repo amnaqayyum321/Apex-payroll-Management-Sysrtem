@@ -28,6 +28,13 @@ export class OnboardingService {
     return this.http.put(this.url + `recruitment/applications/${publicId}`, data);
   }
 
+  updatecandidateApplicationStatus(publicId: string, status: string) {
+  return this.http.patch(
+    `${this.url}recruitment/applications/${publicId}/status?status=${status}`,
+    {}
+  );
+}
+
   getCandidateApplicationById(publicId: string): Observable<any> {
     return this.http.get(this.url + `recruitment/applications/${publicId}`);
   }

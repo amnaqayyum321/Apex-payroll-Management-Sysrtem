@@ -312,6 +312,54 @@ export class SideNavBarComponent implements OnInit {
               icon: 'fa-solid fa-file-lines',
               isVisible: true,
             },
+             {
+          label: 'Requistion',
+          route: 'onboarding/view-req-list',
+          icon: 'fa-solid fa-file-circle-plus',
+          isVisible: true,
+        },
+        {
+          label: 'Requistion Approval',
+          route: 'onboarding/requisition-approval',
+          icon: 'fa-solid fa-list-check',
+          isVisible: true,
+        },
+         {
+          label: 'Candidates',
+          route: 'onboarding/view-candidate-list',
+          icon: 'fa-solid fa-user',
+          isVisible: true,
+        },
+          {
+          label: 'Candidates Approval',
+          route: 'onboarding/candidates-approval',
+          icon: 'fa-solid fa-list-check',
+          isVisible: true,
+        },
+        
+        
+        
+
+         {
+          label: 'Interview Panel',
+          route: 'onboarding/view-interview-panel-list',
+          icon: 'fa-solid fa-handshake',
+          isVisible: true,
+        },
+          {
+          label: 'Interview',
+          route: 'onboarding/view-interviews-list',
+          icon: 'fa-solid fa-calendar-check',
+          isVisible: true,
+        },
+          {
+          label: 'Interview Feedback',
+          route: 'onboarding/view-interview-feedback-list',
+          icon: 'fa-solid fa-file-lines',
+          isVisible: true,
+        },
+
+          
           ],
         },
         {
