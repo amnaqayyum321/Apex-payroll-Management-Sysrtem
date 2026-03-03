@@ -60,6 +60,47 @@
           </select>
         </div>
       </div>
+      <!-- Department / Designation / Company -->
+<div class="row">
+  <div class="col-md-4">
+    <label class="form-label">Department</label>
+    <select class="form-control"
+      [(ngModel)]="departmentPublicId"
+      name="department">
+      <option value="">Select Department</option>
+      <option *ngFor="let d of departments"
+        [value]="d.publicId">
+        {{ d.name }}
+      </option>
+    </select>
+  </div>
+
+  <div class="col-md-4">
+    <label class="form-label">Designation</label>
+    <select class="form-control"
+      [(ngModel)]="designationPublicId"
+      name="designation">
+      <option value="">Select Designation</option>
+      <option *ngFor="let d of designations"
+        [value]="d.publicId">
+        {{ d.name }}
+      </option>
+    </select>
+  </div>
+
+  <div class="col-md-4">
+    <label class="form-label">Company Branch</label>
+    <select class="form-control"
+      [(ngModel)]="companyBranchPublicId"
+      name="companyBranch">
+      <option value="">Select Branch</option>
+      <option *ngFor="let b of companyBranches"
+        [value]="b.publicId">
+        {{ b.name }}
+      </option>
+    </select>
+  </div>
+</div>
 
       <!-- Expected DOJ + Remarks -->
       <div class="row">

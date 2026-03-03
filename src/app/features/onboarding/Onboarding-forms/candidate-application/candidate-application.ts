@@ -5,10 +5,11 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { FormsService } from '../../../forms/Services/forms';
 
 @Component({
   selector: 'app-candidate-application',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './candidate-application.html',
   styleUrl: './candidate-application.scss',
 })
@@ -20,6 +21,13 @@ export class CandidateApplication implements OnInit {
   applicationDate = '';
   expectedDoj = '';
   remarks = '';
+  departmentPublicId = '';
+  designationPublicId = '';
+  companyBranchPublicId = '';
+
+  departments: any[] = [];
+  designations: any[] = [];
+  companyBranches: any[] = [];
 
   candidates: any[] = [];
   requisitions: any[] = [];
@@ -35,13 +43,16 @@ export class CandidateApplication implements OnInit {
     private loader: LoaderService,
     private toastr: ToastrService,
     private router: Router,
-
+    private formsv: FormsService,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loadCandidates();
     this.loadRequisitions();
+    this.loadDepartments();
+    this.loadDesignations();
+    this.loadCompanyBranches();
 
     this.publicId = this.route.snapshot.paramMap.get('id');
     if (this.publicId) {
@@ -55,9 +66,30 @@ export class CandidateApplication implements OnInit {
       .subscribe(res => this.candidates = res.data);
   }
 
-  loadRequisitions() {
-    this.onboarding.getAllJobRequisition(0, 100)
-      .subscribe(res => this.requisitions = res.data);
+ loadRequisitions() {
+  this.onboarding.getAllJobRequisition(0, 100)
+    .subscribe(res => {
+
+      // Sirf OPEN status wali requisitions
+      this.requisitions = res.data.filter(
+        (r: any) => r.status === 'OPEN'
+      );
+
+    });
+}
+  loadDepartments() {
+    this.formsv.GetDepartment(0, 100, 'ALL')
+      .subscribe(res => this.departments = res.data);
+  }
+
+  loadDesignations() {
+    this.formsv.getAllDesignations(0, 100, 'ALL')
+      .subscribe(res => this.designations = res.data);
+  }
+
+  loadCompanyBranches() {
+    this.formsv.getAllComapnyBranches(0, 100, 'ALL')
+      .subscribe(res => this.companyBranches = res.data);
   }
 
   createApplication() {
@@ -71,6 +103,9 @@ export class CandidateApplication implements OnInit {
       code: this.code,
       candidatePublicId: this.candidatePublicId,
       requisitionPublicId: this.requisitionPublicId,
+       departmentPublicId: this.departmentPublicId,
+  designationPublicId: this.designationPublicId,
+  companyBranchPublicId: this.companyBranchPublicId,
       applicationDate: this.applicationDate,
       expectedDoj: this.expectedDoj,
       remarks: this.remarks
@@ -83,7 +118,7 @@ export class CandidateApplication implements OnInit {
         next: () => {
           this.loader.hide();
           this.toastr.success('Application Created');
-    this.router.navigate(['/panel/onboarding/view-candidate-application-list']);
+          this.router.navigate(['/panel/onboarding/view-candidate-application-list']);
         },
         error: err => {
           this.loader.hide();
@@ -98,6 +133,9 @@ export class CandidateApplication implements OnInit {
       code: this.code,
       candidatePublicId: this.candidatePublicId,
       requisitionPublicId: this.requisitionPublicId,
+       departmentPublicId: this.departmentPublicId,
+  designationPublicId: this.designationPublicId,
+  companyBranchPublicId: this.companyBranchPublicId,
       applicationDate: this.applicationDate,
       expectedDoj: this.expectedDoj,
       remarks: this.remarks
@@ -110,7 +148,7 @@ export class CandidateApplication implements OnInit {
         next: () => {
           this.loader.hide();
           this.toastr.success('Updated Successfully');
-    this.router.navigate(['/panel/onboarding/view-candidate-application-list']);
+          this.router.navigate(['/panel/onboarding/view-candidate-application-list']);
         },
         error: err => {
           this.loader.hide();
@@ -130,6 +168,9 @@ export class CandidateApplication implements OnInit {
         this.code = data.code;
         this.candidatePublicId = data.candidatePublicId;
         this.requisitionPublicId = data.requisitionPublicId;
+        this.departmentPublicId = data.departmentPublicId;
+this.designationPublicId = data.designationPublicId;
+this.companyBranchPublicId = data.companyBranchPublicId;
         this.applicationDate = data.applicationDate;
         this.expectedDoj = data.expectedDoj;
         this.remarks = data.remarks;

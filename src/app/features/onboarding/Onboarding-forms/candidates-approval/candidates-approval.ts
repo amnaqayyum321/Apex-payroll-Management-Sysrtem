@@ -12,25 +12,29 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './candidates-approval.scss',
 })
 export class CandidatesApproval {
-    requisitionList: any[] = [];
-  selectedReq: any;
-  selectedStatus: string = '';
-  allowedStatuses: string[] = [];
-  showModal = false;
+ applicationList: any[] = [];
+selectedApp: any;
+selectedStatus: string = '';
+allowedStatuses: string[] = [];
+showModal = false;
   totalItems: number = 0;
   totalPagesCount: number = 0;
   currentPage = 1;
   itemsPerPage = 7;
 
-  STATUS_FLOW: any = {
-    DRAFT: ['SUBMITTED', 'CANCELLED', 'CLOSED'],
-    SUBMITTED: ['APPROVED', 'REJECTED'],
-    APPROVED: ['OPEN', 'CLOSED'],
-    OPEN: ['CLOSED'],
-    REJECTED: [],
-    CLOSED: [],
-    CANCELLED: []
-  };
+APPLICATION_STATUS_FLOW: any = {
+  APPLIED: ['SHORTLISTED', 'REJECTED', 'WITHDRAWN'],
+  SHORTLISTED: ['INTERVIEW_SCHEDULED', 'REJECTED', 'WITHDRAWN'],
+  INTERVIEW_SCHEDULED: ['INTERVIEWED', 'REJECTED', 'WITHDRAWN'],
+  INTERVIEWED: ['SELECTED', 'REJECTED', 'WITHDRAWN'],
+  SELECTED: ['FINAL_SCREENING', 'REJECTED', 'WITHDRAWN'],
+  FINAL_SCREENING: ['OFFER_MADE', 'REJECTED', 'WITHDRAWN'],
+  OFFER_MADE: ['HIRED', 'OFFER_EXPIRED', 'WITHDRAWN'],
+  HIRED: [],
+  REJECTED: [],
+  OFFER_EXPIRED: [],
+  WITHDRAWN: []
+};
 
   constructor(
     private toastr: ToastrService,
@@ -39,8 +43,14 @@ export class CandidatesApproval {
   ) {}
 
   ngOnInit() {
-    this.loadRequisition();
-  }
+ this.loadApplications();  }
+
+  openStatusModal(app: any) {
+  this.selectedApp = app;
+  this.allowedStatuses = this.APPLICATION_STATUS_FLOW[app.status] || [];
+  this.selectedStatus = '';
+  this.showModal = true;
+}
 
   get totalPages() {
     return this.totalPagesCount || Math.ceil(this.totalItems / this.itemsPerPage);
@@ -53,17 +63,17 @@ export class CandidatesApproval {
   changePage(page: number) {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
-    this.loadRequisition();
+    this.loadApplications();
   }
 
-  loadRequisition() {
+  loadApplications() {
     this.loader.show();
     // Use the pagination parameters (backend typically uses 0-based indexing)
     const backendPage = this.currentPage - 1;
-    this.onboardingService.getAllJobRequisition(backendPage, this.itemsPerPage).subscribe({
+    this.onboardingService.getAllCandidateApplications(backendPage, this.itemsPerPage).subscribe({
       next: (res: any) => {
         this.loader.hide();
-        this.requisitionList = res.data;
+        this.applicationList  = res.data;
         this.totalItems = res.paginator.totalItems;
         this.totalPagesCount = res.paginator.totalPages;
         this.currentPage = res.paginator.currentPage + 1; // Convert back to 1-based for UI
@@ -75,54 +85,67 @@ export class CandidatesApproval {
     });
   }
 
-  openApprovalModal(req: any) {
-    this.selectedReq = req;
-    this.allowedStatuses = this.STATUS_FLOW[req.status] || [];
-    this.selectedStatus = '';
-    this.showModal = true;
-  }
+ 
 
   closeModal() {
     this.showModal = false;
   }
 
-  updateStatus() {
-    if (!this.selectedStatus) {
-      this.toastr.warning('Please select status');
-      return;
-    }
+  updateApplicationStatus() {
 
-    if (!this.allowedStatuses.includes(this.selectedStatus)) {
-      this.toastr.error('Invalid status transition!');
-      return;
-    }
-
-    this.loader.show();
-    this.onboardingService
-      .updateRequisitionStatus(this.selectedReq.publicId, this.selectedStatus)
-      .subscribe({
-        next: (res: any) => {
-          this.loader.hide();
-          this.toastr.success('Status updated successfully');
-          this.showModal = false;
-          this.loadRequisition(); // Reload to get updated data
-        },
-        error: () => {
-          this.loader.hide();
-          this.toastr.error('Status update failed');
-        }
-      });
+  if (!this.selectedStatus) {
+    this.toastr.warning('Please select status');
+    return;
   }
 
-  getBreadcrumbs(status: string) {
-    const fullFlow = ['DRAFT', 'SUBMITTED', 'APPROVED', 'OPEN', 'CLOSED'];
-    const rejectFlow = ['DRAFT', 'SUBMITTED', 'REJECTED'];
-    const cancelFlow = ['DRAFT', 'CANCELLED'];
-
-    if (status === 'REJECTED') return rejectFlow;
-    if (status === 'CANCELLED') return cancelFlow;
-
-    return fullFlow.slice(0, fullFlow.indexOf(status) + 1);
+  if (!this.allowedStatuses.includes(this.selectedStatus)) {
+    this.toastr.error('Invalid status transition!');
+    return;
   }
+
+  this.loader.show();
+
+  this.onboardingService
+    .updateApplicationStatus(this.selectedApp.publicId, this.selectedStatus)
+    .subscribe({
+      next: () => {
+        this.loader.hide();
+        this.toastr.success('Application status updated');
+        this.showModal = false;
+        this.loadApplications();
+      },
+      error: () => {
+        this.loader.hide();
+        this.toastr.error('Status update failed');
+      }
+    });
+}
+
+
+ getApplicationBreadcrumbs(status: string) {
+
+  const mainFlow = [
+    'APPLIED',
+    'SHORTLISTED',
+    'INTERVIEW_SCHEDULED',
+    'INTERVIEWED',
+    'SELECTED',
+    'FINAL_SCREENING',
+    'OFFER_MADE',
+    'HIRED'
+  ];
+
+  const index = mainFlow.indexOf(status);
+
+  if (index !== -1) {
+    return mainFlow.slice(0, index + 1);
+  }
+
+  if (status === 'REJECTED') return ['APPLIED', 'REJECTED'];
+  if (status === 'WITHDRAWN') return ['APPLIED', 'WITHDRAWN'];
+  if (status === 'OFFER_EXPIRED') return ['OFFER_MADE', 'OFFER_EXPIRED'];
+
+  return [];
+}
 
 }
