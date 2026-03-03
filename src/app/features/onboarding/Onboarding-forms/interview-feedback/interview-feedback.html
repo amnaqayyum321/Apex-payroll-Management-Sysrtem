@@ -1,1 +1,150 @@
-<p>interview-feedback works!</p>
+<div class="user-form-wrapper">
+  <div class="user-card">
+    <div class="card-header">
+      <h3>Interview Feedback</h3>
+    </div>
+    <div class="header-divider"></div>
+
+    <form class="user-form">
+      <h5 class="section-title">Select Panel & Session</h5>
+
+      <div class="row">
+        <!-- ─── Panel Dropdown ─────────────────────────────────── -->
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Panel <span class="required">*</span></label>
+            <select
+              class="form-select"
+              name="selectedPanelId"
+              [(ngModel)]="selectedPanelId"
+              (ngModelChange)="onPanelChange()"
+            >
+              <option value="">-- Select Panel --</option>
+              <option *ngFor="let panel of panels" [value]="panel.publicId">
+                {{ panel.name }} ({{ panel.code }})
+              </option>
+            </select>
+            <small class="text-muted" *ngIf="panels.length === 0">
+              Koi active panel available nahi hai.
+            </small>
+          </div>
+        </div>
+
+        <!-- ─── Session Dropdown ──────────────────────────────── -->
+        <div class="col-md-6">
+          <div class="form-group">
+            <label>Session <span class="required">*</span></label>
+            <select
+              class="form-control"
+              name="selectedSessionId"
+              [(ngModel)]="selectedSessionId"
+              [disabled]="!selectedPanelId || isLoadingSessions || sessions.length === 0"
+            >
+              <option value="">
+                <ng-container *ngIf="!selectedPanelId">— Pehle panel select karein —</ng-container>
+                <ng-container *ngIf="selectedPanelId && isLoadingSessions"
+                  >— Loading... —</ng-container
+                >
+                <ng-container *ngIf="selectedPanelId && !isLoadingSessions && sessions.length === 0"
+                  >— Koi session nahi mila —</ng-container
+                >
+                <ng-container *ngIf="selectedPanelId && !isLoadingSessions && sessions.length > 0"
+                  >— Session select karein —</ng-container
+                >
+              </option>
+              <option *ngFor="let session of sessions" [value]="session.publicId">
+                {{ session.candidateName }} · {{ session.interviewDate }} ({{ session.startTime }} -
+                {{ session.endTime }})
+              </option>
+            </select>
+            <small
+              class="text-muted"
+              *ngIf="selectedPanelId && !isLoadingSessions && sessions.length === 0"
+            >
+              Is panel mein abhi koi session available nahi hai.
+            </small>
+          </div>
+        </div>
+      </div>
+
+      <h5 class="section-title">Feedback Details</h5>
+
+      <div class="row">
+        <!-- ─── Score ─────────────────────────────────────────── -->
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="scoreInput">Score (0–100) <span class="required">*</span></label>
+            <input
+              id="scoreInput"
+              type="number"
+              class="form-control"
+              [(ngModel)]="feedback.score"
+              name="score"
+              placeholder="Enter score (e.g. 85)"
+              min="0"
+              max="100"
+              (input)="onScoreChange()"
+            />
+            <div class="score-meter" *ngIf="scorePct > 0">
+              <div class="score-meter-track">
+                <div
+                  class="score-meter-fill"
+                  [style.width.%]="scorePct"
+                  [style.background]="getScoreColor()"
+                ></div>
+              </div>
+              <span class="score-label" [style.color]="getScoreColor()">
+                {{ scorePct }}% — {{ getScoreLabel() }}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- ─── Remarks ───────────────────────────────────────── -->
+        <div class="col-md-6">
+          <div class="form-group">
+            <label for="remarksInput">Remarks</label>
+            <input
+              id="remarksInput"
+              type="text"
+              class="form-control"
+              [(ngModel)]="feedback.remarks"
+              name="remarks"
+              placeholder="Short remarks (e.g. Strong communication)"
+            />
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── Notes ─────────────────────────────────────────────── -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="notesInput">Detailed Notes</label>
+            <textarea
+              id="notesInput"
+              class="form-control"
+              [(ngModel)]="feedback.notes"
+              name="notes"
+              placeholder="Candidate ki performance ke baare mein detailed notes likhein..."
+              rows="4"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- ─── Buttons ───────────────────────────────────────────── -->
+      <div class="form-actions">
+        <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
+        <button
+          type="button"
+          class="submit-btn"
+          (click)="submitFeedback()"
+          [disabled]="!selectedPanelId || !selectedSessionId || !feedback.score"
+        >
+          Submit Feedback
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

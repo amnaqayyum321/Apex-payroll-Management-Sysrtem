@@ -14,6 +14,7 @@ import { ViewInterviewFeedbackList } from './Onboarding-forms/view-interview-fee
 import { Offers } from './Onboarding-forms/offer/offer';
 import { ViewOffersList } from './Onboarding-forms/view-offers-list/view-offers-list';
 import { RequisitionsApproval } from './Onboarding-forms/requisitions-approval/requisitions-approval';
+import { InterviewApproval } from './Onboarding-forms/interview-approval/interview-approval';
 
 export const routes: Routes = [
   {
@@ -89,6 +90,10 @@ export const routes: Routes = [
     component: ViewInterviewFeedbackList,
   },
   {
+    path: 'view-interview-feedback-list/:sessionPublicId',
+    component: ViewInterviewFeedbackList,
+  },
+  {
     path: 'offers',
     component: Offers,
   },
@@ -100,9 +105,12 @@ export const routes: Routes = [
     path: 'view-offers-list',
     component: ViewOffersList,
   },
-   {
+  {
     path: 'requisition-approval',
     component: RequisitionsApproval,
   },
-
+  {
+    path: 'interview-approval',
+    component: InterviewApproval,
+  },
 ];

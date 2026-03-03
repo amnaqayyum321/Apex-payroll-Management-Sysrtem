@@ -257,9 +257,8 @@ export class SideNavBarComponent implements OnInit {
       ],
     },
 
-
     // onboarding
-     {
+    {
       label: 'Onboarding',
       icon: 'fa-solid fa-user-plus',
       isVisible: true,
@@ -271,44 +270,48 @@ export class SideNavBarComponent implements OnInit {
           isVisible: true,
           collapsed: true,
           children: [
-             {
-          label: 'Requistion',
-          route: 'onboarding/view-req-list',
-          icon: 'fa-solid fa-file-circle-plus',
-          isVisible: true,
-        },
-        {
-          label: 'Requistion Approval',
-          route: 'onboarding/requisition-approval',
-          icon: 'fa-solid fa-list-check',
-          isVisible: true,
-        },
-         {
-          label: 'Candidates',
-          route: 'onboarding/view-candidate-list',
-          icon: 'fa-solid fa-user',
-          isVisible: true,
-        },
-         {
-          label: 'Interview Panel',
-          route: 'onboarding/view-interview-panel-list',
-          icon: 'fa-solid fa-handshake',
-          isVisible: true,
-        },
-          {
-          label: 'Interview',
-          route: 'onboarding/view-interviews-list',
-          icon: 'fa-solid fa-calendar-check',
-          isVisible: true,
-        },
-          {
-          label: 'Interview Feedback',
-          route: 'onboarding/view-interview-feedback-list',
-          icon: 'fa-solid fa-file-lines',
-          isVisible: true,
-        },
-
-          
+            {
+              label: 'Requistion',
+              route: 'onboarding/view-req-list',
+              icon: 'fa-solid fa-file-circle-plus',
+              isVisible: true,
+            },
+            {
+              label: 'Requistion Approval',
+              route: 'onboarding/requisition-approval',
+              icon: 'fa-solid fa-list-check',
+              isVisible: true,
+            },
+            {
+              label: 'Interview Approval',
+              route: 'onboarding/interview-approval',
+              icon: 'fa-solid fa-list-check',
+              isVisible: true,
+            },
+            {
+              label: 'Candidates',
+              route: 'onboarding/view-candidate-list',
+              icon: 'fa-solid fa-user',
+              isVisible: true,
+            },
+            {
+              label: 'Interview Panel',
+              route: 'onboarding/view-interview-panel-list',
+              icon: 'fa-solid fa-handshake',
+              isVisible: true,
+            },
+            {
+              label: 'Interview',
+              route: 'onboarding/view-interviews-list',
+              icon: 'fa-solid fa-calendar-check',
+              isVisible: true,
+            },
+            {
+              label: 'Interview Feedback',
+              route: 'onboarding/interview-feedback',
+              icon: 'fa-solid fa-file-lines',
+              isVisible: true,
+            },
           ],
         },
         {
@@ -323,23 +326,16 @@ export class SideNavBarComponent implements OnInit {
               isVisible: true,
               icon: 'fa-solid fa-stream',
             },
-              {
+            {
               label: 'Final Screening',
               route: 'onboarding/view-offers-list',
               isVisible: true,
               icon: 'fa-solid fa-award',
             },
-            
-            
           ],
-        }
-        
+        },
       ],
     },
-
- 
-
-  
 
     // Payroll Process Start
     {

@@ -15,20 +15,15 @@ export class OnboardingService {
   CreatenewCandidateApplication(data: any): Observable<any> {
     return this.http.post(this.url + 'recruitment/applications', data);
   }
- getAllCandidateApplications(
-  page: number,
-  size: number,
-  status?: string
-): Observable<any> {
+  getAllCandidateApplications(page: number, size: number, status?: string): Observable<any> {
+    let url = `${this.url}recruitment/applications?page=${page}&size=${size}`;
 
-  let url = `${this.url}recruitment/applications?page=${page}&size=${size}`;
+    if (status) {
+      url += `&status=${status}`;
+    }
 
-  if (status) {
-    url += `&status=${status}`;
+    return this.http.get(url);
   }
-
-  return this.http.get(url);
-}
   updateCandidateApplication(publicId: string, data: any): Observable<any> {
     return this.http.put(this.url + `recruitment/applications/${publicId}`, data);
   }
@@ -46,6 +41,12 @@ export class OnboardingService {
   }
   updateInterviews(publicId: string, data: any): Observable<any> {
     return this.http.put(this.url + `recruitment/interviews/${publicId}`, data);
+  }
+  updateInterviewsStatus(publicId: string, status: string): Observable<any> {
+    return this.http.patch(
+      this.url + `recruitment/interviews/${publicId}/status?status=${status}`,
+      {},
+    );
   }
 
   getInterviewsById(applicationPublicId: string): Observable<any> {
@@ -73,16 +74,15 @@ export class OnboardingService {
   CreatenewOffer(data: any): Observable<any> {
     return this.http.post(this.url + 'recruitment/offers', data);
   }
-getAllOffer(page: number, size: number, status?: string) {
+  getAllOffer(page: number, size: number, status?: string) {
+    let url = `${this.url}recruitment/offers?page=${page}&size=${size}`;
 
-  let url = `${this.url}recruitment/offers?page=${page}&size=${size}`;
+    if (status) {
+      url += `&status=${status}`;
+    }
 
-  if (status) {
-    url += `&status=${status}`;
+    return this.http.get(url);
   }
-
-  return this.http.get(url);
-}
   updateOffer(publicId: string, data: any): Observable<any> {
     return this.http.put(this.url + `recruitment/offers/${publicId}`, data);
   }
@@ -123,11 +123,34 @@ getAllOffer(page: number, size: number, status?: string) {
     return this.http.get(this.url + `recruitment/job-requisitions/${publicId}`);
   }
 
+  updateRequisitionStatus(publicId: string, status: string) {
+    return this.http.patch(
+      `${this.url}recruitment/job-requisitions/${publicId}/status?status=${status}`,
+      {},
+    );
+  }
+  CreatenInterviewsFeedback(sessionPublicId: string, data: any): Observable<any> {
+    return this.http.post(
+      this.url + `recruitment/interview-feedback/sessions/${sessionPublicId}`,
+      data,
+    );
+  }
 
-updateRequisitionStatus(publicId: string, status: string) {
-  return this.http.patch(
-    `${this.url}recruitment/job-requisitions/${publicId}/status?status=${status}`,
-    {}
-  );
-}
+  getMyFeedback(sessionPublicId: string): Observable<any> {
+    return this.http.get(
+      this.url + `recruitment/interview-feedback/sessions/${sessionPublicId}/mine`,
+    );
+  }
+
+  getAllFeedbackBySession(sessionPublicId: string): Observable<any> {
+    return this.http.get(
+      this.url + `recruitment/interview-feedback/sessions/${sessionPublicId}/all`,
+    );
+  }
+
+  getMyPendingFeedback(page?: number, size?: number): Observable<any> {
+    return this.http.get(
+      this.url + `recruitment/interview-feedback/my-pending?page=${page}&size=${size}`,
+    );
+  }
 }

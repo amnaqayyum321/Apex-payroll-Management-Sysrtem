@@ -40,6 +40,7 @@ export class ViewInterviewsList {
   toggleSessions(publicId: string) {
     this.expandedInterviewId = this.expandedInterviewId === publicId ? null : publicId;
   }
+
   loadRequisition() {
     this.loader.show();
     const backendPage = this.currentPage - 1;

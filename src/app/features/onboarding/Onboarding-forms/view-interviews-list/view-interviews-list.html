@@ -60,6 +60,7 @@
                     Sessions
                     <span class="badge bg-primary ms-1">{{ interview.sessions?.length || 0 }}</span>
                   </button>
+
                   <i
                     class="fa-solid fa-pen-to-square"
                     style="color: #4ade80; cursor: pointer; font-size: 16px"
@@ -114,6 +115,18 @@
                         </td>
                         <td>{{ session.status }}</td>
                         <td>{{ session.remarks }}</td>
+                        <td></td>
+                        <td>
+                          <a
+                            class="btn btn-sm btn-primary"
+                            [routerLink]="[
+                              '/panel/onboarding/view-interview-feedback-list',
+                              session.publicId,
+                            ]"
+                          >
+                            View Feedback
+                          </a>
+                        </td>
                       </tr>
                       <tr *ngIf="!interview.sessions || interview.sessions.length === 0">
                         <td colspan="9" class="text-center text-muted">No sessions found</td>
