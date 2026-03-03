@@ -53,7 +53,7 @@ export class IDType {
     this.FormSv.CreateIDType(payload).subscribe({
       next: (res: any) => {
         this.loader.hide();
-        this.toastr.success('IDType created successfully', 'Success');
+        this.toastr.success('ID Type created successfully', 'Success');
         this.resetIDTypeForm();
         setTimeout(() => {
           this.router.navigate(['/panel/forms/view-id-type-list']);
@@ -92,7 +92,7 @@ export class IDType {
       },
       error: () => {
         this.loader.hide();
-        this.toastr.error('Failed to load ID-Type');
+        this.toastr.error('Failed to load ID Type');
       },
     });
   }
@@ -117,7 +117,7 @@ export class IDType {
 
       error: () => {
         this.loader.hide();
-        this.toastr.error('ID-Type Update failed');
+        this.toastr.error('ID Type Update failed');
       },
     });
   }

@@ -53,7 +53,7 @@ export class ViewPayElementList {
       },
       error: (error) => {
         this.loader.hide();
-        this.toastr.error('Error fetching users list');
+        this.toastr.error('Error fetching pay element list');
       },
     });
   }

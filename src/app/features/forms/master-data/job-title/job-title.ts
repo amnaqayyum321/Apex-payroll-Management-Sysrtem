@@ -52,7 +52,7 @@ export class JobTitle {
       },
       error: () => {
         this.loader.hide();
-        this.toastr.error('Failed to load designation');
+        this.toastr.error('Failed to load job title');
       },
     });
   }
@@ -113,7 +113,7 @@ export class JobTitle {
     this.formsService.UpdateJobTitle(this.publicId!, payload).subscribe({
       next: () => {
         this.loader.hide();
-        this.toastr.success('Designation updated');
+        this.toastr.success('Job Title updated');
         this.resetJobTitleForm();
         this.router.navigate(['/panel/forms/view-job-title-list']);
       },

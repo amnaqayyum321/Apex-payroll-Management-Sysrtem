@@ -53,7 +53,7 @@ export class ViewLeaveTypeList {
       },
       error: (error) => {
         this.loader.hide();
-        this.toastr.error('Error fetching users list');
+        this.toastr.error('Error fetching leave types list');
       },
     });
   }

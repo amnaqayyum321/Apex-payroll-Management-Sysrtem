@@ -59,7 +59,7 @@ export class ViewBelongingTypesList {
       },
       error: (error) => {
         this.loader.hide();
-        this.toastr.error('Error fetching designations list');
+        this.toastr.error('Error fetching belongings list');
       },
     });
   }
