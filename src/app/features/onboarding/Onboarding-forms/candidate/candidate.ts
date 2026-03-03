@@ -49,13 +49,14 @@ interface AttachmentEntry {
   styleUrl: './candidate.scss',
 })
 export class Candidate {
-  title: 'create' | 'edit' = 'create';
   activeTabId: string = 'experience';
   activeTab: string = 'experience';
   countries: ICountry[] = [];
   cities: string[] = [];
   selectedCountry: string = '';
   selectedCity: string = '';
+  remarks: string = '';
+  candiateObj = {};
   experienceList: ExperienceEntry[] = [];
   sidebarTabs: Tab[] = [
     { id: 'experience', title: 'Experience' },
@@ -88,12 +89,27 @@ export class Candidate {
     grade: '',
     qualRemarks: '',
   };
+
   attachmentList: AttachmentEntry[] = [];
 
   attachForm = {
     file: null as File | null,
     remarks: '',
   };
+  code = '';
+  firstName = '';
+  lastName = '';
+  email = '';
+  contactNumber1 = '';
+  contactNumber2 = '';
+  dateOfBirth = '';
+  gender = 'MALE';
+  religion = 'ISLAM';
+  linkedinUrl = '';
+  source = 'REQUISITION';
+  active = false;
+  title: 'create' | 'edit' = 'create';
+  candidateId!: string;
   constructor(
     private router: Router,
     private toastr: ToastrService,
@@ -104,16 +120,14 @@ export class Candidate {
     private countryCityService: CountryCityService,
   ) {}
 
-  // filteredRequisitions() {
-  //   if (!this.searchText.trim()) return this.requisition;
-
-  //   return this.requisition.filter(this.requisition =>
-  //     this.requisition.requisition_name.toLowerCase().includes(this.searchText.toLowerCase()) ||
-  //     this.requisition.department.toLowerCase().includes(this.searchText.toLowerCase())
-  //   );
-  // }
   ngOnInit() {
     this.countries = this.countryCityService.getCountries();
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    if (id) {
+      this.title = 'edit';
+      this.candidateId = id;
+      this.getCandidateById(id);
+    }
   }
   hideForm() {
     this.resetForm();
@@ -124,17 +138,14 @@ export class Candidate {
   }
   cancelForm() {
     // this.hideForm();
+    this.resetForm();
     this.router.navigate(['/panel/onboarding/view-all-candidates']);
   }
   setTab(tab: string) {
     this.activeTab = tab;
     this.activeTabId = tab;
   }
-  onCancel(): void {
-    this.router.navigate(['/panel/onboarding/view-all-candidates']);
-  }
 
-  resetForm(): void {}
   addExperience() {
     if (!this.expForm.companyName || !this.expForm.position || !this.expForm.fromDate) {
       this.toastr.warning('Please fill required fields');
@@ -246,5 +257,205 @@ export class Candidate {
 
   removeAttachment(index: number) {
     this.attachmentList.splice(index, 1);
+  }
+  buildPayload() {
+    return {
+      code: '',
+      firstName: this.firstName ?? null,
+      lastName: this.lastName ?? null,
+      email: this.email ?? null,
+      contactNumber1: this.contactNumber1 ?? null,
+      contactNumber2: this.contactNumber2 ?? null,
+      dateOfBirth: this.dateOfBirth ?? null,
+      gender: this.gender ?? null,
+      country: this.selectedCountry ?? null,
+      city: this.selectedCity ?? null,
+      religion: this.religion ?? null,
+      linkedinUrl: this.linkedinUrl ?? null,
+      source: this.source ?? null,
+      active: this.active ?? null,
+      remarks: this.remarks ?? null,
+
+      experiences: this.experienceList.map((exp, index) => ({
+        companyName: exp.companyName,
+        fromDate: exp.fromDate,
+        toDate: exp.isContinue ? null : exp.toDate,
+        currentlyWorking: exp.isContinue,
+        position: exp.position,
+        lastSalaryDrawn: exp.salary ?? 0,
+        lineNumber: index + 1,
+        status: 'ACTIVE',
+        remarks: exp.expRemarks,
+      })),
+      skills: this.skillList.map((skill, index) => ({
+        skillName: skill.skillName,
+        skillRating: skill.skillRating,
+        lineNumber: index + 1,
+        status: 'ACTIVE',
+        remarks: skill.skillRemarks,
+      })),
+      qualifications: this.qualificationList.map((qual, index) => ({
+        qualificationName: qual.qualificationName,
+        passingYear: qual.passingYear,
+        currentlyStudying: qual.isStudying,
+        institute: qual.institute,
+        gradeCgpa: qual.grade,
+        lineNumber: index + 1,
+        status: 'ACTIVE',
+        remarks: qual.qualRemarks,
+      })),
+    };
+  }
+  SubmitCandidate() {
+    debugger;
+    const payload = this.buildPayload();
+    console.log('Payload Object:', payload);
+    console.log('Payload JSON:', JSON.stringify(payload, null, 2));
+    this.loader.show();
+    this.onboardingService.CreatenewCandidate(payload).subscribe(
+      (res: any) => {
+        if (res.success) {
+          this.resetForm();
+          this.toastr.success('Candidate Created Successfully');
+          setTimeout(() => {
+            this.router.navigate(['/panel/onboarding/view-candidate-list']);
+          }, 1500);
+        }
+      },
+      (err) => {
+        console.log(err);
+        this.toastr.error('Error creating candidate');
+        this.loader.hide();
+      },
+    );
+  }
+  UpdateCandidate() {
+    const payload = this.buildPayload();
+    console.log('Payload Object:', payload);
+    console.log('Payload JSON:', JSON.stringify(payload, null, 2));
+    this.loader.show();
+    this.onboardingService.updateCandidate(this.candidateId, payload).subscribe(
+      (res: any) => {
+        if (res.success) {
+          this.resetForm();
+          this.toastr.success('Candidate Updated Successfully!');
+          setTimeout(() => {
+            this.router.navigate(['/panel/onboarding/view-candidate-list']);
+          }, 1500);
+        }
+      },
+      (err: any) => {
+        this.loader.hide();
+        this.toastr.error('Error updating candidate');
+        console.error(err);
+      },
+    );
+  }
+  getCandidateById(id: string) {
+    this.loader.show();
+    this.onboardingService.getCandidateById(id).subscribe((res: any) => {
+      if (res.success) {
+        this.loader.hide();
+        const data = res.data;
+        this.firstName = data.firstName;
+        this.lastName = data.lastName;
+        this.email = data.email;
+        this.contactNumber1 = data.contactNumber1;
+        this.contactNumber2 = data.contactNumber2;
+        this.dateOfBirth = data.dateOfBirth;
+        this.gender = data.gender;
+        this.selectedCountry = data.country;
+        this.selectedCity = data.city;
+        this.religion = data.religion;
+        this.linkedinUrl = data.linkedinUrl;
+        this.source = data.source;
+        this.remarks = data.remarks;
+        this.experienceList = res.experiences.map((e: any) => ({
+          companyName: e.companyName,
+          position: e.position,
+          fromDate: e.fromDate,
+          toDate: e.toDate,
+          isContinue: e.currentlyWorking,
+          salary: e.lastSalaryDrawn,
+          expRemarks: e.remarks,
+        }));
+        this.skillList = res.skills.map((s: any) => ({
+          skillName: s.skillName,
+          skillRating: s.skillRating,
+          skillRemarks: s.remarks,
+        }));
+
+        this.qualificationList = res.qualifications.map((q: any) => ({
+          qualificationName: q.qualificationName,
+          passingYear: q.passingYear,
+          isStudying: q.currentlyStudying,
+          institute: q.institute,
+          grade: q.gradeCgpa,
+          qualRemarks: q.remarks,
+        }));
+      }
+    });
+  }
+  save() {
+    this.title === 'create' ? this.SubmitCandidate() : this.UpdateCandidate();
+  }
+
+  cancel() {
+    this.router.navigate(['/panel/onboarding/view-all-candidates']);
+  }
+  resetForm(): void {
+    this.title = 'create';
+    this.candidateId = '';
+    this.code = '';
+    this.firstName = '';
+    this.lastName = '';
+    this.email = '';
+    this.contactNumber1 = '';
+    this.contactNumber2 = '';
+    this.dateOfBirth = '';
+    this.gender = 'MALE';
+    this.religion = 'ISLAM';
+    this.linkedinUrl = '';
+    this.source = 'REQUISITION';
+    this.active = false;
+    this.remarks = '';
+    this.selectedCountry = '';
+    this.selectedCity = '';
+    this.cities = [];
+    this.experienceList = [];
+    this.expForm = {
+      companyName: '',
+      position: '',
+      fromDate: '',
+      toDate: '',
+      isContinue: false,
+      salary: null,
+      expRemarks: '',
+    };
+    this.skillList = [];
+    this.skillForm = {
+      skillName: '',
+      skillRating: 1,
+      skillRemarks: '',
+    };
+    this.qualificationList = [];
+    this.qualForm = {
+      qualificationName: '',
+      passingYear: '',
+      isStudying: false,
+      institute: '',
+      grade: '',
+      qualRemarks: '',
+    };
+    this.attachmentList = [];
+    this.attachForm = {
+      file: null,
+      remarks: '',
+    };
+
+    const fileInput = document.getElementById('attachFile') as HTMLInputElement;
+    if (fileInput) fileInput.value = '';
+    this.activeTab = 'experience';
+    this.activeTabId = 'experience';
   }
 }

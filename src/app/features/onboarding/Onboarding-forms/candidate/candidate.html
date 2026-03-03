@@ -11,91 +11,124 @@
     </div>
     <div class="form-section">
       <h3 class="section-heading">Basic Details</h3>
-      <form>
+      <form (ngSubmit)="title === 'create' ? SubmitCandidate() : UpdateCandidate()" #f="ngForm">
+        <div class="row justify-content-end">
+          <div class="col-auto">
+            <div class="form-check">
+              <input
+                class="form-check-input"
+                type="checkbox"
+                id="active"
+                name="active"
+                [(ngModel)]="active"
+              />
+              <label class="form-check-label ms-2" for="active"> Active </label>
+            </div>
+          </div>
+        </div>
         <div class="form-row">
           <!-- Code -->
           <div class="form-group">
-            <label>Code*</label>
+            <label class="form-label">Code*</label>
             <input
               type="text"
               class="form-input"
               name="code"
-              ngModel
+              [(ngModel)]="code"
               required
               [disabled]="title === 'edit'"
             />
           </div>
           <!-- First Name -->
           <div class="form-group">
-            <label>First Name *</label>
-            <input type="text" class="form-input" name="firstName" ngModel required />
+            <label class="form-label">First Name *</label>
+            <input
+              type="text"
+              class="form-input"
+              name="firstName"
+              [(ngModel)]="firstName"
+              required
+            />
           </div>
 
           <!-- Last Name -->
           <div class="form-group">
-            <label>Last Name *</label>
-            <input type="text" class="form-input" name="lastName" ngModel required />
+            <label class="form-label">Last Name *</label>
+            <input type="text" class="form-input" name="lastName" [(ngModel)]="lastName" required />
           </div>
 
           <!-- Email -->
           <div class="form-group">
-            <label>Email</label>
-            <input type="email" class="form-input" name="email" ngModel />
+            <label class="form-label">Email</label>
+            <input type="email" class="form-input" name="email" [(ngModel)]="email" />
           </div>
 
           <!-- Contact 1 -->
           <div class="form-group">
-            <label>Contact Number 1</label>
-            <input type="text" class="form-input" name="contact1" ngModel />
+            <label class="form-label">Contact Number 1</label>
+            <input
+              type="text"
+              class="form-input"
+              name="contactNumber1"
+              [(ngModel)]="contactNumber1"
+            />
           </div>
 
           <!-- Contact 2 -->
           <div class="form-group">
-            <label>Contact Number 2</label>
-            <input type="text" class="form-input" name="contact2" ngModel />
+            <label class="form-label">Contact Number 2</label>
+            <input
+              type="text"
+              class="form-input"
+              name="contactNumber2"
+              [(ngModel)]="contactNumber2"
+            />
           </div>
 
           <!-- DOB -->
           <div class="form-group">
-            <label>Date of Birth</label>
-            <input type="date" class="form-input" name="dob" ngModel />
+            <label class="form-label">Date of Birth</label>
+            <input type="date" class="form-input" name="dateOfBirth" [(ngModel)]="dateOfBirth" />
           </div>
 
           <!-- Gender -->
           <div class="form-group">
-            <label>Gender</label>
-            <select class="form-input" name="gender" ngModel>
+            <label class="form-label">Gender</label>
+            <select class="form-input" name="gender" [(ngModel)]="gender">
               <option value="">Select Gender</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Other">Other</option>
+              <option value="MALE">MALE</option>
+              <option value="FEMALE">FEMALE</option>
+              <option value="OTHER">OTHER</option>
             </select>
           </div>
 
           <!-- LinkedIn -->
           <div class="form-group">
-            <label>LinkedIn URL</label>
-            <input type="url" class="form-input" name="linkedinUrl" ngModel />
+            <label class="form-label">LinkedIn URL</label>
+            <input type="url" class="form-input" name="linkedinUrl" [(ngModel)]="linkedinUrl" />
           </div>
 
           <!-- Religion -->
           <div class="form-group">
-            <label>Religion</label>
-            <select class="form-input" name="religion" ngModel>
+            <label class="form-label">Religion</label>
+            <select class="form-input" name="religion" [(ngModel)]="religion">
               <option value="">Select Religion</option>
+              <option value="ISLAM">Islam</option>
+              <option value="CHRISTIAN">Christian</option>
+              <option value="HINDU">Hindu</option>
+              <option value="OTHER">Other</option>
             </select>
           </div>
 
           <!-- Country -->
           <div class="form-group">
-            <label>Country</label>
+            <label class="form-label">Country</label>
             <select
               [(ngModel)]="selectedCountry"
               name="country"
               (change)="onCountryChange(selectedCountry)"
               class="form-input"
-              name="country"
-              ngModel
+              name="selectedCountry"
             >
               <option *ngFor="let c of countries" [value]="c.code">{{ c.name }}</option>
             </select>
@@ -103,11 +136,31 @@
 
           <!-- City -->
           <div class="form-group">
-            <label>City</label>
-            <select [(ngModel)]="selectedCity" name="city" type="text" class="form-input" ngModel>
+            <label class="form-label">City</label>
+            <select [(ngModel)]="selectedCity" name="selectedCity" type="text" class="form-input">
               <option value="">Select City</option>
               <option *ngFor="let city of cities" [value]="city">{{ city }}</option>
             </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Source</label>
+            <select [(ngModel)]="source" name="source" type="text" class="form-input">
+              <option value="">Select Source</option>
+              <option value="REQUISITION">REQUISITION</option>
+              <option value="WALK_IN">WALK_IN</option>
+              <option value="REFERRAL">REFERRAL</option>
+              <option value="PORTAL">PORTAL</option>
+              <option value="OTHER">OTHER</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Remarks</label>
+            <textarea
+              type="text"
+              name="remarks"
+              [(ngModel)]="remarks"
+              class="form-control"
+            ></textarea>
           </div>
         </div>
         <div class="form-actions-footer">
