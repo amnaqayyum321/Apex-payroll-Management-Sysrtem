@@ -25,7 +25,7 @@
               </option>
             </select>
             <small class="text-muted" *ngIf="panels.length === 0">
-              Koi active panel available nahi hai.
+              No Interview Panel is Available.
             </small>
           </div>
         </div>
@@ -41,15 +41,15 @@
               [disabled]="!selectedPanelId || isLoadingSessions || sessions.length === 0"
             >
               <option value="">
-                <ng-container *ngIf="!selectedPanelId">— Pehle panel select karein —</ng-container>
+                <ng-container *ngIf="!selectedPanelId">— Select Panel First —</ng-container>
                 <ng-container *ngIf="selectedPanelId && isLoadingSessions"
                   >— Loading... —</ng-container
                 >
                 <ng-container *ngIf="selectedPanelId && !isLoadingSessions && sessions.length === 0"
-                  >— Koi session nahi mila —</ng-container
+                  >— No Session Found —</ng-container
                 >
                 <ng-container *ngIf="selectedPanelId && !isLoadingSessions && sessions.length > 0"
-                  >— Session select karein —</ng-container
+                  >— Select Session —</ng-container
                 >
               </option>
               <option *ngFor="let session of sessions" [value]="session.publicId">
@@ -61,7 +61,7 @@
               class="text-muted"
               *ngIf="selectedPanelId && !isLoadingSessions && sessions.length === 0"
             >
-              Is panel mein abhi koi session available nahi hai.
+              No Session is Available in this Panel.
             </small>
           </div>
         </div>
@@ -126,7 +126,7 @@
               class="form-control"
               [(ngModel)]="feedback.notes"
               name="notes"
-              placeholder="Candidate ki performance ke baare mein detailed notes likhein..."
+              placeholder="Please provide detailed notes on the candidate's performance."
               rows="4"
             ></textarea>
           </div>

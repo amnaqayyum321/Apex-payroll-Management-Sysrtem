@@ -122,7 +122,7 @@ export class InterviewFeedback implements OnInit {
         this.sessions = matchedSessions;
 
         if (this.sessions.length === 0) {
-          this.toastr.info('Is panel mein koi session nahi mila');
+          this.toastr.info('No sessions found in this Panel');
         }
       },
       error: (err: any) => {
@@ -170,7 +170,7 @@ export class InterviewFeedback implements OnInit {
       return;
     }
     if (this.feedback.score > 100) {
-      this.toastr.warning('Score 100 se zyada nahi ho sakta');
+      this.toastr.warning('Score Cannot be more than 100');
       return;
     }
 
@@ -195,7 +195,7 @@ export class InterviewFeedback implements OnInit {
             this.sessions = this.sessions.filter((s) => s.publicId !== this.selectedSessionId);
             this.selectedSessionId = '';
             this.toastr.warning(
-              'Aap is session ke panel member nahi hain. Koi aur session select karein.',
+              'You are not panel member of this session. Please select another session',
             );
           } else {
             this.toastr.error(msg);
