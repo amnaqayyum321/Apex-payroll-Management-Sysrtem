@@ -43,6 +43,26 @@
     }
 }
 
+/* ===================== ROOT FIX — container-fluid sidebar overflow ===================== */
+
+:host {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+:host>section.container-fluid {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    overflow: hidden;
+    box-sizing: border-box;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
 /* ===================== TABLE ===================== */
 
 table {
@@ -137,15 +157,33 @@ table tbody tr td {
     border-color: #334155 !important;
 }
 
-/* ===================== TABLE MAIN DIV ===================== */
+/* ===================== TABLE MAIN DIV — FIXED ===================== */
 
 .table-main-div {
     border: 1px solid var(--border-color);
     border-radius: 8px;
     max-height: calc(100vh - 150px);
     overflow-y: auto;
-    overflow-x: hidden;
+    overflow-x: auto;
+    /* ✅ hidden → auto (yahi asli fix hai) */
     background-color: var(--second-primary-color);
+    width: 100%;
+    /* ✅ full width lo */
+    min-width: 0;
+    /* ✅ flex child crush na ho */
+    box-sizing: border-box;
+    /* ✅ border width mein count ho */
+}
+
+/* ===================== TABLE RESPONSIVE OVERRIDE ===================== */
+
+.table-responsive {
+    overflow-x: auto;
+    overflow-y: visible;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    -webkit-overflow-scrolling: touch;
 }
 
 /* ===================== DROPDOWN ===================== */

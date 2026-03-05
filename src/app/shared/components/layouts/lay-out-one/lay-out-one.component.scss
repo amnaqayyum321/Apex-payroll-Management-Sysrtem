@@ -1,48 +1,101 @@
+// .lay-out {
+//   padding: 10px;
+//   display: flex;
+//   // align-items: center;
+//   gap: 0px;
+//   justify-content: space-between;
+
+//   .sid-navbar {
+//     transition: width 0.4s ease, all 0.6s ease;
+//   }
+
+//   .main-content {
+//     width: 100%;
+
+//   }
+
+//   .landig-pages {
+//     height: 98vh;
+//     overflow-y: auto;
+//     padding-inline-end: 8px;
+//   }
+
+//   .landig-pages::after {
+//     content: "";
+   
+//     display: block;
+   
+//     height: 140px;
+
+   
+
+//   }
+// }
+// .landig-pages::-webkit-scrollbar {
+//     width: 6px; /* barik scrollbar */
+// }
+
+// .landig-pages::-webkit-scrollbar-track {
+//     background: transparent; /* track ko none jesa dikhana */
+// }
+
+// .landig-pages::-webkit-scrollbar-thumb {
+//     background-color: #8daac6; /* scrollbar ka color */
+//     border-radius: 10px;
+// }
+// @media (max-width: 1000px) {
+//   .sid-navbar {
+//     display: none;
+//   }
+// }
 .lay-out {
   padding: 10px;
   display: flex;
-  // align-items: center;
   gap: 0px;
   justify-content: space-between;
 
   .sid-navbar {
     transition: width 0.4s ease, all 0.6s ease;
+    flex-shrink: 1;
+    /* ✅ sidebar apni width kabhi nahi chorta */
   }
 
   .main-content {
     width: 100%;
-
+    min-width: 0;
+    /* ✅ YAHI ASLI FIX HAI — flex child ko shrink hone do */
+    overflow: hidden;
+    /* ✅ content bahar na jaye */
   }
 
   .landig-pages {
     height: 98vh;
     overflow-y: auto;
+    overflow-x: hidden;
+    /* ✅ horizontal overflow rok */
     padding-inline-end: 8px;
   }
 
   .landig-pages::after {
     content: "";
-   
     display: block;
-   
     height: 140px;
-
-   
-
   }
 }
+
 .landig-pages::-webkit-scrollbar {
-    width: 6px; /* barik scrollbar */
+  width: 6px;
 }
 
 .landig-pages::-webkit-scrollbar-track {
-    background: transparent; /* track ko none jesa dikhana */
+  background: transparent;
 }
 
 .landig-pages::-webkit-scrollbar-thumb {
-    background-color: #8daac6; /* scrollbar ka color */
-    border-radius: 10px;
+  background-color: #8daac6;
+  border-radius: 10px;
 }
+
 @media (max-width: 1000px) {
   .sid-navbar {
     display: none;

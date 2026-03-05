@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment';
@@ -28,12 +28,12 @@ export class OnboardingService {
     return this.http.put(this.url + `recruitment/applications/${publicId}`, data);
   }
 
- updateApplicationStatus(publicId: string, status: string) {
-  return this.http.patch(
-    `${this.url}recruitment/applications/${publicId}/status?status=${status}`,
-    {}
-  );
-}
+  updateApplicationStatus(publicId: string, status: string) {
+    return this.http.patch(
+      `${this.url}recruitment/applications/${publicId}/status?status=${status}`,
+      {},
+    );
+  }
 
   getCandidateApplicationById(publicId: string): Observable<any> {
     return this.http.get(this.url + `recruitment/applications/${publicId}`);
@@ -98,11 +98,8 @@ export class OnboardingService {
     return this.http.get(this.url + `recruitment/offers/${publicId}`);
   }
   updateOfferStatus(publicId: string, status: string) {
-  return this.http.patch(
-    `${this.url}recruitment/offers/${publicId}/status?status=${status}`,
-    {}
-  );
-}
+    return this.http.patch(`${this.url}recruitment/offers/${publicId}/status?status=${status}`, {});
+  }
 
   // CANDIDATES
   CreatenewCandidate(data: any): Observable<any> {
@@ -165,5 +162,11 @@ export class OnboardingService {
     return this.http.get(
       this.url + `recruitment/interview-feedback/my-pending?page=${page}&size=${size}`,
     );
+  }
+  uploadAttachment(formData: FormData, params: HttpParams): Observable<any> {
+    return this.http.post('storage/attachments/linked', formData, { params });
+  }
+  downloadAttachment(publicId: string): Observable<any> {
+    return this.http.get(`storage/attachments/${publicId}/download-url`);
   }
 }
