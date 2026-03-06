@@ -103,7 +103,7 @@ export class PayPeriod {
       },
       error: () => {
         this.loader.hide();
-        this.toastr.error('Failed to load department');
+        this.toastr.error('Failed to load pay period');
       },
     });
   }

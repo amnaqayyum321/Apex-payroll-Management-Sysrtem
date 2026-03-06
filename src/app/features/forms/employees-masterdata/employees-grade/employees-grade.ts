@@ -52,7 +52,7 @@ export class EmployeesGrade {
       },
       error: () => {
         this.loader.hide();
-        this.toastr.error('Failed to load designation');
+        this.toastr.error('Failed to load employees grades');
       },
     });
   }

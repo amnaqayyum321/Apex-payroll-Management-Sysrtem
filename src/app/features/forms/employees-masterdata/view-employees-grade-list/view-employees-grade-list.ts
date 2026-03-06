@@ -57,7 +57,7 @@ export class ViewEmployeesGradeList {
       },
       error: (error) => {
         this.loader.hide();
-        this.toastr.error('Error fetching designations list');
+        this.toastr.error('Error fetching employees grades list');
       },
     });
   }

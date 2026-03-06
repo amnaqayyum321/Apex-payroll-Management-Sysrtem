@@ -59,7 +59,7 @@ export class ViewWorkSchedule {
       },
       error: (error) => {
         this.loader.hide();
-        this.toastr.error('Error fetching designations list');
+        this.toastr.error('Error fetching work schedule list');
       },
     });
   }
