@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormsService } from '../../../forms/Services/forms';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { retry } from 'rxjs';
 
 @Component({
   selector: 'app-create-requistion',
@@ -79,9 +80,31 @@ export class CreateRequistion {
   onHiringManagerModeChange() {
     this.hiringManagerPublicId = '';
   }
-  createDepartment() {
-    if (!this.code || !this.name) {
+  createRequisition() {
+    if (
+      !this.code ||
+      !this.name ||
+      !this.departmentPublicId ||
+      !this.designationPublicId ||
+      !this.remarks
+    ) {
       this.toastr.error('Please fill in all required fields');
+      return;
+    }
+    if (this.requiredCount <= 0) {
+      this.toastr.error('Required must be greater then 0');
+      return;
+    }
+    if (this.budgetAmount <= 0) {
+      this.toastr.error('budgetAmount must be greater then 0');
+      return;
+    }
+    if (this.minExperienceYears > this.maxExperienceYears) {
+      this.toastr.error('Min experience cannot be greater than Max experience');
+      return;
+    }
+    if (new Date(this.targetJoiningDate) < new Date(this.requestedDate)) {
+      this.toastr.error('Target joining date cannot be before requested date');
       return;
     }
     if (this.hiringManagerMode === 'SELECTED' && !this.hiringManagerPublicId) {
@@ -114,7 +137,7 @@ export class CreateRequistion {
       next: (res: any) => {
         this.loader.hide();
         this.toastr.success('Requesition created successfully', 'Success');
-        this.resetDepartmentForm();
+        this.resetRequisitionForm();
         setTimeout(() => {
           this.router.navigate(['/panel/onboarding/view-req-list']);
         }, 1500);
@@ -129,7 +152,7 @@ export class CreateRequistion {
       },
     });
   }
-  resetDepartmentForm() {
+  resetRequisitionForm() {
     this.code = '';
     this.name = '';
     this.status = 'DRAFT';
@@ -184,7 +207,7 @@ export class CreateRequistion {
       },
     });
   }
-  updateDepartment() {
+  updateRequisition() {
     const payload = {
       code: this.code,
       name: this.name,
@@ -210,7 +233,7 @@ export class CreateRequistion {
       next: () => {
         this.loader.hide();
         this.toastr.success('Requisition updated');
-        this.resetDepartmentForm();
+        this.resetRequisitionForm();
         setTimeout(() => {
           this.router.navigate(['/panel/onboarding/view-req-list']);
         }, 1500);

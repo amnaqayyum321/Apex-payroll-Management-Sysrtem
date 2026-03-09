@@ -131,6 +131,9 @@ export class Interviews {
           this.isEditMode = false;
           this.publicId = null;
           this.sessions = [this.newSession()];
+          this.code = '';
+          this.name = '';
+          this.remarks = '';
         }
       },
       error: () => {
@@ -208,26 +211,122 @@ export class Interviews {
       })),
     };
   }
+  // isFormValid(): boolean {
+  //   if (!this.code || !this.name || !this.applicationPublicId) {
+  //     this.toastr.error('Please fill in all required fields');
+  //     return false;
+  //   }
+
+  //   const newSessions = this.isEditMode ? this.sessions.filter((s) => !s.publicId) : this.sessions;
+
+  //   if (newSessions.length === 0) {
+  //     this.toastr.error('Please add at least one new session');
+  //     return false;
+  //   }
+
+  //   const invalidSessions = newSessions.filter(
+  //     (s) => !s.panelPublicId || !s.startTime || !s.endTime || !s.interviewDate,
+  //   );
+
+  //   if (invalidSessions.length > 0) {
+  //     this.toastr.error('Please fill in all required session fields');
+  //     return false;
+  //   }
+
+  //   return true;
+  // }
   isFormValid(): boolean {
-    if (!this.code || !this.name || !this.applicationPublicId) {
-      this.toastr.error('Please fill in all required fields');
+    // -------- MAIN FORM VALIDATION --------
+    if (!this.code?.trim()) {
+      this.toastr.error('Interview Code is required');
       return false;
     }
 
-    const newSessions = this.isEditMode ? this.sessions.filter((s) => !s.publicId) : this.sessions;
-
-    if (newSessions.length === 0) {
-      this.toastr.error('Please add at least one new session');
+    if (!this.name?.trim()) {
+      this.toastr.error('Interview Name is required');
       return false;
     }
 
-    const invalidSessions = newSessions.filter(
-      (s) => !s.panelPublicId || !s.startTime || !s.endTime || !s.interviewDate,
-    );
-
-    if (invalidSessions.length > 0) {
-      this.toastr.error('Please fill in all required session fields');
+    if (!this.applicationPublicId) {
+      this.toastr.error('Candidate selection is required');
       return false;
+    }
+
+    if (!this.sessions || this.sessions.length === 0) {
+      this.toastr.error('At least one interview session is required');
+      return false;
+    }
+
+    const toMinutes = (t: string) => {
+      const [h, m] = t.split(':').map(Number);
+      return h * 60 + m;
+    };
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const urlPattern = /^(https?:\/\/)[^\s$.?#].[^\s]*$/m;
+    for (let i = 0; i < this.sessions.length; i++) {
+      const s = this.sessions[i];
+
+      if (!s.panelPublicId) {
+        this.toastr.error(`Session ${i + 1}: Interviewer is required`);
+        return false;
+      }
+
+      if (!s.interviewDate) {
+        this.toastr.error(`Session ${i + 1}: Interview Date is required`);
+        return false;
+      }
+      const [year, month, day] = s.interviewDate.split('-').map(Number);
+      const interviewDate = new Date(year, month - 1, day);
+
+      if (interviewDate < today) {
+        this.toastr.error(`Session ${i + 1}: Interview date cannot be in the past`);
+        return false;
+      }
+      if (!s.startTime) {
+        this.toastr.error(`Session ${i + 1}: Start Time is required`);
+        return false;
+      }
+      if (!s.endTime) {
+        this.toastr.error(`Session ${i + 1}: End Time is required`);
+        return false;
+      }
+      if (toMinutes(s.startTime) >= toMinutes(s.endTime)) {
+        this.toastr.error(`Session ${i + 1}: End Time must be greater than Start Time`);
+        return false;
+      }
+
+      if (!s.location) {
+        this.toastr.error(`Session ${i + 1}: Interview Location is required`);
+        return false;
+      }
+      if (s.location === 'REMOTE' && !s.meetingUrl?.trim()) {
+        this.toastr.error(`Session ${i + 1}: Meeting URL required for remote interview`);
+        return false;
+      }
+
+      if (s.meetingUrl) {
+        if (!urlPattern.test(s.meetingUrl)) {
+          this.toastr.error(`Session ${i + 1}: Invalid Meeting URL`);
+          return false;
+        }
+      }
+      if (s.remarks && s.remarks.length > 500) {
+        this.toastr.error(`Session ${i + 1}: Remarks cannot exceed 500 characters`);
+        return false;
+      }
+      for (let j = i + 1; j < this.sessions.length; j++) {
+        const next = this.sessions[j];
+
+        if (
+          s.panelPublicId === next.panelPublicId &&
+          s.interviewDate === next.interviewDate &&
+          toMinutes(s.startTime) === toMinutes(next.startTime)
+        ) {
+          this.toastr.error(`Session ${i + 1}: Duplicate interview slot for same interviewer`);
+          return false;
+        }
+      }
     }
 
     return true;

@@ -127,7 +127,7 @@
                 <option *ngFor="let loc of locationOptions" [value]="loc">{{ loc }}</option>
               </select>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6" *ngIf="session.location === 'REMOTE'">
               <label class="form-label">Meeting URL</label>
               <input
                 type="text"

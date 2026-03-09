@@ -81,13 +81,110 @@ export class Offers implements OnInit {
   removeRow(index: number) {
     this.salaryRows.splice(index, 1);
   }
-
-  createOffer() {
-    if (!this.applicationPublicId) {
-      this.toastr.error('Application is required');
-      return;
+  validateForm(): boolean {
+    if (!this.code?.trim()) {
+      this.toastr.error('Offer Code is required');
+      return false;
     }
 
+    if (!this.name?.trim()) {
+      this.toastr.error('Offer Name is required');
+      return false;
+    }
+    if (!this.applicationPublicId) {
+      this.toastr.error('Candidate selection is required');
+      return false;
+    }
+    if (!this.offerDate) {
+      this.toastr.error('Offer Date is required');
+      return false;
+    }
+    if (!this.expiryDate) {
+      this.toastr.error('Expiry Date is required');
+      return false;
+    }
+    if (!this.joiningDate) {
+      this.toastr.error('Joining Date is required');
+      return false;
+    }
+    const parseDate = (d: string) => {
+      const [y, m, day] = d.split('-').map(Number);
+      return new Date(y, m - 1, day);
+    };
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const offer = parseDate(this.offerDate);
+    const expiry = parseDate(this.expiryDate);
+    const joining = parseDate(this.joiningDate);
+    if (!this.isEditMode && offer < today) {
+      this.toastr.error('Offer Date cannot be in the past');
+      return false;
+    }
+
+    if (expiry <= offer) {
+      this.toastr.error('Expiry Date must be greater than Offer Date');
+      return false;
+    }
+
+    if (joining < offer) {
+      this.toastr.error('Joining Date cannot be before Offer Date');
+      return false;
+    }
+    if (this.remarks && this.remarks.length > 500) {
+      this.toastr.error('Remarks cannot exceed 500 characters');
+      return false;
+    }
+    if (!this.salaryRows || this.salaryRows.length === 0) {
+      this.toastr.error('At least one salary component is required');
+      return false;
+    }
+    const usedElements = new Set();
+
+    for (let i = 0; i < this.salaryRows.length; i++) {
+      const row = this.salaryRows[i];
+      if (!row.payElementPublicId) {
+        this.toastr.error(`Salary Row ${i + 1}: Pay Element is required`);
+        return false;
+      }
+      if (usedElements.has(row.payElementPublicId)) {
+        this.toastr.error(`Salary Row ${i + 1}: Duplicate Pay Element not allowed`);
+        return false;
+      }
+      usedElements.add(row.payElementPublicId);
+      if (row.amount === null || row.amount === undefined || row.amount <= 0) {
+        this.toastr.error(`Salary Row ${i + 1}: Amount must be greater than 0`);
+        return false;
+      }
+      if (row.amount > 100000000) {
+        this.toastr.error(`Salary Row ${i + 1}: Amount is too large`);
+        return false;
+      }
+      if (!row.payFrequency) {
+        this.toastr.error(`Salary Row ${i + 1}: Pay Frequency is required`);
+        return false;
+      }
+      if (!row.effectiveDate) {
+        this.toastr.error(`Salary Row ${i + 1}: Effective Date is required`);
+        return false;
+      }
+
+      const effDate = parseDate(row.effectiveDate);
+
+      if (effDate < offer) {
+        this.toastr.error(`Salary Row ${i + 1}: Effective Date cannot be before Offer Date`);
+        return false;
+      }
+      if (row.remarks && row.remarks.length > 250) {
+        this.toastr.error(`Salary Row ${i + 1}: Remarks cannot exceed 250 characters`);
+        return false;
+      }
+    }
+
+    return true;
+  }
+  createOffer() {
+    if (!this.validateForm()) return;
     const payload = {
       code: this.code,
       name: this.name,
@@ -106,7 +203,7 @@ export class Offers implements OnInit {
       next: () => {
         this.loader.hide();
         this.toastr.success('Offer Created Successfully');
-        this.router.navigate(['/panel/recruitment/view-offers-list']);
+        this.router.navigate(['/panel/onboarding/view-offers-list']);
       },
       error: (err) => {
         this.loader.hide();
@@ -116,6 +213,7 @@ export class Offers implements OnInit {
   }
 
   updateOffer() {
+    if (!this.validateForm()) return;
     const payload = {
       code: this.code,
       name: this.name,
@@ -134,7 +232,7 @@ export class Offers implements OnInit {
       next: () => {
         this.loader.hide();
         this.toastr.success('Updated Successfully');
-        this.router.navigate(['/panel/recruitment/view-offers-list']);
+        this.router.navigate(['/panel/onboarding/view-offers-list']);
       },
       error: () => {
         this.loader.hide();
@@ -180,6 +278,6 @@ export class Offers implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/panel/recruitment/view-offers-list']);
+    this.router.navigate(['/panel/onboarding/view-offers-list']);
   }
 }
