@@ -55,6 +55,7 @@ export class Company {
         this.telephone = res.data.telephone;
         this.description = res.data.description;
         this.active = res.data.isActive;
+        console.log('data get by id', res.data);
       },
       error: () => {
         this.loader.hide();

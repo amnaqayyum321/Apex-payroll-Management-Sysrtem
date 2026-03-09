@@ -9,6 +9,8 @@ import { PaginationComponent } from '../../../../shared/components/commons/compo
 import { OnboardingService } from '../../Services/onboarding';
 import { FormsService } from '../../../forms/Services/forms';
 import { CountryCityService, ICountry } from '../../../../Service/country';
+import { forkJoin } from 'rxjs';
+import { HttpParams } from '@angular/common/http';
 interface Tab {
   id: string;
   title: string;
@@ -36,11 +38,15 @@ interface QualificationEntry {
   qualRemarks: string;
 }
 interface AttachmentEntry {
-  file: File;
+  file: File | null;
   fileName: string;
   fileSize: string;
   fileType: string;
   remarks: string;
+  context: string;
+  description: string;
+  publicId?: string;
+  isServerFile?: boolean;
 }
 @Component({
   selector: 'app-candidate',
@@ -92,9 +98,11 @@ export class Candidate {
 
   attachmentList: AttachmentEntry[] = [];
 
-  attachForm = {
-    file: null as File | null,
+  attachForm: { file: File | null; remarks: string; context: string; description: string } = {
+    file: null,
     remarks: '',
+    context: 'CANDIDATE_DOCUMENTS',
+    description: '',
   };
   code = '';
   firstName = '';
@@ -139,7 +147,7 @@ export class Candidate {
   cancelForm() {
     // this.hideForm();
     this.resetForm();
-    this.router.navigate(['/panel/onboarding/view-all-candidates']);
+    this.router.navigate(['/panel/onboarding/view-candidate-list']);
   }
   setTab(tab: string) {
     this.activeTab = tab;
@@ -235,8 +243,8 @@ export class Candidate {
   }
 
   addAttachment() {
-    if (!this.attachForm.file || !this.attachForm.remarks) {
-      this.toastr.warning('Please select a file and enter remarks');
+    if (!this.attachForm.file) {
+      this.toastr.warning('Please select a file');
       return;
     }
 
@@ -246,9 +254,10 @@ export class Candidate {
       fileSize: this.getFileSize(this.attachForm.file.size),
       fileType: this.getFileIcon(this.attachForm.file.type),
       remarks: this.attachForm.remarks,
+      context: this.attachForm.context,
+      description: this.attachForm.description,
     });
-
-    this.attachForm = { file: null, remarks: '' };
+    this.attachForm = { file: null, remarks: '', context: 'CANDIDATE_DOCUMENTS', description: '' };
     const fileInput = document.getElementById('attachFile') as HTMLInputElement;
     if (fileInput) fileInput.value = '';
 
@@ -315,6 +324,10 @@ export class Candidate {
     this.onboardingService.CreatenewCandidate(payload).subscribe(
       (res: any) => {
         if (res.success) {
+          const candidatePublicId = res.data?.publicId;
+          if (this.attachmentList.length > 0) {
+            this.uploadAttachments(candidatePublicId, 'CANDIDATE');
+          }
           this.resetForm();
           this.toastr.success('Candidate Created Successfully');
           setTimeout(() => {
@@ -337,6 +350,10 @@ export class Candidate {
     this.onboardingService.updateCandidate(this.candidateId, payload).subscribe(
       (res: any) => {
         if (res.success) {
+          const hasNewAttachments = this.attachmentList.some((a) => !a.isServerFile && a.file);
+          if (hasNewAttachments) {
+            this.uploadAttachments(this.candidateId, 'CANDIDATE');
+          }
           this.resetForm();
           this.toastr.success('Candidate Updated Successfully!');
           setTimeout(() => {
@@ -357,6 +374,7 @@ export class Candidate {
       if (res.success) {
         this.loader.hide();
         const data = res.data;
+        this.code = data.code;
         this.firstName = data.firstName;
         this.lastName = data.lastName;
         this.email = data.email;
@@ -365,12 +383,14 @@ export class Candidate {
         this.dateOfBirth = data.dateOfBirth;
         this.gender = data.gender;
         this.selectedCountry = data.country;
+        this.cities = this.countryCityService.getCitiesByCountryCode(data.country);
         this.selectedCity = data.city;
         this.religion = data.religion;
         this.linkedinUrl = data.linkedinUrl;
         this.source = data.source;
         this.remarks = data.remarks;
-        this.experienceList = res.experiences.map((e: any) => ({
+        this.active = data.isActive;
+        this.experienceList = res.data.experiences.map((e: any) => ({
           companyName: e.companyName,
           position: e.position,
           fromDate: e.fromDate,
@@ -379,19 +399,30 @@ export class Candidate {
           salary: e.lastSalaryDrawn,
           expRemarks: e.remarks,
         }));
-        this.skillList = res.skills.map((s: any) => ({
+        this.skillList = res.data.skills.map((s: any) => ({
           skillName: s.skillName,
           skillRating: s.skillRating,
           skillRemarks: s.remarks,
         }));
 
-        this.qualificationList = res.qualifications.map((q: any) => ({
+        this.qualificationList = res.data.qualifications.map((q: any) => ({
           qualificationName: q.qualificationName,
           passingYear: q.passingYear,
           isStudying: q.currentlyStudying,
           institute: q.institute,
           grade: q.gradeCgpa,
           qualRemarks: q.remarks,
+        }));
+        this.attachmentList = (res.data.attachments || []).map((a: any) => ({
+          file: null,
+          fileName: a.fileName,
+          fileSize: this.getFileSize(a.fileSize),
+          fileType: this.getFileIcon(a.fileType),
+          remarks: '',
+          context: a.storageContext,
+          description: a.description,
+          publicId: a.publicId,
+          isServerFile: true,
         }));
       }
     });
@@ -400,8 +431,36 @@ export class Candidate {
     this.title === 'create' ? this.SubmitCandidate() : this.UpdateCandidate();
   }
 
-  cancel() {
-    this.router.navigate(['/panel/onboarding/view-all-candidates']);
+  uploadAttachments(entityPublicId: string, entityType: string) {
+    const newAttachments = this.attachmentList.filter((a) => !a.isServerFile && a.file);
+    if (newAttachments.length === 0) {
+      this.loader.hide();
+      return;
+    }
+    const uploadObservables = newAttachments.map((attachment) => {
+      const formData = new FormData();
+      formData.append('file', attachment.file!);
+
+      const params = new HttpParams()
+        .set('context', attachment.context)
+        .set('entityType', entityType)
+        .set('entityPublicId', entityPublicId)
+        .set('description', attachment.description);
+
+      return this.onboardingService.uploadAttachment(formData, params);
+    });
+
+    forkJoin(uploadObservables).subscribe(
+      (results) => {
+        console.log('All attachments uploaded:', results);
+        this.loader.hide();
+      },
+      (err: any) => {
+        console.error('Attachment upload failed:', err);
+        this.toastr.error('Some attachments failed to upload');
+        this.loader.hide();
+      },
+    );
   }
   resetForm(): void {
     this.title = 'create';
@@ -451,11 +510,40 @@ export class Candidate {
     this.attachForm = {
       file: null,
       remarks: '',
+      context: 'CANDIDATE_DOCUMENTS',
+      description: '',
     };
 
     const fileInput = document.getElementById('attachFile') as HTMLInputElement;
     if (fileInput) fileInput.value = '';
     this.activeTab = 'experience';
     this.activeTabId = 'experience';
+  }
+  downloadAttachment(publicId: string) {
+    if (!publicId) return;
+    debugger;
+    this.loader.show();
+    this.onboardingService.downloadAttachment(publicId).subscribe(
+      (res: any) => {
+        if (res?.message) {
+          console.log('downalod res', res);
+          this.loader.hide();
+          window.open(res.message, '_blank');
+        }
+      },
+      (err: any) => {
+        this.toastr.error('Download failed');
+        console.log(err);
+      },
+    );
+  }
+  getFileType(fileName: string): string {
+    const ext = fileName.split('.').pop()?.toLowerCase();
+    if (!ext) return 'file';
+    if (ext === 'pdf') return 'pdf';
+    if (['png', 'jpg', 'jpeg', 'gif', 'webp', 'svg'].includes(ext)) return 'img';
+    if (['doc', 'docx'].includes(ext)) return 'doc';
+    if (['xls', 'xlsx', 'csv'].includes(ext)) return 'xls'; // ← xlsx was missing
+    return 'file';
   }
 }

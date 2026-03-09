@@ -9,12 +9,11 @@ import { LoaderService } from '../../../../core/services/management-services/loa
 
 @Component({
   selector: 'app-offer',
-  imports: [CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './offer.html',
   styleUrl: './offer.scss',
 })
 export class Offers implements OnInit {
-
   code = '';
   name = '';
   applicationPublicId = '';
@@ -35,9 +34,9 @@ export class Offers implements OnInit {
     private formsService: FormsService,
     private onboarding: OnboardingService,
     private toastr: ToastrService,
-private route: ActivatedRoute,
+    private route: ActivatedRoute,
     private router: Router,
-    private loader: LoaderService
+    private loader: LoaderService,
   ) {}
 
   ngOnInit() {
@@ -54,19 +53,15 @@ private route: ActivatedRoute,
   }
 
   loadApplications() {
-    this.onboarding
-      .getAllCandidateApplications(0, 100)
-      .subscribe((res: any) => {
-        this.applications = res?.data?.content || res?.data || [];
-      });
+    this.onboarding.getAllCandidateApplications(0, 100).subscribe((res: any) => {
+      this.applications = res?.data?.content || res?.data || [];
+    });
   }
 
   loadPayElements() {
-    this.formsService
-      .GetPayElement(0, 100, 'ALL')
-      .subscribe((res: any) => {
-        this.payElements = res?.data?.content || res?.data || [];
-      });
+    this.formsService.GetPayElement(0, 100, 'ALL').subscribe((res: any) => {
+      this.payElements = res?.data?.content || res?.data || [];
+    });
   }
 
   addRow() {
@@ -79,7 +74,7 @@ private route: ActivatedRoute,
       isVariable: false,
       lineNumber: this.salaryRows.length + 1,
       status: 'ACTIVE',
-      remarks: ''
+      remarks: '',
     });
   }
 
@@ -88,7 +83,6 @@ private route: ActivatedRoute,
   }
 
   createOffer() {
-
     if (!this.applicationPublicId) {
       this.toastr.error('Application is required');
       return;
@@ -103,7 +97,7 @@ private route: ActivatedRoute,
       joiningDate: this.joiningDate,
       approvedByPublicId: null, // 👈 as required
       remarks: this.remarks,
-      salaryRows: this.salaryRows
+      salaryRows: this.salaryRows,
     };
 
     this.loader.show();
@@ -112,17 +106,16 @@ private route: ActivatedRoute,
       next: () => {
         this.loader.hide();
         this.toastr.success('Offer Created Successfully');
-        this.router.navigate(['/panel/recruitment/view-offers']);
+        this.router.navigate(['/panel/recruitment/view-offers-list']);
       },
       error: (err) => {
         this.loader.hide();
         this.toastr.error(err.error?.message || 'Creation Failed');
-      }
+      },
     });
   }
 
   updateOffer() {
-
     const payload = {
       code: this.code,
       name: this.name,
@@ -132,7 +125,7 @@ private route: ActivatedRoute,
       joiningDate: this.joiningDate,
       approvedByPublicId: null,
       remarks: this.remarks,
-      salaryRows: this.salaryRows
+      salaryRows: this.salaryRows,
     };
 
     this.loader.show();
@@ -141,12 +134,12 @@ private route: ActivatedRoute,
       next: () => {
         this.loader.hide();
         this.toastr.success('Updated Successfully');
-        this.router.navigate(['/panel/recruitment/view-offers']);
+        this.router.navigate(['/panel/recruitment/view-offers-list']);
       },
       error: () => {
         this.loader.hide();
         this.toastr.error('Update Failed');
-      }
+      },
     });
   }
 
@@ -170,7 +163,7 @@ private route: ActivatedRoute,
       error: () => {
         this.loader.hide();
         this.toastr.error('Failed to load offer');
-      }
+      },
     });
   }
 
@@ -187,6 +180,6 @@ private route: ActivatedRoute,
   }
 
   cancel() {
-    this.router.navigate(['/panel/recruitment/view-offers']);
+    this.router.navigate(['/panel/recruitment/view-offers-list']);
   }
 }

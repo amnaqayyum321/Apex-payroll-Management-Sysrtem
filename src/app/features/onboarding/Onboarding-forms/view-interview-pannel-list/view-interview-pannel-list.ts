@@ -8,14 +8,12 @@ import { RouterModule, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-view-interview-pannel-list',
-  imports: [CommonModule,FormsModule,RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './view-interview-pannel-list.html',
   styleUrl: './view-interview-pannel-list.scss',
 })
 export class ViewInterviewPannelList {
-
-
-   ProjectList: any[] = [];
+  InterviewPanelList: any[] = [];
   totalItems: number = 0;
   totalPagesCount: number = 0;
 
@@ -23,12 +21,11 @@ export class ViewInterviewPannelList {
     private Onboarding: OnboardingService,
     private toastr: ToastrService,
     private loader: LoaderService,
-
   ) {}
 
   currentPage = 1;
   itemsPerPage = 7;
-  paginatedProjectList: any[] = [];
+  paginatedInterviewPanelList: any[] = [];
 
   get totalPages() {
     return this.totalPagesCount || Math.ceil(this.totalItems / this.itemsPerPage);
@@ -47,12 +44,12 @@ export class ViewInterviewPannelList {
       next: (response: any) => {
         this.loader.hide();
         console.log('Raw data sample:', response.data[0]);
-        this.ProjectList = response.data;
-        console.log('Project list', this.ProjectList);
+        this.InterviewPanelList = response.data;
+        console.log('InterviewPanel list', this.InterviewPanelList);
         this.totalItems = response.paginator.totalItems;
         this.totalPagesCount = response.paginator.totalPages;
         this.currentPage = response.paginator.currentPage + 1;
-        this.paginatedProjectList = this.ProjectList;
+        this.paginatedInterviewPanelList = this.InterviewPanelList;
       },
       error: (error) => {
         this.loader.hide();

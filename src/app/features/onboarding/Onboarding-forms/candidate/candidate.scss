@@ -460,11 +460,7 @@ table tbody td {
             flex-wrap: wrap;
         }
 
-        .sidebar-tab-item {
-            flex: 1;
-            min-width: 150px;
-            justify-content: center;
-        }
+        
     }
 }
 
@@ -816,12 +812,12 @@ input:checked+.slider {
 }
 
 
-.tabs-container {
-    display: flex;
-    gap: 10px;
-    margin-top: 30px;
-    border-bottom: 2px solid #ddd;
-}
+// .tabs-container {
+//     display: flex;
+//     gap: 10px;
+//     margin-top: 30px;
+//     border-bottom: 2px solid #ddd;
+// }
 
 .tab-item {
     padding: 10px 20px;
@@ -971,7 +967,16 @@ input:checked+.slider {
         }
     }
 }
+.exp-table thead tr th,
+.exp-table tbody .exp-row td {
+    text-align: left;
+    padding-left: 16px;
+}
 
+.exp-table thead tr th:first-child,
+.exp-table tbody .exp-row td:first-child {
+    padding-left: 16px;
+}
 .company-name {
     font-weight: 500;
     color: var(--white-color-1);
@@ -1082,9 +1087,15 @@ input:checked+.slider {
         color: var(--purple-1);
     }
 }
-// File Upload
 .file-upload-wrapper {
     width: 100%;
+    // Add this so wrapper stretches full height of its col
+    display: flex;
+    flex-direction: column;
+
+    &.h-100 {
+        height: 100%;
+    }
 
     .file-input-hidden {
         display: none;
@@ -1094,12 +1105,18 @@ input:checked+.slider {
         display: flex;
         align-items: center;
         gap: 14px;
-        padding: 32px;
+        padding: 20px 24px; // ← reduced from 32px so it matches select height
         border: 1.5px dashed var(--border-color);
         border-radius: 8px;
         cursor: pointer;
         transition: all 0.25s ease;
         background-color: var(--second-primary-color);
+        min-height: 56px; // ← matches form-control select height
+        flex: 1; // ← stretches to fill wrapper
+
+        &.h-100 {
+            height: 100%;
+        }
 
         &:hover {
             border-color: var(--purple-1);
@@ -1142,43 +1159,159 @@ input:checked+.slider {
     }
 }
 
-// File Icon Badges in Table
-.file-name-cell {
+// Make the Context select stretch to same height as file upload box
+.col-md-6 {
+    .form-control[name="attachContext"] {
+        height: 100%;
+        min-height: 56px;
+    }
+}
+.action-buttons {
     display: flex;
+    gap: 8px;
     align-items: center;
-    gap: 10px;
 }
 
-.file-icon-badge {
-    padding: 2px 7px;
-    border-radius: 4px;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    flex-shrink: 0;
+.btn-icon {
+    border: none;
+    padding: 6px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
 
-    &.pdf {
-        background: rgba(239, 68, 68, 0.15);
-        color: #ef4444;
-    }
+.btn-delete {
+    background-color: #ffe5e5;
+    color: #d11a2a;
+}
 
-    &.img {
-        background: rgba(34, 197, 94, 0.15);
-        color: #22c55e;
-    }
+.btn-delete:hover {
+    background-color: #ffd6d6;
+}
 
-    &.doc {
-        background: rgba(59, 130, 246, 0.15);
-        color: #3b82f6;
-    }
+.btn-download {
+    background-color: #e6f0ff;
+    color: #0d6efd;
+}
 
-    &.xls {
-        background: rgba(16, 185, 129, 0.15);
-        color: #10b981;
-    }
+.btn-download:hover {
+    background-color: #d6e4ff;
+}
 
-    &.file {
-        background: rgba(156, 163, 175, 0.15);
-        color: #9ca3af;
-    }
+.btn-icon:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+// Professional File Type Icon Box
+.file-type-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  flex-shrink: 0;
+
+  &.icon-pdf {
+    background: linear-gradient(135deg, #ff6b6b, #ef4444);
+    color: white;
+    box-shadow: 0 2px 6px rgba(239, 68, 68, 0.35);
+  }
+
+  &.icon-img {
+    background: linear-gradient(135deg, #43e97b, #22c55e);
+    color: white;
+    box-shadow: 0 2px 6px rgba(34, 197, 94, 0.35);
+  }
+
+  &.icon-doc {
+    background: linear-gradient(135deg, #4facfe, #3b82f6);
+    color: white;
+    box-shadow: 0 2px 6px rgba(59, 130, 246, 0.35);
+  }
+
+  &.icon-xls {
+    background: linear-gradient(135deg, #43e97b, #10b981);
+    color: white;
+    box-shadow: 0 2px 6px rgba(16, 185, 129, 0.35);
+  }
+
+  &.icon-file {
+    background: linear-gradient(135deg, #a0aec0, #718096);
+    color: white;
+    box-shadow: 0 2px 6px rgba(113, 128, 150, 0.3);
+  }
+}
+
+// File name + extension label stacked
+.file-name-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.file-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.file-display-name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--white-color-1);
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.file-ext-label {
+  font-size: 11px;
+  color: var(--gray-color-1);
+  opacity: 0.65;
+}
+
+// Type pill badge
+.type-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+
+  &.pill-pdf {
+    background: rgba(239, 68, 68, 0.12);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.25);
+  }
+
+  &.pill-img {
+    background: rgba(34, 197, 94, 0.12);
+    color: #22c55e;
+    border: 1px solid rgba(34, 197, 94, 0.25);
+  }
+
+  &.pill-doc {
+    background: rgba(59, 130, 246, 0.12);
+    color: #3b82f6;
+    border: 1px solid rgba(59, 130, 246, 0.25);
+  }
+
+  &.pill-xls {
+    background: rgba(16, 185, 129, 0.12);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.25);
+  }
+
+  &.pill-file {
+    background: rgba(156, 163, 175, 0.12);
+    color: #9ca3af;
+    border: 1px solid rgba(156, 163, 175, 0.25);
+  }
 }

@@ -8,14 +8,12 @@ import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-view-offers-list',
-  imports: [CommonModule,FormsModule,RouterModule],
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './view-offers-list.html',
   styleUrl: './view-offers-list.scss',
 })
 export class ViewOffersList {
-
-
-   ProjectList: any[] = [];
+  OfferList: any[] = [];
   totalItems: number = 0;
   totalPagesCount: number = 0;
 
@@ -23,12 +21,11 @@ export class ViewOffersList {
     private Onboarding: OnboardingService,
     private toastr: ToastrService,
     private loader: LoaderService,
-
   ) {}
 
   currentPage = 1;
   itemsPerPage = 7;
-  paginatedProjectList: any[] = [];
+  paginatedOfferList: any[] = [];
   selectedStatus: string = 'ALL';
 
   get totalPages() {
@@ -41,38 +38,25 @@ export class ViewOffersList {
   ngOnInit() {
     this.loadProject();
   }
- loadProject() {
-  this.loader.show();
-  const backendPage = this.currentPage - 1;
+  loadProject() {
+    this.loader.show();
+    const backendPage = this.currentPage - 1;
 
-  // 👇 ALL ko backend ko mat bhejna
-  const statusToSend =
-    this.selectedStatus === 'ALL' ? undefined : this.selectedStatus;
+    // 👇 ALL ko backend ko mat bhejna
+    const statusToSend = this.selectedStatus === 'ALL' ? undefined : this.selectedStatus;
 
-  this.Onboarding
-    .getAllOffer(backendPage, this.itemsPerPage, statusToSend)
-    .subscribe({
+    this.Onboarding.getAllOffer(backendPage, this.itemsPerPage, statusToSend).subscribe({
       next: (response: any) => {
         this.loader.hide();
 
         console.log('Full Response:', response);
 
         // 👇 Safe data extraction
-        this.ProjectList =
-          response?.data?.content ||
-          response?.data ||
-          [];
-
-        this.totalItems =
-          response?.paginator?.totalItems || 0;
-
-        this.totalPagesCount =
-          response?.paginator?.totalPages || 0;
-
-        this.currentPage =
-          (response?.paginator?.currentPage || 0) + 1;
-
-        this.paginatedProjectList = this.ProjectList;
+        this.OfferList = response?.data?.content || response?.data || [];
+        this.totalItems = response?.paginator?.totalItems || 0;
+        this.totalPagesCount = response?.paginator?.totalPages || 0;
+        this.currentPage = (response?.paginator?.currentPage || 0) + 1;
+        this.paginatedOfferList = this.OfferList;
       },
       error: (error) => {
         this.loader.hide();
@@ -80,12 +64,11 @@ export class ViewOffersList {
         this.toastr.error('Error fetching Offers list');
       },
     });
-}
+  }
 
   changePage(page: number) {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
     this.loadProject();
   }
-
 }

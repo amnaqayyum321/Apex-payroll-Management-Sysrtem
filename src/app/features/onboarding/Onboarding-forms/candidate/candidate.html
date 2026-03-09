@@ -116,10 +116,10 @@
               <option value="ISLAM">ISLAM</option>
               <option value="CHRISTIANITY">CHRISTIANITY</option>
               <option value="HINDUISM">HINDUISM</option>
-                <option value="BUDDHISM">BUDDHISM</option>
+              <option value="BUDDHISM">BUDDHISM</option>
               <option value="SIKHISM">SIKHISM</option>
               <option value="JUDAISM">JUDAISM</option>
-              <option value="OTHER"> OTHER</option>
+              <option value="OTHER">OTHER</option>
             </select>
           </div>
 
@@ -793,17 +793,17 @@
         <h3 class="section-heading mb-3">Attachment</h3>
 
         <div class="row g-3">
-          <!-- File Upload -->
+          <!-- File Upload + Context: same row, equal height -->
           <div class="col-md-6">
             <label class="form-label">File <span class="text-danger">*</span></label>
-            <div class="file-upload-wrapper">
+            <div class="file-upload-wrapper h-100">
               <input
                 type="file"
                 id="attachFile"
                 class="file-input-hidden"
                 (change)="onFileSelected($event)"
               />
-              <label for="attachFile" class="file-upload-label">
+              <label for="attachFile" class="file-upload-label h-100">
                 <div class="file-upload-icon">
                   <svg
                     width="24"
@@ -819,25 +819,47 @@
                   </svg>
                 </div>
                 <div class="file-upload-text">
-                  <span class="file-upload-main" *ngIf="!attachForm.file">
-                    Click to upload file
-                  </span>
-                  <span class="file-upload-main file-selected" *ngIf="attachForm.file">
-                    {{ attachForm.file.name }}
-                  </span>
-                  <span class="file-upload-sub" *ngIf="!attachForm.file">
-                    PDF, DOC, XLS, PNG, JPG supported
-                  </span>
-                  <span class="file-upload-sub" *ngIf="attachForm.file">
-                    {{ getFileSize(attachForm.file.size) }}
-                  </span>
+                  <span class="file-upload-main" *ngIf="!attachForm.file"
+                    >Click to upload file</span
+                  >
+                  <span class="file-upload-main file-selected" *ngIf="attachForm.file">{{
+                    attachForm.file.name
+                  }}</span>
+                  <span class="file-upload-sub" *ngIf="!attachForm.file"
+                    >PDF, DOC, XLS, PNG, JPG supported</span
+                  >
+                  <span class="file-upload-sub" *ngIf="attachForm.file">{{
+                    getFileSize(attachForm.file.size)
+                  }}</span>
                 </div>
               </label>
             </div>
           </div>
 
-          <!-- Remarks -->
           <div class="col-md-6">
+            <label class="form-label">Context <span class="text-danger">*</span></label>
+            <select class="form-control" name="attachContext" [(ngModel)]="attachForm.context">
+              <option value="PROFILE_PICTURES">Profile Pictures</option>
+              <option value="EMPLOYEE_DOCUMENTS">Employee Documents</option>
+              <option value="CANDIDATE_DOCUMENTS">Candidate Documents</option>
+              <option value="RECRUITMENT_ATTACHMENTS">Recruitment Attachments</option>
+              <option value="LEAVE_ATTACHMENTS">Leave Attachments</option>
+              <option value="CONTRACTS">Contracts</option>
+              <option value="PAYROLL_DOCUMENTS">Payroll Documents</option>
+              <option value="GENERAL">General</option>
+              <option value="SYSTEM">System</option>
+            </select>
+          </div>
+          <div class="col-md-12 mt-5">
+            <label class="form-label">Description</label>
+            <textarea
+              class="form-control"
+              name="attachDescription"
+              [(ngModel)]="attachForm.description"
+              placeholder="Enter description..."
+            ></textarea>
+          </div>
+          <!-- <div class="col-md-6">
             <label class="form-label">Remarks <span class="text-danger">*</span></label>
             <textarea
               class="form-control"
@@ -846,7 +868,7 @@
               [(ngModel)]="attachForm.remarks"
               placeholder="Describe this attachment..."
             ></textarea>
-          </div>
+          </div> -->
         </div>
 
         <!-- Buttons -->
@@ -895,7 +917,8 @@
                   <th>File</th>
                   <th>Type</th>
                   <th>Size</th>
-                  <th>Remarks</th>
+                  <th>Context</th>
+                  <th>Description</th>
                   <th>Action</th>
                 </tr>
               </thead>
@@ -904,43 +927,49 @@
                   <td>{{ i + 1 }}</td>
                   <td>
                     <div class="file-name-cell">
-                      <!-- File Type Icon -->
-                      <span
-                        class="file-icon-badge"
-                        [class.pdf]="att.fileType === 'pdf'"
-                        [class.img]="att.fileType === 'img'"
-                        [class.doc]="att.fileType === 'doc'"
-                        [class.xls]="att.fileType === 'xls'"
-                        [class.file]="att.fileType === 'file'"
-                      >
-                        {{ att.fileType | uppercase }}
-                      </span>
-                      <span class="company-name">{{ att.fileName }}</span>
+                      <div class="file-meta">
+                        <span class="file-display-name">{{ att.fileName }}</span>
+                        <span class="file-ext-label">{{ att.fileType | uppercase }} File</span>
+                      </div>
                     </div>
                   </td>
+
+                  <!-- Remove the separate TYPE column td, merge into file cell above -->
+                  <!-- Or keep TYPE column simple: -->
                   <td>
-                    <span class="badge-status">{{ att.fileType | uppercase }}</span>
+                    <span
+                      class="type-pill"
+                      [class.pill-pdf]="att.fileType === 'pdf'"
+                      [class.pill-img]="att.fileType === 'img'"
+                      [class.pill-doc]="att.fileType === 'doc'"
+                      [class.pill-xls]="att.fileType === 'xls'"
+                      [class.pill-file]="att.fileType === 'file'"
+                    >
+                      {{ att.fileType | uppercase }}
+                    </span>
                   </td>
                   <td>{{ att.fileSize }}</td>
-                  <td>
-                    <span *ngIf="att.remarks">{{ att.remarks }}</span>
-                    <span *ngIf="!att.remarks" class="text-muted">—</span>
-                  </td>
-                  <td>
-                    <button class="btn-remove" (click)="removeAttachment(i)" title="Remove">
-                      <svg
-                        width="14"
-                        height="14"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="2"
-                      >
-                        <polyline points="3 6 5 6 21 6" />
-                        <path d="M19 6l-1 14H6L5 6" />
-                        <path d="M10 11v6M14 11v6" />
-                        <path d="M9 6V4h6v2" />
-                      </svg>
+                  <td>{{ att.context }}</td>
+                  <td>{{ att.description || '—' }}</td>
+
+                  <td class="action-buttons">
+                    <!-- Remove Button -->
+                    <button
+                      class="btn-icon btn-delete"
+                      (click)="removeAttachment(i)"
+                      title="Remove Attachment"
+                    >
+                      <i class="fa-solid fa-trash"></i>
+                    </button>
+
+                    <!-- Download Button -->
+                    <button
+                      class="btn-icon btn-download"
+                      (click)="downloadAttachment(att.publicId!)"
+                      [disabled]="!att.publicId"
+                      title="Download Attachment"
+                    >
+                      <i class="fa-solid fa-download"></i>
                     </button>
                   </td>
                 </tr>
