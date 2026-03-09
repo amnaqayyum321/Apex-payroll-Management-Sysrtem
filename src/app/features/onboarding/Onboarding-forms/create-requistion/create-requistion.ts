@@ -6,7 +6,6 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormsService } from '../../../forms/Services/forms';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { retry } from 'rxjs';
 
 @Component({
   selector: 'app-create-requistion',
@@ -166,18 +165,17 @@ export class CreateRequistion {
     this.hiringManagerPublicId = '';
     this.selectedEmployeeName = '';
   }
+
   createRequisition() {
-    if (
-      !this.code ||
+    if (!this.code ||
       !this.name ||
       !this.departmentPublicId ||
       !this.designationPublicId ||
-      !this.remarks
-    ) {
+      !this.remarks) {
       this.toastr.error('Please fill in all required fields');
       return;
     }
-    if (this.requiredCount <= 0) {
+      if (this.requiredCount <= 0) {
       this.toastr.error('Required must be greater then 0');
       return;
     }
@@ -222,7 +220,7 @@ export class CreateRequistion {
     this.onBoardingSV.CreatenewJobRequisition(payload).subscribe({
       next: (res: any) => {
         this.loader.hide();
-        this.toastr.success('Requesition created successfully', 'Success');
+        this.toastr.success('Requisition created successfully', 'Success');
         this.resetRequisitionForm();
         setTimeout(() => {
           this.router.navigate(['/panel/onboarding/view-req-list']);
@@ -238,6 +236,7 @@ export class CreateRequistion {
       },
     });
   }
+
   resetRequisitionForm() {
     this.code = '';
     this.name = '';
@@ -304,7 +303,28 @@ export class CreateRequistion {
       },
     });
   }
-  updateRequisition() {
+
+  private setSelectedNames() {
+    // Department
+    const dept = this.DepartmentList.find(d => d.publicId === this.departmentPublicId);
+    this.selectedDepartmentName = dept ? dept.name : '';
+
+    // Designation
+    const desig = this.DesignationList.find(d => d.publicId === this.designationPublicId);
+    this.selectedDesignationName = desig ? desig.name : '';
+
+    // Branch
+    const branch = this.companyBranchList.find(b => b.publicId === this.companyBranchPublicId);
+    this.selectedBranchName = branch ? branch.name : '';
+
+    // Employee (if any)
+    if (this.hiringManagerPublicId) {
+      const emp = this.employeeList.find(e => e.publicId === this.hiringManagerPublicId);
+      this.selectedEmployeeName = emp ? emp.fullName : '';
+    }
+  }
+
+   updateRequisition() {
     const payload = {
       code: this.code,
       name: this.name,
