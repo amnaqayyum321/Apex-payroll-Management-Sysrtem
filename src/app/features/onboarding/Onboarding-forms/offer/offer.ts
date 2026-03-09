@@ -106,7 +106,7 @@ export class Offers implements OnInit {
       next: () => {
         this.loader.hide();
         this.toastr.success('Offer Created Successfully');
-        this.router.navigate(['/panel/recruitment/view-offers-list']);
+        this.router.navigate(['/panel/onboarding/view-offers-list']);
       },
       error: (err) => {
         this.loader.hide();
@@ -134,7 +134,7 @@ export class Offers implements OnInit {
       next: () => {
         this.loader.hide();
         this.toastr.success('Updated Successfully');
-        this.router.navigate(['/panel/recruitment/view-offers-list']);
+        this.router.navigate(['/panel/onboarding/view-offers-list']);
       },
       error: () => {
         this.loader.hide();
@@ -180,6 +180,6 @@ export class Offers implements OnInit {
   }
 
   cancel() {
-    this.router.navigate(['/panel/recruitment/view-offers-list']);
+    this.router.navigate(['/panel/onboarding/view-offers-list']);
   }
 }
