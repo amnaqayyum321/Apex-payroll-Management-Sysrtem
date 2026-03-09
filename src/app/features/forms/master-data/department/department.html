@@ -2,8 +2,13 @@
   <div class="user-card">
     <!-- Header -->
     <div class="card-header">
-      <h3>{{ isEditMode ? 'Update Department' : 'Create Department' }}</h3>
-    </div>
+  <h3>{{ isEditMode ? 'Update Department' : 'Create Department' }}</h3>
+
+  <button class="reset-btn" (click)="resetDepartmentForm()">
+    <i class="fa fa-refresh"></i> Reset
+  </button>
+</div>
+   
     <div class="header-divider"></div>
 
     <form class="user-form">
@@ -41,7 +46,7 @@
       </div>
       <div class="row">
         <div class="col-12">
-          <label class="form-label">Description </label>
+          <label class="form-label">Remarks </label>
           <textarea
             type="text"
             class="form-control"

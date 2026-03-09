@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { LoaderService } from '../../../../core/services/management-services/loader.service';
 import { OnboardingService } from '../../Services/onboarding';
 import { ToastrService } from 'ngx-toastr';
@@ -14,6 +14,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './create-requistion.scss',
 })
 export class CreateRequistion {
+  // ... existing properties ...
   code: string = '';
   name: string = '';
   status: string = 'DRAFT';
@@ -41,6 +42,19 @@ export class CreateRequistion {
   companyBranchList: any[] = [];
   DepartmentList: any[] = [];
   DesignationList: any[] = [];
+
+  // Dropdown states
+  isDepartmentDropdownOpen: boolean = false;
+  isDesignationDropdownOpen: boolean = false;
+  isBranchDropdownOpen: boolean = false;
+  isEmployeeDropdownOpen: boolean = false;
+
+  // Selected display names
+  selectedDepartmentName: string = '';
+  selectedDesignationName: string = '';
+  selectedBranchName: string = '';
+  selectedEmployeeName: string = '';
+
   constructor(
     private loader: LoaderService,
     private onBoardingSV: OnboardingService,
@@ -59,7 +73,6 @@ export class CreateRequistion {
       next: (res: any) => {
         if (res.success) {
           this.employeeList = res.data;
-          console.log('employee List', res);
         }
         if (this.publicId) {
           this.loadSingleRequistion(this.publicId);
@@ -76,9 +89,83 @@ export class CreateRequistion {
     this.GetDepartment();
     this.GetDesignation();
   }
+
+  // Dropdown toggles
+  toggleDepartmentDropdown(event: Event) {
+    event.stopPropagation();
+    this.isDepartmentDropdownOpen = !this.isDepartmentDropdownOpen;
+    this.closeOtherDropdowns('department');
+  }
+
+  toggleDesignationDropdown(event: Event) {
+    event.stopPropagation();
+    this.isDesignationDropdownOpen = !this.isDesignationDropdownOpen;
+    this.closeOtherDropdowns('designation');
+  }
+
+  toggleBranchDropdown(event: Event) {
+    event.stopPropagation();
+    this.isBranchDropdownOpen = !this.isBranchDropdownOpen;
+    this.closeOtherDropdowns('branch');
+  }
+
+  toggleEmployeeDropdown(event: Event) {
+    event.stopPropagation();
+    this.isEmployeeDropdownOpen = !this.isEmployeeDropdownOpen;
+    this.closeOtherDropdowns('employee');
+  }
+
+  // Close all except the one we're toggling
+  private closeOtherDropdowns(except: string) {
+    if (except !== 'department') this.isDepartmentDropdownOpen = false;
+    if (except !== 'designation') this.isDesignationDropdownOpen = false;
+    if (except !== 'branch') this.isBranchDropdownOpen = false;
+    if (except !== 'employee') this.isEmployeeDropdownOpen = false;
+  }
+
+  // Selection methods
+  selectDepartment(dept: any, event: Event) {
+    event.stopPropagation();
+    this.departmentPublicId = dept.publicId;
+    this.selectedDepartmentName = dept.name;
+    this.isDepartmentDropdownOpen = false;
+  }
+
+  selectDesignation(desig: any, event: Event) {
+    event.stopPropagation();
+    this.designationPublicId = desig.publicId;
+    this.selectedDesignationName = desig.name;
+    this.isDesignationDropdownOpen = false;
+  }
+
+  selectBranch(branch: any, event: Event) {
+    event.stopPropagation();
+    this.companyBranchPublicId = branch.publicId;
+    this.selectedBranchName = branch.name;
+    this.isBranchDropdownOpen = false;
+  }
+
+  selectEmployee(emp: any, event: Event) {
+    event.stopPropagation();
+    this.hiringManagerPublicId = emp.publicId;
+    this.selectedEmployeeName = emp.fullName;
+    this.isEmployeeDropdownOpen = false;
+  }
+
+  // Close all dropdowns when clicking outside
+  @HostListener('document:click')
+  closeAllDropdowns() {
+    this.isDepartmentDropdownOpen = false;
+    this.isDesignationDropdownOpen = false;
+    this.isBranchDropdownOpen = false;
+    this.isEmployeeDropdownOpen = false;
+  }
+
   onHiringManagerModeChange() {
     this.hiringManagerPublicId = '';
+    this.selectedEmployeeName = '';
   }
+
   createDepartment() {
     if (!this.code || !this.name) {
       this.toastr.error('Please fill in all required fields');
@@ -113,7 +200,7 @@ export class CreateRequistion {
     this.onBoardingSV.CreatenewJobRequisition(payload).subscribe({
       next: (res: any) => {
         this.loader.hide();
-        this.toastr.success('Requesition created successfully', 'Success');
+        this.toastr.success('Requisition created successfully', 'Success');
         this.resetDepartmentForm();
         setTimeout(() => {
           this.router.navigate(['/panel/onboarding/view-req-list']);
@@ -129,6 +216,7 @@ export class CreateRequistion {
       },
     });
   }
+
   resetDepartmentForm() {
     this.code = '';
     this.name = '';
@@ -148,15 +236,22 @@ export class CreateRequistion {
     this.hiringManagerPublicId = '';
     this.remarks = '';
     this.disabled = false;
+
+    // Reset dropdown display names
+    this.selectedDepartmentName = '';
+    this.selectedDesignationName = '';
+    this.selectedBranchName = '';
+    this.selectedEmployeeName = '';
   }
+
   cancel() {
     this.router.navigate(['/panel/onboarding/view-req-list']);
   }
+
   loadSingleRequistion(publicId: string) {
     this.loader.show();
-    this.onBoardingSV.getJobRequisitionById(publicId!).subscribe({
+    this.onBoardingSV.getJobRequisitionById(publicId).subscribe({
       next: (res: any) => {
-        console.log('API response:', res.data);
         this.loader.hide();
         const data = res.data;
         this.code = data.code;
@@ -175,8 +270,12 @@ export class CreateRequistion {
         this.companyBranchPublicId = data.companyBranchPublicId;
         this.hiringManagerMode = data.hiringManagerMode;
         this.hiringManagerPublicId = data.hiringManagerPublicId || '';
+        // If hiringManagerPublicId exists, mode must be SELECTED
         this.hiringManagerMode = this.hiringManagerPublicId ? 'SELECTED' : 'SELF';
         this.remarks = data.remarks;
+
+        // Set display names from lists
+        this.setSelectedNames();
       },
       error: () => {
         this.loader.hide();
@@ -184,6 +283,27 @@ export class CreateRequistion {
       },
     });
   }
+
+  private setSelectedNames() {
+    // Department
+    const dept = this.DepartmentList.find(d => d.publicId === this.departmentPublicId);
+    this.selectedDepartmentName = dept ? dept.name : '';
+
+    // Designation
+    const desig = this.DesignationList.find(d => d.publicId === this.designationPublicId);
+    this.selectedDesignationName = desig ? desig.name : '';
+
+    // Branch
+    const branch = this.companyBranchList.find(b => b.publicId === this.companyBranchPublicId);
+    this.selectedBranchName = branch ? branch.name : '';
+
+    // Employee (if any)
+    if (this.hiringManagerPublicId) {
+      const emp = this.employeeList.find(e => e.publicId === this.hiringManagerPublicId);
+      this.selectedEmployeeName = emp ? emp.fullName : '';
+    }
+  }
+
   updateDepartment() {
     const payload = {
       code: this.code,
@@ -215,50 +335,43 @@ export class CreateRequistion {
           this.router.navigate(['/panel/onboarding/view-req-list']);
         }, 1500);
       },
-
       error: () => {
         this.loader.hide();
         this.toastr.error('Requisition Update failed');
       },
     });
   }
+
   GetCompanyBranch() {
     this.FormSV.getAllComapnyBranches(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.companyBranchList = res.data;
-          console.log('Compnay Branch List', res);
         }
       },
-      (error: any) => {
-        console.log(error);
-      },
+      (error: any) => console.log(error)
     );
   }
+
   GetDepartment() {
     this.FormSV.GetDepartment(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.DepartmentList = res.data;
-          console.log('Department List', res);
         }
       },
-      (error: any) => {
-        console.log(error);
-      },
+      (error: any) => console.log(error)
     );
   }
+
   GetDesignation() {
     this.FormSV.getAllDesignations(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.DesignationList = res.data;
-          console.log('Compnay Branch List', res);
         }
       },
-      (error: any) => {
-        console.log(error);
-      },
+      (error: any) => console.log(error)
     );
   }
 }

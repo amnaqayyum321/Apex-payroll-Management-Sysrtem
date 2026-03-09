@@ -20,9 +20,8 @@
             <th class="px-3 py-2">#</th>
             <th class="px-3 py-2">Name</th>
             <th class="px-3 py-2">Department Name</th>
-            <th class="px-3 py-2">DesignationName Name</th>
+            <th class="px-3 py-2">Designation Name</th>
             <th class="px-3 py-2">Requested Date</th>
-            <th class="px-3 py-2">Joining Date</th>
             <th class="px-3 py-2">Status</th>
             <th class="px-3 py-2">Actions</th>
           </tr>
@@ -37,7 +36,6 @@
             <td class="px-3 py-3 font-medium">{{ Req.departmentName }}</td>
             <td class="px-3 py-3 font-medium">{{ Req.designationName }}</td>
             <td class="px-3 py-3 font-medium">{{ Req.requestedDate }}</td>
-            <td class="px-3 py-3 font-medium">{{ Req.targetJoiningDate }}</td>
             <td class="px-3 py-3 font-medium">
               <span
                 class="status-badge"
@@ -47,6 +45,9 @@
                   'approved-badge': Req.status === 'APPROVED',
                   'pending-badge': Req.status === 'PENDING',
                   'rejected-badge': Req.status === 'REJECTED',
+                  'submitted-badge': Req.status === 'SUBMITTED',
+                  'closed-badge': Req.status === 'CLOSED',
+                  'cancelled-badge': Req.status === 'CANCELLED',
                 }"
               >
                 {{ Req.status }}

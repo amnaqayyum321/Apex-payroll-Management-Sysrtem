@@ -150,7 +150,7 @@ export class SideNavBarComponent implements OnInit {
             {
               label: 'Work Schedule',
               route: 'forms/view-work-schedule',
-              isVisible: false,
+              isVisible: true,
               icon: 'fa-solid fa-clock',
             },
             {

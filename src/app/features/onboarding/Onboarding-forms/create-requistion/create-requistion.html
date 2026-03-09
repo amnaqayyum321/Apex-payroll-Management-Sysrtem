@@ -7,172 +7,185 @@
     <div class="header-divider"></div>
 
     <form class="user-form">
-      <!-- ROW 1: Code & Name -->
-      <div class="row">
-        <div class="col-md-6">
-          <label class="form-label">Code <span class="text-danger">*</span></label>
+      <!-- 3-COLUMN GRID -->
+      <div class="form-grid">
+        <!-- Code -->
+        <div class="form-group">
+          <label>Code <span class="text-danger">*</span></label>
           <input
             type="text"
             placeholder="Enter Code..."
             [(ngModel)]="code"
-            class="form-control"
             name="code"
           />
         </div>
-        <div class="col-md-6">
-          <label class="form-label">Name <span class="text-danger">*</span></label>
+
+        <!-- Name -->
+        <div class="form-group">
+          <label>Name <span class="text-danger">*</span></label>
           <input
             type="text"
-            class="form-control"
             placeholder="Enter Name..."
             [(ngModel)]="name"
             name="name"
           />
         </div>
-      </div>
 
-      <!-- ROW 2: Role Name & Requested Date -->
-      <div class="row">
-        <div class="col-md-6">
-          <label class="form-label">Role Name</label>
+        <!-- Role Name -->
+        <div class="form-group">
+          <label>Role Name</label>
           <input
             type="text"
-            class="form-control"
             placeholder="Enter Role Name..."
             [(ngModel)]="roleName"
             name="roleName"
           />
         </div>
-        <div class="col-md-6">
-          <label class="form-label">Requested Date</label>
+
+        <!-- Requested Date -->
+        <div class="form-group">
+          <label>Requested Date</label>
           <input
             type="date"
-            class="form-control"
             [(ngModel)]="requestedDate"
             name="requestedDate"
           />
         </div>
-      </div>
 
-      <!-- ROW 3: Target Joining Date & Required Count -->
-      <div class="row">
-        <div class="col-md-6">
-          <label class="form-label">Target Joining Date</label>
+        <!-- Target Joining Date -->
+        <div class="form-group">
+          <label>Target Joining Date</label>
           <input
             type="date"
-            class="form-control"
             [(ngModel)]="targetJoiningDate"
             name="targetJoiningDate"
           />
         </div>
-        <div class="col-md-6">
-          <label class="form-label">Required Count</label>
+
+        <!-- Required Count -->
+        <div class="form-group">
+          <label>Required Count</label>
           <input
             type="number"
-            class="form-control"
             placeholder="Enter Required Count..."
             [(ngModel)]="requiredCount"
             name="requiredCount"
             min="0"
           />
         </div>
-      </div>
 
-      <!-- ROW 4: Min Experience & Max Experience -->
-      <div class="row">
-        <div class="col-md-6">
-          <label class="form-label">Min Experience (Years)</label>
+        <!-- Min Experience -->
+        <div class="form-group">
+          <label>Min Experience (Years)</label>
           <input
             type="number"
-            class="form-control"
             placeholder="Enter Min Experience..."
             [(ngModel)]="minExperienceYears"
             name="minExperienceYears"
             min="0"
           />
         </div>
-        <div class="col-md-6">
-          <label class="form-label">Max Experience (Years)</label>
+
+        <!-- Max Experience -->
+        <div class="form-group">
+          <label>Max Experience (Years)</label>
           <input
             type="number"
-            class="form-control"
             placeholder="Enter Max Experience..."
             [(ngModel)]="maxExperienceYears"
             name="maxExperienceYears"
             min="0"
           />
         </div>
-      </div>
 
-      <!-- ROW 5: Budget Amount & Currency -->
-      <div class="row">
-        <div class="col-md-6">
-          <label class="form-label">Budget Amount</label>
+        <!-- Budget Amount -->
+        <div class="form-group">
+          <label>Budget Amount</label>
           <input
             type="number"
-            class="form-control"
             placeholder="Enter Budget Amount..."
             [(ngModel)]="budgetAmount"
             name="budgetAmount"
             min="0"
           />
         </div>
-        <div class="col-md-6">
-          <label class="form-label">Currency</label>
+
+        <!-- Currency -->
+        <div class="form-group">
+          <label>Currency</label>
           <input
             type="text"
-            class="form-control"
             placeholder="e.g. USD, PKR..."
             [(ngModel)]="currency"
             name="currency"
           />
         </div>
-      </div>
 
-      <!-- ROW 6: Department & Designation -->
-      <div class="row">
-        <div class="col-md-6">
-          <label class="form-label">Department</label>
-          <select class="form-control" [(ngModel)]="departmentPublicId" name="departmentPublicId">
-            <option value="">-- Select Department --</option>
-            <option *ngFor="let dept of DepartmentList" [value]="dept.publicId">
-              {{ dept.name }}
-            </option>
-          </select>
+        <!-- Department (custom dropdown) -->
+        <div class="form-group">
+          <label>Department</label>
+          <div class="custom-dropdown" (click)="toggleDepartmentDropdown($event)">
+            <div class="dropdown-selected">
+              <span>{{ selectedDepartmentName || '-- Select Department --' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isDepartmentDropdownOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isDepartmentDropdownOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let dept of DepartmentList"
+                (click)="selectDepartment(dept, $event)"
+              >
+                {{ dept.name }}
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="col-md-6">
-          <label class="form-label">Designation</label>
-          <select class="form-control" [(ngModel)]="designationPublicId" name="designationPublicId">
-            <option value="">-- Select Designation --</option>
-            <option *ngFor="let desig of DesignationList" [value]="desig.publicId">
-              {{ desig.name }}
-            </option>
-          </select>
-        </div>
-      </div>
 
-      <!-- ROW 7: Company Branch & Hiring Manager -->
-      <!-- ROW 7: Company Branch & Hiring Manager -->
-      <div class="row">
-        <div class="col-md-6">
-          <label class="form-label">Company Branch</label>
+        <!-- Designation (custom dropdown) -->
+        <div class="form-group">
+          <label>Designation</label>
+          <div class="custom-dropdown" (click)="toggleDesignationDropdown($event)">
+            <div class="dropdown-selected">
+              <span>{{ selectedDesignationName || '-- Select Designation --' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isDesignationDropdownOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isDesignationDropdownOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let desig of DesignationList"
+                (click)="selectDesignation(desig, $event)"
+              >
+                {{ desig.name }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Company Branch (custom dropdown) -->
+        <div class="form-group">
+          <label>Company Branch</label>
+          <div class="custom-dropdown" (click)="toggleBranchDropdown($event)">
+            <div class="dropdown-selected">
+              <span>{{ selectedBranchName || '-- Select Branch --' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isBranchDropdownOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isBranchDropdownOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let branch of companyBranchList"
+                (click)="selectBranch(branch, $event)"
+              >
+                {{ branch.name }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hiring Manager Mode (native for simplicity, but you can also make it custom if needed) -->
+        <div class="form-group">
+          <label>Hiring Manager Type</label>
           <select
-            class="form-control"
-            [(ngModel)]="companyBranchPublicId"
-            name="companyBranchPublicId"
-          >
-            <option value="">-- Select Branch --</option>
-            <option *ngFor="let branch of companyBranchList" [value]="branch.publicId">
-              {{ branch.name }}
-            </option>
-          </select>
-        </div>
-
-        <!-- Hiring Manager Type -->
-        <div class="col-md-6">
-          <label class="form-label">Hiring Manager Type</label>
-          <select
-            class="form-control"
+            class="form-control native-select"
             [(ngModel)]="hiringManagerMode"
             name="hiringManagerMode"
             (ngModelChange)="onHiringManagerModeChange()"
@@ -181,29 +194,38 @@
             <option value="SELECTED">Employee (Select manually)</option>
           </select>
         </div>
-      </div>
-
-      <!-- Hiring Manager Employee Dropdown — SELECTED hone par neeche aata hai -->
-      <div class="row" *ngIf="hiringManagerMode === 'SELECTED'">
-        <div class="col-md-12">
-          <label class="form-label">Select Hiring Manager</label>
-          <select
-            class="form-control"
-            [(ngModel)]="hiringManagerPublicId"
-            name="hiringManagerPublicId"
-          >
-            <option value="">-- Select Employee --</option>
-            <option *ngFor="let emp of employeeList" [value]="emp.publicId">
-              {{ emp.fullName }}
-            </option>
-          </select>
+          <!-- Conditional Employee Dropdown (full width row) -->
+      <div class="form-grid" *ngIf="hiringManagerMode === 'SELECTED'">
+        <div class="form-group" style="grid-column: span 3;">
+          <label>Select Hiring Manager</label>
+          <div class="custom-dropdown" (click)="toggleEmployeeDropdown($event)">
+            <div class="dropdown-selected">
+              <span>{{ selectedEmployeeName || '-- Select Employee --' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isEmployeeDropdownOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isEmployeeDropdownOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let emp of employeeList"
+                (click)="selectEmployee(emp, $event)"
+              >
+                {{ emp.fullName }}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <!-- ROW 8: Remarks -->
-      <div class="row">
-        <div class="col-12">
-          <label class="form-label">Remarks</label>
+        <!-- Empty cell to maintain 3-column grid (optional, you can leave it out) -->
+        <div class="form-group"></div>
+      </div>
+
+    
+
+      <!-- Remarks (full width) -->
+      <div class="form-grid">
+        <div class="form-group" style="grid-column: span 3;">
+          <label>Remarks</label>
           <textarea
             class="form-control"
             placeholder="Enter Remarks..."

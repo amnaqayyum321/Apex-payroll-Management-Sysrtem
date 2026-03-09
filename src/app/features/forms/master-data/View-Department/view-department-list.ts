@@ -32,9 +32,18 @@ export class ViewDepartmentList {
     return this.totalPagesCount || Math.ceil(this.totalItems / this.itemsPerPage);
   }
 
-  get totalPagesArray() {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+get totalPagesArray() {
+  const pages: number[] = [];
+
+  let start = this.currentPage;
+  let end = Math.min(this.currentPage + 1, this.totalPages);
+
+  for (let i = start; i <= end; i++) {
+    pages.push(i);
   }
+
+  return pages;
+}
   ngOnInit() {
     this.loadDepartment();
   }
