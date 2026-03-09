@@ -62,7 +62,6 @@ export class Candidate {
   selectedCountry: string = '';
   selectedCity: string = '';
   remarks: string = '';
-  candiateObj = {};
   experienceList: ExperienceEntry[] = [];
   sidebarTabs: Tab[] = [
     { id: 'experience', title: 'Experience' },
@@ -111,7 +110,7 @@ export class Candidate {
   contactNumber1 = '';
   contactNumber2 = '';
   dateOfBirth = '';
-  gender = 'MALE';
+  gender = '';
   religion = 'ISLAM';
   linkedinUrl = '';
   source = 'REQUISITION';
@@ -267,6 +266,135 @@ export class Candidate {
   removeAttachment(index: number) {
     this.attachmentList.splice(index, 1);
   }
+  // Candidate Validation
+  validateCandidateForm(): boolean {
+    if (!this.firstName?.trim()) {
+      this.toastr.error('First Name is required');
+      return false;
+    }
+    if (!this.lastName?.trim()) {
+      this.toastr.error('Last Name is required');
+      return false;
+    }
+    if (!this.email?.trim()) {
+      this.toastr.error('Email is required');
+      return false;
+    }
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(this.email)) {
+      this.toastr.error('Please enter a valid Email');
+      return false;
+    }
+    if (!this.contactNumber1?.trim()) {
+      this.toastr.error('Contact Number 1 is required');
+      return false;
+    }
+    if (!this.gender) {
+      this.toastr.error('Gender is required');
+      return false;
+    }
+
+    return true;
+  }
+  // Tabs Validation
+  validateExperienceList(): boolean {
+    if (this.experienceList.length === 0) return true;
+    for (let i = 0; i < this.experienceList.length; i++) {
+      const exp = this.experienceList[i];
+
+      if (!exp.companyName?.trim()) {
+        this.toastr.error(`Experience ${i + 1}: Company Name required`);
+        return false;
+      }
+      if (!exp.fromDate) {
+        this.toastr.error(`Experience ${i + 1}: From Date required`);
+        return false;
+      }
+      if (!exp.position?.trim()) {
+        this.toastr.error(`Experience ${i + 1}: Position required`);
+        return false;
+      }
+      if (!exp.isContinue && !exp.toDate) {
+        this.toastr.error(`Experience ${i + 1}: To Date required`);
+        return false;
+      }
+    }
+
+    return true;
+  }
+  validateSkillList(): boolean {
+    if (this.skillList.length === 0) return true;
+    for (let i = 0; i < this.skillList.length; i++) {
+      const skills = this.skillList[i];
+      if (!skills.skillName?.trim()) {
+        this.toastr.error(`Skill${i + 1}:Skill Name Required`);
+        return false;
+      }
+      if (!skills.skillRating) {
+        this.toastr.error(`Skill ${i + 1}: Rating required`);
+        return false;
+      }
+    }
+    return true;
+  }
+  validateQualificationList(): boolean {
+    if (this.qualificationList.length === 0) return true;
+
+    for (let i = 0; i < this.qualificationList.length; i++) {
+      const q = this.qualificationList[i];
+
+      if (!q.qualificationName?.trim()) {
+        this.toastr.error(`Qualification ${i + 1}: Name required`);
+        return false;
+      }
+
+      if (!q.institute?.trim()) {
+        this.toastr.error(`Qualification ${i + 1}: Institute required`);
+        return false;
+      }
+
+      if (!q.isStudying && !q.passingYear) {
+        this.toastr.error(`Qualification ${i + 1}: Passing Year required`);
+        return false;
+      }
+    }
+
+    return true;
+  }
+  validateAttachmentList(): boolean {
+    if (this.attachmentList.length === 0) return true;
+
+    for (let i = 0; i < this.attachmentList.length; i++) {
+      const a = this.attachmentList[i];
+
+      if (!a.fileName) {
+        this.toastr.error(`Attachment ${i + 1}: File required`);
+        return false;
+      }
+    }
+
+    return true;
+  }
+  ValidateAllTabs(): boolean {
+    if (!this.validateExperienceList()) {
+      this.setTab('experience');
+      return false;
+    }
+    if (!this.validateSkillList()) {
+      this.setTab('skills');
+      return false;
+    }
+    if (!this.validateQualificationList()) {
+      this.setTab('qualification');
+      return false;
+    }
+
+    if (!this.validateAttachmentList()) {
+      this.setTab('attachment');
+      return false;
+    }
+    return true;
+  }
   buildPayload() {
     return {
       code: '',
@@ -316,13 +444,19 @@ export class Candidate {
     };
   }
   SubmitCandidate() {
-    debugger;
+    if (!this.validateCandidateForm()) {
+      return;
+    }
+    if (!this.ValidateAllTabs()) {
+      return;
+    }
     const payload = this.buildPayload();
     console.log('Payload Object:', payload);
     console.log('Payload JSON:', JSON.stringify(payload, null, 2));
     this.loader.show();
     this.onboardingService.CreatenewCandidate(payload).subscribe(
       (res: any) => {
+        this.loader.hide();
         if (res.success) {
           const candidatePublicId = res.data?.publicId;
           if (this.attachmentList.length > 0) {
@@ -343,6 +477,12 @@ export class Candidate {
     );
   }
   UpdateCandidate() {
+    if (!this.validateCandidateForm()) {
+      return;
+    }
+    if (!this.ValidateAllTabs()) {
+      return;
+    }
     const payload = this.buildPayload();
     console.log('Payload Object:', payload);
     console.log('Payload JSON:', JSON.stringify(payload, null, 2));
@@ -428,6 +568,7 @@ export class Candidate {
     });
   }
   save() {
+    if (!this.validateCandidateForm()) return;
     this.title === 'create' ? this.SubmitCandidate() : this.UpdateCandidate();
   }
 
@@ -472,7 +613,7 @@ export class Candidate {
     this.contactNumber1 = '';
     this.contactNumber2 = '';
     this.dateOfBirth = '';
-    this.gender = 'MALE';
+    this.gender = '';
     this.religion = 'ISLAM';
     this.linkedinUrl = '';
     this.source = 'REQUISITION';
