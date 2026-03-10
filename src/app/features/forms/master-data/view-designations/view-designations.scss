@@ -89,7 +89,7 @@ table tbody tr td {
 table {
   width: 100%;
   border-collapse: separate;
-  border-spacing: 0 10px;          // rows ke beech mein gap
+  border-spacing: 0 3px;          // rows ke beech mein gap
   caption-side: bottom;
 }
 
@@ -113,8 +113,7 @@ tbody tr {
 
   &:hover {
     background-color: #27354a;      // subtle hover
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  }
+box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);  }
 }
 
 tbody tr td {
@@ -143,6 +142,8 @@ tbody tr td {
       color: #cbd5e1;
       margin: 0 2px;
       border-radius: 10px;
+      
+
 
     
     }
@@ -157,6 +158,164 @@ tbody tr td {
 }
 
 
+.table-footer{
+  padding:10px 12px;
+}
+
+/* left section */
+
+.table-info{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+/* label */
+
+.table-info .label{
+  font-size:14px;
+  color:#94a3b8;
+}
+
+/* dropdown pill */
+
+.items-select{
+  background:var(--second-primary-color);
+  border: none;
+  border-radius:10px;
+  padding:2px 6px;
+  display:flex;
+  align-items:center;
+}
+
+.items-select select{
+  background:var(--primary-color);
+  border:none;
+  color:var(--white-color-1);
+  font-size:14px;
+  padding:4px 8px;
+  outline:none;
+  cursor:pointer;
+}
+
+/* rows text */
+
+.rows-count{
+  font-size:14px;
+  color:#94a3b8;
+}
+
+/* hover effect */
+
+
+/* ===== Scrollable table wrapper ===== */
+.table-scrollable {
+  max-height: 450px;              // adjust as needed
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--second-primary-color);
+
+  // WebKit (Chrome, Safari, Edge)
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: #4ade80;
+    border-radius: 20px;
+    border: 1px solid #1e293b;
+  }
+}
+
+
+/* ===== Search Box Style ===== */
+.search-box {
+  position: relative;
+  width: 200px;
+
+  input {
+    width: 100%;
+    padding: 6px 34px 6px 10px; // right space icon ke liye
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--second-primary-color);  // light grey like screenshot
+    font-size: 14px;
+    outline: none;
+    color: var(--white-color-1);
+  }
+    /* 🔹 Vertical divider line */
+  &::after {
+    content: "";
+    position: absolute;
+    right: 32px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 18px;
+    background: #94a3b8;
+  }
+
+  i {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #475569;
+    font-size: 14px;
+    pointer-events: none;
+  }
+}
+.search-wrapper{
+  display:flex;
+  flex-direction:column;
+}
+
+/* red instruction text */
+.search-note{
+  font-size:9px;
+  color:#ef4444;
+  margin-bottom:1px;
+  font-weight:500;
+}
+
+/* Sticky table header */
+.table-scrollable thead th{
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--second-primary-color); /* header background same rakho */
+}
+/* ===== Style for search & dropdown (dark theme) ===== */
+.form-control, .form-select {
+  background-color: #1e293b !important;
+  border: 1px solid #334155 !important;
+  color: #fff !important;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 14px;
+
+  &:focus {
+    outline: none;
+    border-color: #4ade80 !important;
+    box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.2);
+  }
+}
+
+/* Ensure the dropdown options also have dark background */
+.form-select option {
+  background-color: #1e293b;
+  color: #fff;
+}
+.not-found{
+  text-align: center;
+  padding: 25px;
+  color: #94a3b8;
+  font-size: 14px;
+  font-weight: 500;
+}
 
 .create-btn {
     font-size: 15px;
