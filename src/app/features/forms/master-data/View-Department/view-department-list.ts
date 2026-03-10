@@ -131,4 +131,5 @@ get lastItem(): number {
     }
     return pages;
   }
+  
 }

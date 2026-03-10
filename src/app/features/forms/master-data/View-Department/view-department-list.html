@@ -6,29 +6,39 @@
       <span style="font-weight: 700; color: #566f9e">-</span>
       <span>View All Department</span>
     </div>
-    <div class="d-flex align-items-center gap-2">
-      <!-- Search input -->
+  <div class="d-flex align-items-end gap-2">
+
+  <!-- Search area -->
+  <div class="search-wrapper">
+    <div class="search-note">
+      *Search Department By Name and Code
+    </div>
+
+    <div class="search-box">
       <input
         type="text"
-        class="form-control"
-        placeholder="Search..."
+        placeholder="Search here"
         [(ngModel)]="searchTerm"
         (input)="onSearch()"
-        style="width: 200px; background-color: #1e293b; border: 1px solid #334155; color: #fff;"
       />
-      <!-- Create button -->
-      <button class="create-btn" [routerLink]="['/panel/forms/department']">
-        <i class="fa-solid fa-plus icon"></i>
-        Create Department
-      </button>
+      <i class="fa fa-search"></i>
     </div>
+  </div>
+
+  <!-- Create button -->
+  <button class="create-btn" [routerLink]="['/panel/forms/department']">
+    <i class="fa-solid fa-plus icon"></i>
+    Create Department
+  </button>
+
+</div>
   </div>
 
   <!-- Table section -->
   <section class="table-main-div">
     <div
       class="rounded-2xl text-gray-200 overflow-x-auto pt-4"
-      [class.table-scrollable]="itemsPerPage > 7"
+      [class.table-scrollable]="itemsPerPage > 6"
     >
       <table class="min-w-full text-sm border-separate border-spacing-y-2">
         <thead>
@@ -67,27 +77,36 @@
               </div>
             </td>
           </tr>
+            <tr *ngIf="paginatedDepartmentList.length === 0">
+    <td colspan="5" class="not-found">
+      No Department Found
+    </td>
+  </tr>
         </tbody>
       </table>
     </div>
 
     <!-- Footer: Rows per page + range (left) and Pagination (right) -->
-    <div class="d-flex justify-content-between align-items-center mt-3 me-3">
+    <div class="table-footer d-flex justify-content-between align-items-center mt-3">
       <!-- Left: Rows per page dropdown and range text -->
-      <div class="d-flex align-items-center gap-3">
-        <span class="text-gray-400" style="color: #94a3b8;">Items per page</span>
-        <select
-          class="form-select"
-          [(ngModel)]="itemsPerPage"
-          (change)="onItemsPerPageChange()"
-          style="width: auto; background-color: #1e293b; border: 1px solid #334155; color: #fff;"
-        >
-          <option *ngFor="let opt of [7,15,25,50,100]" [value]="opt">{{ opt }}</option>
-        </select>
-        <span class="text-gray-400" style="color: #94a3b8;">
-          {{ firstItem }} - {{ lastItem }} of {{ totalItems }} rows
-        </span>
-      </div>
+      <div class="table-info">
+  <span class="label">Items per page</span>
+
+  <div class="items-select">
+    <select
+      [(ngModel)]="itemsPerPage"
+      (change)="onItemsPerPageChange()"
+    >
+      <option *ngFor="let opt of [7,15,25,50,100]" [value]="opt">
+        {{ opt }}
+      </option>
+    </select>
+  </div>
+
+  <span class="rows-count">
+    {{ firstItem }} - {{ lastItem }} of {{ totalItems }} rows
+  </span>
+</div>
 
       <!-- Right: Pagination (unchanged) -->
       <nav aria-label="Page navigation">
