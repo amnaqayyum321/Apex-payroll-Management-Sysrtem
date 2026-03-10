@@ -1,19 +1,45 @@
 <section class="container-fluid p-0">
+  <!-- Header: Title + Search + Create Button (no items-per-page dropdown) -->
   <div class="d-flex justify-content-between mb-3">
     <div class="page-title">
       <i class="fa-solid fa-house"></i>
       <span style="font-weight: 700; color: #566f9e">-</span>
       <span>View All Department</span>
     </div>
-    <div>
-      <button class="create-btn" [routerLink]="['/panel/forms/department']">
-        <i class="fa-solid fa-plus icon"></i>
-        Create Department
-      </button>
+  <div class="d-flex align-items-end gap-2">
+
+  <!-- Search area -->
+  <div class="search-wrapper">
+    <div class="search-note">
+      *Search Department By Name and Code
+    </div>
+
+    <div class="search-box">
+      <input
+        type="text"
+        placeholder="Search here"
+        [(ngModel)]="searchTerm"
+        (input)="onSearch()"
+      />
+      <i class="fa fa-search"></i>
     </div>
   </div>
+
+  <!-- Create button -->
+  <button class="create-btn" [routerLink]="['/panel/forms/department']">
+    <i class="fa-solid fa-plus icon"></i>
+    Create Department
+  </button>
+
+</div>
+  </div>
+
+  <!-- Table section -->
   <section class="table-main-div">
-    <div class="rounded-2xl text-gray-200 overflow-x-auto pt-4">
+    <div
+      class="rounded-2xl text-gray-200 overflow-x-auto pt-4"
+      [class.table-scrollable]="itemsPerPage > 6"
+    >
       <table class="min-w-full text-sm border-separate border-spacing-y-2">
         <thead>
           <tr class="text-gray-400 text-left text-xs uppercase tracking-wider">
@@ -40,7 +66,6 @@
                 {{ dep.isActive ? 'Active' : 'Inactive' }}
               </span>
             </td>
-
             <td class="px-3 py-3 text-gray-400">
               <div ngbDropdown class="d-inline-block">
                 <i
@@ -52,12 +77,38 @@
               </div>
             </td>
           </tr>
+            <tr *ngIf="paginatedDepartmentList.length === 0">
+    <td colspan="5" class="not-found">
+      No Department Found
+    </td>
+  </tr>
         </tbody>
       </table>
     </div>
 
-    <!-- ✅ Pagination -->
-    <div class="d-flex justify-content-end mt-3 me-3">
+    <!-- Footer: Rows per page + range (left) and Pagination (right) -->
+    <div class="table-footer d-flex justify-content-between align-items-center mt-3">
+      <!-- Left: Rows per page dropdown and range text -->
+      <div class="table-info">
+  <span class="label">Items per page</span>
+
+  <div class="items-select">
+    <select
+      [(ngModel)]="itemsPerPage"
+      (change)="onItemsPerPageChange()"
+    >
+      <option *ngFor="let opt of [7,15,25,50,100]" [value]="opt">
+        {{ opt }}
+      </option>
+    </select>
+  </div>
+
+  <span class="rows-count">
+    {{ firstItem }} - {{ lastItem }} of {{ totalItems }} rows
+  </span>
+</div>
+
+      <!-- Right: Pagination (unchanged) -->
       <nav aria-label="Page navigation">
         <ul class="pagination">
           <li class="page-item" [class.disabled]="currentPage === 1">
@@ -65,7 +116,6 @@
               &laquo;
             </a>
           </li>
-
           <li
             class="page-item"
             *ngFor="let page of totalPagesArray"
@@ -73,7 +123,6 @@
           >
             <a class="page-link" (click)="changePage(page)">{{ page }}</a>
           </li>
-
           <li class="page-item" [class.disabled]="currentPage === totalPages">
             <a class="page-link" (click)="changePage(currentPage + 1)" aria-label="Next">
               &raquo;
