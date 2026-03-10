@@ -7,6 +7,7 @@ import { LoaderService } from '../../../../core/services/management-services/loa
 import { ThemeService } from '../../../../core/services/management-services/Theme.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { SessionService } from '../../../../core/services/management-services/Session.service';
 
 @Component({
   selector: 'app-log-in',
@@ -14,27 +15,32 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, FormsModule],
   providers: [AuthService, EncryptionService, LoaderService, ThemeService],
   templateUrl: './log-in.component.html',
-  styleUrl: './log-in.component.scss'
+  styleUrl: './log-in.component.scss',
 })
 export class LogInComponent {
   isDarkMode = false;
-  constructor(private router: Router, private authService: AuthService, private toaster: ToastrService, private encryptionService: EncryptionService, private loader: LoaderService, private themeService: ThemeService) {
-
-  }
+  constructor(
+    private router: Router,
+    private authService: AuthService,
+    private toaster: ToastrService,
+    private encryptionService: EncryptionService,
+    private loader: LoaderService,
+    private themeService: ThemeService,
+    private sessionSv: SessionService,
+  ) {}
   ngOnInit() {
-    this.themeService.isLightTheme$.subscribe(value => {
+    this.themeService.isLightTheme$.subscribe((value) => {
       this.isDarkMode = !value;
     });
   }
   email: string = '';
   password: string = '';
   onLogin() {
-
     if (!this.email || !this.password) {
       this.toaster.error('Please fill in all required fields.');
-      return
+      return;
     }
-    this.loading = true
+    this.loading = true;
     this.loader.show();
     this.authService.logIn({ email: this.email, password: this.password }).subscribe({
       next: (response: any) => {
@@ -42,31 +48,28 @@ export class LogInComponent {
 
         if (!response.data.preAuthToken) {
           this.toaster.success('Login successful!');
-          let userId = this.encryptionService.encrypt(response.data.userId)
+          let userId = this.encryptionService.encrypt(response.data.userId);
           localStorage.setItem('userId', userId);
+          this.sessionSv.loadUserAndApplyMenu(userId);
           localStorage.setItem('token', response.data.accessToken);
 
           localStorage.setItem('refreshToken', response.data.refreshToken);
           // this.router.navigate(['/panel/dashboard']);
           this.router.navigate(['/panel/dashboard']);
-
         } else {
-          let preAuthToken = this.encryptionService.encrypt(response.data.preAuthToken)
+          let preAuthToken = this.encryptionService.encrypt(response.data.preAuthToken);
           this.toaster.success('A verification code has been sent to your email.');
           this.router.navigate(['/verify-otp', preAuthToken]);
-
         }
         this.loader.hide();
-
       },
       error: (error) => {
         this.loading = false;
 
         this.toaster.error(error.error.message || 'Login failed. Please try again.');
         this.loader.hide();
-      }
+      },
     });
-
   }
 
   loading = false;

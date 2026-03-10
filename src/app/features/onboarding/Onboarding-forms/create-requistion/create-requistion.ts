@@ -167,15 +167,17 @@ export class CreateRequistion {
   }
 
   createRequisition() {
-    if (!this.code ||
+    if (
+      !this.code ||
       !this.name ||
       !this.departmentPublicId ||
       !this.designationPublicId ||
-      !this.remarks) {
+      !this.remarks
+    ) {
       this.toastr.error('Please fill in all required fields');
       return;
     }
-      if (this.requiredCount <= 0) {
+    if (this.requiredCount <= 0) {
       this.toastr.error('Required must be greater then 0');
       return;
     }
@@ -306,25 +308,25 @@ export class CreateRequistion {
 
   private setSelectedNames() {
     // Department
-    const dept = this.DepartmentList.find(d => d.publicId === this.departmentPublicId);
+    const dept = this.DepartmentList.find((d) => d.publicId === this.departmentPublicId);
     this.selectedDepartmentName = dept ? dept.name : '';
 
     // Designation
-    const desig = this.DesignationList.find(d => d.publicId === this.designationPublicId);
+    const desig = this.DesignationList.find((d) => d.publicId === this.designationPublicId);
     this.selectedDesignationName = desig ? desig.name : '';
 
     // Branch
-    const branch = this.companyBranchList.find(b => b.publicId === this.companyBranchPublicId);
+    const branch = this.companyBranchList.find((b) => b.publicId === this.companyBranchPublicId);
     this.selectedBranchName = branch ? branch.name : '';
 
     // Employee (if any)
     if (this.hiringManagerPublicId) {
-      const emp = this.employeeList.find(e => e.publicId === this.hiringManagerPublicId);
+      const emp = this.employeeList.find((e) => e.publicId === this.hiringManagerPublicId);
       this.selectedEmployeeName = emp ? emp.fullName : '';
     }
   }
 
-   updateRequisition() {
+  updateRequisition() {
     const payload = {
       code: this.code,
       name: this.name,
@@ -369,7 +371,7 @@ export class CreateRequistion {
           this.companyBranchList = res.data;
         }
       },
-      (error: any) => console.log(error)
+      (error: any) => console.log(error),
     );
   }
 
@@ -380,7 +382,7 @@ export class CreateRequistion {
           this.DepartmentList = res.data;
         }
       },
-      (error: any) => console.log(error)
+      (error: any) => console.log(error),
     );
   }
 
@@ -391,7 +393,7 @@ export class CreateRequistion {
           this.DesignationList = res.data;
         }
       },
-      (error: any) => console.log(error)
+      (error: any) => console.log(error),
     );
   }
 }
