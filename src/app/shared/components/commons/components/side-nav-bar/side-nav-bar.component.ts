@@ -20,7 +20,7 @@ import { MenuItem, MenuGroup } from '../../../../interfaces/menu-item.interface'
 export class SideNavBarComponent implements OnInit {
   isOpen = true;
   isDarkMode = false;
-
+  permissions: string[] = [];
   // Dynamic menu structure
   topLevelItems: MenuItem[] = [
     { label: 'Dashboard', icon: 'fas fa-home', route: '/panel/dashboard', isVisible: true },
@@ -43,6 +43,7 @@ export class SideNavBarComponent implements OnInit {
               label: 'Users',
               route: 'users-and-roles/view-users',
               icon: 'fa-solid fa-people-group',
+              permission: 'ADMIN_USERS_VIEW',
               isVisible: true,
             },
 
@@ -50,6 +51,7 @@ export class SideNavBarComponent implements OnInit {
               label: 'Roles',
               route: 'users-and-roles/view-roles',
               icon: 'fa-solid fa-user-shield',
+              permission: 'ADMIN_USERS_VIEW',
               isVisible: true,
             },
           ],
@@ -276,29 +278,27 @@ export class SideNavBarComponent implements OnInit {
               icon: 'fa-solid fa-file-circle-plus',
               isVisible: true,
             },
-           
-         
-          
+
             {
               label: 'Candidates',
               route: 'onboarding/view-candidate-list',
               icon: 'fa-solid fa-user',
               isVisible: true,
             },
-              {
+            {
               label: 'Candidate Application',
               route: 'onboarding/view-candidate-application-list',
               isVisible: true,
               icon: 'fa-solid fa-stream',
             },
-          
+
             {
               label: 'Interview',
               route: 'onboarding/view-interviews-list',
               icon: 'fa-solid fa-calendar-check',
               isVisible: true,
             },
-              {
+            {
               label: 'Interview Panel',
               route: 'onboarding/view-interview-panel-list',
               icon: 'fa-solid fa-handshake',
@@ -310,14 +310,12 @@ export class SideNavBarComponent implements OnInit {
               icon: 'fa-solid fa-file-lines',
               isVisible: true,
             },
-              {
+            {
               label: 'Final Screening',
               route: 'onboarding/view-offers-list',
               isVisible: true,
               icon: 'fa-solid fa-award',
             },
-             
-          
           ],
         },
         {
@@ -326,27 +324,26 @@ export class SideNavBarComponent implements OnInit {
           isVisible: true,
           collapsed: true,
           children: [
-             {
+            {
               label: 'Requistion Approval',
               route: 'onboarding/requisition-approval',
               icon: 'fa-solid fa-list-check',
               isVisible: true,
             },
-                {
+            {
               label: 'Candidate Approval',
               route: 'onboarding/candidates-approval',
               icon: 'fa-solid fa-list-check',
               isVisible: true,
             },
-               {
+            {
               label: 'Interview Approval',
               route: 'onboarding/interview-approval',
               icon: 'fa-solid fa-list-check',
               isVisible: true,
             },
-          
-          
-               {
+
+            {
               label: 'Offers Approval',
               route: 'onboarding/offers-approval',
               icon: 'fa-solid fa-list-check',

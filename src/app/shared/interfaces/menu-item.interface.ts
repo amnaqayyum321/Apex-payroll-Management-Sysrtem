@@ -3,6 +3,7 @@ export interface MenuItem {
   icon?: string;
   route?: string;
   isVisible: boolean;
+  permission?: string;
   children?: MenuItem[];
   collapsed?: boolean;
 }

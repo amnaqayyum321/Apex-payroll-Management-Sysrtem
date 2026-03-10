@@ -12,15 +12,14 @@ import { LoaderService } from '../../../../core/services/management-services/loa
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './interview-panel.html',
-  styleUrls: ['./interview-panel.scss']
+  styleUrls: ['./interview-panel.scss'],
 })
 export class InterviewPanel {
-
   code = '';
   name = '';
   remarks = '';
-  active = true;
-    disabled: boolean = false;
+  active = false;
+  disabled: boolean = false;
 
   employees: any[] = [];
   employeePage: number = 0;
@@ -30,14 +29,13 @@ export class InterviewPanel {
     employeePublicId: '',
     responsibility: '',
     lineNumber: 0,
-    status: 'ACTIVE'
+    status: 'ACTIVE',
   };
 
   editMemberIndex: number | null = null;
 
   isEditMode = false;
   publicId: string | null = null;
-
 
   constructor(
     private route: ActivatedRoute,
@@ -47,8 +45,7 @@ export class InterviewPanel {
     private loader: LoaderService,
 
     private toastr: ToastrService,
-
-  ) { }
+  ) {}
   ngOnInit() {
     this.publicId = this.route.snapshot.paramMap.get('id');
 
@@ -62,31 +59,28 @@ export class InterviewPanel {
 
   loadEmployees(): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.formService
-        .GetEmployees(this.employeePage, this.employeeSize, 'ALL')
-        .subscribe({
-          next: (res: any) => {
-            this.employees = res.data;
-            resolve();
-          },
-          error: (err) => {
-            console.error('Failed to load employees');
-            reject(err);
-          }
-        });
+      this.formService.GetEmployees(this.employeePage, this.employeeSize, 'ALL').subscribe({
+        next: (res: any) => {
+          this.employees = res.data;
+          resolve();
+        },
+        error: (err) => {
+          console.error('Failed to load employees');
+          reject(err);
+        },
+      });
     });
   }
   addOrUpdateMember() {
-
     const selectedEmployee = this.employees.find(
-      e => e.publicId === this.member.employeePublicId
+      (e) => e.publicId === this.member.employeePublicId,
     );
 
     if (!selectedEmployee) return;
 
     const newMember = {
       ...this.member,
-      fullName: selectedEmployee.fullName
+      fullName: selectedEmployee.fullName,
     };
 
     if (this.editMemberIndex !== null) {
@@ -114,122 +108,112 @@ export class InterviewPanel {
       employeePublicId: '',
       responsibility: '',
       lineNumber: 0,
-      status: 'ACTIVE'
+      status: 'ACTIVE',
     };
   }
 
   createPanel() {
+    if (!this.code || !this.name) {
+      this.toastr.error('Please fill in all required fields');
+      return;
+    }
 
-  if (!this.code || !this.name) {
-    this.toastr.error('Please fill in all required fields');
-    return;
+    const payload = {
+      code: this.code,
+      name: this.name,
+      remarks: this.remarks,
+      active: this.active, // ✅ FIXED
+      members: this.members,
+    };
+
+    this.loader.show();
+    this.disabled = true;
+
+    this.Onboarding.CreatenewInterviewPanel(payload).subscribe({
+      next: () => {
+        this.loader.hide();
+        this.toastr.success('Panel created successfully', 'Success');
+
+        this.resetForm();
+
+        setTimeout(() => {
+          this.router.navigate(['/panel/onboarding/view-interview-panel-list']);
+        }, 1500);
+      },
+      error: (error: any) => {
+        this.loader.hide();
+        this.disabled = false;
+
+        this.toastr.error(
+          error.error?.message || 'Failed to create Panel. Please try again.',
+          'Error',
+        );
+      },
+    });
   }
 
- const payload = {
-  code: this.code,
-  name: this.name,
-  remarks: this.remarks,
-  active: this.active, // ✅ FIXED
-  members: this.members
-};
-
-  this.loader.show();
-  this.disabled = true;
-
-  this.Onboarding.CreatenewInterviewPanel(payload).subscribe({
-    next: () => {
-      this.loader.hide();
-      this.toastr.success('Panel created successfully', 'Success');
-
-      this.resetForm();
-
-      setTimeout(() => {
-        this.router.navigate(['/panel/onboarding/view-interview-panel-list']);
-      }, 1500);
-    },
-    error: (error: any) => {
-      this.loader.hide();
-      this.disabled = false;
-
-      this.toastr.error(
-        error.error?.message || 'Failed to create Panel. Please try again.',
-        'Error'
-      );
-    }
-  });
-}
-
   updatePanel() {
+    const payload = {
+      code: this.code,
+      name: this.name,
+      remarks: this.remarks,
+      active: this.active, // ✅ FIXED
+      members: this.members,
+    };
 
-const payload = {
-  code: this.code,
-  name: this.name,
-  remarks: this.remarks,
-active: this.active   ,   // ✅ FIXED
-  members: this.members
-};
+    this.loader.show();
+    this.disabled = true;
 
-  this.loader.show();
-  this.disabled = true;
+    this.Onboarding.updateInterviewPanel(this.publicId!, payload).subscribe({
+      next: () => {
+        this.loader.hide();
+        this.toastr.success('Panel updated successfully', 'Success');
 
-  this.Onboarding.updateInterviewPanel(this.publicId!, payload).subscribe({
-    next: () => {
-      this.loader.hide();
-      this.toastr.success('Panel updated successfully', 'Success');
+        this.resetForm();
 
-      this.resetForm();
+        setTimeout(() => {
+          this.router.navigate(['/panel/onboarding/view-interview-panel-list']);
+        }, 1500);
+      },
+      error: (error: any) => {
+        this.loader.hide();
+        this.disabled = false;
 
-      setTimeout(() => {
-        this.router.navigate(['/panel/onboarding/view-interview-panel-list']);
-      }, 1500);
-    },
-    error: (error: any) => {
-      this.loader.hide();
-      this.disabled = false;
+        this.toastr.error(error.error?.message || 'Failed to update Panel', 'Error');
+      },
+    });
+  }
 
-      this.toastr.error(
-        error.error?.message || 'Failed to update Panel',
-        'Error'
-      );
-    }
-  });
-}
+  loadPanel() {
+    this.loader.show();
 
-loadPanel() {
+    this.Onboarding.getInterviewPanelById(this.publicId!).subscribe({
+      next: (res: any) => {
+        this.loader.hide();
 
-  this.loader.show();
+        const data = res.data;
 
-  this.Onboarding.getInterviewPanelById(this.publicId!).subscribe({
-    next: (res: any) => {
+        this.code = data.code;
+        this.name = data.name;
+        this.remarks = data.remarks;
+        this.active = data.isActive;
+        this.members = data.members.map((m: any) => {
+          const emp = this.employees.find((e) => e.publicId === m.employeePublicId);
 
-      this.loader.hide();
-
-      const data = res.data;
-
-      this.code = data.code;
-      this.name = data.name;
-      this.remarks = data.remarks;
-     this.active = data.isActive;
-      this.members = data.members.map((m: any) => {
-        const emp = this.employees.find(
-          e => e.publicId === m.employeePublicId
-        );
-
-        return {
-          ...m,
-          fullName: emp ? emp.fullName : ''
-        };
-      });
-
-    },
-    error: () => {
-      this.loader.hide();
-      this.toastr.error('Failed to load Panel');
-    }
-  });
-}
+          return {
+            ...m,
+            fullName: emp ? emp.fullName : '',
+          };
+        });
+      },
+      error: () => {
+        this.loader.hide();
+        this.toastr.error('Failed to load Panel');
+      },
+    });
+  }
   getEmployeeName(id: string) {
-    const emp = this.employees.find(e => e.publicId === id);
+    const emp = this.employees.find((e) => e.publicId === id);
     return emp ? emp.name : '';
   }
 
@@ -242,7 +226,6 @@ loadPanel() {
   }
 
   cancel() {
-            this.router.navigate(['/panel/onboarding/view-interview-panel-list']);
-
-   }
+    this.router.navigate(['/panel/onboarding/view-interview-panel-list']);
+  }
 }

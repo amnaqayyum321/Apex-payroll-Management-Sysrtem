@@ -12,23 +12,13 @@
         <!-- Code -->
         <div class="form-group">
           <label>Code <span class="text-danger">*</span></label>
-          <input
-            type="text"
-            placeholder="Enter Code..."
-            [(ngModel)]="code"
-            name="code"
-          />
+          <input type="text" placeholder="Enter Code..." [(ngModel)]="code" name="code" />
         </div>
 
         <!-- Name -->
         <div class="form-group">
           <label>Name <span class="text-danger">*</span></label>
-          <input
-            type="text"
-            placeholder="Enter Name..."
-            [(ngModel)]="name"
-            name="name"
-          />
+          <input type="text" placeholder="Enter Name..." [(ngModel)]="name" name="name" />
         </div>
 
         <!-- Role Name -->
@@ -45,21 +35,13 @@
         <!-- Requested Date -->
         <div class="form-group">
           <label>Requested Date</label>
-          <input
-            type="date"
-            [(ngModel)]="requestedDate"
-            name="requestedDate"
-          />
+          <input type="date" [(ngModel)]="requestedDate" name="requestedDate" />
         </div>
 
         <!-- Target Joining Date -->
         <div class="form-group">
           <label>Target Joining Date</label>
-          <input
-            type="date"
-            [(ngModel)]="targetJoiningDate"
-            name="targetJoiningDate"
-          />
+          <input type="date" [(ngModel)]="targetJoiningDate" name="targetJoiningDate" />
         </div>
 
         <!-- Required Count -->
@@ -194,37 +176,34 @@
             <option value="SELECTED">Employee (Select manually)</option>
           </select>
         </div>
-          <!-- Conditional Employee Dropdown (full width row) -->
-      <div class="form-grid" *ngIf="hiringManagerMode === 'SELECTED'">
-        <div class="form-group" style="grid-column: span 3;">
-          <label>Select Hiring Manager</label>
-          <div class="custom-dropdown" (click)="toggleEmployeeDropdown($event)">
-            <div class="dropdown-selected">
-              <span>{{ selectedEmployeeName || '-- Select Employee --' }}</span>
-              <i class="fa-solid fa-caret-down" [class.rotate]="isEmployeeDropdownOpen"></i>
-            </div>
-            <div class="dropdown-options" *ngIf="isEmployeeDropdownOpen">
-              <div
-                class="dropdown-option"
-                *ngFor="let emp of employeeList"
-                (click)="selectEmployee(emp, $event)"
-              >
-                {{ emp.fullName }}
+        <!-- Conditional Employee Dropdown (full width row) -->
+        <div class="form-grid" *ngIf="hiringManagerMode === 'SELECTED'">
+          <div class="form-group" style="grid-column: span 3">
+            <label>Select Hiring Manager</label>
+            <div class="custom-dropdown" (click)="toggleEmployeeDropdown($event)">
+              <div class="dropdown-selected">
+                <span>{{ selectedEmployeeName || '-- Select Employee --' }}</span>
+                <i class="fa-solid fa-caret-down" [class.rotate]="isEmployeeDropdownOpen"></i>
+              </div>
+              <div class="dropdown-options" *ngIf="isEmployeeDropdownOpen">
+                <div
+                  class="dropdown-option"
+                  *ngFor="let emp of employeeList"
+                  (click)="selectEmployee(emp, $event)"
+                >
+                  {{ emp.fullName }}
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
         <!-- Empty cell to maintain 3-column grid (optional, you can leave it out) -->
         <div class="form-group"></div>
       </div>
-
-    
-
       <!-- Remarks (full width) -->
       <div class="form-grid">
-        <div class="form-group" style="grid-column: span 3;">
+        <div class="form-group" style="grid-column: span 3">
           <label>Remarks</label>
           <textarea
             class="form-control"

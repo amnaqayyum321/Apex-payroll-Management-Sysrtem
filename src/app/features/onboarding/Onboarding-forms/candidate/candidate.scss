@@ -140,11 +140,13 @@
     margin-top: 4px;
 }
 
-
+.form-group.span-2 {
+    grid-column: span 2;
+}
 /* Form rows and inputs */
 .form-row {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 20px;
 
     &.full-width {
