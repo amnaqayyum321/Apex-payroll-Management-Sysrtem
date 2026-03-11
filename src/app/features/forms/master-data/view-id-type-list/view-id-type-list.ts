@@ -13,7 +13,14 @@ import { CommonModule } from '@angular/common';
   styleUrl: './view-id-type-list.scss',
 })
 export class ViewIDTypeList {
-  IDTYPEList: any[] = [];
+  fullDepartmentList: any[] = [];        
+  filteredDepartmentList: any[] = [];    
+  paginatedDepartmentList: any[] = [];   
+
+  searchTerm: string = '';
+  currentPage = 1;
+  itemsPerPage = 6;                       // default
+
   totalItems: number = 0;
   totalPagesCount: number = 0;
 
@@ -23,44 +30,105 @@ export class ViewIDTypeList {
     private loader: LoaderService,
   ) {}
 
-  currentPage = 1;
-  itemsPerPage = 7;
-  paginatedIDTYPEList: any[] = [];
-
-  get totalPages() {
-    return this.totalPagesCount || Math.ceil(this.totalItems / this.itemsPerPage);
-  }
-
-  get totalPagesArray() {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
-  }
   ngOnInit() {
-    this.loadIDTYPE();
+    this.loadAllDepartments();
   }
-  loadIDTYPE() {
+
+  // Fetch all departments (using a high page size, e.g. 1000)
+  loadAllDepartments() {
     this.loader.show();
-    const backendPage = this.currentPage - 1;
-    this.FormSv.GetIDType(backendPage, this.itemsPerPage).subscribe({
+    // Request first page with a large size – adjust if your API has a lower limit
+    this.FormSv.GetIDType(0, 1000).subscribe({
       next: (response: any) => {
+        this.fullDepartmentList = response.data;
+        // If totalItems > 1000, you might need additional calls – here we assume 1000 is enough
+        this.applyFilter();               // initial filter & pagination
         this.loader.hide();
-        console.log('Raw data sample:', response.data[0]);
-        this.IDTYPEList = response.data;
-        console.log('IDTYPE list', this.IDTYPEList);
-        this.totalItems = response.paginator.totalItems;
-        this.totalPagesCount = response.paginator.totalPages;
-        this.currentPage = response.paginator.currentPage + 1;
-        this.paginatedIDTYPEList = this.IDTYPEList;
       },
       error: (error) => {
         this.loader.hide();
-        this.toastr.error('Error fetching ID TYPE list');
+        this.toastr.error('Error fetching departments list');
       },
     });
   }
 
+  // Filter based on search term (code or name)
+  applyFilter() {
+    const term = this.searchTerm.toLowerCase().trim();
+    if (!term) {
+      this.filteredDepartmentList = [...this.fullDepartmentList];
+    } else {
+      this.filteredDepartmentList = this.fullDepartmentList.filter(
+        (dep) =>
+          dep.code?.toLowerCase().includes(term) ||
+          dep.name?.toLowerCase().includes(term)
+      );
+    }
+    this.totalItems = this.filteredDepartmentList.length;
+    this.totalPagesCount = Math.ceil(this.totalItems / this.itemsPerPage);
+    this.currentPage = 1;                  // reset to first page on filter change
+    this.updatePaginatedList();
+  }
+
+  // Recalculate current page slice
+  updatePaginatedList() {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    this.paginatedDepartmentList = this.filteredDepartmentList.slice(start, end);
+  }
+
+  // Called when search input changes
+  onSearch() {
+    this.applyFilter();
+  }
+
+  // Called when items per page dropdown changes
+  onItemsPerPageChange() {
+    this.totalPagesCount = Math.ceil(this.totalItems / this.itemsPerPage);
+    this.currentPage = 1;
+    this.updatePaginatedList();
+  }
+
+  // Change page (next/previous or direct click)
   changePage(page: number) {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
-    this.loadIDTYPE();
+    this.updatePaginatedList();
   }
+
+  get firstItem(): number {
+  return this.totalItems > 0 ? (this.currentPage - 1) * this.itemsPerPage + 1 : 0;
+}
+
+get lastItem(): number {
+  return this.totalItems > 0
+    ? Math.min(this.currentPage * this.itemsPerPage, this.totalItems)
+    : 0;
+}
+
+  // Total pages (readonly)
+  get totalPages() {
+    return this.totalPagesCount || 1;
+  }
+
+  // Generate page numbers array (shows a reasonable range)
+  get totalPagesArray(): number[] {
+    const pages: number[] = [];
+    const maxVisible = 5;                     // show up to 5 pages
+    const half = Math.floor(maxVisible / 2);
+
+    let start = Math.max(1, this.currentPage - half);
+    let end = Math.min(this.totalPages, start + maxVisible - 1);
+
+    // Adjust if we are near the end
+    if (end - start + 1 < maxVisible) {
+      start = Math.max(1, end - maxVisible + 1);
+    }
+
+    for (let i = start; i <= end; i++) {
+      pages.push(i);
+    }
+    return pages;
+  }
+  
 }

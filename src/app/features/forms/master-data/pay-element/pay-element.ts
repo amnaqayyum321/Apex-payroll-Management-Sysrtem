@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';   // add HostListener
 import { LoaderService } from '../../../../core/services/management-services/loader.service';
 import { FormsService } from '../../Services/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -10,7 +10,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-pay-element',
   imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './pay-element.html',
-  styleUrl: './pay-element.scss',
+  styleUrls: ['./pay-element.scss']          // note: styleUrl → styleUrls (optional)
 })
 export class PayElement {
   Code: string = '';
@@ -20,34 +20,32 @@ export class PayElement {
   elementNature: string = '';
   description: string = '';
   disabled: boolean = false;
-  currentPage: number = 0; // page number
+  currentPage: number = 0;
   pageSize: number = 100;
   publicId: string | null = null;
   isEditMode = false;
   active: boolean = false;
   taxable: boolean = false;
+
+  // Dropdown data
   elementTypes = ['ADDITION', 'DEDUCTION'];
   elementNatures = ['FIXED', 'VARIABLE'];
   elementCategories = [
-    'ACCOMMODATION',
-    'BASIC',
-    'DEPUTATION',
-    'DRIVER',
-    'FAMILY',
-    'FOOD',
-    'GROSS',
-    'MEDICAL',
-    'OTHER',
-    'TRAVEL',
-    'WATCHMAN',
+    'ACCOMMODATION', 'BASIC', 'DEPUTATION', 'DRIVER', 'FAMILY',
+    'FOOD', 'GROSS', 'MEDICAL', 'OTHER', 'TRAVEL', 'WATCHMAN'
   ];
+
+  // Dropdown open states
+  isElementTypeOpen = false;
+  isElementNatureOpen = false;
+  isElementCategoryOpen = false;
 
   constructor(
     private loader: LoaderService,
     private FormSv: FormsService,
     private toastr: ToastrService,
     private router: Router,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
@@ -57,6 +55,56 @@ export class PayElement {
       this.loadSinglePayElement(this.publicId);
     }
   }
+
+  // ---------- Custom dropdown methods ----------
+  toggleElementType(event: Event) {
+    event.stopPropagation();
+    this.isElementNatureOpen = false;
+    this.isElementCategoryOpen = false;
+    this.isElementTypeOpen = !this.isElementTypeOpen;
+  }
+
+  selectElementType(type: string, event: Event) {
+    event.stopPropagation();
+    this.elementType = type;
+    this.isElementTypeOpen = false;
+  }
+
+  toggleElementNature(event: Event) {
+    event.stopPropagation();
+    this.isElementTypeOpen = false;
+    this.isElementCategoryOpen = false;
+    this.isElementNatureOpen = !this.isElementNatureOpen;
+  }
+
+  selectElementNature(nature: string, event: Event) {
+    event.stopPropagation();
+    this.elementNature = nature;
+    this.isElementNatureOpen = false;
+  }
+
+  toggleElementCategory(event: Event) {
+    event.stopPropagation();
+    this.isElementTypeOpen = false;
+    this.isElementNatureOpen = false;
+    this.isElementCategoryOpen = !this.isElementCategoryOpen;
+  }
+
+  selectElementCategory(category: string, event: Event) {
+    event.stopPropagation();
+    this.elementCategory = category;
+    this.isElementCategoryOpen = false;
+  }
+
+  // Close all dropdowns when clicking outside
+@HostListener('document:click', ['$event'])
+onDocumentClick(event: Event) {   // ✅ add the event parameter
+  this.isElementTypeOpen = false;
+  this.isElementNatureOpen = false;
+  this.isElementCategoryOpen = false;
+}
+
+  // ---------- Original methods (unchanged) ----------
   createPayElement() {
     if (!this.Code || !this.Name) {
       this.toastr.error('Please fill in all required fields');
@@ -88,11 +136,12 @@ export class PayElement {
         this.disabled = false;
         this.toastr.error(
           error.error.message || 'Failed to create Department. Please try again.',
-          'Error',
+          'Error'
         );
       },
     });
   }
+
   resetPayElementForm() {
     this.Code = '';
     this.Name = '';
@@ -104,14 +153,15 @@ export class PayElement {
     this.active = true;
     this.disabled = false;
   }
+
   cancel() {
     this.router.navigate(['/panel/forms/view-pay-element']);
   }
+
   loadSinglePayElement(publicId: string) {
     this.loader.show();
-    this.FormSv.getPayElementById(publicId!).subscribe({
+    this.FormSv.getPayElementById(publicId).subscribe({
       next: (res: any) => {
-        console.log('API response:', res.data);
         this.loader.hide();
         this.Code = res.data.code;
         this.Name = res.data.name;
@@ -128,6 +178,7 @@ export class PayElement {
       },
     });
   }
+
   updatePayElement() {
     const payload = {
       code: this.Code,
@@ -148,9 +199,7 @@ export class PayElement {
         setTimeout(() => {
           this.router.navigate(['/panel/forms/view-pay-element']);
         }, 1500);
-        console.log('Active from API:', this.active);
       },
-
       error: () => {
         this.loader.hide();
         this.toastr.error('PayElement Update failed');

@@ -2,9 +2,7 @@
   <div class="user-card">
     <!-- Header -->
     <div class="card-header">
-      <h3>
-        <h3>{{ isEditMode ? 'Update Pay Element' : 'Create Pay Element' }}</h3>
-      </h3>
+      <h3>{{ isEditMode ? 'Update Pay Element' : 'Create Pay Element' }}</h3>
     </div>
     <div class="header-divider"></div>
 
@@ -26,6 +24,7 @@
           </label>
         </div>
       </div>
+
       <!-- ROW 1 -->
       <div class="row">
         <div class="col-md-6">
@@ -49,44 +48,74 @@
           />
         </div>
       </div>
+
+      <!-- ROW 2: Three custom dropdowns -->
       <div class="row">
+        <!-- Element Type -->
         <div class="col-md-4">
-          <label for="" class="form-label">Element Type</label>
-          <select name="elementType" [(ngModel)]="elementType" id="elementType" class="form-select">
-            <option value=""></option>
-            <option *ngFor="let type of elementTypes" [value]="type">{{ type }}</option>
-          </select>
+          <label class="form-label">Element Type</label>
+          <div class="custom-dropdown" (click)="toggleElementType($event)">
+            <div class="dropdown-selected">
+              <span>{{ elementType || 'Select Element Type' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isElementTypeOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isElementTypeOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let type of elementTypes"
+                (click)="selectElementType(type, $event)"
+              >
+                {{ type }}
+              </div>
+            </div>
+          </div>
         </div>
+
+        <!-- Element Nature -->
         <div class="col-md-4">
-          <label for="" class="form-label">Element Nature</label>
-          <select
-            name="elementNature"
-            [(ngModel)]="elementNature"
-            id="elementNature"
-            class="form-select"
-          >
-            <option value=""></option>
-            <option *ngFor="let nature of elementNatures" [value]="nature">{{ nature }}</option>
-          </select>
+          <label class="form-label">Element Nature</label>
+          <div class="custom-dropdown" (click)="toggleElementNature($event)">
+            <div class="dropdown-selected">
+              <span>{{ elementNature || 'Select Element Nature' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isElementNatureOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isElementNatureOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let nature of elementNatures"
+                (click)="selectElementNature(nature, $event)"
+              >
+                {{ nature }}
+              </div>
+            </div>
+          </div>
         </div>
+
+        <!-- Element Category -->
         <div class="col-md-4">
-          <label for="" class="form-label">Element Category</label>
-          <select
-            name="elementCategory"
-            [(ngModel)]="elementCategory"
-            id="elementCategory"
-            class="form-select"
-          >
-            <option value=""></option>
-            <option *ngFor="let category of elementCategories" [value]="category">
-              {{ category }}
-            </option>
-          </select>
+          <label class="form-label">Element Category</label>
+          <div class="custom-dropdown" (click)="toggleElementCategory($event)">
+            <div class="dropdown-selected">
+              <span>{{ elementCategory || 'Select Element Category' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isElementCategoryOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isElementCategoryOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let category of elementCategories"
+                (click)="selectElementCategory(category, $event)"
+              >
+                {{ category }}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+
+      <!-- ROW 3: Description -->
       <div class="row">
         <div class="col-12">
-          <label class="form-label">Description </label>
+          <label class="form-label">Description</label>
           <textarea
             type="text"
             class="form-control"
@@ -96,6 +125,7 @@
           ></textarea>
         </div>
       </div>
+
       <!-- Footer buttons -->
       <div class="form-actions">
         <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
