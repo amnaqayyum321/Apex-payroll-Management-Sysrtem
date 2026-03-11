@@ -1,34 +1,39 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { ActivatedRoute, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { FormsService } from '../../Services/forms';
 import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../../../../core/services/management-services/loader.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-view-employees-grade-list',
-  imports: [CommonModule, RouterModule, NgbDropdownModule,  RouterModule],
+  imports: [CommonModule, RouterModule, NgbDropdownModule, FormsModule],
   templateUrl: './view-employees-grade-list.html',
   styleUrl: './view-employees-grade-list.scss',
 })
 export class ViewEmployeesGradeList {
-   EmployeesGradeList: any[] = [];
+  EmployeesGradeList: any[] = [];
+  filteredEmployeesGradeList: any[] = [];
+  paginatedEmployeesGradeList: any[] = [];
+
   totalItems: number = 0;
   totalPagesCount: number = 0;
+  currentPage = 1;
+  itemsPerPage = 7;
+
+  searchTerm: string = '';
+  statusFilter: string = '';
+
+  publicId: string | null = null;
+  isEditMode = false;
 
   constructor(
     private formsService: FormsService,
     private toastr: ToastrService,
     private loader: LoaderService,
   ) {}
-
-  currentPage = 1;
-  itemsPerPage = 7;
-  paginatedEmployeesGradeList: any[] = [];
-  publicId: string | null = null;
-  isEditMode = false;
-
 
   get totalPages() {
     return this.totalPagesCount || Math.ceil(this.totalItems / this.itemsPerPage);
@@ -38,24 +43,35 @@ export class ViewEmployeesGradeList {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
-  ngOnInit() {
-    this.loadDesigantions();
+  get firstItem(): number {
+    return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.itemsPerPage + 1;
   }
 
-  loadDesigantions() {
+  get lastItem(): number {
+    return Math.min(this.currentPage * this.itemsPerPage, this.totalItems);
+  }
+
+  get isAnyFilterActive(): boolean {
+    return !!this.searchTerm || !!this.statusFilter;
+  }
+
+  ngOnInit() {
+    this.loadEmployeeGrade();
+  }
+
+  loadEmployeeGrade() {
     this.loader.show();
     const backendPage = this.currentPage - 1;
-    this.formsService.GetEmployeeGrade(backendPage, this.itemsPerPage,  'ALL').subscribe({
+    this.formsService.GetEmployeeGrade(backendPage, this.itemsPerPage, 'ALL').subscribe({
       next: (response: any) => {
         this.loader.hide();
         this.EmployeesGradeList = response.data;
-        console.log(this.EmployeesGradeList);
         this.totalItems = response.paginator.totalItems;
         this.totalPagesCount = response.paginator.totalPages;
-        this.currentPage = response.paginator.currentPage + 1; // Backend 0-indexed
-        this.paginatedEmployeesGradeList = this.EmployeesGradeList;
+        this.currentPage = response.paginator.currentPage + 1;
+        this.applyFilter();
       },
-      error: (error) => {
+      error: () => {
         this.loader.hide();
         this.toastr.error('Error fetching employees grades list');
       },
@@ -65,17 +81,65 @@ export class ViewEmployeesGradeList {
   changePage(page: number) {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
-    this.loadDesigantions();
+    this.loadEmployeeGrade();
+  }
+
+  onItemsPerPageChange() {
+    this.currentPage = 1;
+    this.loadEmployeeGrade();
+  }
+
+  onSearch() {
+    this.currentPage = 1;
+    this.applyFilter();
+  }
+
+  onStatusChange() {
+    this.currentPage = 1;
+    this.applyFilter();
+  }
+
+  applyFilter() {
+    const term = this.searchTerm.toLowerCase().trim();
+
+    this.filteredEmployeesGradeList = this.EmployeesGradeList.filter((item) => {
+      const matchesSearch =
+        !term || item.name?.toLowerCase().includes(term) || item.code?.toLowerCase().includes(term);
+
+      const matchesStatus = this.statusFilter === '' || String(item.isActive) === this.statusFilter;
+
+      return matchesSearch && matchesStatus;
+    });
+
+    this.updatePaginatedList();
+  }
+
+  updatePaginatedList() {
+    if (this.isAnyFilterActive) {
+      this.totalItems = this.filteredEmployeesGradeList.length;
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      this.paginatedEmployeesGradeList = this.filteredEmployeesGradeList.slice(
+        start,
+        start + this.itemsPerPage,
+      );
+    } else {
+      this.totalItems = this.totalPagesCount * this.itemsPerPage;
+      this.paginatedEmployeesGradeList = this.EmployeesGradeList;
+    }
+  }
+
+  resetFilters() {
+    this.searchTerm = '';
+    this.statusFilter = '';
+    this.currentPage = 1;
+    this.applyFilter();
   }
 
   formatRoleName(role: string): string {
     if (!role) return '';
-
     return role
       .toLowerCase()
       .replace(/_/g, ' ')
       .replace(/\b\w/g, (c) => c.toUpperCase());
   }
-
-
 }
