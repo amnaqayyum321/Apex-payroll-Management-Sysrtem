@@ -65,6 +65,11 @@
   }
 }
 
+
+.user-form .row {
+  row-gap: 15px;
+}
+
 /* Form fields */
 .form-group,
 .col-md-6 {
@@ -78,7 +83,7 @@ label {
   font-size: 14px;
   font-weight: 500;
   color: var(--text-primary);
-  margin-bottom: 0px; /* Extra spacing under label */
+  margin-bottom: 8px; /* Extra spacing under label */
 }
 
 /* Optional: textarea spacing */

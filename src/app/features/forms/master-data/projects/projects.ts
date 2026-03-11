@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { LoaderService } from '../../../../core/services/management-services/loader.service';
 import { FormsService } from '../../Services/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -166,4 +166,56 @@ export class Projects {
       },
     });
   }
+
+
+
+  // Add these properties
+isManagerTypeDropdownOpen = false;
+isEmployeeDropdownOpen = false;
+
+// Helper methods for custom dropdowns
+getManagerTypeLabel(): string {
+  return this.managerMode === 'SELF' ? 'Self' : 'Employee (Select manually)';
+}
+
+getSelectedEmployeeName(): string {
+  if (!this.managerPublicId) return '';
+  const emp = this.employeeList.find(e => e.publicId === this.managerPublicId);
+  return emp ? emp.fullName : '';
+}
+
+toggleManagerTypeDropdown(event: Event) {
+  event.stopPropagation();
+  this.isManagerTypeDropdownOpen = !this.isManagerTypeDropdownOpen;
+  // Close the other dropdown if open
+  this.isEmployeeDropdownOpen = false;
+}
+
+selectManagerType(mode: 'SELF' | 'SELECTED', event: Event) {
+  event.stopPropagation();
+  this.managerMode = mode;
+  this.managerPublicId = ''; // Reset selected manager
+  this.isManagerTypeDropdownOpen = false;
+  this.onManagerTypeChange(); // Keep original logic if needed
+}
+
+toggleEmployeeDropdown(event: Event) {
+  event.stopPropagation();
+  this.isEmployeeDropdownOpen = !this.isEmployeeDropdownOpen;
+  // Close the other dropdown if open
+  this.isManagerTypeDropdownOpen = false;
+}
+
+selectEmployee(emp: any, event: Event) {
+  event.stopPropagation();
+  this.managerPublicId = emp.publicId;
+  this.isEmployeeDropdownOpen = false;
+}
+
+// HostListener to close dropdowns when clicking outside
+@HostListener('document:click', ['$event'])
+closeDropdowns(event: Event) {
+  this.isManagerTypeDropdownOpen = false;
+  this.isEmployeeDropdownOpen = false;
+}
 }
