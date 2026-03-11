@@ -73,7 +73,7 @@ export class BelongingTypes {
     this.formsService.CreateBelongingType(payload).subscribe({
       next: (response: any) => {
         this.loader.hide();
-        this.toastr.success('Employee Grade created successfully', 'Success');
+        this.toastr.success('Belonging Types created successfully', 'Success');
         this.resetBelongingTypesForm();
         setTimeout(() => {
           this.router.navigate(['/panel/forms/view-belonging-types-list']);
@@ -83,7 +83,7 @@ export class BelongingTypes {
         this.loader.hide();
         this.disabled = false;
         this.toastr.error(
-          error.error.message || 'Failed to create employee grade. Please try again.',
+          error.error.message || 'Failed to create Belonging Types. Please try again.',
           'Error',
         );
       },
@@ -113,7 +113,7 @@ export class BelongingTypes {
     this.formsService.UpdateBelongingType(this.publicId!, payload).subscribe({
       next: () => {
         this.loader.hide();
-        this.toastr.success('Employee Grade updated');
+        this.toastr.success('Belonging Types updated');
         this.resetBelongingTypesForm();
         this.router.navigate(['/panel/forms/view-belonging-types-list']);
       },
