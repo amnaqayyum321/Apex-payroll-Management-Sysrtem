@@ -1,9 +1,4 @@
-import {
-  Component,
-  ElementRef,
-  HostListener,
-  ViewChild
-} from '@angular/core';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
@@ -15,15 +10,15 @@ import { SessionService } from '../../../../../core/services/management-services
 import { HeaderModalComponent } from '../bootstrap-modals/header-modal/header-modal.component';
 import { ResponsiveBotstrapSideNavBarComponent } from '../responsive-botstrap-side-nav-bar/responsive-botstrap-side-nav-bar.component';
 import { AuthService } from '../../../../../features/Auth/service/auth.service';
+import { MenuVisibilityService } from '../../../../../core/services/management-services/menu-visibility.service';
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [CommonModule, RouterModule, NgbDropdownModule, HeaderModalComponent],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.scss'
+  styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-
   // 🔹 Notification card ka reference
   @ViewChild('notifyCard') notifyCard!: ElementRef;
 
@@ -31,11 +26,31 @@ export class HeaderComponent {
   animateBounce = false;
 
   notifications = [
-    { icon: 'fa-solid fa-triangle-exclamation', color: '#f5e967ff', text: 'Duis malesuada justo eu sapien elementum varius.' },
-    { icon: 'fa-solid fa-users', color: '#dc3545', text: 'Curabitur id eros quis nunc suscipit blandit.' },
-    { icon: 'fa-solid fa-user', color: '#dc3545', text: 'Donec at nisi sit amet tortor commodo dignissim.' },
-    { icon: 'fa-solid fa-user', color: '#2c825aff', text: 'Duis malesuada justo eu sapien elementum varius.' },
-    { icon: 'fa-solid fa-user', color: '#1274ac', text: 'Curabitur id eros quis nunc suscipit blandit.' }
+    {
+      icon: 'fa-solid fa-triangle-exclamation',
+      color: '#f5e967ff',
+      text: 'Duis malesuada justo eu sapien elementum varius.',
+    },
+    {
+      icon: 'fa-solid fa-users',
+      color: '#dc3545',
+      text: 'Curabitur id eros quis nunc suscipit blandit.',
+    },
+    {
+      icon: 'fa-solid fa-user',
+      color: '#dc3545',
+      text: 'Donec at nisi sit amet tortor commodo dignissim.',
+    },
+    {
+      icon: 'fa-solid fa-user',
+      color: '#2c825aff',
+      text: 'Duis malesuada justo eu sapien elementum varius.',
+    },
+    {
+      icon: 'fa-solid fa-user',
+      color: '#1274ac',
+      text: 'Curabitur id eros quis nunc suscipit blandit.',
+    },
   ];
 
   isDarkMode = false;
@@ -48,26 +63,39 @@ export class HeaderComponent {
     private authService: AuthService,
     private router: Router,
     private toastr: ToastrService,
-    private offcanvasService: NgbOffcanvas
-  ) { }
-
+    private offcanvasService: NgbOffcanvas,
+    private menuVisibilityService: MenuVisibilityService,
+  ) {}
 
   ngOnInit() {
-    this.themeService.isLightTheme$.subscribe(value => {
+    this.themeService.isLightTheme$.subscribe((value) => {
       this.isDarkMode = !value;
     });
   }
+  // logoutUser() {
+  //   this.SessionService.clearStorage();
+  //   this.authService.logout().subscribe(
+  //     (res) => {
+  //       this.toastr.success('Logout Successfully');
+  //       this.SessionService.clearStorage();
+  //       this.router.navigate(['/']);
+  //     },
+  //     (error) => {},
+  //   );
+  // }
   logoutUser() {
-
-    this.authService.logout().subscribe((res) => {
-      this.toastr.success("Logout Successfully")
-      this.SessionService.clearStorage()
-      this.router.navigate(["/"])
-    }, (error) => {
-
-    })
+    this.authService.logout().subscribe({
+      next: () => {
+        this.SessionService.clearStorage();
+        this.toastr.success('Logout Successfully');
+        this.router.navigate(['/']);
+      },
+      error: () => {
+        this.SessionService.clearStorage();
+        this.router.navigate(['/']);
+      },
+    });
   }
-
   toggleSidebar() {
     if (window.innerWidth > 1000) {
       this.toggleService.toggleSidebar();
@@ -75,7 +103,7 @@ export class HeaderComponent {
       this.offcanvasService.open(ResponsiveBotstrapSideNavBarComponent, {
         position: 'start',
         scroll: true,
-        backdrop: false
+        backdrop: false,
       });
     }
   }
@@ -106,14 +134,10 @@ export class HeaderComponent {
   onDocumentClick(event: Event) {
     if (!this.showNotifications) return;
 
-    const clickedInsideNotify =
-      this.notifyCard?.nativeElement.contains(event.target);
+    const clickedInsideNotify = this.notifyCard?.nativeElement.contains(event.target);
 
     if (!clickedInsideNotify) {
       this.showNotifications = false;
     }
   }
-
-
-
 }

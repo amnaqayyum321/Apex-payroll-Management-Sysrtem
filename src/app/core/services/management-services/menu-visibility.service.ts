@@ -90,26 +90,29 @@ export class MenuVisibilityService {
   // getCurrentVisibility(): MenuVisibilityConfig {
   //   return this.menuVisibilitySubject.value;
   // }
-  private visibilitySubject = new BehaviorSubject<Record<string, boolean>>({});
+  // menu-visibility.service.ts
+  //
+  private visibilitySubject = new BehaviorSubject<Record<string, boolean> | null>(null);
+
   menuVisibility$ = this.visibilitySubject.asObservable();
 
   applyPermissions(permissionCodes: string[]) {
     const permSet = new Set(permissionCodes);
     const visibility: Record<string, boolean> = {};
 
-    // Hide everything first
-    ALL_MENU_LABELS.forEach((label) => (visibility[label] = false));
-
-    // Dashboard always visible
+    ALL_MENU_LABELS.forEach((label) => (visibility[label] = false)); // ✅ sab false
     visibility['Dashboard'] = true;
 
-    // Show only what this role has permission for
     for (const [permission, labels] of Object.entries(PERMISSION_MENU_MAP)) {
       if (permSet.has(permission)) {
         labels.forEach((label) => (visibility[label] = true));
       }
     }
-
+    console.log('🟢 applyPermissions called, count:', permissionCodes.length);
+    console.log('🟢 visibility subject next called');
     this.visibilitySubject.next(visibility);
+  }
+  resetMenu() {
+    this.visibilitySubject.next(null);
   }
 }

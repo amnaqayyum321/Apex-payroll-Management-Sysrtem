@@ -5,7 +5,7 @@ import { LoaderService } from '../../../../core/services/management-services/loa
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';     
+import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-view-shifts',
@@ -14,25 +14,26 @@ import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
   styleUrl: './view-shifts.scss',
 })
 export class ViewShifts {
+  ShiftsList: any[] = [];
+  filteredShiftsList: any[] = [];
+  paginatedShiftsList: any[] = [];
 
-
-
-   ShiftsList: any[] = [];
   totalItems: number = 0;
   totalPagesCount: number = 0;
-
-  constructor(
-    private formsService:   FormsService,
-    private toastr: ToastrService,
-    private loader: LoaderService,
-  ) {}
-
   currentPage = 1;
   itemsPerPage = 7;
-  paginatedShiftsList: any[] = [];
+
+  searchTerm: string = '';
+  statusFilter: string = '';
+
   publicId: string | null = null;
   isEditMode = false;
 
+  constructor(
+    private formsService: FormsService,
+    private toastr: ToastrService,
+    private loader: LoaderService,
+  ) {}
 
   get totalPages() {
     return this.totalPagesCount || Math.ceil(this.totalItems / this.itemsPerPage);
@@ -42,6 +43,18 @@ export class ViewShifts {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
+  get firstItem(): number {
+    return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.itemsPerPage + 1;
+  }
+
+  get lastItem(): number {
+    return Math.min(this.currentPage * this.itemsPerPage, this.totalItems);
+  }
+
+  get isAnyFilterActive(): boolean {
+    return !!this.searchTerm || !!this.statusFilter;
+  }
+
   ngOnInit() {
     this.loadShifts();
   }
@@ -49,17 +62,16 @@ export class ViewShifts {
   loadShifts() {
     this.loader.show();
     const backendPage = this.currentPage - 1;
-    this.formsService.getAllShifts(backendPage, this.itemsPerPage,  'ALL').subscribe({
+    this.formsService.getAllShifts(backendPage, this.itemsPerPage, 'ALL').subscribe({
       next: (response: any) => {
         this.loader.hide();
         this.ShiftsList = response.data;
-        console.log(this.ShiftsList);
         this.totalItems = response.paginator.totalItems;
         this.totalPagesCount = response.paginator.totalPages;
-        this.currentPage = response.paginator.currentPage + 1; // Backend 0-indexed
-        this.paginatedShiftsList = this.ShiftsList;
+        this.currentPage = response.paginator.currentPage + 1;
+        this.applyFilter();
       },
-      error: (error) => {
+      error: () => {
         this.loader.hide();
         this.toastr.error('Error fetching shifts list');
       },
@@ -72,9 +84,56 @@ export class ViewShifts {
     this.loadShifts();
   }
 
+  onItemsPerPageChange() {
+    this.currentPage = 1;
+    this.loadShifts();
+  }
+
+  onSearch() {
+    this.currentPage = 1;
+    this.applyFilter();
+  }
+
+  onStatusChange() {
+    this.currentPage = 1;
+    this.applyFilter();
+  }
+
+  applyFilter() {
+    const term = this.searchTerm.toLowerCase().trim();
+
+    this.filteredShiftsList = this.ShiftsList.filter((item) => {
+      const matchesSearch =
+        !term || item.name?.toLowerCase().includes(term) || item.code?.toLowerCase().includes(term);
+
+      const matchesStatus = this.statusFilter === '' || String(item.isActive) === this.statusFilter;
+
+      return matchesSearch && matchesStatus;
+    });
+
+    this.updatePaginatedList();
+  }
+
+  updatePaginatedList() {
+    if (this.isAnyFilterActive) {
+      this.totalItems = this.filteredShiftsList.length;
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      this.paginatedShiftsList = this.filteredShiftsList.slice(start, start + this.itemsPerPage);
+    } else {
+      this.totalItems = this.totalPagesCount * this.itemsPerPage;
+      this.paginatedShiftsList = this.ShiftsList;
+    }
+  }
+
+  resetFilters() {
+    this.searchTerm = '';
+    this.statusFilter = '';
+    this.currentPage = 1;
+    this.applyFilter();
+  }
+
   formatRoleName(role: string): string {
     if (!role) return '';
-
     return role
       .toLowerCase()
       .replace(/_/g, ' ')

@@ -14,18 +14,22 @@ import { RouterModule } from '@angular/router';
 })
 export class ViewLeaveTypeList {
   LeaveTypeList: any[] = [];
+  filteredLeaveTypeList: any[] = [];
+  paginatedLeaveTypeList: any[] = [];
+
   totalItems: number = 0;
   totalPagesCount: number = 0;
+  currentPage = 1;
+  itemsPerPage = 7;
+
+  searchTerm: string = '';
+  statusFilter: string = ''; // '' = All, 'true' = Active, 'false' = Inactive
 
   constructor(
     private FormSv: FormsService,
     private toastr: ToastrService,
     private loader: LoaderService,
   ) {}
-
-  currentPage = 1;
-  itemsPerPage = 7;
-  paginatedLeaveTypeList: any[] = [];
 
   get totalPages() {
     return this.totalPagesCount || Math.ceil(this.totalItems / this.itemsPerPage);
@@ -34,24 +38,36 @@ export class ViewLeaveTypeList {
   get totalPagesArray() {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
+
+  get firstItem(): number {
+    return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.itemsPerPage + 1;
+  }
+
+  get lastItem(): number {
+    return Math.min(this.currentPage * this.itemsPerPage, this.totalItems);
+  }
+
+  get isAnyFilterActive(): boolean {
+    return !!this.searchTerm || !!this.statusFilter;
+  }
+
   ngOnInit() {
     this.loadDepartment();
   }
+
   loadDepartment() {
     this.loader.show();
     const backendPage = this.currentPage - 1;
     this.FormSv.GetLeaveType(backendPage, this.itemsPerPage).subscribe({
       next: (response: any) => {
         this.loader.hide();
-        console.log('Raw data sample:', response.data[0]);
         this.LeaveTypeList = response.data;
-        console.log('LeaveType list', this.LeaveTypeList);
         this.totalItems = response.paginator.totalItems;
         this.totalPagesCount = response.paginator.totalPages;
         this.currentPage = response.paginator.currentPage + 1;
-        this.paginatedLeaveTypeList = this.LeaveTypeList;
+        this.applyFilter();
       },
-      error: (error) => {
+      error: () => {
         this.loader.hide();
         this.toastr.error('Error fetching leave types list');
       },
@@ -62,5 +78,56 @@ export class ViewLeaveTypeList {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
     this.loadDepartment();
+  }
+
+  onItemsPerPageChange() {
+    this.currentPage = 1;
+    this.loadDepartment();
+  }
+
+  onSearch() {
+    this.currentPage = 1;
+    this.applyFilter();
+  }
+
+  onStatusChange() {
+    this.currentPage = 1;
+    this.applyFilter();
+  }
+
+  applyFilter() {
+    const term = this.searchTerm.toLowerCase().trim();
+
+    this.filteredLeaveTypeList = this.LeaveTypeList.filter((item) => {
+      const matchesSearch =
+        !term || item.name?.toLowerCase().includes(term) || item.code?.toLowerCase().includes(term);
+
+      const matchesStatus = this.statusFilter === '' || String(item.isActive) === this.statusFilter;
+
+      return matchesSearch && matchesStatus;
+    });
+
+    this.updatePaginatedList();
+  }
+
+  updatePaginatedList() {
+    if (this.isAnyFilterActive) {
+      this.totalItems = this.filteredLeaveTypeList.length;
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      this.paginatedLeaveTypeList = this.filteredLeaveTypeList.slice(
+        start,
+        start + this.itemsPerPage,
+      );
+    } else {
+      this.totalItems = this.totalPagesCount * this.itemsPerPage;
+      this.paginatedLeaveTypeList = this.LeaveTypeList;
+    }
+  }
+
+  resetFilters() {
+    this.searchTerm = '';
+    this.statusFilter = '';
+    this.currentPage = 1;
+    this.applyFilter();
   }
 }

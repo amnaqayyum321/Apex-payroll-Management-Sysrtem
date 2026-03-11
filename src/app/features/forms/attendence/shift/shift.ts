@@ -118,7 +118,7 @@ export class Shift implements OnInit {
     this.code = '';
     this.name = '';
     this.remarks = '';
-    this.active = true;
+    this.active = false;
     this.disabled = false;
     this.days = [];
     this.initializeDays();
