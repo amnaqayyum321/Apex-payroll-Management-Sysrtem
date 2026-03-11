@@ -113,8 +113,7 @@ tbody tr {
 
   &:hover {
     background-color: #27354a;      // subtle hover
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-  }
+box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);  }
 }
 
 tbody tr td {
@@ -245,6 +244,7 @@ tbody tr td {
     background: var(--second-primary-color);  // light grey like screenshot
     font-size: 14px;
     outline: none;
+    color: var(--white-color-1);
   }
     /* 🔹 Vertical divider line */
   &::after {
@@ -277,7 +277,7 @@ tbody tr td {
 .search-note{
   font-size:9px;
   color:#ef4444;
-  margin-bottom:0px;
+  margin-bottom:1px;
   font-weight:500;
 }
 

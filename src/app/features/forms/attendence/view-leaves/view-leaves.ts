@@ -14,8 +14,15 @@ import { RouterModule } from '@angular/router';
 })
 export class ViewLeaves {
   LeavesList: any[] = [];
+  filteredLeaveList: any[] = [];
+  paginatedLeavesList: any[] = [];
+
   totalItems: number = 0;
   totalPagesCount: number = 0;
+  currentPage = 1;
+  itemsPerPage = 7;
+  searchTerm: string = '';
+  leavesPerYearFilter: string = ''; // NEW: Leaves Per Year filter
 
   constructor(
     private formsService: FormsService,
@@ -23,18 +30,33 @@ export class ViewLeaves {
     private loader: LoaderService,
   ) {}
 
-  currentPage = 1;
-  itemsPerPage = 7;
-  paginatedLeavesList: any[] = [];
-  publicId: string | null = null;
-  isEditMode = false;
-
   get totalPages() {
-    return this.totalPagesCount || Math.ceil(this.totalItems / this.itemsPerPage);
+    return Math.ceil(this.totalItems / this.itemsPerPage);
   }
 
   get totalPagesArray() {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  get firstItem(): number {
+    return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.itemsPerPage + 1;
+  }
+
+  get lastItem(): number {
+    return Math.min(this.currentPage * this.itemsPerPage, this.totalItems);
+  }
+
+  // NEW: Unique leaves per year values for dropdown
+  get uniqueLeavesPerYear(): number[] {
+    const values = this.LeavesList.map((l) => l.totalLeavesPerYear).filter(
+      (v) => v !== null && v !== undefined,
+    );
+    return [...new Set(values)].sort((a, b) => a - b);
+  }
+
+  // NEW: Check karo koi bhi filter active hai ya nahi
+  get isAnyFilterActive(): boolean {
+    return !!this.searchTerm || !!this.leavesPerYearFilter;
   }
 
   ngOnInit() {
@@ -48,13 +70,12 @@ export class ViewLeaves {
       next: (response: any) => {
         this.loader.hide();
         this.LeavesList = response.data;
-        console.log(this.LeavesList);
         this.totalItems = response.paginator.totalItems;
         this.totalPagesCount = response.paginator.totalPages;
-        this.currentPage = response.paginator.currentPage + 1; // Backend 0-indexed
-        this.paginatedLeavesList = this.LeavesList;
+        this.currentPage = response.paginator.currentPage + 1;
+        this.applyFilter();
       },
-      error: (error) => {
+      error: () => {
         this.loader.hide();
         this.toastr.error('Error fetching leaves list');
       },
@@ -67,9 +88,64 @@ export class ViewLeaves {
     this.loadLeaves();
   }
 
+  onItemsPerPageChange() {
+    this.currentPage = 1;
+    this.loadLeaves();
+  }
+
+  onSearch() {
+    this.currentPage = 1;
+    this.applyFilter();
+  }
+
+  // NEW: Leaves Per Year filter change
+  onLeavesPerYearChange() {
+    this.currentPage = 1;
+    this.applyFilter();
+  }
+
+  applyFilter() {
+    const term = this.searchTerm.toLowerCase().trim();
+    const yearFilter = this.leavesPerYearFilter;
+
+    this.filteredLeaveList = this.LeavesList.filter((leave) => {
+      const matchesSearch =
+        !term ||
+        leave.employeeName?.toLowerCase().includes(term) ||
+        leave.employeeCode?.toLowerCase().includes(term) ||
+        leave.leaveTypeName?.toLowerCase().includes(term);
+
+      const matchesYear = !yearFilter || String(leave.totalLeavesPerYear) === String(yearFilter);
+
+      return matchesSearch && matchesYear;
+    });
+
+    this.updatePaginatedList();
+  }
+
+  updatePaginatedList() {
+    const hasFilter = this.isAnyFilterActive;
+
+    if (hasFilter) {
+      this.totalItems = this.filteredLeaveList.length;
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      this.paginatedLeavesList = this.filteredLeaveList.slice(start, start + this.itemsPerPage);
+    } else {
+      this.totalItems = this.totalPagesCount * this.itemsPerPage;
+      this.paginatedLeavesList = this.LeavesList;
+    }
+  }
+
+  // NEW: Reset sab filters ek saath
+  resetSearch() {
+    this.searchTerm = '';
+    this.leavesPerYearFilter = '';
+    this.currentPage = 1;
+    this.applyFilter();
+  }
+
   formatRoleName(role: string): string {
     if (!role) return '';
-
     return role
       .toLowerCase()
       .replace(/_/g, ' ')

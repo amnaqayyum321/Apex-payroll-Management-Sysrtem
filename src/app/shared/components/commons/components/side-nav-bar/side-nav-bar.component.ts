@@ -20,7 +20,7 @@ import { MenuItem, MenuGroup } from '../../../../interfaces/menu-item.interface'
 export class SideNavBarComponent implements OnInit {
   isOpen = true;
   isDarkMode = false;
-  permissions: string[] = [];
+  isMenuReady = false;
   // Dynamic menu structure
   topLevelItems: MenuItem[] = [
     { label: 'Dashboard', icon: 'fas fa-home', route: '/panel/dashboard', isVisible: true },
@@ -43,7 +43,6 @@ export class SideNavBarComponent implements OnInit {
               label: 'Users',
               route: 'users-and-roles/view-users',
               icon: 'fa-solid fa-people-group',
-              permission: 'ADMIN_USERS_VIEW',
               isVisible: true,
             },
 
@@ -51,7 +50,6 @@ export class SideNavBarComponent implements OnInit {
               label: 'Roles',
               route: 'users-and-roles/view-roles',
               icon: 'fa-solid fa-user-shield',
-              permission: 'ADMIN_USERS_VIEW',
               isVisible: true,
             },
           ],
@@ -207,7 +205,7 @@ export class SideNavBarComponent implements OnInit {
               label: 'Leave Application',
               route: 'forms/leave-application',
               icon: 'fa-solid fa-file-signature',
-              isVisible: false,
+              isVisible: true,
             },
             {
               label: 'Leave Type',
@@ -654,6 +652,32 @@ export class SideNavBarComponent implements OnInit {
     private menuVisibilityService: MenuVisibilityService,
   ) {}
 
+  // ngOnInit() {
+  //   this.themeService.isLightTheme$.subscribe((value) => {
+  //     this.isDarkMode = !value;
+  //   });
+
+  //   this.toggleService.sidebarOpen$.subscribe((open) => {
+  //     this.isOpen = open;
+
+  //     // Collapse all menus when sidebar closes
+  //     if (!open) {
+  //       this.collapseAllMenus();
+  //     }
+  //   });
+
+  //   // Subscribe to menu visibility changes
+  //   this.hideAllMenuItems();
+
+  //   // ✅ Phir permissions apply karo
+  //   this.menuVisibilityService.menuVisibility$.subscribe((config) => {
+  //     if (Object.keys(config).length === 0) return; // empty skip karo
+
+  //     Object.keys(config).forEach((label) => {
+  //       this.updateMenuVisibility(label, config[label]);
+  //     });
+  //   });
+  // }
   ngOnInit() {
     this.themeService.isLightTheme$.subscribe((value) => {
       this.isDarkMode = !value;
@@ -661,21 +685,61 @@ export class SideNavBarComponent implements OnInit {
 
     this.toggleService.sidebarOpen$.subscribe((open) => {
       this.isOpen = open;
-
-      // Collapse all menus when sidebar closes
       if (!open) {
         this.collapseAllMenus();
       }
     });
 
-    // Subscribe to menu visibility changes
-    this.menuVisibilityService.menuVisibility$.subscribe((config) => {
-      Object.keys(config).forEach((label) => {
-        this.updateMenuVisibility(label, config[label]);
+    this.menuVisibilityService.menuVisibility$.subscribe((visibility) => {
+      if (visibility === null) {
+        this.isMenuReady = false;
+
+        // ✅ YEH ADD KARO - token hai to khud load karo
+        const token = localStorage.getItem('token');
+        if (token) {
+          this.SessionService.loadUserAndApplyMenu().subscribe();
+        }
+        return;
+      }
+
+      this.hideAllMenuItems();
+
+      this.topLevelItems.forEach((item) => {
+        item.isVisible = visibility[item.label] ?? item.label === 'Dashboard';
       });
+
+      this.menuGroups.forEach((group) => {
+        group.isVisible = visibility[group.label] ?? false;
+        group.children?.forEach((child) => {
+          child.isVisible = visibility[child.label] ?? false;
+          child.children?.forEach((subChild) => {
+            subChild.isVisible = visibility[subChild.label] ?? false;
+          });
+        });
+      });
+
+      this.isMenuReady = true;
+    });
+  }
+  private hideAllMenuItems() {
+    this.topLevelItems.forEach((item) => (item.isVisible = false));
+
+    this.menuGroups.forEach((group) => {
+      group.isVisible = false;
+      if (group.children) {
+        this.hideChildren(group.children);
+      }
     });
   }
 
+  private hideChildren(items: MenuItem[]) {
+    items.forEach((item) => {
+      item.isVisible = false;
+      if (item.children) {
+        this.hideChildren(item.children);
+      }
+    });
+  }
   private collapseAllMenus() {
     this.menuGroups.forEach((group) => {
       group.collapsed = true;

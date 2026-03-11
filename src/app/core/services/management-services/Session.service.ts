@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { MenuVisibilityService } from './menu-visibility.service';
 import { environment } from '../../../../environments/environment';
+import { catchError, Observable, switchMap, tap, throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -16,35 +17,54 @@ export class SessionService {
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
+    this.menuVisibilityService.resetMenu();
   }
+  //   loadUserAndApplyMenu(userId: string): Observable<any> {
+  //     const base = environment.apiBaseUrl;
 
-  loadUserAndApplyMenu(userId: string) {
+  //     return this.http.get<any>(`${base}admin/users/${userId}`).pipe(
+  //       switchMap((userRes) => {
+  //         const roleCode = userRes.data.roleCode;
+
+  //         return this.http.get<any>(`${base}admin/roles`).pipe(
+  //           switchMap((rolesRes) => {
+  //             const matchedRole = rolesRes.data.find((r: any) => r.code === roleCode);
+
+  //             if (!matchedRole) {
+  //               console.warn('No matching role for:', roleCode);
+  //               throw new Error('No matching role');
+  //             }
+
+  //             return this.http.get<any>(`${base}admin/roles/${matchedRole.publicId}`);
+  //           }),
+  //         );
+  //       }),
+  //     );
+  //   }
+  loadUserAndApplyMenu(): Observable<any> {
     const base = environment.apiBaseUrl;
-
-    // Step A: Get user info → get their roleCode
-    this.http.get<any>(`${base}/admin/users/${userId}`).subscribe((userRes) => {
-      const roleCode = userRes.data.roleCode;
-      console.log('Role Code:', roleCode); // e.g. "SUPER_ADMIN"
-
-      // Step B: Get all roles → find matching role's publicId
-      this.http.get<any>(`${base}/admin/roles`).subscribe((rolesRes) => {
-        const matchedRole = rolesRes.data.find((r: any) => r.code === roleCode);
-        if (!matchedRole) {
-          console.warn('No matching role found for:', roleCode);
-          return;
+    const token = localStorage.getItem('token');
+    if (!token) {
+      this.menuVisibilityService.applyPermissions([]);
+      return new Observable((obs) => obs.complete());
+    }
+    return this.http.get<any>(`${base}auth/me`).pipe(
+      tap((res: any) => {
+        const permissions: string[] = res.data.effectivePermissions;
+        this.menuVisibilityService.applyPermissions(permissions);
+      }),
+      catchError((err) => {
+        //  401/400 aaye to token clear karo aur login pe bhejo
+        if (err.status === 401 || err.status === 400) {
+          this.clearStorage();
+          // router inject karo ya event emit karo
+          window.location.href = '/login';
         }
-
-        // Step C: Get role details → get permissionCodes
-        this.http
-          .get<any>(`${base}/admin/roles/${matchedRole.publicId}`)
-          .subscribe((roleDetail) => {
-            const permissions: string[] = roleDetail.data.permissionCodes;
-            console.log('Permissions loaded:', permissions.length);
-
-            // Step D: Apply to sidebar
-            this.menuVisibilityService.applyPermissions(permissions);
-          });
-      });
-    });
+        return throwError(() => err);
+      }),
+    );
+  }
+  clearMenu() {
+    this.menuVisibilityService.applyPermissions([]);
   }
 }

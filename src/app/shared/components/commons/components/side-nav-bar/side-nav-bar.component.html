@@ -40,7 +40,7 @@
     </div>
   </div>
 
-  <div class="tabslist">
+  <div class="tabslist" *ngIf="isMenuReady">
     <!-- Top-level items -->
     <ng-container *ngFor="let item of topLevelItems">
       <a *ngIf="item.isVisible" [routerLink]="item.route" routerLinkActive="active">
@@ -103,14 +103,14 @@
               </div>
 
               <!-- If child is a simple link -->
-             <a *ngIf="!child.children && child.isVisible && child.route"
-   [routerLink]="child.route"
-   routerLinkActive="active">
-
-  <i *ngIf="child.icon" [class]="child.icon"></i>
-  <span>{{ child.label }}</span>
-
-</a>
+              <a
+                *ngIf="!child.children && child.isVisible && child.route"
+                [routerLink]="child.route"
+                routerLinkActive="active"
+              >
+                <i *ngIf="child.icon" [class]="child.icon"></i>
+                <span>{{ child.label }}</span>
+              </a>
 
               <!-- If child is a simple link without route -->
               <a *ngIf="!child.children && child.isVisible && !child.route">
@@ -121,5 +121,8 @@
         </div>
       </div>
     </ng-container>
+  </div>
+  <div class="tabslist d-flex justify-content-center align-items-center" *ngIf="!isMenuReady">
+    <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
   </div>
 </nav>

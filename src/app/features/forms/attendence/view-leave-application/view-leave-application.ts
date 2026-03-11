@@ -14,8 +14,20 @@ import { FormsModule } from '@angular/forms';
 })
 export class ViewLeaveApplication {
   LeavesApplicationList: any[] = [];
+  filteredLeavesApplicationList: any[] = [];
+  paginatedLeavesApplicationList: any[] = [];
+
   totalItems: number = 0;
   totalPagesCount: number = 0;
+  currentPage = 1;
+  itemsPerPage = 7;
+
+  searchTerm: string = '';
+  statusFilter: string = ''; // DRAFT | APPROVED | PENDING | REJECTED | ''
+  leaveModeFilter: string = ''; // FULL_DAY | HALF_DAY | SHORT_LEAVE | ''
+
+  publicId: string | null = null;
+  isEditMode = false;
 
   constructor(
     private formsService: FormsService,
@@ -23,18 +35,30 @@ export class ViewLeaveApplication {
     private loader: LoaderService,
   ) {}
 
-  currentPage = 1;
-  itemsPerPage = 7;
-  paginatedLeavesApplicationList: any[] = [];
-  publicId: string | null = null;
-  isEditMode = false;
-
   get totalPages() {
     return this.totalPagesCount || Math.ceil(this.totalItems / this.itemsPerPage);
   }
 
   get totalPagesArray() {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
+  }
+
+  get firstItem(): number {
+    return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.itemsPerPage + 1;
+  }
+
+  get lastItem(): number {
+    return Math.min(this.currentPage * this.itemsPerPage, this.totalItems);
+  }
+
+  get isAnyFilterActive(): boolean {
+    return !!this.searchTerm || !!this.statusFilter || !!this.leaveModeFilter;
+  }
+
+  // Unique leave modes from loaded data for dropdown
+  get uniqueLeaveModes(): string[] {
+    const modes = this.LeavesApplicationList.map((l) => l.leaveMode).filter(Boolean);
+    return [...new Set(modes)];
   }
 
   ngOnInit() {
@@ -48,13 +72,12 @@ export class ViewLeaveApplication {
       next: (response: any) => {
         this.loader.hide();
         this.LeavesApplicationList = response.data;
-        console.log(this.LeavesApplicationList);
         this.totalItems = response.paginator.totalItems;
         this.totalPagesCount = response.paginator.totalPages;
-        this.currentPage = response.paginator.currentPage + 1; // Backend 0-indexed
-        this.paginatedLeavesApplicationList = this.LeavesApplicationList;
+        this.currentPage = response.paginator.currentPage + 1;
+        this.applyFilter();
       },
-      error: (error) => {
+      error: () => {
         this.loader.hide();
         this.toastr.error('Error fetching leaves Application list');
       },
@@ -67,9 +90,69 @@ export class ViewLeaveApplication {
     this.loadLeaves();
   }
 
+  onItemsPerPageChange() {
+    this.currentPage = 1;
+    this.loadLeaves();
+  }
+
+  onSearch() {
+    this.currentPage = 1;
+    this.applyFilter();
+  }
+
+  onStatusChange() {
+    this.currentPage = 1;
+    this.applyFilter();
+  }
+
+  onLeaveModeChange() {
+    this.currentPage = 1;
+    this.applyFilter();
+  }
+
+  applyFilter() {
+    const term = this.searchTerm.toLowerCase().trim();
+
+    this.filteredLeavesApplicationList = this.LeavesApplicationList.filter((item) => {
+      const matchesSearch =
+        !term ||
+        item.name?.toLowerCase().includes(term) ||
+        item.leaveTypeName?.toLowerCase().includes(term);
+
+      const matchesStatus = !this.statusFilter || item.status === this.statusFilter;
+
+      const matchesLeaveMode = !this.leaveModeFilter || item.leaveMode === this.leaveModeFilter;
+
+      return matchesSearch && matchesStatus && matchesLeaveMode;
+    });
+
+    this.updatePaginatedList();
+  }
+
+  updatePaginatedList() {
+    if (this.isAnyFilterActive) {
+      this.totalItems = this.filteredLeavesApplicationList.length;
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      this.paginatedLeavesApplicationList = this.filteredLeavesApplicationList.slice(
+        start,
+        start + this.itemsPerPage,
+      );
+    } else {
+      this.totalItems = this.totalPagesCount * this.itemsPerPage;
+      this.paginatedLeavesApplicationList = this.LeavesApplicationList;
+    }
+  }
+
+  resetFilters() {
+    this.searchTerm = '';
+    this.statusFilter = '';
+    this.leaveModeFilter = '';
+    this.currentPage = 1;
+    this.applyFilter();
+  }
+
   formatRoleName(role: string): string {
     if (!role) return '';
-
     return role
       .toLowerCase()
       .replace(/_/g, ' ')
