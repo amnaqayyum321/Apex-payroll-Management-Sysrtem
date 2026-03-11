@@ -436,3 +436,7 @@ table tbody tr td {
     transform: rotate(45deg) scale(1);
   }
 }
+.form-control[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(80%) sepia(0%) saturate(0%) brightness(90%) contrast(90%);
+  cursor: pointer;
+}

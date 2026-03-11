@@ -1,21 +1,23 @@
+/* ===== Global / wrapper ===== */
 .user-form-wrapper {
   padding: 20px;
   background: var(--primary-color);
+  margin-top: -20px;
 }
 
 .user-card {
   background: var(--second-primary-color);
   border-radius: 16px;
   padding: 24px;
-  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
 }
 
-/* Header */
-.user-header {
+/* ===== Header ===== */
+.card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 8px;
 
   h3 {
     font-size: 18px;
@@ -23,9 +25,8 @@
     color: var(--text-primary);
     margin: 0;
   }
-
- 
 }
+
 .header-divider {
   width: 100%;
   height: 1px;
@@ -34,7 +35,7 @@
   opacity: 0.6;
 }
 
-/* Form Grid */
+/* ===== Form layout ===== */
 .user-form {
   display: flex;
   flex-direction: column;
@@ -43,7 +44,7 @@
 
 .form-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 18px;
 
   @media (max-width: 992px) {
@@ -51,7 +52,6 @@
   }
 }
 
-/* Form fields */
 .form-group {
   display: flex;
   flex-direction: column;
@@ -64,8 +64,10 @@
   }
 }
 
-/* Inputs */
-input {
+/* ===== Inputs, textarea, native selects ===== */
+input,
+textarea,
+.native-select {
   height: 42px;
   border-radius: 10px;
   border: 1px solid var(--border-color);
@@ -73,8 +75,7 @@ input {
   font-size: 14px;
   background: var(--second-primary-color);
   outline: none;
-  color: var(--text-primary);   /* 👈 typed text color */
-
+  color: var(--text-primary);
 
   &::placeholder {
     color: #98a2b3;
@@ -85,26 +86,24 @@ input {
     background: var(--primary-color);
   }
 }
+
 textarea {
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
-  font-size: 14px;
-  background: var(--second-primary-color);
-  outline: none;
-  color: var(--text-primary);   /* 👈 typed text color */
-
-
-  &::placeholder {
-    color: #98a2b3;
-  }
-
-  &:focus {
-    border-color: var(--border-color);
-    background: var(--primary-color);
-  }
+  height: auto;
+  padding: 10px 14px;
+  resize: vertical;
 }
 
-/* Dropdown */
+/* Style native selects to match custom dropdowns */
+.native-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  background-size: 16px;
+  padding-right: 40px;
+}
+
+/* ===== Custom dropdown (Pay Period) ===== */
 .custom-dropdown {
   position: relative;
   cursor: pointer;
@@ -135,7 +134,6 @@ textarea {
   transform: rotate(180deg);
 }
 
-/* Dropdown menu */
 .dropdown-options {
   position: absolute;
   top: 45px;
@@ -144,49 +142,42 @@ textarea {
   background: var(--primary-color);
   border-radius: 10px;
   border: 1px solid var(--second-primary-color);
-  box-shadow: 0 10px 18px rgba(0,0,0,0.08);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.08);
   z-index: 10;
   max-height: 220px;
   overflow-y: auto;
-   overflow-y: auto;
-  overflow-x: hidden;   /* ❌ X scrollbar band */
-  padding-right: 4px;   
-}
-/* Thin modern scrollbar */
-.dropdown-options::-webkit-scrollbar {
-  width: 6px;
-}
-
-.dropdown-options::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.dropdown-options::-webkit-scrollbar-thumb {
-  background: rgba(150, 150, 160, 0.35);
-  border-radius: 10px;
-}
-
-.dropdown-options::-webkit-scrollbar-thumb:hover {
-  background: rgba(140,140,160,0.6);
-}
-
-/* Firefox support */
-.dropdown-options {
+  overflow-x: hidden;
+  padding-right: 4px;
   scrollbar-width: thin;
-  scrollbar-color: rgba(140,140,160,0.4) transparent;
+  scrollbar-color: rgba(140, 140, 160, 0.4) transparent;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(150, 150, 160, 0.35);
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: rgba(140, 140, 160, 0.6);
+  }
 }
+
 .dropdown-option {
   padding: 10px 14px;
   font-size: 14px;
   color: var(--text-secondary);
   transition: 0.2s;
 
- &:hover {
+  &:hover {
     background: linear-gradient(
-    90deg,
-    rgba(255,255,255,0.05),
-    rgba(255,255,255,0.02)
-  );
+      90deg,
+      rgba(255, 255, 255, 0.05),
+      rgba(255, 255, 255, 0.02)
+    );
     backdrop-filter: blur(6px);
     transform: translateX(2px);
   }
@@ -196,7 +187,221 @@ textarea {
   }
 }
 
-/* Buttons */
+/* ===== Selected shifts tags ===== */
+.selected-shifts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.shift-tag {
+  background: var(--purple-1);
+  color: white;
+  padding: 5px 12px;
+  border-radius: 30px;
+  font-size: 13px;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  transition: 0.2s;
+
+ 
+
+  .remove-btn {
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 12px;
+    line-height: 1;
+    opacity: 0.8;
+    transition: 0.2s;
+    
+
+    &:hover {
+      opacity: 1;
+      transform: scale(1.1);
+    }
+  }
+}
+
+
+.remove-btn {
+  color: #ff4d4f  !important; /* or your desired color */
+  /* existing styles... */
+}
+/* ===== Section heading ===== */
+.section-header {
+  margin: 10px 0 5px;
+
+  h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+    border-left: 4px solid var(--purple-1);
+    padding-left: 12px;
+  }
+}
+
+/* ===== Table styles ===== */
+.table-main-div {
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background-color: var(--second-primary-color);
+  overflow-x: auto;
+  max-height: calc(100vh - 280px);
+  overflow-y: auto;
+  padding: 2px;
+
+  /* Thin scrollbar */
+  &::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(150, 150, 160, 0.3);
+    border-radius: 10px;
+  }
+}
+
+.work-schedule-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 6px;
+  min-width: 600px;
+
+  thead tr {
+    th {
+      text-align: left;
+      padding: 12px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      color: var(--gray-color-1);
+      background: transparent;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      white-space: nowrap;
+    }
+  }
+
+  tbody tr {
+    transition: background 0.15s;
+    border-radius: 10px;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    td {
+      padding: 8px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: var(--text-secondary);
+
+      .form-control {
+        width: 100%;
+        min-width: 130px;
+        background: var(--primary-color);
+        border: 1px solid transparent;
+
+        &:focus {
+          border-color: var(--purple-1);
+          background: var(--second-primary-color);
+        }
+
+        &[readonly] {
+          background: rgba(0, 0, 0, 0.2);
+          color: var(--text-secondary);
+          cursor: default;
+        }
+      }
+
+      select.form-control {
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 12px center;
+        background-size: 16px;
+        padding-right: 36px;
+      }
+    }
+  }
+}
+
+.active-checkbox-row{
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+  margin-top: -10px;
+}
+
+/* ===== Modern checkbox (Active) ===== */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  user-select: none;
+
+  .custom-checkbox {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .checkmark {
+    height: 20px;
+    width: 20px;
+    background-color: var(--primary-color);
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
+    transition: all 0.25s ease;
+    display: inline-block;
+    position: relative;
+
+    &:after {
+      content: "";
+      position: absolute;
+      display: none;
+      left: 6px;
+      top: 2px;
+      width: 5px;
+      height: 10px;
+      border: solid white;
+      border-width: 0 2px 2px 0;
+      transform: rotate(45deg);
+    }
+  }
+
+  .custom-checkbox:checked + .checkmark {
+    background: var(--purple-1);
+    border-color: var(--purple-1);
+    box-shadow: 0 4px 10px rgba(71, 110, 144, 0.3);
+
+    &:after {
+      display: block;
+      animation: checkAnim 0.2s ease-in-out;
+    }
+  }
+}
+
+@keyframes checkAnim {
+  from {
+    transform: rotate(45deg) scale(0);
+  }
+  to {
+    transform: rotate(45deg) scale(1);
+  }
+}
+
+/* ===== Buttons ===== */
 .form-actions {
   display: flex;
   justify-content: flex-end;
@@ -213,7 +418,9 @@ textarea {
   color: white;
   font-weight: 500;
   cursor: pointer;
-   &:hover {
+  transition: 0.2s;
+
+  &:hover {
     transform: translateY(-2px);
     filter: brightness(1.05);
   }
@@ -233,7 +440,9 @@ textarea {
   color: white;
   font-weight: 500;
   cursor: pointer;
-    &:hover {
+  transition: 0.2s;
+
+  &:hover {
     transform: translateY(-2px);
     filter: brightness(1.02);
   }
@@ -245,218 +454,22 @@ textarea {
 }
 
 .reset-btn {
-      background: var(--primary-color);
-      color: var(--purple-1);
-      padding: 8px 14px;
-      border-radius: 6px;
-      border: none;
-      font-size: 14px;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-
-      &:hover {
-        background: var(--purple-1);
-        color: white;
-      }
-    }
-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 8px;
-  caption-side: bottom;
-  border-collapse: collapse;
-}
-
-tr {
-  transition: background-color 0.2s ease-in-out;
-}
-
-th,
-td {
-  white-space: nowrap;
-}
-
-table thead tr th {
-  color: var(--gray-color-1);
-  border-bottom: 1px solid #d8d3d3b1;
-
-}
-
-table tbody tr td {
-  color: var(--gray-color-2);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-
-}
-
-.table-main-div {
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  max-height: calc(100vh - 150px);
-    overflow-y: auto;
-    overflow-x: hidden;
-  background-color: var(--second-primary-color);
-}
-
-/* ========================= */
-/* MODERN CHECKBOX */
-/* ========================= */
-
-.checkbox-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  position: relative;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-primary);
-  user-select: none;
-}
-
-/* Hide default checkbox */
-.custom-checkbox {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-}
-
-/* Custom box */
-.checkmark {
-  height: 20px;
-  width: 20px;
-  background-color: var(--primary-color);
-  border: 2px solid var(--border-color);
+  background: var(--primary-color);
+  color: var(--purple-1);
+  padding: 8px 14px;
   border-radius: 6px;
-  transition: all 0.25s ease;
-  display: inline-block;
-  position: relative;
-}
-
-/* Check icon */
-.checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
-  left: 6px;
-  top: 2px;
-  width: 5px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
-}
-
-/* When checked */
-.custom-checkbox:checked + .checkmark {
-  background: var(--purple-1);
-  border-color: var(--purple-1);
-  box-shadow: 0 4px 10px rgba(71, 110, 144, 0.3);
-}
-
-.custom-checkbox:checked + .checkmark:after {
-  display: block;
-  animation: checkAnim 0.2s ease-in-out;
-}
-
-/* Animation */
-@keyframes checkAnim {
-  from {
-    transform: rotate(45deg) scale(0);
-  }
-  to {
-    transform: rotate(45deg) scale(1);
-  }
-}
-    
-
-/* ========================= */
-/* TABLE CUSTOM CHECKBOX */
-/* ========================= */
-
-.table-checkbox {
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  position: relative;
-  cursor: pointer;
-}
-
-/* Hide default checkbox */
-.custom-table-checkbox {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-}
-
-/* Custom box */
-.table-checkmark {
-  height: 18px;
-  width: 18px;
-  background-color: var(--primary-color);
-  border: 2px solid var(--border-color);
-  border-radius: 5px;
-  transition: all 0.2s ease;
-  position: relative;
-}
-
-/* Tick */
-.table-checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
- left: 5px;
-  top:1px;
-  width: 5px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
-}
-
-/* Checked state */
-.custom-table-checkbox:checked + .table-checkmark {
-  background: var(--purple-1);
-  border-color: var(--purple-1);
-  box-shadow: 0 3px 8px rgba(128, 90, 213, 0.25);
-}
-
-.custom-table-checkbox:checked + .table-checkmark:after {
-  display: block;
-  animation: checkAnim 0.2s ease-in-out;
-}
-
-/* Animation */
-@keyframes checkAnim {
-  from {
-    transform: rotate(45deg) scale(0);
-  }
-  to {
-    transform: rotate(45deg) scale(1);
-  }
-}
-
-
-
-.selected-shifts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.shift-tag {
-  background: #007bff;
-  color: white;
-  padding: 5px 10px;
-  border-radius: 20px;
-  font-size: 13px;
-  display: flex;
-  align-items: center;
   gap: 6px;
+  transition: 0.2s;
+
+  &:hover {
+    background: var(--purple-1);
+    color: white;
+  }
 }
 
-.remove-btn {
-  cursor: pointer;
-  font-weight: bold;
-}
+

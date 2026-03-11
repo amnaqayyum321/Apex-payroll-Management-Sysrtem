@@ -4,77 +4,122 @@
       <h3>{{ isEditMode ? 'Update Project' : 'Create Project' }}</h3>
     </div>
     <div class="header-divider"></div>
+
     <form class="user-form">
-      <div class="row">
-        <div class="col-12 d-flex justify-content-end align-items-center gap-2">
-          <label class="form-label mb-0">Active</label>
-          <input name="status" [(ngModel)]="status" type="checkbox" />
+      <!-- Active toggle (as a form-group with checkbox) -->
+      <div class="col-12 d-flex justify-content-end align-items-center gap-2">
+          <label class="checkbox-container">
+            Active
+            <input type="checkbox" class="custom-checkbox" [(ngModel)]="status" name="active" />
+            <span class="checkmark"></span>
+          </label>
         </div>
-      </div>
-      <!-- ROW 1 -->
-      <div class="row">
-        <div class="col-md-6">
-          <label class="form-label">Code</label>
+
+      <!-- Main grid for fields -->
+      <div class="form-grid">
+        <!-- Code -->
+        <div class="form-group">
+          <label>Code</label>
           <input
             type="text"
             placeholder="Enter Code..."
             [(ngModel)]="Code"
-            class="form-control"
             name="Code"
           />
         </div>
-        <div class="col-md-6">
-          <label class="form-label">Name</label>
+
+        <!-- Name -->
+        <div class="form-group">
+          <label>Name</label>
           <input
             type="text"
-            class="form-control"
             placeholder="Enter Name..."
             [(ngModel)]="Name"
             name="Name"
           />
         </div>
-      </div>
-      <!-- ROW 2 -->
-      <div class="row">
-        <!-- ✅ Manager Selection Type -->
-        <div class="col-md-6">
-          <label class="form-label">Manager Type</label>
-          <select
-            class="form-select"
-            [(ngModel)]="managerMode"
-            name="managerMode"
-            (ngModelChange)="onManagerTypeChange()"
+
+        <!-- Manager Type (custom dropdown) -->
+        <div class="form-group">
+          <label>Manager Type</label>
+          <div
+            class="custom-dropdown"
+            (click)="toggleManagerTypeDropdown($event)"
           >
-            <option value="SELF">Self</option>
-            <option value="SELECTED">Employee (Select manually)</option>
-          </select>
+            <div class="dropdown-selected">
+              <span>{{ getManagerTypeLabel() }}</span>
+              <i
+                class="fa-solid fa-caret-down"
+                [class.rotate]="isManagerTypeDropdownOpen"
+              ></i>
+            </div>
+            <div
+              class="dropdown-options"
+              *ngIf="isManagerTypeDropdownOpen"
+            >
+              <div
+                class="dropdown-option"
+                (click)="selectManagerType('SELF', $event)"
+              >
+                Self
+              </div>
+              <div
+                class="dropdown-option"
+                (click)="selectManagerType('SELECTED', $event)"
+              >
+                Employee (Select manually)
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="col-md-6" *ngIf="managerMode === 'SELECTED'">
-          <label class="form-label">Project Manager</label>
-          <select class="form-select" [(ngModel)]="managerPublicId" name="managerPublicId">
-            <option value="">-- Select Manager --</option>
-            <option *ngFor="let emp of employeeList" [value]="emp.publicId">
-              {{ emp.fullName }}
-            </option>
-          </select>
+
+        <!-- Project Manager (conditional, custom dropdown) -->
+        <div class="form-group" *ngIf="managerMode === 'SELECTED'">
+          <label>Project Manager</label>
+          <div
+            class="custom-dropdown"
+            (click)="toggleEmployeeDropdown($event)"
+          >
+            <div class="dropdown-selected">
+              <span>{{ getSelectedEmployeeName() || '-- Select Manager --' }}</span>
+              <i
+                class="fa-solid fa-caret-down"
+                [class.rotate]="isEmployeeDropdownOpen"
+              ></i>
+            </div>
+            <div
+              class="dropdown-options"
+              *ngIf="isEmployeeDropdownOpen"
+            >
+              <div
+                class="dropdown-option"
+                *ngFor="let emp of employeeList"
+                (click)="selectEmployee(emp, $event)"
+              >
+                {{ emp.fullName }}
+              </div>
+            </div>
+          </div>
         </div>
+
+        <!-- Description (full width) -->
+ <!-- Description (full width) -->
+<div class="form-group full-width">
+  <label>Remarks</label>
+  <textarea
+    class="form-control"
+    [(ngModel)]="description"
+    name="description"
+    placeholder="Enter description"
+  ></textarea>
+</div>
       </div>
 
-      <!-- ROW 3 -->
-      <div class="row">
-        <div class="col-md-12">
-          <label class="form-label">Description</label>
-          <textarea
-            class="form-control"
-            placeholder="Enter Description..."
-            [(ngModel)]="description"
-            name="description"
-          ></textarea>
-        </div>
-      </div>
       <!-- Footer buttons -->
       <div class="form-actions">
-        <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
+        <button type="button" class="cancel-btn" (click)="cancel()">
+          Cancel
+        </button>
         <button
           type="submit"
           class="submit-btn"

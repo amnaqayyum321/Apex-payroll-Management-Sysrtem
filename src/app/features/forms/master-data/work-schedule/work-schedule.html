@@ -1,168 +1,176 @@
 <div class="user-form-wrapper">
-    <div class="user-card">
-        <!-- Header -->
-        <div class="card-header">
-            <h3>{{ isEditMode ? 'Update Work Schedule ' : 'Create Work Schedule' }}</h3>
-        </div>
-        <div class="d-flex gap-2">
-            <button class="reset-btn" (click)="resetShiftForm()">
-                <i class="fa fa-refresh"></i> Reset
-            </button>
-        </div>
-        <div class="header-divider"></div>
+  <div class="user-card">
+    <!-- Header with title, active checkbox and reset button -->
+  <div class="card-header d-flex justify-content-between align-items-center">
+  <h3>{{ isEditMode ? 'Update Work Schedule' : 'Create Work Schedule' }}</h3>
 
-        <form class="user-form" (ngSubmit)="isEditMode ? updateWorkSchedule() : createWorkSchedule()">
-
-            <div class="row">
-                <div class="col-12 d-flex justify-content-end align-items-center gap-2">
-                    <label class="checkbox-container">
-  Active   
-  <input
-    type="checkbox"
-    class="custom-checkbox"
-    [(ngModel)]="active"
-    name="active"
-  />
-  <span class="checkmark"></span>
-</label>
-                </div>
-            </div>
-
-            <!-- ROW 1 -->
-            <div class="row">
-                <div class="col-md-6">
-  <label class="form-label">Pay Period</label>
- <select [(ngModel)]="payPeriodPublicId"
-        name="payPeriodPublicId"
-        (change)="onPayPeriodChange()">
-
-  <option value="">Select Pay Period</option>
-
-  <option *ngFor="let p of payPeriodList"
-          [value]="p.publicId">
-    {{ p.name }}
-  </option>
-
-</select>
+  <button class="reset-btn" (click)="resetShiftForm()">
+    <i class="fa fa-refresh"></i> Reset
+  </button>
 </div>
+    <div class="header-divider"></div>
 
-<div class="row mt-3">
-  <div class="col-md-6">
-    <label class="form-label">Select Shifts</label>
+    <form
+    
+      class="user-form"
+      (ngSubmit)="isEditMode ? updateWorkSchedule() : createWorkSchedule()"
+    >
+      <div class="active-checkbox-row">
+  <label class="checkbox-container">
+    Active
+    <input
+      type="checkbox"
+      class="custom-checkbox"
+      [(ngModel)]="active"
+      name="active"
+    />
+    <span class="checkmark"></span>
+  </label>
+</div>
+      <!-- 3‑column grid for first row -->
+      <div class="form-grid">
+        <!-- Pay Period custom dropdown -->
+        <div class="form-group">
+          <label>Pay Period</label>
+          <div class="custom-dropdown"  #payPeriodDropdown (click)="togglePayPeriodDropdown($event)">
+            <div class="dropdown-selected">
+              <span>{{ selectedPayPeriodName || 'Select Pay Period' }}</span>
+              <i
+                class="fa-solid fa-caret-down"
+                [class.rotate]="isPayPeriodDropdownOpen"
+              ></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isPayPeriodDropdownOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let p of payPeriodList"
+                (click)="selectPayPeriod(p, $event)"
+              >
+                {{ p.name }}
+              </div>
+            </div>
+          </div>
+        </div>
 
-    <!-- Dropdown -->
-    <select class="form-control"
-            (change)="addShift($event)">
-      <option value="">Select Shift</option>
-
-      <option *ngFor="let s of shiftsList"
-              [value]="s.publicId">
-        {{ s.name }}
-      </option>
-
-    </select>
-
-    <!-- Selected Shifts List -->
-    <div class="selected-shifts mt-2" *ngIf="selectedShifts.length > 0">
-
-      <div class="shift-tag"
-           *ngFor="let shift of selectedShifts">
-
-        {{ shift.name }}
-
-        <span class="remove-btn"
-              (click)="removeShift(shift.publicId)">
-          ✖
-        </span>
-
-      </div>
-
+        <!-- Shifts dropdown & selected tags -->
+      <!-- Shifts custom dropdown & selected tags -->
+<div class="form-group">
+  <label>Select Shifts</label>
+  <div class="custom-dropdown"  #shiftDropdown (click)="toggleShiftDropdown($event)">
+    <div class="dropdown-selected">
+      <span>{{ selectedShiftName || 'Select Shift' }}</span>
+      <i
+        class="fa-solid fa-caret-down"
+        [class.rotate]="isShiftDropdownOpen"
+      ></i>
     </div>
-
+    <div class="dropdown-options" *ngIf="isShiftDropdownOpen">
+      <div
+        class="dropdown-option"
+        *ngFor="let s of shiftsList"
+        (click)="selectShift(s, $event)"
+      >
+        {{ s.name }}
+      </div>
+    </div>
+  </div>
+  <div class="selected-shifts mt-2" *ngIf="selectedShifts.length > 0">
+    <div class="shift-tag" *ngFor="let shift of selectedShifts">
+      {{ shift.name }}
+      <span class="remove-btn"  (click)="removeShift(shift.publicId)">✖</span>
+    </div>
   </div>
 </div>
-                
-            </div>
+      </div>
 
-            <!-- Description -->
-            <div class="row mt-3">
-                <div class="col-md-12">
-                    <label class="form-label">Description</label>
-                    <textarea class="form-control" [(ngModel)]="remarks" name="remarks"></textarea>
-                </div>
-            </div>
+      <!-- Description full width -->
+      <div class="form-grid">
+        <div class="form-group" style="grid-column: span 3">
+          <label>Description</label>
+          <textarea
+            class="form-control"
+            [(ngModel)]="remarks"
+            name="remarks"
+            rows="3"
+          ></textarea>
+        </div>
+      </div>
 
-            <!-- TABLE -->
-            <section class="table-main-div">
+    
 
-                <div class="rounded-2xl text-gray-200 overflow-x-auto pt-4">
-                    <table class="min-w-full text-sm border-separate border-spacing-y-2">
-                        <thead>
-                            <tr>
-                                <th class="px-3 py-2">Work Date</th>
-                                <th class="px-3 py-2">Day Name</th>
-                                <th class="px-3 py-2">Day Type</th>
-                                <th class="px-3 py-2">Remarks</th>
-                            </tr>
-                        </thead>
+      <!-- Section heading for the table -->
+      <div class="section-header">
+        <h4>Define Work Schedule</h4>
+      </div>
 
-<tbody>
-<tr *ngFor="let day of days; let i = index  trackBy: trackByIndex" >
+      <!-- Scrollable table -->
+      <div class="table-main-div">
+        <table class="work-schedule-table">
+          <thead>
+            <tr>
+              <th>Work Date</th>
+              <th>Day Name</th>
+              <th>Day Type</th>
+              <th>Remarks</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="let day of days; let i = index; trackBy: trackByIndex"
+            >
+              <td>
+                <input
+                  type="date"
+                  [(ngModel)]="day.workDate"
+                  name="workDate{{ i }}"
+                  class="form-control"
+                  readonly
+                />
+              </td>
+              <td>
+                <select
+                  class="form-control native-select"
+                  [(ngModel)]="day.dayName"
+                  name="dayName{{ i }}"
+                >
+                  <option *ngFor="let d of weekDays" [value]="d">
+                    {{ d }}
+                  </option>
+                </select>
+              </td>
+              <td>
+                <select
+                  class="form-control native-select"
+                  [(ngModel)]="day.dayType"
+                  name="dayType{{ i }}"
+                >
+                  <option *ngFor="let type of dayTypes" [value]="type">
+                    {{ type }}
+                  </option>
+                </select>
+              </td>
+              <td>
+                <input
+                  type="text"
+                  class="form-control"
+                  [(ngModel)]="day.remarks"
+                  name="remarks{{ i }}"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-  <!-- Work Date (Readonly) -->
-  <td>
-    <input type="date"
-           [(ngModel)]="day.workDate"
-           name="workDate{{i}}"
-           class="form-control"
-           readonly>
-  </td>
-
-  <!-- Day Name -->
-  <td>
-    <select class="form-control"
-            [(ngModel)]="day.dayName"
-            name="dayName{{i}}">
-      <option *ngFor="let d of weekDays"
-              [value]="d">
-        {{ d }}
-      </option>
-    </select>
-  </td>
-
-  <!-- Day Type -->
-  <td>
-    <select class="form-control"
-            [(ngModel)]="day.dayType"
-            name="dayType{{i}}">
-      <option *ngFor="let type of dayTypes"
-              [value]="type">
-        {{ type }}
-      </option>
-    </select>
-  </td>
-
-  <!-- Remarks -->
-  <td>
-    <input type="text"
-           [(ngModel)]="day.remarks"
-           name="remarks{{i}}"
-           class="form-control">
-  </td>
-
-</tr>
-</tbody>          </table>
-                </div>
-            </section>
-
-
-            <!-- Buttons -->
-            <div class="form-actions mt-3">
-                <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
-
-                <button type="submit" class="submit-btn">
-                    {{ isEditMode ? 'Update ' : 'Create ' }}
-                </button>
-            </div>
-
-        </form>
+      <!-- Form actions -->
+      <div class="form-actions">
+        <button type="button" class="cancel-btn" (click)="cancel()">
+          Cancel
+        </button>
+        <button type="submit" class="submit-btn">
+          {{ isEditMode ? 'Update' : 'Create' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

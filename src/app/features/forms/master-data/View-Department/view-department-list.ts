@@ -14,9 +14,9 @@ import { FormsService } from '../../Services/forms';
   styleUrl: './view-department-list.scss',
 })
 export class ViewDepartmentList {
-  fullDepartmentList: any[] = [];        // all departments from API
-  filteredDepartmentList: any[] = [];    // after applying search
-  paginatedDepartmentList: any[] = [];   // current page slice
+  fullDepartmentList: any[] = [];        
+  filteredDepartmentList: any[] = [];    
+  paginatedDepartmentList: any[] = [];   
 
   searchTerm: string = '';
   currentPage = 1;

@@ -79,7 +79,10 @@ textarea {
         background: var(--primary-color);
     }
 }
-
+.form-label{
+    font-size: 15px;
+    font-weight: 500;
+}
 /* Dropdown */
 .custom-dropdown {
     position: relative;
@@ -219,4 +222,187 @@ textarea {
         transform: scale(0.97);
         box-shadow: none;
     }
+}
+
+.custom-dropdown .dropdown-selected {
+    height: 42px; /* same as input height */
+    border-radius: 10px; /* same as input border-radius */
+    border: 1px solid var(--border-color); /* same border color */
+    padding: 0 14px; /* same padding as input */
+    font-size: 14px; /* same font size */
+    background: var(--second-primary-color); /* same background */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.custom-dropdown .dropdown-selected:hover,
+.custom-dropdown .dropdown-selected:focus {
+    border-color: var(--border-color);
+}
+
+.custom-dropdown .dropdown-selected i {
+    color: var(--text-secondary); /* caret color */
+    transition: 0.3s;
+}
+
+.custom-dropdown .dropdown-options {
+    position: absolute;
+    top: 45px; /* slightly below field */
+    left: 0;
+    right: 0;
+    background: var(--primary-color); /* match input focus bg */
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+    z-index: 10;
+    max-height: 220px;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.custom-dropdown .dropdown-option {
+    padding: 10px 14px;
+    font-size: 14px;
+    color: var(--text-primary);
+    transition: 0.2s;
+}
+
+.custom-dropdown .dropdown-option:hover {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+    backdrop-filter: blur(6px);
+    transform: translateX(2px);
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem;
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    &.full-width {
+      grid-column: span 2;
+    }
+    label {
+      margin-bottom: 0.25rem;
+      font-weight: 500;
+    }
+    input, textarea, .custom-dropdown {
+      width: 100%;
+    }
+  }
+}
+
+.toggle-group {
+  flex-direction: row;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  .checkbox-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    input[type="checkbox"] {
+      width: auto;
+    }
+  }
+}
+
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  user-select: none;
+}
+
+/* Hide default checkbox */
+.custom-checkbox {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Custom box */
+.checkmark {
+  height: 20px;
+  width: 20px;
+  background-color: var(--primary-color);
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  transition: all 0.25s ease;
+  display: inline-block;
+  position: relative;
+}
+
+/* Check icon */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* When checked */
+.custom-checkbox:checked + .checkmark {
+  background: var(--purple-1);
+  border-color: var(--purple-1);
+  box-shadow: 0 4px 10px rgba(71, 110, 144, 0.3);
+}
+
+.custom-checkbox:checked + .checkmark:after {
+  display: block;
+  animation: checkAnim 0.2s ease-in-out;
+}
+
+/* Animation */
+@keyframes checkAnim {
+  from {
+    transform: rotate(45deg) scale(0);
+  }
+  to {
+    transform: rotate(45deg) scale(1);
+  }
+}
+
+
+.form-control {
+    height: 42px; /* input fields ki height */
+    border-radius: 10px; /* same radius */
+    border: 1px solid var(--border-color); /* same border */
+    padding: 0 14px; /* same padding */
+    font-size: 14px;
+    background: var(--second-primary-color); /* same bg */
+    outline: none;
+    color: var(--text-primary);
+
+    &::placeholder {
+        color: #98a2b3; /* same placeholder color */
+    }
+
+    &:focus {
+        border-color: var(--border-color);
+        background: var(--primary-color); /* same focus bg */
+    }
+}
+
+/* Agar aap chahte ho ke textarea thoda lamba ho (multiple lines ke liye) */
+textarea.form-control {
+    height: auto; /* allow multi-line */
+    min-height: 80px; /* adjust as needed */
+    padding: 10px 14px; /* thoda vertical padding for multi-line */
 }
