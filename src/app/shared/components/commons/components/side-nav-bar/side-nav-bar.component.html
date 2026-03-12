@@ -39,8 +39,8 @@
       </div>
     </div>
   </div>
-
-  <div class="tabslist" *ngIf="isMenuReady">
+  <!-- <div class="tabslist" *ngIf="isMenuReady"></div> -->
+  <div class="tabslist">
     <!-- Top-level items -->
     <ng-container *ngFor="let item of topLevelItems">
       <a *ngIf="item.isVisible" [routerLink]="item.route" routerLinkActive="active">
@@ -122,7 +122,7 @@
       </div>
     </ng-container>
   </div>
-  <div class="tabslist d-flex justify-content-center align-items-center" *ngIf="!isMenuReady">
+  <!-- <div class="tabslist d-flex justify-content-center align-items-center" *ngIf="!isMenuReady">
     <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
-  </div>
+  </div> -->
 </nav>

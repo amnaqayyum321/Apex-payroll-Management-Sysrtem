@@ -32,4 +32,16 @@ export class UsersAndRolesService {
   UpdateRoleByPublicId(publicId: string, data: any): Observable<any> {
     return this.http.put(this.url + `admin/roles/${publicId}`, data);
   }
+  CreateApprovalTemplate(data: any): Observable<any> {
+    return this.http.post(this.url + 'admin/approval-templates', data);
+  }
+  getApprovaLTemplate(page: number, size: number): Observable<any> {
+    return this.http.get(this.url + `admin/approval-templates?page=${page}&size=${size}`);
+  }
+  GetApprovalTempByPublicId(publicId: string): Observable<any> {
+    return this.http.get(this.url + `admin/approval-templates/${publicId}`);
+  }
+  UpdateApprovalTempByPublicId(publicId: string, data: any): Observable<any> {
+    return this.http.put(this.url + `admin/approval-templates/${publicId}`, data);
+  }
 }

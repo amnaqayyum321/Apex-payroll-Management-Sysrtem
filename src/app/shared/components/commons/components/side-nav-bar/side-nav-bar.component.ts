@@ -57,20 +57,19 @@ export class SideNavBarComponent implements OnInit {
         {
           label: 'Configuration',
           icon: 'fa-solid fa-sitemap',
-          isVisible: false,
+          isVisible: true,
           collapsed: true,
           children: [
             {
               label: 'Employees',
               route: 'employees-master-data/view-all-employees',
-
-              isVisible: true,
+              isVisible: false,
             },
             {
               label: 'Onboarding Employees',
               route: 'employees-master-data/onboarding-employees',
 
-              isVisible: true,
+              isVisible: false,
             },
 
             { label: 'GOSIID', route: 'employees-master-data/view-all-gosii', isVisible: false },
@@ -104,6 +103,12 @@ export class SideNavBarComponent implements OnInit {
               label: 'Project Transfer',
               route: 'employees-master-data/view-all-project-transfer',
               isVisible: false,
+            },
+
+            {
+              label: 'Approval-template',
+              route: 'users-and-roles/view-template-approval',
+              isVisible: true,
             },
           ],
         },
@@ -340,11 +345,16 @@ export class SideNavBarComponent implements OnInit {
               icon: 'fa-solid fa-list-check',
               isVisible: true,
             },
-
             {
               label: 'Offers Approval',
               route: 'onboarding/offers-approval',
               icon: 'fa-solid fa-list-check',
+              isVisible: true,
+            },
+            {
+              label: 'Approval Inbox',
+              route: 'onboarding/approval-inbox',
+              icon: 'fa-solid fa-inbox',
               isVisible: true,
             },
           ],
@@ -690,36 +700,36 @@ export class SideNavBarComponent implements OnInit {
       }
     });
 
-    this.menuVisibilityService.menuVisibility$.subscribe((visibility) => {
-      if (visibility === null) {
-        this.isMenuReady = false;
+    // this.menuVisibilityService.menuVisibility$.subscribe((visibility) => {
+    //   if (visibility === null) {
+    //     this.isMenuReady = false;
 
-        // ✅ YEH ADD KARO - token hai to khud load karo
-        const token = localStorage.getItem('token');
-        if (token) {
-          this.SessionService.loadUserAndApplyMenu().subscribe();
-        }
-        return;
-      }
+    //     // ✅ YEH ADD KARO - token hai to khud load karo
+    //     const token = localStorage.getItem('token');
+    //     if (token) {
+    //       this.SessionService.loadUserAndApplyMenu().subscribe();
+    //     }
+    //     return;
+    //   }
 
-      this.hideAllMenuItems();
+    //   this.hideAllMenuItems();
 
-      this.topLevelItems.forEach((item) => {
-        item.isVisible = visibility[item.label] ?? item.label === 'Dashboard';
-      });
+    //   this.topLevelItems.forEach((item) => {
+    //     item.isVisible = visibility[item.label] ?? item.label === 'Dashboard';
+    //   });
 
-      this.menuGroups.forEach((group) => {
-        group.isVisible = visibility[group.label] ?? false;
-        group.children?.forEach((child) => {
-          child.isVisible = visibility[child.label] ?? false;
-          child.children?.forEach((subChild) => {
-            subChild.isVisible = visibility[subChild.label] ?? false;
-          });
-        });
-      });
+    //   this.menuGroups.forEach((group) => {
+    //     group.isVisible = visibility[group.label] ?? false;
+    //     group.children?.forEach((child) => {
+    //       child.isVisible = visibility[child.label] ?? false;
+    //       child.children?.forEach((subChild) => {
+    //         subChild.isVisible = visibility[subChild.label] ?? false;
+    //       });
+    //     });
+    //   });
 
-      this.isMenuReady = true;
-    });
+    //   this.isMenuReady = true;
+    // });
   }
   private hideAllMenuItems() {
     this.topLevelItems.forEach((item) => (item.isVisible = false));
