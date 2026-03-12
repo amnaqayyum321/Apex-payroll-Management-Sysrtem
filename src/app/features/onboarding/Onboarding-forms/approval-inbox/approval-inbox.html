@@ -1,1 +1,247 @@
-<p>approval-inbox works!</p>
+<div class="approval-inbox-wrapper">
+  <!-- ===== Page Header ===== -->
+  <div class="page-header">
+    <div class="header-left">
+      <h2 class="page-title">
+        <i class="fas fa-inbox"></i>
+        Approval Inbox
+      </h2>
+      <span class="page-subtitle">Review and act on pending requests</span>
+    </div>
+    <div class="header-right">
+      <button class="create-btn"><i class="fas fa-plus icon"></i> New Request</button>
+    </div>
+  </div>
+
+  <!-- ===== Filter Tab Buttons ===== -->
+  <div class="btn-groups-main-div">
+    <button *ngFor="let tab of tabs" [class.active]="activeTab === tab" (click)="setActiveTab(tab)">
+      <span class="tab-label">{{ tab }}</span>
+      <span class="tab-count">{{ getTabCount(tab) }}</span>
+    </button>
+  </div>
+
+  <!-- ===== Search & Filter Bar ===== -->
+  <div class="search-filter-bar">
+    <div class="search-input-wrapper">
+      <i class="fas fa-search search-icon"></i>
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Search by title, requester or type..."
+        [(ngModel)]="searchQuery"
+        (input)="onSearch()"
+      />
+    </div>
+
+    <div class="filter-group">
+      <select class="filter-select" [(ngModel)]="selectedPriority" (change)="applyFilters()">
+        <option value="">All Priorities</option>
+        <option value="High">High</option>
+        <option value="Medium">Medium</option>
+        <option value="Low">Low</option>
+      </select>
+
+      <div class="results-count">
+        <span>{{ totalItems }} record{{ totalItems !== 1 ? 's' : '' }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Table ===== -->
+  <div class="table-main-div">
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 40px">
+            <input
+              type="checkbox"
+              class="checkbox-style"
+              [(ngModel)]="selectAll"
+              (change)="toggleSelectAll()"
+            />
+          </th>
+          <th>#</th>
+          <th>Title</th>
+          <th>Requested By</th>
+          <th>Type</th>
+          <th>Priority</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of filteredItems; let i = index">
+          <td>
+            <input type="checkbox" class="checkbox-style" [(ngModel)]="item.selected" />
+          </td>
+          <td class="row-num">{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+          <td>
+            <div class="title-cell">
+              <span class="title-text">{{ item.title }}</span>
+              <span class="instance-id">{{ item.instancePublicId | slice: 0 : 8 }}...</span>
+            </div>
+          </td>
+          <td>
+            <div class="requester-cell">
+              <div class="avatar">{{ item.requestedBy.charAt(0) }}</div>
+              <span>{{ item.requestedBy }}</span>
+            </div>
+          </td>
+          <td>
+            <span class="type-tag">{{ item.type }}</span>
+          </td>
+          <td>
+            <span [class]="getPriorityClass(item.priority)" class="priority-badge">
+              <i class="fas fa-circle priority-dot"></i>
+              {{ item.priority }}
+            </span>
+          </td>
+          <td class="date-cell">{{ item.requestedDate }}</td>
+          <td>
+            <span [class]="getStatusBadgeClass(item.status)">{{ item.status }}</span>
+          </td>
+          <td>
+            <div class="action-button">
+              <button
+                class="btn btn-1"
+                title="Approve"
+                (click)="openModal(item, 'APPROVE')"
+                [disabled]="item.status !== 'Pending'"
+              >
+                <i class="fas fa-check"></i> Approve
+              </button>
+              <button
+                class="btn btn-2"
+                title="Return"
+                (click)="openModal(item, 'RETURN')"
+                [disabled]="item.status !== 'Pending'"
+              >
+                <i class="fas fa-undo"></i> Return
+              </button>
+              <button
+                class="btn btn-3"
+                title="Reject"
+                (click)="openModal(item, 'REJECT')"
+                [disabled]="item.status !== 'Pending'"
+              >
+                <i class="fas fa-times"></i> Reject
+              </button>
+            </div>
+          </td>
+        </tr>
+
+        <!-- Empty State -->
+        <tr *ngIf="filteredItems.length === 0">
+          <td colspan="9" class="empty-state">
+            <div class="empty-inner">
+              <i class="fas fa-inbox empty-icon"></i>
+              <p>No approval requests found</p>
+              <span>Try adjusting your filters or search query</span>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ===== Pagination ===== -->
+  <div class="pagination-wrapper" *ngIf="totalPages > 1">
+    <nav>
+      <ul class="pagination">
+        <li class="page-item" [class.disabled]="currentPage === 1">
+          <a class="page-link" (click)="goToPage(currentPage - 1)">
+            <i class="fas fa-chevron-left"></i>
+          </a>
+        </li>
+        <li class="page-item" *ngFor="let page of pages" [class.active]="page === currentPage">
+          <a class="page-link" (click)="goToPage(page)">{{ page }}</a>
+        </li>
+        <li class="page-item" [class.disabled]="currentPage === totalPages">
+          <a class="page-link" (click)="goToPage(currentPage + 1)">
+            <i class="fas fa-chevron-right"></i>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <span class="pagination-info">Page {{ currentPage }} of {{ totalPages }}</span>
+  </div>
+</div>
+
+<!-- ===== Action Modal ===== -->
+<div class="modal-overlay" *ngIf="modal.visible" (click)="closeModal()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-title-group">
+        <div class="modal-icon" [class]="'modal-icon-' + modal.actionType?.toLowerCase()">
+          <i
+            class="fas"
+            [class.fa-check]="modal.actionType === 'APPROVE'"
+            [class.fa-times]="modal.actionType === 'REJECT'"
+            [class.fa-undo]="modal.actionType === 'RETURN'"
+          ></i>
+        </div>
+        <div>
+          <h3 class="modal-title">{{ getActionLabel() }} Request</h3>
+          <p class="modal-subtitle">{{ modal.item?.title }}</p>
+        </div>
+      </div>
+      <button class="modal-close-btn" (click)="closeModal()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="modal-info-row">
+        <span class="info-label"><i class="fas fa-user"></i> Requested By</span>
+        <span class="info-value">{{ modal.item?.requestedBy }}</span>
+      </div>
+      <div class="modal-info-row">
+        <span class="info-label"><i class="fas fa-tag"></i> Type</span>
+        <span class="info-value">{{ modal.item?.type }}</span>
+      </div>
+      <div class="modal-info-row">
+        <span class="info-label"><i class="fas fa-calendar"></i> Date</span>
+        <span class="info-value">{{ modal.item?.requestedDate }}</span>
+      </div>
+
+      <div class="remarks-group">
+        <label class="remarks-label">Remarks <span class="optional">(optional)</span></label>
+        <textarea
+          class="remarks-textarea"
+          rows="4"
+          placeholder="Add your remarks here..."
+          [(ngModel)]="modal.remarks"
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="cancel-btn" (click)="closeModal()" [disabled]="modal.loading">Cancel</button>
+      <button [class]="getActionBtnClass()" (click)="confirmAction()" [disabled]="modal.loading">
+        <span *ngIf="!modal.loading">
+          <i class="fas fa-check" *ngIf="modal.actionType === 'APPROVE'"></i>
+          <i class="fas fa-times" *ngIf="modal.actionType === 'REJECT'"></i>
+          <i class="fas fa-undo" *ngIf="modal.actionType === 'RETURN'"></i>
+          {{ getActionLabel() }}
+        </span>
+        <span *ngIf="modal.loading"> <i class="fas fa-spinner fa-spin"></i> Processing... </span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== Toast Notification ===== -->
+<div
+  class="toast-notification"
+  [class.visible]="toast.visible"
+  [class.toast-error]="toast.type === 'error'"
+>
+  <i
+    class="fas"
+    [class.fa-check-circle]="toast.type === 'success'"
+    [class.fa-exclamation-circle]="toast.type === 'error'"
+  ></i>
+  {{ toast.message }}
+</div>
