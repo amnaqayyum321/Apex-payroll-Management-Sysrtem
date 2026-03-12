@@ -487,3 +487,115 @@ tbody tr td {
         cursor: not-allowed;
     }
 }
+
+
+// Create User Form Custom Dropdown Styling (like filter-select-box)
+
+.custom-dropdown {
+  position: relative;
+  width: 100%;
+  font-size: 14px;
+  user-select: none;
+
+  .dropdown-selected {
+    background-color: var(--second-primary-color); // #1e293b
+    border: 1px solid var(--border-color); // #334155
+    border-radius: 8px;
+    padding: 8px 32px 8px 12px;  // right padding for icon
+    color: var(--white-color-1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: border-color 0.2s ease;
+
+    span {
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    i {
+      position: absolute;
+      right: 12px;
+      color: #475569;  // chevron color
+      font-size: 12px;
+      transition: transform 0.2s ease;
+
+      &.rotate {
+        transform: rotate(180deg);
+      }
+    }
+
+    &:hover {
+      border-color: #4ade80; // green highlight on hover
+    }
+  }
+
+  // Dropdown options panel
+  .dropdown-options {
+    position: absolute;
+    top: calc(100% + 4px);
+    left: 0;
+    width: 100%;
+    background-color: var(--second-primary-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 10;
+    max-height: 250px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: #4ade80 #1e293b;
+
+    /* Scrollbar styling (WebKit) */
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+    &::-webkit-scrollbar-track {
+      background: #1e293b;
+      border-radius: 10px;
+    }
+    &::-webkit-scrollbar-thumb {
+      background-color: #4ade80;
+      border-radius: 20px;
+      border: 1px solid #1e293b;
+    }
+
+    .dropdown-option {
+      padding: 10px 12px;
+      color: var(--white-color-1);
+      cursor: pointer;
+      transition: background 0.15s ease;
+
+      &:hover {
+        background-color: #27354a;  // same as table row hover
+      }
+
+      &:first-child {
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+      }
+      &:last-child {
+        border-bottom-left-radius: 8px;
+        border-bottom-right-radius: 8px;
+      }
+    }
+  }
+}
+
+// Optional: agar form-group ke andar label ka gap theek karna ho
+.form-group {
+  label {
+    display: block;
+    margin-bottom: 6px;
+    color: #94a3b8;
+    font-size: 13px;
+    font-weight: 500;
+
+    span {
+      color: #ef4444;  // red star for required
+    }
+  }
+}

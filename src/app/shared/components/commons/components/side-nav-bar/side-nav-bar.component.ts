@@ -208,7 +208,7 @@ export class SideNavBarComponent implements OnInit {
             },
             {
               label: 'Leave Application',
-              route: 'forms/leave-application',
+              route: 'forms/view-leave-application',
               icon: 'fa-solid fa-file-signature',
               isVisible: true,
             },
@@ -216,6 +216,12 @@ export class SideNavBarComponent implements OnInit {
               label: 'Leave Type',
               route: 'forms/view-leaves-master-list',
               icon: 'fa-solid fa-file-alt',
+              isVisible: true,
+            },
+               {
+              label: 'Leave Application Approval',
+              route: 'forms/leave-application-approval',
+              icon: 'fa-solid fa-clock',
               isVisible: true,
             },
 

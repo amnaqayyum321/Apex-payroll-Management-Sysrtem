@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { LoaderService } from '../../../../core/services/management-services/loader.service';
 import { FormsService } from '../../Services/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -28,6 +28,22 @@ export class LeaveApplication {
   active: boolean = false;
   EmployeeList: any;
   LeaveTypeList: any;
+
+  // Add these properties inside the class
+isLeaveTypeDropdownOpen = false;
+isEmployeeDropdownOpen = false;
+isLeaveModeDropdownOpen = false;
+
+selectedLeaveTypeName = '';
+selectedEmployeeName = '';
+selectedLeaveModeDisplay = 'FULL_DAY'; // default display
+
+// For leave mode options (can be an array of objects or strings)
+leaveModes = [
+  { value: 'FULL_DAY', label: 'FULL DAY' },
+  { value: 'HALF_DAY', label: 'HALF DAY' },
+  { value: 'QUARTER_DAY', label: 'QUARTER DAY' }
+];
   constructor(
     private loader: LoaderService,
     private FormSv: FormsService,
@@ -45,6 +61,50 @@ export class LeaveApplication {
     this.GetEmployees();
     this.GetLeaveType();
   }
+
+
+
+  toggleDropdown(dropdown: string, event: Event) {
+  event.stopPropagation();
+  // Close all others first (optional, but keeps UI clean)
+  this.isLeaveTypeDropdownOpen = false;
+  this.isEmployeeDropdownOpen = false;
+  this.isLeaveModeDropdownOpen = false;
+
+  // Then open the requested one
+  if (dropdown === 'leaveType') this.isLeaveTypeDropdownOpen = true;
+  else if (dropdown === 'employee') this.isEmployeeDropdownOpen = true;
+  else if (dropdown === 'leaveMode') this.isLeaveModeDropdownOpen = true;
+}
+
+selectLeaveType(leave: any, event: Event) {
+  event.stopPropagation();
+  this.leaveTypePublicId = leave.publicId;
+  this.selectedLeaveTypeName = leave.name;
+  this.isLeaveTypeDropdownOpen = false;
+}
+
+selectEmployee(emp: any, event: Event) {
+  event.stopPropagation();
+  this.employeePublicId = emp.publicId;
+  this.selectedEmployeeName = emp.fullName;
+  this.isEmployeeDropdownOpen = false;
+}
+
+selectLeaveMode(mode: any, event: Event) {
+  event.stopPropagation();
+  this.leaveMode = mode.value;
+  this.selectedLeaveModeDisplay = mode.label;
+  this.isLeaveModeDropdownOpen = false;
+}
+
+// Close all dropdowns when clicking outside
+@HostListener('document:click', ['$event'])
+closeAllDropdowns(event: Event) {
+  this.isLeaveTypeDropdownOpen = false;
+  this.isEmployeeDropdownOpen = false;
+  this.isLeaveModeDropdownOpen = false;
+}
   GetEmployees() {
     this.FormSv.GetEmployees(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
@@ -112,40 +172,56 @@ export class LeaveApplication {
       },
     });
   }
-  resetLeaveApplicationForm() {
-    this.name = '';
-    this.leaveTypePublicId = '';
-    this.employeePublicId = '';
-    this.leaveMode = 'FULL_DAY';
-    this.fromDate = '';
-    this.toDate = '';
-    this.remarks = '';
-    this.disabled = false;
-  }
+resetLeaveApplicationForm() {
+  this.name = '';
+  this.leaveTypePublicId = '';
+  this.employeePublicId = '';
+  this.leaveMode = 'FULL_DAY';
+  this.fromDate = '';
+  this.toDate = '';
+  this.remarks = '';
+  this.disabled = false;
+  this.selectedLeaveTypeName = '';
+  this.selectedEmployeeName = '';
+  this.selectedLeaveModeDisplay = 'FULL_DAY';
+}
   cancel() {
     this.router.navigate(['/panel/forms/view-leave-application']);
   }
   loadSingleLeaveApplication(publicId: string) {
-    this.loader.show();
-    this.FormSv.getLeaveApplicationById(publicId!).subscribe({
-      next: (res: any) => {
-        console.log('API response:', res.data);
-        this.loader.hide();
-        const d = res.data;
-        this.name = d.name;
-        this.leaveTypePublicId = d.leaveTypePublicId;
-        this.employeePublicId = d.employeePublicId;
-        this.leaveMode = d.leaveMode;
-        this.fromDate = d.fromDate;
-        this.toDate = d.toDate;
-        this.remarks = d.remarks;
-      },
-      error: () => {
-        this.loader.hide();
-        this.toastr.error('Failed to load leave-application');
-      },
-    });
-  }
+  this.loader.show();
+  this.FormSv.getLeaveApplicationById(publicId).subscribe({
+    next: (res: any) => {
+      this.loader.hide();
+      const d = res.data;
+      this.name = d.name;
+      this.leaveTypePublicId = d.leaveTypePublicId;
+      this.employeePublicId = d.employeePublicId;
+      this.leaveMode = d.leaveMode;
+      this.fromDate = d.fromDate;
+      this.toDate = d.toDate;
+      this.remarks = d.remarks;
+
+      // Set display names from the already loaded lists
+      const selectedLeaveType = this.LeaveTypeList?.find(
+        (lt: any) => lt.publicId === d.leaveTypePublicId
+      );
+      this.selectedLeaveTypeName = selectedLeaveType ? selectedLeaveType.name : '';
+
+      const selectedEmployee = this.EmployeeList?.find(
+        (emp: any) => emp.publicId === d.employeePublicId
+      );
+      this.selectedEmployeeName = selectedEmployee ? selectedEmployee.fullName : '';
+
+      const mode = this.leaveModes.find(m => m.value === d.leaveMode);
+      this.selectedLeaveModeDisplay = mode ? mode.label : d.leaveMode;
+    },
+    error: () => {
+      this.loader.hide();
+      this.toastr.error('Failed to load leave-application');
+    }
+  });
+}
   updateLeaveApplication() {
     const payload = {
       name: this.name,
