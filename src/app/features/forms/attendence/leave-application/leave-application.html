@@ -17,49 +17,59 @@
         </div>
       </div> -->
       <!-- ROW 1 -->
-      <div class="row">
-        <div class="col-md-6">
-          <label class="form-label">Name</label>
-          <input
-            type="text"
-            placeholder="Enter Name..."
-            [(ngModel)]="name"
-            class="form-control"
-            name="name"
-          />
-        </div>
-        <div class="col-md-6">
-          <label class="form-label">Leave Type</label>
-          <select
-            type="text"
-            class="form-select"
-            [(ngModel)]="leaveTypePublicId"
-            name="leaveTypePublicId"
-          >
-            <option *ngFor="let leave of LeaveTypeList" [value]="leave.publicId">
-              {{ leave.name }}
-            </option>
-          </select>
+    <!-- ROW 1 -->
+<div class="row">
+  <div class="col-md-4">
+    <label class="form-label">Name</label>
+    <input
+      type="text"
+      placeholder="Enter Name..."
+      [(ngModel)]="name"
+      class="form-control"
+      name="name"
+    />
+  </div>
+
+  <div class="col-md-4">
+    <label class="form-label">Leave Type</label>
+    <div class="custom-dropdown" (click)="toggleDropdown('leaveType', $event)">
+      <div class="dropdown-selected">
+        <span>{{ selectedLeaveTypeName || 'Select leave type' }}</span>
+        <i class="fa-solid fa-caret-down" [class.rotate]="isLeaveTypeDropdownOpen"></i>
+      </div>
+
+      <div class="dropdown-options" *ngIf="isLeaveTypeDropdownOpen">
+        <div
+          class="dropdown-option"
+          *ngFor="let leave of LeaveTypeList"
+          (click)="selectLeaveType(leave, $event)"
+        >
+          {{ leave.name }}
         </div>
       </div>
-      <div class="row">
-        <div class="col-md-6">
-          <label class="form-label">Employee </label>
-          <select class="form-select" [(ngModel)]="employeePublicId" name="employeePublicId">
-            <option *ngFor="let emp of EmployeeList" [value]="emp.publicId">
-              {{ emp.fullName }}
-            </option>
-          </select>
-        </div>
-        <div class="col-md-6">
-          <label class="form-label">Leave Mode </label>
-          <select class="form-select" [(ngModel)]="leaveMode" name="leaveMode">
-            <option value="FULL_DAY">FULL_DAY</option>
-            <option value="HALF_DAY">HALF_DAY</option>
-            <option value="QUARTER_DAY">QUARTER_DAY</option>
-          </select>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <label class="form-label">Employee</label>
+    <div class="custom-dropdown" (click)="toggleDropdown('employee', $event)">
+      <div class="dropdown-selected">
+        <span>{{ selectedEmployeeName || 'Select employee' }}</span>
+        <i class="fa-solid fa-caret-down" [class.rotate]="isEmployeeDropdownOpen"></i>
+      </div>
+
+      <div class="dropdown-options" *ngIf="isEmployeeDropdownOpen">
+        <div
+          class="dropdown-option"
+          *ngFor="let emp of EmployeeList"
+          (click)="selectEmployee(emp, $event)"
+        >
+          {{ emp.fullName }}
         </div>
       </div>
+    </div>
+  </div>
+</div>
       <div class="row">
         <div class="col-md-6">
           <label class="form-label">Start Date </label>
