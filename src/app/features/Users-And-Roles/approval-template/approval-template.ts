@@ -82,26 +82,20 @@ export class ApprovalTemplate {
     );
   }
 
-  // ── Stage Definitions ─────────────────────────────────────────────
-
   GetStageDefinitions() {
     this.UserSv.getApprovaLStages(this.currentpage, this.Pagesize).subscribe(
       (res: any) => {
         if (res.success) {
           this.stageDefinitionList = res.data;
+          console.log('All Stages Get Successfully', res);
         }
       },
       (err: any) => console.log(err),
     );
   }
-
-  /** Returns the full stage definition object for a given publicId */
   getStageDefinitionById(publicId: string): any {
     return this.stageDefinitionList.find((s) => s.publicId === publicId) ?? null;
   }
-
-  // ── Load for Edit ─────────────────────────────────────────────────
-
   loadApprovalTemplate(publicId: string) {
     this.loader.show();
     this.UserSv.GetApprovalTempByPublicId(publicId).subscribe(
@@ -127,9 +121,6 @@ export class ApprovalTemplate {
       },
     );
   }
-
-  // ── Originator Operations ─────────────────────────────────────────
-
   onOriginatorSelect(event: Event): void {
     const select = event.target as HTMLSelectElement;
     const publicId = select.value;
@@ -224,6 +215,9 @@ export class ApprovalTemplate {
           if (res.success) {
             this.toastr.success('Approval Template Created Successfully');
             this.resetForm();
+            setTimeout(() => {
+              this.router.navigate(['/panel/users-and-roles/view-template-approval']);
+            }, 1500);
           }
         },
         (err: any) => {
@@ -257,7 +251,9 @@ export class ApprovalTemplate {
     this.activeTab = 'form';
     this.innerTab = 'originators';
   }
-
+  cancel() {
+    this.router.navigate(['/panel/users-and-roles/view-template-approval']);
+  }
   trackByIndex(index: number): number {
     return index;
   }

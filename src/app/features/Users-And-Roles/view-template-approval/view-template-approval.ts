@@ -3,7 +3,6 @@ import { LoaderService } from '../../../core/services/management-services/loader
 import { ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { FormsService } from '../../forms/Services/forms';
 import { RouterModule } from '@angular/router';
 import { UsersAndRolesService } from '../Services/user-roles';
 
@@ -19,6 +18,7 @@ export class ViewTemplateApproval {
   paginatedList: any[] = [];
 
   searchTerm: string = '';
+  statusFilter: string = 'ALL';
   currentPage = 0;
   itemsPerPage = 7;
   pageSize: number = 100;
@@ -52,14 +52,20 @@ export class ViewTemplateApproval {
 
   applyFilter() {
     const term = this.searchTerm.toLowerCase().trim();
-    this.filteredList = !term
-      ? [...this.fullList]
-      : this.fullList.filter(
-          (t) =>
-            t.code?.toLowerCase().includes(term) ||
-            t.name?.toLowerCase().includes(term) ||
-            t.entityName?.toLowerCase().includes(term),
-        );
+
+    this.filteredList = this.fullList.filter((t) => {
+      const matchesSearch =
+        !term ||
+        t.code?.toLowerCase().includes(term) ||
+        t.name?.toLowerCase().includes(term) ||
+        t.entityName?.toLowerCase().includes(term);
+
+      const matchesStatus =
+        this.statusFilter === 'ALL' || t.status?.toUpperCase() === this.statusFilter;
+
+      return matchesSearch && matchesStatus;
+    });
+
     this.totalItems = this.filteredList.length;
     this.totalPagesCount = Math.ceil(this.totalItems / this.itemsPerPage);
     this.currentPage = 1;
@@ -72,6 +78,10 @@ export class ViewTemplateApproval {
   }
 
   onSearch() {
+    this.applyFilter();
+  }
+
+  onStatusChange() {
     this.applyFilter();
   }
 

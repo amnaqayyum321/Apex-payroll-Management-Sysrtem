@@ -6,6 +6,18 @@
       <span>View All Approval Templates</span>
     </div>
     <div class="d-flex align-items-end gap-2">
+      <!-- Status Filter Dropdown -->
+      <div class="status-filter-wrapper">
+        <div class="search-note">*Filter by Status</div>
+        <select class="status-filter-select" [(ngModel)]="statusFilter" (change)="onStatusChange()">
+          <option value="ALL">All Statuses</option>
+          <option value="ACTIVE">Active</option>
+          <option value="INACTIVE">Inactive</option>
+          <option value="DRAFT">Draft</option>
+        </select>
+      </div>
+
+      <!-- Search Box -->
       <div class="search-wrapper">
         <div class="search-note">*Search by Name, Code or Entity</div>
         <div class="search-box">
@@ -18,6 +30,7 @@
           <i class="fa fa-search"></i>
         </div>
       </div>
+
       <button class="create-btn" [routerLink]="['/panel/users-and-roles/approval-template']">
         <i class="fa-solid fa-plus icon"></i>
         Create

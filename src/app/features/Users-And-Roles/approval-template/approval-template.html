@@ -276,20 +276,14 @@
           </div>
         </div>
       </div>
-      <!-- end section-card inner tabs -->
-
       <!-- Form Actions -->
       <div class="form-actions">
-        <button class="cancel-btn" (click)="resetForm()">
-          <i class="fa fa-rotate-left"></i> Reset
-        </button>
+        <button class="cancel-btn" (click)="cancel()"><i class="fa fa-cancel"></i> Cancel</button>
         <button class="submit-btn" (click)="handleSubmit()">
           {{ isEditMode ? 'Update Approval Template' : 'Create Approval Template' }}
         </button>
       </div>
     </div>
-
-    <!-- ══ PREVIEW TAB ═════════════════════════════════════════════ -->
     <div class="preview-tab" *ngIf="activeTab === 'preview'">
       <div class="preview-info">
         <span class="section-icon">&#123;&#125;</span>

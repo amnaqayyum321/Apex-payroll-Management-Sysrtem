@@ -45,9 +45,9 @@ export class UsersAndRolesService {
     return this.http.put(this.url + `admin/approval-templates/${publicId}`, data);
   }
   CreateApprovalStages(data: any): Observable<any> {
-    return this.http.post(this.url + 'admin//approval-stages', data);
+    return this.http.post(this.url + 'admin/approval-stages', data);
   }
   getApprovaLStages(page: number, size: number): Observable<any> {
-    return this.http.get(this.url + `admin//approval-stages?page=${page}&size=${size}`);
+    return this.http.get(this.url + `admin/approval-stages?page=${page}&size=${size}`);
   }
 }
