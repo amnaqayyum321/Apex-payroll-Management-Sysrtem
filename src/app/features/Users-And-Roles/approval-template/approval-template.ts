@@ -1,28 +1,10 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { FormsService } from '../../forms/Services/forms';
 import { UsersAndRolesService } from '../Services/user-roles';
-import { Toast, ToastrService } from 'ngx-toastr';
+import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../../../core/services/management-services/loader.service';
 import { ActivatedRoute, Router } from '@angular/router';
-
-interface Approver {
-  id: string;
-  userPublicId: string;
-  roleCode: string;
-  sequence: number;
-}
-
-interface Stage {
-  id: string;
-  stageCode: string;
-  stageName: string;
-  stageOrder: number;
-  minApprovals: number;
-  approvers: Approver[];
-  collapsed: boolean;
-}
 
 interface TemplateForm {
   code: string;
@@ -31,6 +13,8 @@ interface TemplateForm {
   description: string;
   conditionJson: string;
   remarks: string;
+  originatorUserPublicIds: string[];
+  stageDefinitionPublicIds: string[];
 }
 
 @Component({
@@ -41,12 +25,18 @@ interface TemplateForm {
 })
 export class ApprovalTemplate {
   activeTab: 'form' | 'preview' = 'form';
+  /** Inner tab inside the form for Originators vs Stages */
+  innerTab: 'originators' | 'stages' = 'originators';
+
   submitted = false;
   jsonCopied = false;
   currentpage: number = 0;
   Pagesize: number = 100;
   publicId: string | null = null;
   isEditMode = false;
+
+  entityNameOptions: string[] = ['LEAVE_APPLICATION'];
+
   constructor(
     private UserSv: UsersAndRolesService,
     private toastr: ToastrService,
@@ -54,6 +44,7 @@ export class ApprovalTemplate {
     private route: ActivatedRoute,
     private router: Router,
   ) {}
+
   ngOnInit() {
     this.publicId = this.route.snapshot.paramMap.get('id');
     if (this.publicId) {
@@ -61,7 +52,9 @@ export class ApprovalTemplate {
       this.loadApprovalTemplate(this.publicId);
     }
     this.GetUsers();
+    this.GetStageDefinitions();
   }
+
   form: TemplateForm = {
     code: '',
     name: '',
@@ -69,50 +62,62 @@ export class ApprovalTemplate {
     description: '',
     conditionJson: '',
     remarks: '',
+    originatorUserPublicIds: [],
+    stageDefinitionPublicIds: [],
   };
-  userList: any;
-  stages: Stage[] = [];
+
+  userList: any[] = [];
+  stageDefinitionList: any[] = []; // fetched from API
+
+  // ── Users ─────────────────────────────────────────────────────────
 
   GetUsers() {
     this.UserSv.getAllUser(this.currentpage, this.Pagesize).subscribe(
       (res: any) => {
         if (res.success) {
           this.userList = res.data;
-          console.log('All User Get Successfully', res);
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => console.log(err),
     );
   }
+
+  // ── Stage Definitions ─────────────────────────────────────────────
+
+  GetStageDefinitions() {
+    this.UserSv.getApprovaLStages(this.currentpage, this.Pagesize).subscribe(
+      (res: any) => {
+        if (res.success) {
+          this.stageDefinitionList = res.data;
+        }
+      },
+      (err: any) => console.log(err),
+    );
+  }
+
+  /** Returns the full stage definition object for a given publicId */
+  getStageDefinitionById(publicId: string): any {
+    return this.stageDefinitionList.find((s) => s.publicId === publicId) ?? null;
+  }
+
+  // ── Load for Edit ─────────────────────────────────────────────────
+
   loadApprovalTemplate(publicId: string) {
     this.loader.show();
     this.UserSv.GetApprovalTempByPublicId(publicId).subscribe(
       (res: any) => {
         if (res.success) {
-          this.loader.hide();
           const result = res.data;
           this.form.code = result.code;
           this.form.name = result.name;
           this.form.entityName = result.entityName;
           this.form.description = result.description;
-          this.form.conditionJson = result.conditionJson;
-          this.form.remarks = result.remarks;
-          this.stages = (result.stages || []).map((s: any) => ({
-            id: this.genId(),
-            stageCode: s.stageCode,
-            stageName: s.stageName,
-            stageOrder: s.stageOrder,
-            minApprovals: s.minApprovals,
-            collapsed: false,
-            approvers: (s.approvers || []).map((ap: any) => ({
-              id: this.genId(),
-              userPublicId: ap.userPublicId,
-              roleCode: ap.roleCode,
-              sequence: ap.sequence,
-            })),
-          }));
+          this.form.conditionJson = result.conditionJson ?? '';
+          this.form.remarks = result.remarks ?? '';
+          this.form.originatorUserPublicIds = (result.originators || []).map(
+            (o: any) => o.userPublicId,
+          );
+          this.form.stageDefinitionPublicIds = result.stageDefinitionPublicIds ?? [];
         }
         this.loader.hide();
       },
@@ -122,54 +127,45 @@ export class ApprovalTemplate {
       },
     );
   }
-  addStage(): void {
-    const stage: Stage = {
-      id: this.genId(),
-      stageCode: '',
-      stageName: '',
-      stageOrder: this.stages.length + 1,
-      minApprovals: 1,
-      approvers: [],
-      collapsed: false,
-    };
-    this.stages.push(stage);
+
+  // ── Originator Operations ─────────────────────────────────────────
+
+  onOriginatorSelect(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    const publicId = select.value;
+    if (publicId && !this.form.originatorUserPublicIds.includes(publicId)) {
+      this.form.originatorUserPublicIds.push(publicId);
+    }
+    select.value = '';
   }
 
-  removeStage(id: string): void {
-    this.stages = this.stages.filter((s) => s.id !== id);
-    this.reorderStages();
+  removeOriginator(index: number): void {
+    this.form.originatorUserPublicIds.splice(index, 1);
   }
 
-  toggleCollapse(stage: Stage): void {
-    stage.collapsed = !stage.collapsed;
+  // ── Stage Definition Operations ───────────────────────────────────
+
+  onStageDefinitionSelect(event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    const publicId = select.value;
+    if (publicId && !this.form.stageDefinitionPublicIds.includes(publicId)) {
+      this.form.stageDefinitionPublicIds.push(publicId);
+    }
+    select.value = '';
   }
 
-  moveStage(id: string, dir: -1 | 1): void {
-    const idx = this.stages.findIndex((s) => s.id === id);
-    const next = idx + dir;
-    if (next < 0 || next >= this.stages.length) return;
-    [this.stages[idx], this.stages[next]] = [this.stages[next], this.stages[idx]];
-    this.reorderStages();
+  removeStageDefinition(index: number): void {
+    this.form.stageDefinitionPublicIds.splice(index, 1);
   }
 
-  private reorderStages(): void {
-    this.stages.forEach((s, i) => (s.stageOrder = i + 1));
+  moveStageDefinition(index: number, dir: -1 | 1): void {
+    const next = index + dir;
+    if (next < 0 || next >= this.form.stageDefinitionPublicIds.length) return;
+    const ids = this.form.stageDefinitionPublicIds;
+    [ids[index], ids[next]] = [ids[next], ids[index]];
   }
 
-  // ── Approver Operations ────────────────────────────────────────────
-
-  addApprover(stage: Stage): void {
-    stage.approvers.push({
-      id: this.genId(),
-      userPublicId: '',
-      roleCode: '',
-      sequence: stage.approvers.length + 1,
-    });
-  }
-
-  removeApprover(stage: Stage, apId: string): void {
-    stage.approvers = stage.approvers.filter((a) => a.id !== apId);
-  }
+  // ── Payload ───────────────────────────────────────────────────────
 
   buildPayload() {
     return {
@@ -177,19 +173,10 @@ export class ApprovalTemplate {
       name: this.form.name,
       entityName: this.form.entityName,
       description: this.form.description,
-      conditionJson: this.form.conditionJson,
+      conditionJson: this.form.conditionJson || null,
       remarks: this.form.remarks,
-      stages: this.stages.map((s) => ({
-        stageCode: s.stageCode,
-        stageName: s.stageName,
-        stageOrder: s.stageOrder,
-        minApprovals: s.minApprovals,
-        approvers: s.approvers.map((ap) => ({
-          userPublicId: ap.userPublicId,
-          roleCode: ap.roleCode,
-          sequence: ap.sequence,
-        })),
-      })),
+      stageDefinitionPublicIds: this.form.stageDefinitionPublicIds,
+      originatorUserPublicIds: this.form.originatorUserPublicIds.filter((id) => id.trim() !== ''),
     };
   }
 
@@ -197,52 +184,45 @@ export class ApprovalTemplate {
     return JSON.stringify(this.buildPayload(), null, 2);
   }
 
+  // ── Validation & Submit ───────────────────────────────────────────
+
   handleSubmit(): void {
     if (!this.form.code || !this.form.name || !this.form.entityName) {
-      this.toastr.warning('Please fill all required fields');
+      this.toastr.warning('Please fill all required fields (Code, Name, Entity Name)');
       return;
     }
 
-    if (this.stages.length === 0) {
-      this.toastr.warning('Please add at least one stage');
+    if (this.form.stageDefinitionPublicIds.length === 0) {
+      this.toastr.warning('Please add at least one approval stage');
       return;
     }
 
-    for (const stage of this.stages) {
-      if (!stage.stageCode || !stage.stageName) {
-        this.toastr.warning(`Stage ${stage.stageOrder}: Code and Name required`);
-        return;
-      }
-      if (stage.approvers.length === 0) {
-        this.toastr.warning(`Stage ${stage.stageOrder}: Add at least one approver`);
-        return;
-      }
-      for (const ap of stage.approvers) {
-        if (!ap.userPublicId) {
-          this.toastr.warning(`Stage ${stage.stageOrder}: Select user for all approvers`);
-          return;
-        }
-      }
-    }
     const payload = this.buildPayload();
-    console.log('Payload', payload);
     this.loader.show();
+
     if (this.isEditMode) {
-      this.UserSv.UpdateApprovalTempByPublicId(this.publicId!, payload).subscribe((res: any) => {
-        if (res.success) {
+      this.UserSv.UpdateApprovalTempByPublicId(this.publicId!, payload).subscribe(
+        (res: any) => {
           this.loader.hide();
-          this.toastr.success('Template updated successfully');
-          setTimeout(() => {
-            this.router.navigate(['/panel/users-and-roles/view-template-approval']);
-          }, 1500);
-        }
-      });
+          if (res.success) {
+            this.toastr.success('Template updated successfully');
+            setTimeout(() => {
+              this.router.navigate(['/panel/users-and-roles/view-template-approval']);
+            }, 1500);
+          }
+        },
+        (err: any) => {
+          this.loader.hide();
+          this.toastr.error('Error updating approval template');
+          console.log(err);
+        },
+      );
     } else {
       this.UserSv.CreateApprovalTemplate(payload).subscribe(
         (res: any) => {
+          this.loader.hide();
           if (res.success) {
-            this.loader.hide();
-            this.toastr.success('Approval Template Craeted Successfully');
+            this.toastr.success('Approval Template Created Successfully');
             this.resetForm();
           }
         },
@@ -261,12 +241,7 @@ export class ApprovalTemplate {
       setTimeout(() => (this.jsonCopied = false), 2000);
     });
   }
-  onUserSelect(ap: Approver): void {
-    const selectedUser = this.userList?.find((users: any) => users.publicId === ap.userPublicId);
-    if (selectedUser) {
-      ap.roleCode = selectedUser.roleCode ?? '';
-    }
-  }
+
   resetForm(): void {
     this.form = {
       code: '',
@@ -275,17 +250,15 @@ export class ApprovalTemplate {
       description: '',
       conditionJson: '',
       remarks: '',
+      originatorUserPublicIds: [],
+      stageDefinitionPublicIds: [],
     };
-    this.stages = [];
     this.submitted = false;
     this.activeTab = 'form';
+    this.innerTab = 'originators';
   }
 
-  private genId(): string {
-    return Math.random().toString(36).substr(2, 9);
-  }
-
-  trackById(_: number, item: { id: string }): string {
-    return item.id;
+  trackByIndex(index: number): number {
+    return index;
   }
 }

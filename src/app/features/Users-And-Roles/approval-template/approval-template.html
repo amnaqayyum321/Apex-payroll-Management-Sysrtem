@@ -9,7 +9,6 @@
           <span class="header-sub">Workflow Configuration</span>
         </div>
       </div>
-
       <div class="tab-group">
         <button class="tab-btn" [class.active]="activeTab === 'form'" (click)="activeTab = 'form'">
           Builder
@@ -27,10 +26,9 @@
 
     <!-- ══ FORM TAB ════════════════════════════════════════════════ -->
     <div class="user-form" *ngIf="activeTab === 'form'">
-      <!-- Template Info -->
+      <!-- ── Template Information ─────────────────────────────── -->
       <div class="section-card">
         <div class="section-title">
-          <!-- <span class="section-icon">📋</span> -->
           <div>
             <div class="section-name">Template Information</div>
             <div class="section-sub">Define the basic details of this approval template</div>
@@ -39,17 +37,27 @@
 
         <div class="form-grid">
           <div class="form-group">
-            <label>Code</label>
-            <input type="text" [(ngModel)]="form.code" placeholder="e.g. LEAVE_APPLICATION" />
+            <label>Code <span class="required">*</span></label>
+            <input type="text" [(ngModel)]="form.code" placeholder="e.g. LEAVE-ENG" />
           </div>
+
           <div class="form-group">
-            <label>Name</label>
-            <input type="text" [(ngModel)]="form.name" placeholder="e.g. Leave Approval Template" />
+            <label>Name <span class="required">*</span></label>
+            <input
+              type="text"
+              [(ngModel)]="form.name"
+              placeholder="e.g. Leave Approval - Engineering"
+            />
           </div>
+
           <div class="form-group">
-            <label>Entity Name</label>
-            <input type="text" [(ngModel)]="form.entityName" placeholder="e.g. LeaveApplication" />
+            <label>Entity Name <span class="required">*</span></label>
+            <select [(ngModel)]="form.entityName">
+              <option value="">— Select Entity —</option>
+              <option *ngFor="let e of entityNameOptions" [value]="e">{{ e }}</option>
+            </select>
           </div>
+
           <div class="form-group">
             <label>Condition JSON</label>
             <input
@@ -59,6 +67,7 @@
               class="mono-input"
             />
           </div>
+
           <div class="form-group full-span">
             <label>Description</label>
             <textarea
@@ -67,170 +76,207 @@
               placeholder="Describe what this template is used for..."
             ></textarea>
           </div>
+
           <div class="form-group full-span">
             <label>Remarks</label>
             <textarea
               [(ngModel)]="form.remarks"
               rows="2"
-              placeholder="Any additional notes..."
+              placeholder="Any additional internal notes..."
             ></textarea>
           </div>
         </div>
       </div>
 
-      <!-- Stages -->
+      <!-- ── Inner Tabs: Originators & Stages ────────────────── -->
       <div class="section-card">
-        <div class="section-title">
-          <!-- <span class="section-icon">🔀</span> -->
-          <div>
-            <div class="section-name">Approval Stages</div>
-            <div class="section-sub">
-              {{ stages.length }} stage{{ stages.length !== 1 ? 's' : '' }} defined
-            </div>
+        <!-- Inner Tab Header -->
+        <div class="inner-tab-header">
+          <button
+            class="inner-tab-btn"
+            [class.active]="innerTab === 'originators'"
+            (click)="innerTab = 'originators'"
+          >
+            Originators
+            <span class="inner-tab-count">{{ form.originatorUserPublicIds.length }}</span>
+          </button>
+          <button
+            class="inner-tab-btn"
+            [class.active]="innerTab === 'stages'"
+            (click)="innerTab = 'stages'"
+          >
+            Approval Stages
+            <span class="inner-tab-count">{{ form.stageDefinitionPublicIds.length }}</span>
+          </button>
+        </div>
+
+        <!-- ─── ORIGINATORS TAB ─────────────────────────────── -->
+        <div *ngIf="innerTab === 'originators'">
+          <div class="section-sub" style="margin-bottom: 12px">
+            Users whose documents will be routed through this template.
+            <span class="hint-text"
+              >Leave empty to make this a <strong>catch-all</strong> template.</span
+            >
           </div>
-        </div>
 
-        <!-- Flow Diagram -->
-        <!-- <div class="flow-diagram" *ngIf="stages.length > 0">
-          <div class="flow-node flow-start">START</div>
-          <ng-container *ngFor="let st of stages; trackBy: trackById">
-            <div class="flow-arrow">→</div>
-            <div class="flow-node flow-stage">
-              <div class="flow-label">Stage {{ st.stageOrder }}</div>
-              <div class="flow-name">{{ st.stageName || 'Unnamed' }}</div>
-            </div>
-          </ng-container>
-          <div class="flow-arrow">→</div>
-          <div class="flow-node flow-end">END</div>
-        </div> -->
-
-        <!-- Empty State -->
-        <div class="empty-stages" *ngIf="stages.length === 0">
-          <div class="empty-icon">🧩</div>
-          <div class="empty-title">No stages yet</div>
-          <div class="empty-sub">Add a stage to define the approval flow</div>
-        </div>
-
-        <!-- Stage Cards -->
-        <div class="stage-list">
-          <div class="stage-card" *ngFor="let stage of stages; let i = index; trackBy: trackById">
-            <!-- Stage Header -->
-            <div class="stage-header" (click)="toggleCollapse(stage)">
-              <div class="stage-badge">{{ stage.stageOrder }}</div>
-              <div class="stage-meta">
-                <div class="stage-meta-name">{{ stage.stageName || 'Untitled Stage' }}</div>
-                <div class="stage-meta-sub">
-                  {{ stage.approvers.length }} approver{{
-                    stage.approvers.length !== 1 ? 's' : ''
-                  }}
-                  · Min {{ stage.minApprovals }} approval{{ stage.minApprovals !== 1 ? 's' : '' }}
-                </div>
-              </div>
-              <div class="stage-actions" (click)="$event.stopPropagation()">
-                <button
-                  class="icon-btn move-btn"
-                  [disabled]="i === 0"
-                  (click)="moveStage(stage.id, -1)"
-                >
-                  ↑
-                </button>
-                <button
-                  class="icon-btn move-btn"
-                  [disabled]="i === stages.length - 1"
-                  (click)="moveStage(stage.id, 1)"
-                >
-                  ↓
-                </button>
-                <button class="icon-btn delete-btn" (click)="removeStage(stage.id)">✕</button>
-                <!-- <span class="collapse-icon">{{ stage.collapsed ? '▸' : '▾' }}</span> -->
-              </div>
-            </div>
-
-            <!-- Stage Body -->
-            <div class="stage-body" *ngIf="!stage.collapsed">
-              <div class="stage-fields">
-                <div class="form-group">
-                  <label>Stage Code</label>
-                  <input type="text" [(ngModel)]="stage.stageCode" placeholder="e.g. STAGE_1" />
-                </div>
-                <div class="form-group">
-                  <label>Stage Name</label>
-                  <input
-                    type="text"
-                    [(ngModel)]="stage.stageName"
-                    placeholder="e.g. Department Head Review"
-                  />
-                </div>
-                <div class="form-group min-approvals-group">
-                  <label>Min Approvals</label>
-                  <input
-                    type="number"
-                    [(ngModel)]="stage.minApprovals"
-                    min="1"
-                    [max]="stage.approvers.length || 1"
-                  />
-                </div>
-              </div>
-
-              <!-- Approvers -->
-              <div class="approvers-section">
-                <div class="approvers-label">APPROVERS</div>
-
-                <div class="empty-approvers" *ngIf="stage.approvers.length === 0">
-                  No approvers added. Click below to add one.
-                </div>
-
-                <div
-                  class="approver-row"
-                  *ngFor="let ap of stage.approvers; let ai = index; trackBy: trackById"
-                >
-                  <div class="approver-num">{{ ai + 1 }}</div>
-
-                  <div class="form-group">
-                    <label>User</label>
-                    <div class="custom-dropdown" style="position: relative">
-                      <select [(ngModel)]="ap.userPublicId" (ngModelChange)="onUserSelect(ap)">
-                        <option value="">— Select User —</option>
-                        <option *ngFor="let user of userList" [value]="user.publicId">
-                          {{ user.firstName }} ({{ user.roleCode }})
-                        </option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="form-group">
-                    <label>Role Code</label>
-                    <input
-                      type="text"
-                      [value]="ap.roleCode"
-                      readonly
-                      placeholder="Auto-filled from user"
-                      class="readonly-input"
-                    />
-                  </div>
-
-                  <div class="form-group seq-group">
-                    <label>Seq</label>
-                    <input type="number" [(ngModel)]="ap.sequence" min="1" />
-                  </div>
-
-                  <button
-                    class="icon-btn delete-btn ap-delete"
-                    (click)="removeApprover(stage, ap.id)"
+          <!-- Dropdown Row to add originator -->
+          <div class="originator-add-row">
+            <div class="form-group" style="flex: 1; margin-bottom: 0">
+              <select (change)="onOriginatorSelect($event)">
+                <option value="">— Select Originator to Add —</option>
+                <ng-container *ngFor="let user of userList">
+                  <option
+                    *ngIf="!form.originatorUserPublicIds.includes(user.publicId)"
+                    [value]="user.publicId"
                   >
-                    ✕
-                  </button>
-                </div>
-              </div>
-
-              <button class="add-approver-btn" (click)="addApprover(stage)">+ Add Approver</button>
+                    {{ user.firstName }} {{ user.lastName }} ({{ user.roleCode }})
+                  </option>
+                </ng-container>
+              </select>
             </div>
+          </div>
+
+          <!-- Empty State -->
+          <div class="empty-approvers" *ngIf="form.originatorUserPublicIds.length === 0">
+            No originators added — this template will act as a <strong>catch-all</strong>.
+          </div>
+
+          <!-- Originators Table -->
+          <div class="originator-table-wrapper" *ngIf="form.originatorUserPublicIds.length > 0">
+            <table class="originator-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Role Code</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container
+                  *ngFor="
+                    let uid of form.originatorUserPublicIds;
+                    let oi = index;
+                    trackBy: trackByIndex
+                  "
+                >
+                  <ng-container *ngFor="let user of userList">
+                    <tr *ngIf="user.publicId === uid">
+                      <td class="td-num">{{ oi + 1 }}</td>
+                      <td>{{ user.firstName }}</td>
+                      <td>{{ user.lastName }}</td>
+                      <td>
+                        <span class="role-badge">{{ user.roleCode }}</span>
+                      </td>
+                      <td>
+                        <button class="icon-btn delete-btn" (click)="removeOriginator(oi)">
+                          ✕
+                        </button>
+                      </td>
+                    </tr>
+                  </ng-container>
+                </ng-container>
+              </tbody>
+            </table>
           </div>
         </div>
 
-        <!-- Add Stage Button -->
-        <button class="add-stage-btn" (click)="addStage()">+ Add Approval Stage</button>
+        <!-- ─── STAGES TAB ──────────────────────────────────── -->
+        <div *ngIf="innerTab === 'stages'">
+          <div class="section-sub" style="margin-bottom: 12px">
+            Select stage definitions that will form the approval flow for this template.
+          </div>
+
+          <!-- Dropdown Row to add stage definition -->
+          <div class="originator-add-row">
+            <div class="form-group" style="flex: 1; margin-bottom: 0">
+              <select (change)="onStageDefinitionSelect($event)">
+                <option value="">— Select Stage to Add —</option>
+                <ng-container *ngFor="let stage of stageDefinitionList">
+                  <option
+                    *ngIf="!form.stageDefinitionPublicIds.includes(stage.publicId)"
+                    [value]="stage.publicId"
+                  >
+                    {{ stage.stageName ?? stage.name }} ({{ stage.stageCode ?? stage.code }})
+                  </option>
+                </ng-container>
+              </select>
+            </div>
+          </div>
+
+          <!-- Empty State -->
+          <div class="empty-approvers" *ngIf="form.stageDefinitionPublicIds.length === 0">
+            No stages added yet. Select a stage definition above to begin.
+          </div>
+
+          <!-- Stages Table -->
+          <div class="originator-table-wrapper" *ngIf="form.stageDefinitionPublicIds.length > 0">
+            <table class="originator-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Stage Code</th>
+                  <th>Stage Name</th>
+                  <th>Order</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="
+                    let sid of form.stageDefinitionPublicIds;
+                    let si = index;
+                    trackBy: trackByIndex
+                  "
+                >
+                  <ng-container *ngIf="getStageDefinitionById(sid) as stage; else unknownStage">
+                    <td class="td-num">{{ si + 1 }}</td>
+                    <td>
+                      <span class="role-badge">{{ stage.stageCode ?? stage.code }}</span>
+                    </td>
+                    <td>{{ stage.stageName ?? stage.name }}</td>
+                    <td>
+                      <button
+                        class="icon-btn move-btn"
+                        [disabled]="si === 0"
+                        (click)="moveStageDefinition(si, -1)"
+                      >
+                        ↑
+                      </button>
+                      <button
+                        class="icon-btn move-btn"
+                        [disabled]="si === form.stageDefinitionPublicIds.length - 1"
+                        (click)="moveStageDefinition(si, 1)"
+                      >
+                        ↓
+                      </button>
+                    </td>
+                    <td>
+                      <button class="icon-btn delete-btn" (click)="removeStageDefinition(si)">
+                        ✕
+                      </button>
+                    </td>
+                  </ng-container>
+                  <ng-template #unknownStage>
+                    <td class="td-num">{{ si + 1 }}</td>
+                    <td colspan="2" style="color: var(--text-muted); font-style: italic">
+                      Unknown stage ({{ sid }})
+                    </td>
+                    <td></td>
+                    <td>
+                      <button class="icon-btn delete-btn" (click)="removeStageDefinition(si)">
+                        ✕
+                      </button>
+                    </td>
+                  </ng-template>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
+      <!-- end section-card inner tabs -->
 
       <!-- Form Actions -->
       <div class="form-actions">
@@ -249,7 +295,7 @@
         <span class="section-icon">&#123;&#125;</span>
         <div>
           <div class="section-name">JSON Payload</div>
-          <div class="section-sub">POST /api/approval-templates</div>
+          <div class="section-sub">POST /api/admin/approval-templates</div>
         </div>
       </div>
 
