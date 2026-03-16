@@ -65,7 +65,7 @@ export class ApprovalTemplate {
     originatorUserPublicIds: [],
     stageDefinitionPublicIds: [],
   };
-
+  templateStages: any[] = [];
   userList: any[] = [];
   stageDefinitionList: any[] = []; // fetched from API
 
@@ -82,19 +82,29 @@ export class ApprovalTemplate {
     );
   }
 
+  // GetStageDefinitions() {
+  //   this.UserSv.getApprovaLStages(this.currentpage, this.Pagesize).subscribe(
+  //     (res: any) => {
+  //       if (res.success) {
+  //         this.stageDefinitionList = res.data;
+  //         console.log('All Stages Get Successfully', res);
+  //       }
+  //     },
+  //     (err: any) => console.log(err),
+  //   );
+  // }
   GetStageDefinitions() {
     this.UserSv.getApprovaLStages(this.currentpage, this.Pagesize).subscribe(
       (res: any) => {
         if (res.success) {
           this.stageDefinitionList = res.data;
-          console.log('All Stages Get Successfully', res);
         }
       },
       (err: any) => console.log(err),
     );
   }
   getStageDefinitionById(publicId: string): any {
-    return this.stageDefinitionList.find((s) => s.publicId === publicId) ?? null;
+    return this.stageDefinitionList.find((d: any) => d.publicId === publicId) ?? null;
   }
   loadApprovalTemplate(publicId: string) {
     this.loader.show();
@@ -102,6 +112,7 @@ export class ApprovalTemplate {
       (res: any) => {
         if (res.success) {
           const result = res.data;
+          console.log('All result', result);
           this.form.code = result.code;
           this.form.name = result.name;
           this.form.entityName = result.entityName;
@@ -111,7 +122,13 @@ export class ApprovalTemplate {
           this.form.originatorUserPublicIds = (result.originators || []).map(
             (o: any) => o.userPublicId,
           );
-          this.form.stageDefinitionPublicIds = result.stageDefinitionPublicIds ?? [];
+          this.form.stageDefinitionPublicIds = (result.stages || [])
+            .sort((a: any, b: any) => a.stageOrder - b.stageOrder)
+            .map((s: any) => {
+              const match = this.stageDefinitionList.find((d: any) => d.code === s.stageCode);
+              return match?.publicId ?? null;
+            })
+            .filter((id: string | null) => id !== null);
         }
         this.loader.hide();
       },

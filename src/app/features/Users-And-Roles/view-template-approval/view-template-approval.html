@@ -31,6 +31,19 @@
         </div>
       </div>
 
+      <!-- Reset Filters Button -->
+      <div class="status-filter-wrapper">
+        <div class="search-note">&nbsp;</div>
+        <button
+          class="reset-filter-btn"
+          (click)="resetFilters()"
+          title="Reset all filters"
+          [disabled]="!hasActiveFilters"
+        >
+          <i class="fa-solid fa-rotate-left"></i>
+        </button>
+      </div>
+
       <button class="create-btn" [routerLink]="['/panel/users-and-roles/approval-template']">
         <i class="fa-solid fa-plus icon"></i>
         Create

@@ -85,6 +85,16 @@ export class ViewTemplateApproval {
     this.applyFilter();
   }
 
+  get hasActiveFilters(): boolean {
+    return this.searchTerm.trim() !== '' || this.statusFilter !== 'ALL';
+  }
+
+  resetFilters() {
+    this.searchTerm = '';
+    this.statusFilter = 'ALL';
+    this.applyFilter();
+  }
+
   onItemsPerPageChange() {
     this.totalPagesCount = Math.ceil(this.totalItems / this.itemsPerPage);
     this.currentPage = 1;
