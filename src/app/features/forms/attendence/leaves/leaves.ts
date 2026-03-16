@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { LoaderService } from '../../../../core/services/management-services/loader.service';
 import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -19,6 +19,10 @@ export class Leaves implements OnInit {
   totalLeavesPerYear: number = 0;
   remarks: string = '';
   active: boolean = false;
+    isEmployeeDropdownOpen = false;
+  isLeaveTypeDropdownOpen = false;
+  selectedEmployeeDisplay = '';
+  selectedLeaveTypeDisplay = '';
 
   employees: any[] = [];
   leaveTypes: any[] = [];
@@ -99,13 +103,52 @@ export class Leaves implements OnInit {
     });
   }
 
-  // 🔹 Reset
-  resetForm() {
+    // Toggle employee dropdown
+  toggleEmployeeDropdown(event: Event): void {
+    event.stopPropagation();
+    this.isEmployeeDropdownOpen = !this.isEmployeeDropdownOpen;
+    // close the other if needed
+    this.isLeaveTypeDropdownOpen = false;
+  }
+
+  // Select employee
+  selectEmployee(emp: any, event: Event): void {
+    event.stopPropagation();
+    this.employeePublicId = emp.publicId;
+    this.selectedEmployeeDisplay = emp.fullName;  // adjust if property name differs
+    this.isEmployeeDropdownOpen = false;
+  }
+
+  // Toggle leave type dropdown
+  toggleLeaveTypeDropdown(event: Event): void {
+    event.stopPropagation();
+    this.isLeaveTypeDropdownOpen = !this.isLeaveTypeDropdownOpen;
+    this.isEmployeeDropdownOpen = false;
+  }
+
+  // Select leave type
+  selectLeaveType(type: any, event: Event): void {
+    event.stopPropagation();
+    this.leaveTypePublicId = type.publicId;
+    this.selectedLeaveTypeDisplay = type.name;
+    this.isLeaveTypeDropdownOpen = false;
+  }
+
+  // Close any open dropdown when clicking outside
+@HostListener('document:click', ['$event'])
+closeDropdowns(event: MouseEvent): void {
+  this.isEmployeeDropdownOpen = false;
+  this.isLeaveTypeDropdownOpen = false;
+}
+  // Reset form and displays
+  resetForm(): void {
     this.employeePublicId = '';
     this.leaveTypePublicId = '';
     this.totalLeavesPerYear = 0;
     this.remarks = '';
     this.active = true;
+    this.selectedEmployeeDisplay = '';
+    this.selectedLeaveTypeDisplay = '';
   }
 
   cancel() {
@@ -113,15 +156,14 @@ export class Leaves implements OnInit {
   }
 
   // 🔹 Load Single (Edit Mode)
-  loadSingleLeave() {
+ 
+  // Update the displayed names when loading existing record
+  loadSingleLeave(): void {
     this.loader.show();
-
     this.formsService.getLeaveEntitlementById(this.publicId!).subscribe({
       next: (res: any) => {
         this.loader.hide();
-
-        const data = res?.data; // ✅ REMOVE [0]
-
+        const data = res?.data;
         if (!data) {
           this.toastr.error('No record found');
           return;
@@ -131,14 +173,22 @@ export class Leaves implements OnInit {
         this.leaveTypePublicId = data.leaveTypePublicId;
         this.totalLeavesPerYear = data.totalLeavesPerYear;
         this.remarks = data.remarks;
-        this.active = data.isActive; // backend field
+        this.active = data.isActive;
+
+        // Set display names from the loaded data by matching IDs
+        const selectedEmp = this.employees.find(e => e.publicId === data.employeePublicId);
+        this.selectedEmployeeDisplay = selectedEmp ? selectedEmp.fullName : '';
+
+        const selectedType = this.leaveTypes.find(t => t.publicId === data.leaveTypePublicId);
+        this.selectedLeaveTypeDisplay = selectedType ? selectedType.name : '';
       },
       error: () => {
         this.loader.hide();
         this.toastr.error('Failed to load data');
-      },
+      }
     });
   }
+
 
   updateLeave() {
     if (!this.employeePublicId || !this.leaveTypePublicId) {

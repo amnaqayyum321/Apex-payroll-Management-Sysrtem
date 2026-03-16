@@ -32,23 +32,25 @@
             <div class="row">
                 <div class="col-md-6">
                     <label class="form-label">Code</label>
-                    <input type="text" class="form-control" [(ngModel)]="code" name="code" />
+                    <input type="text" class="form-control"placeholder="Enter Code here..." [(ngModel)]="code" name="code" />
                 </div>
 
                 <div class="col-md-6">
                     <label class="form-label">Name</label>
-                    <input type="text" class="form-control" [(ngModel)]="name" name="name" />
+                    <input type="text" class="form-control" placeholder="Enter Name here..."[(ngModel)]="name" name="name" />
                 </div>
             </div>
 
             <!-- Description -->
             <div class="row mt-3">
                 <div class="col-md-12">
-                    <label class="form-label">Description</label>
-                    <textarea class="form-control" [(ngModel)]="remarks" name="remarks"></textarea>
+                    <label class="form-label">Remarks</label>
+                    <textarea class="form-control"  placeholder="Enter your remarks here..." [(ngModel)]="remarks" name="remarks"></textarea>
                 </div>
             </div>
-
+   <div class="section-header">
+        <h4>Define Shift</h4>
+      </div>
             <!-- TABLE -->
             <section class="table-main-div">
 

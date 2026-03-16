@@ -4,15 +4,22 @@
     <div class="card-header">
       <h3>
         <h3>{{ isEditMode ? 'Update Employee Category' : 'Create Employee Category' }}</h3>
+        
       </h3>
+       <button class="reset-btn" (click)="resetEmployeeCategoryForm()">
+    <i class="fa fa-refresh"></i> Reset
+  </button>
     </div>
     <div class="header-divider"></div>
 
     <form class="user-form">
       <div class="row">
-        <div class="col-12 d-flex justify-content-end align-items-center gap-2">
-          <label class="form-label mb-0">Active</label>
-          <input name="active" [(ngModel)]="active" type="checkbox" />
+         <div class="col-12 d-flex justify-content-end align-items-center gap-2">
+          <label class="checkbox-container">
+            Active
+            <input type="checkbox" class="custom-checkbox" [(ngModel)]="active" name="active" />
+            <span class="checkmark"></span>
+          </label>
         </div>
       </div>
       <!-- ROW 1 -->
