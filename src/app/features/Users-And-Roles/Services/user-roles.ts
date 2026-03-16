@@ -50,4 +50,21 @@ export class UsersAndRolesService {
   getApprovaLStages(page: number, size: number): Observable<any> {
     return this.http.get(this.url + `admin/approval-stages?page=${page}&size=${size}`);
   }
+
+  // ================= APPROVAL STAGES =================
+getAllApprovalStages(page: number, size: number, filter: string = 'ALL'): Observable<any> {
+  return this.http.get(`${this.url}admin/approval-stages?filter=${filter}&page=${page}&size=${size}`);
+}
+
+getApprovalStageById(publicId: string): Observable<any> {
+  return this.http.get(`${this.url}admin/approval-stages/${publicId}`);
+}
+
+createApprovalStage(data: any): Observable<any> {
+  return this.http.post(`${this.url}admin/approval-stages`, data);
+}
+
+updateApprovalStage(publicId: string, data: any): Observable<any> {
+  return this.http.put(`${this.url}admin/approval-stages/${publicId}`, data);
+}
 }

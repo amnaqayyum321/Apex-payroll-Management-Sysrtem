@@ -6,6 +6,8 @@ import { CreateUser } from './users/create-user/create-user';
 import { ViewUsers } from './users/view-users/view-users';
 import { ApprovalTemplate } from './approval-template/approval-template';
 import { ViewTemplateApproval } from './view-template-approval/view-template-approval';
+import { ViewApprovalStages } from './view-approval-stages/view-approval-stages';
+import { ApprovalStage } from './approval-stage/approval-stage';
 
 export const routes: Routes = [
   {
@@ -31,4 +33,7 @@ export const routes: Routes = [
   { path: 'approval-template', component: ApprovalTemplate },
   { path: 'approval-template/:id', component: ApprovalTemplate },
   { path: 'view-template-approval', component: ViewTemplateApproval },
+   { path: 'view-approval-stages', component: ViewApprovalStages },
+    { path: 'approval-stage', component: ApprovalStage },
+    { path: 'approval-stage/:id', component: ApprovalStage },
 ];

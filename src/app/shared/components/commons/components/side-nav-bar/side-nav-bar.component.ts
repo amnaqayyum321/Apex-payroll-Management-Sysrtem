@@ -110,6 +110,11 @@ export class SideNavBarComponent implements OnInit {
               route: 'users-and-roles/view-template-approval',
               isVisible: true,
             },
+               {
+              label: 'Approval Stages',
+              route: 'users-and-roles/view-approval-stages',
+              isVisible: true,
+            },
           ],
         },
       ],
