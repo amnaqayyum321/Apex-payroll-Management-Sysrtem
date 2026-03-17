@@ -511,3 +511,241 @@ tbody tr td {
         font-size: 0.85rem;
     }
 }
+// Modal Overlay
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(3px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-box {
+    background: var(--dark-bg, #1e2130);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    width: 460px;
+    max-width: 95vw;
+    padding: 24px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.modal-header-custom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+
+    h6 {
+        color: var(--white-color-1, #fff);
+        font-weight: 600;
+        font-size: 16px;
+        margin: 0;
+    }
+}
+
+.modal-close-btn {
+    background: transparent;
+    border: none;
+    color: #aaa;
+    cursor: pointer;
+    font-size: 16px;
+
+    &:hover {
+        color: #fff;
+    }
+}
+
+.modal-template-info {
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+
+    .info-label {
+        color: #888;
+        font-size: 12px;
+        margin-right: 8px;
+    }
+
+    .info-value {
+        color: #fff;
+        font-size: 13px;
+        font-weight: 500;
+    }
+}
+
+.modal-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.08);
+    margin-bottom: 16px;
+}
+
+.modal-section-label {
+    color: #aaa;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+}
+
+.resolution-options {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.resolution-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+        border-color: rgba(255, 255, 255, 0.2);
+        background: rgba(255, 255, 255, 0.04);
+    }
+
+    &.selected {
+        border-color: #6366f1;
+        background: rgba(99, 102, 241, 0.1);
+    }
+}
+
+.option-radio {
+    margin-top: 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 2px solid #555;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+
+    .radio-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: transparent;
+        transition: background 0.2s;
+
+        &.active {
+            background: #6366f1;
+        }
+    }
+}
+
+.option-content {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+
+    .option-label {
+        color: #fff;
+        font-size: 13px;
+        font-weight: 500;
+    }
+
+    .option-desc {
+        color: #888;
+        font-size: 11px;
+    }
+}
+
+.dry-run-toggle {
+    padding: 10px 14px;
+    background: rgba(255, 193, 7, 0.08);
+    border: 1px solid rgba(255, 193, 7, 0.2);
+    border-radius: 8px;
+    margin-bottom: 20px;
+
+    .toggle-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        color: #ffc107;
+        font-size: 13px;
+
+        small {
+            color: #888;
+            font-size: 11px;
+        }
+    }
+}
+
+.modal-footer-custom {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.cancel-modal-btn {
+    padding: 8px 20px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: transparent;
+    color: #aaa;
+    cursor: pointer;
+    font-size: 13px;
+
+    &:hover {
+        color: #fff;
+        border-color: #fff;
+    }
+}
+
+.confirm-modal-btn {
+    padding: 8px 20px;
+    border-radius: 8px;
+    border: none;
+    background: #6366f1;
+    color: #fff;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+
+    &:hover {
+        background: #4f46e5;
+    }
+}
+.deactivate-btn {
+    background-color: #e74c3c;
+    /* red */
+    color: #fff;
+    border: none;
+    padding: 8px 14px;
+    font-size: 13px;
+    border-radius: 6px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.3s ease;
+}
+
+/* Hover Effect */
+.deactivate-btn:hover {
+    background-color: #c0392b;
+    transform: translateY(-1px);
+}
+
+/* Active Click Effect */
+.deactivate-btn:active {
+    transform: scale(0.95);
+}
+
+/* Icon Styling */
+.deactivate-btn .icon {
+    font-size: 12px;
+}

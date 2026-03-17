@@ -2,8 +2,6 @@
   <!-- Header -->
   <div class="d-flex align-items-center justify-content-between p-3">
     <h5 style="color: var(--white-color-1); margin: 0; font-weight: 600">Approval Templates</h5>
-
-    <!-- Filter -->
     <div class="d-flex align-items-center gap-2">
       <div class="status-filter-wrapper">
         <select
@@ -16,7 +14,6 @@
           <option value="ACTIVE">ACTIVE</option>
         </select>
       </div>
-
       <button class="reset-filter-btn" (click)="resetFilter()" title="Reset Filter">
         <i class="fa fa-refresh"></i>
       </button>
@@ -59,19 +56,80 @@
             </span>
           </td>
           <td>
-            <button
-              *ngIf="t.status !== 'ACTIVE'"
-              class="create-btn"
-              (click)="activateTemplate(t.publicId)"
-            >
+            <!-- ✅ Now opens modal instead of direct API call -->
+            <button *ngIf="t.status !== 'ACTIVE'" class="create-btn" (click)="openActivateModal(t)">
               <i class="fa fa-check icon"></i> Activate
             </button>
-            <span *ngIf="t.status === 'ACTIVE'" style="color: #22c55e; font-weight: 500">
+            <!-- <span *ngIf="t.status === 'ACTIVE'" style="color: #22c55e; font-weight: 500">
               ✓ Active
-            </span>
+            </span> -->
+            <button
+              *ngIf="t.status === 'ACTIVE'"
+              class="deactivate-btn"
+              (click)="deactivateTemplate(t.publicId)"
+            >
+              <i class="fa fa-times icon"></i> Deactivate
+            </button>
           </td>
         </tr>
       </tbody>
     </table>
+  </div>
+</div>
+
+<!-- ✅ Activation Modal -->
+<div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <!-- Modal Header -->
+    <div class="modal-header-custom">
+      <h6>Activate Template</h6>
+      <button class="modal-close-btn" (click)="closeModal()">
+        <i class="fa fa-times"></i>
+      </button>
+    </div>
+
+    <!-- Template Info -->
+    <div class="modal-template-info" *ngIf="selectedTemplate">
+      <span class="info-label">Template:</span>
+      <span class="info-value">{{ selectedTemplate.name }}</span>
+    </div>
+
+    <div class="modal-divider"></div>
+
+    <!-- Resolution Mode Selection -->
+    <p class="modal-section-label">Select Activation Mode</p>
+
+    <div class="resolution-options">
+      <label
+        class="resolution-option"
+        *ngFor="let mode of resolutionModes"
+        [class.selected]="selectedResolutionMode === mode.value"
+        (click)="selectedResolutionMode = mode.value"
+      >
+        <div class="option-radio">
+          <div class="radio-dot" [class.active]="selectedResolutionMode === mode.value"></div>
+        </div>
+        <div class="option-content">
+          <span class="option-label">{{ mode.label }}</span>
+          <span class="option-desc">{{ mode.description }}</span>
+        </div>
+      </label>
+    </div>
+
+    <!-- Dry Run Toggle (only for conflict modes) -->
+    <div class="dry-run-toggle" *ngIf="selectedResolutionMode !== 'ACTIVE'">
+      <label class="toggle-label">
+        <input type="checkbox" [(ngModel)]="dryRun" />
+        <!-- <span class="toggle-text">Dry Run <small>(preview changes without applying)</small></span> -->
+      </label>
+    </div>
+
+    <!-- Modal Footer -->
+    <div class="modal-footer-custom">
+      <button class="cancel-modal-btn" (click)="closeModal()">Cancel</button>
+      <button class="confirm-modal-btn" (click)="confirmActivation()">
+        <i class="fa fa-check"></i> Confirm
+      </button>
+    </div>
   </div>
 </div>

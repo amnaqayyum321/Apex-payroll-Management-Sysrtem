@@ -72,4 +72,18 @@ export class UsersAndRolesService {
   activateApprovalTemplate(publicId: string): Observable<any> {
     return this.http.patch(this.url + `admin/approval-templates/${publicId}/activate`, {});
   }
+  // user-roles.service.ts mein add karein
+
+  activateSafeApprovalTemplate(
+    publicId: string,
+    payload: { resolutionMode: string; dryRun: boolean },
+  ) {
+    return this.http.patch(
+      `${this.url}admin/approval-templates/${publicId}/activate-safe`,
+      payload,
+    );
+  }
+  ApprovalTempDeactivate(publicId: string): Observable<any> {
+    return this.http.patch(this.url + `admin/approval-templates/${publicId}/deactivate`, {});
+  }
 }

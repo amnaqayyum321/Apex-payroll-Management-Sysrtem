@@ -18,6 +18,28 @@ export class AppTemplatStatus implements OnInit {
   currentPage = 0;
   pageSize = 100;
   selectedStatus = '';
+  showModal = false;
+  selectedTemplate: any = null;
+  selectedResolutionMode = 'ACTIVE';
+  dryRun = false;
+
+  resolutionModes = [
+    {
+      value: 'ACTIVE',
+      label: 'Activate Only',
+      description: 'Simply activate this template',
+    },
+    {
+      value: 'DEACTIVATE_CONFLICTING',
+      label: 'Deactivate Conflicting',
+      description: 'Deactivate all conflicting templates automatically',
+    },
+    {
+      value: 'REMOVE_OVERLAP_FROM_NEW',
+      label: 'Remove Overlap from New',
+      description: 'Remove overlapping stages from this new template',
+    },
+  ];
 
   constructor(
     private UserSv: UsersAndRolesService,
@@ -45,7 +67,20 @@ export class AppTemplatStatus implements OnInit {
       },
     });
   }
-
+  deactivateTemplate(publicId: string) {
+    this.loader.show();
+    this.UserSv.ApprovalTempDeactivate(publicId).subscribe({
+      next: (res: any) => {
+        this.loader.hide();
+        this.toastr.success('Template deactivated successfully');
+        this.getTemplates();
+      },
+      error: (err: any) => {
+        this.loader.hide();
+        this.toastr.error(err?.error?.message || 'Deactivation failed');
+      },
+    });
+  }
   applyFilter() {
     if (!this.selectedStatus) {
       this.filteredList = [...this.templateList];
@@ -58,22 +93,55 @@ export class AppTemplatStatus implements OnInit {
     this.selectedStatus = '';
     this.applyFilter();
   }
-
-  activateTemplate(publicId: string) {
-    this.loader.show();
-    this.UserSv.activateApprovalTemplate(publicId).subscribe({
-      next: () => {
-        this.loader.hide();
-        this.toastr.success('Template activated successfully');
-        this.getTemplates();
-      },
-      error: (err: any) => {
-        this.loader.hide();
-        this.toastr.error(err?.error?.message || 'Activation failed');
-      },
-    });
+  openActivateModal(template: any) {
+    this.selectedTemplate = template;
+    this.selectedResolutionMode = 'ACTIVE';
+    this.dryRun = false;
+    this.showModal = true;
   }
 
+  closeModal() {
+    this.showModal = false;
+    this.selectedTemplate = null;
+  }
+  confirmActivation() {
+    if (!this.selectedTemplate) return;
+    const publicId = this.selectedTemplate.publicId;
+    if (this.selectedResolutionMode === 'ACTIVE') {
+      this.loader.show();
+      this.UserSv.activateApprovalTemplate(publicId).subscribe({
+        next: (res: any) => {
+          console.log('✅ activateApprovalTemplate SUCCESS:', res);
+          this.loader.hide();
+          this.toastr.success('Template activated successfully');
+          this.closeModal();
+          this.getTemplates();
+        },
+        error: (err: any) => {
+          this.loader.hide();
+          this.toastr.error(err?.error?.message || 'Activation failed');
+        },
+      });
+    } else {
+      const payload = {
+        resolutionMode: this.selectedResolutionMode,
+        dryRun: this.dryRun,
+      };
+      this.loader.show();
+      this.UserSv.activateSafeApprovalTemplate(publicId, payload).subscribe({
+        next: (res: any) => {
+          this.loader.hide();
+          this.toastr.success(`Template activated with mode: ${this.selectedResolutionMode}`);
+          this.closeModal();
+          this.getTemplates();
+        },
+        error: (err: any) => {
+          this.loader.hide();
+          this.toastr.error(err?.error?.message || 'Activation failed');
+        },
+      });
+    }
+  }
   getStatusClass(status: string): string {
     if (status === 'ACTIVE') return 'active-badge';
     if (status === 'DRAFT') return 'draft-badge';
