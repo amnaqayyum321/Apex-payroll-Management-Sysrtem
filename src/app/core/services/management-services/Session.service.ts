@@ -41,30 +41,47 @@ export class SessionService {
   //       }),
   //     );
   //   }
-  loadUserAndApplyMenu(): Observable<any> {
-    const base = environment.apiBaseUrl;
-    const token = localStorage.getItem('token');
-    if (!token) {
-      this.menuVisibilityService.applyPermissions([]);
-      return new Observable((obs) => obs.complete());
-    }
-    return this.http.get<any>(`${base}auth/me`).pipe(
-      tap((res: any) => {
-        const permissions: string[] = res.data.effectivePermissions;
-        this.menuVisibilityService.applyPermissions(permissions);
-      }),
-      catchError((err) => {
-        //  401/400 aaye to token clear karo aur login pe bhejo
-        if (err.status === 401 || err.status === 400) {
-          this.clearStorage();
-          // router inject karo ya event emit karo
-          window.location.href = '/login';
-        }
-        return throwError(() => err);
-      }),
-    );
+ private currentUser: any; // 👈 add this
+
+loadUserAndApplyMenu(): Observable<any> {
+  const base = environment.apiBaseUrl;
+  const token = localStorage.getItem('token');
+
+  if (!token) {
+    this.menuVisibilityService.applyPermissions([]);
+    return new Observable((obs) => obs.complete());
   }
+
+  return this.http.get<any>(`${base}auth/me`).pipe(
+    tap((res: any) => {
+      const permissions: string[] = res.data.effectivePermissions;
+
+      this.menuVisibilityService.applyPermissions(permissions);
+
+      // 👇 USER SAVE KARO
+      this.currentUser = res.data;
+
+      // (optional) localStorage me bhi rakh lo
+      localStorage.setItem('currentUser', JSON.stringify(res.data));
+    }),
+    catchError((err) => {
+      if (err.status === 401 || err.status === 400) {
+        this.clearStorage();
+        window.location.href = '/login';
+      }
+      return throwError(() => err);
+    }),
+  );
+}
   clearMenu() {
     this.menuVisibilityService.applyPermissions([]);
   }
+
+  getUser() {
+  if (this.currentUser) return this.currentUser;
+
+  // fallback (page refresh case)
+  const user = localStorage.getItem('currentUser');
+  return user ? JSON.parse(user) : null;
+}
 }

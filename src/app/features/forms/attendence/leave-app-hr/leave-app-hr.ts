@@ -1,20 +1,19 @@
 import { Component, HostListener } from '@angular/core';
-import { LoaderService } from '../../../../core/services/management-services/loader.service';
-import { FormsService } from '../../Services/forms';
-import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
+import { ToastrService } from 'ngx-toastr';
+import { FormsService } from '../../Services/forms';
+import { LoaderService } from '../../../../core/services/management-services/loader.service';
 import { CommonModule } from '@angular/common';
-import { SessionService } from '../../../../core/services/management-services/Session.service';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-leave-application',
-  imports: [FormsModule, CommonModule],
-  templateUrl: './leave-application.html',
-  styleUrl: './leave-application.scss',
+  selector: 'app-leave-app-hr',
+  imports: [CommonModule,FormsModule],
+  templateUrl: './leave-app-hr.html',
+  styleUrl: './leave-app-hr.scss',
 })
-export class LeaveApplication {
-  name: string = '';
+export class LeaveAppHr {
+   name: string = '';
   employeePublicId: string = '';
   leaveTypePublicId: string = '';
   leaveMode: string = 'FULL_DAY';
@@ -27,15 +26,17 @@ export class LeaveApplication {
   publicId: string | null = null;
   isEditMode = false;
   active: boolean = false;
+  EmployeeList: any;
   LeaveTypeList: any;
 
   // Add these properties inside the class
   isLeaveTypeDropdownOpen = false;
+  isEmployeeDropdownOpen = false;
   isLeaveModeDropdownOpen = false;
 
   selectedLeaveTypeName = '';
+  selectedEmployeeName = '';
   selectedLeaveModeDisplay = 'FULL_DAY'; // default display
-  selectedEmployeeName: string = ''; // 👈 ADD THIS
 
   // For leave mode options (can be an array of objects or strings)
   leaveModes = [
@@ -49,34 +50,28 @@ export class LeaveApplication {
     private toastr: ToastrService,
     private router: Router,
     private route: ActivatedRoute,
-    private sessionSv: SessionService
   ) {}
 
- ngOnInit() {
-  this.publicId = this.route.snapshot.paramMap.get('id');
-
-  if (this.publicId) {
-    this.isEditMode = true;
-    this.loadSingleLeaveApplication(this.publicId);
+  ngOnInit() {
+    this.publicId = this.route.snapshot.paramMap.get('id');
+    if (this.publicId) {
+      this.isEditMode = true;
+      this.loadSingleLeaveApplication(this.publicId);
+    }
+    this.GetEmployees();
+    this.GetLeaveType();
   }
-
-  this.GetLeaveType();
-
-  // 👇 CURRENT USER SET
-  const user = this.sessionSv.getUser();
-
-  this.employeePublicId = user?.employeePublicId; // 👈 IMPORTANT
-  this.selectedEmployeeName = user?.fullName;     // (optional UI)
-}
 
   toggleDropdown(dropdown: string, event: Event) {
     event.stopPropagation();
     // Close all others first (optional, but keeps UI clean)
     this.isLeaveTypeDropdownOpen = false;
+    this.isEmployeeDropdownOpen = false;
     this.isLeaveModeDropdownOpen = false;
 
     // Then open the requested one
     if (dropdown === 'leaveType') this.isLeaveTypeDropdownOpen = true;
+    else if (dropdown === 'employee') this.isEmployeeDropdownOpen = true;
     else if (dropdown === 'leaveMode') this.isLeaveModeDropdownOpen = true;
   }
 
@@ -87,7 +82,12 @@ export class LeaveApplication {
     this.isLeaveTypeDropdownOpen = false;
   }
 
- 
+  selectEmployee(emp: any, event: Event) {
+    event.stopPropagation();
+    this.employeePublicId = emp.employeePublicId;
+    this.selectedEmployeeName = emp.fullName;
+    this.isEmployeeDropdownOpen = false;
+  }
 
   selectLeaveMode(mode: any, event: Event) {
     event.stopPropagation();
@@ -100,9 +100,22 @@ export class LeaveApplication {
   @HostListener('document:click', ['$event'])
   closeAllDropdowns(event: Event) {
     this.isLeaveTypeDropdownOpen = false;
+    this.isEmployeeDropdownOpen = false;
     this.isLeaveModeDropdownOpen = false;
   }
-
+  GetEmployees() {
+    this.FormSv.GetEmployees(this.currentPage, this.pageSize).subscribe(
+      (res: any) => {
+        if (res.success) {
+          this.EmployeeList = res.data;
+          console.log('Employee List', res);
+        }
+      },
+      (err: any) => {
+        console.log(err);
+      },
+    );
+  }
   GetLeaveType() {
     this.FormSv.GetLeaveType(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
@@ -120,6 +133,7 @@ export class LeaveApplication {
     if (
       !this.name ||
       !this.leaveTypePublicId ||
+      !this.employeePublicId ||
       !this.fromDate ||
       !this.toDate
     ) {
@@ -143,7 +157,7 @@ export class LeaveApplication {
         this.toastr.success('leave-application created successfully', 'Success');
         this.resetLeaveApplicationForm();
         setTimeout(() => {
-          this.router.navigate(['/panel/forms/view-leave-application']);
+          this.router.navigate(['/panel/forms/leave-app-hr']);
         }, 1500);
       },
       error: (error: any) => {
@@ -159,16 +173,18 @@ export class LeaveApplication {
   resetLeaveApplicationForm() {
     this.name = '';
     this.leaveTypePublicId = '';
+    this.employeePublicId = '';
     this.leaveMode = 'FULL_DAY';
     this.fromDate = '';
     this.toDate = '';
     this.remarks = '';
     this.disabled = false;
     this.selectedLeaveTypeName = '';
+    this.selectedEmployeeName = '';
     this.selectedLeaveModeDisplay = 'FULL_DAY';
   }
   cancel() {
-    this.router.navigate(['/panel/forms/view-leave-application']);
+    this.router.navigate(['/panel/forms/leave-app-hr']);
   }
   // loadSingleLeaveApplication(publicId: string) {
   //   this.loader.show();
@@ -219,6 +235,7 @@ export class LeaveApplication {
         this.remarks = d.remarks;
 
         // Direct API se naam le lo, list dhundne ki zaroorat nahi
+        this.selectedEmployeeName = d.employeeName;
         this.selectedLeaveTypeName = d.leaveTypeName;
 
         const mode = this.leaveModes.find((m) => m.value === d.leaveMode);
@@ -247,7 +264,7 @@ export class LeaveApplication {
         this.toastr.success('Leave-Application  updated');
         this.resetLeaveApplicationForm();
         setTimeout(() => {
-          this.router.navigate(['/panel/forms/view-leave-application']);
+          this.router.navigate(['/panel/forms/leave-app-hr']);
         }, 1500);
         console.log('Active from API:', this.active);
       },
@@ -258,4 +275,5 @@ export class LeaveApplication {
       },
     });
   }
+
 }
