@@ -3,21 +3,23 @@
     <!-- Header -->
     <div class="card-header">
       <h3>{{ isEditMode ? 'Update Leaves Master Data' : 'Create New Leaves Master Data' }}</h3>
-      <p>
-        {{
-          isEditMode
-            ? 'Update the leave master data details'
-            : 'Fill in the details to create new leaves master data'
-        }}
-      </p>
+  
     </div>
     <div class="header-divider"></div>
 
     <form class="user-form">
       <div class="row">
-        <div class="col-12 d-flex justify-content-end align-items-center gap-2">
-          <label class="form-label mb-0">Active</label>
-          <input name="active" [(ngModel)]="active" type="checkbox" />
+       <div class="col-12 d-flex justify-content-end align-items-center gap-2">
+          <label class="checkbox-container">
+            Active
+            <input
+              type="checkbox"
+              class="custom-checkbox"
+              [(ngModel)]="active"
+              name="active"
+            />
+            <span class="checkmark"></span>
+          </label>
         </div>
       </div>
       <!-- ROW 1: Code & Leave Name -->
@@ -72,27 +74,29 @@
 
       <!-- ROW 3: Checkboxes -->
       <div class="row">
-        <div class="col-md-4">
-          <div class="checkbox-wrapper">
+      <div class="col-2 d-flex justify-content-end align-items-center gap-2">
+          <label class="checkbox-container">
+            Carry Forward
             <input
               type="checkbox"
-              id="isCarryForward"
+              class="custom-checkbox"
               [(ngModel)]="isCarryForward"
-              name="isCarryForward"
+              name="active"
             />
-            <label for="carryForward">Carry Forward</label>
-          </div>
+            <span class="checkmark"></span>
+          </label>
         </div>
-        <div class="col-md-4">
-          <div class="checkbox-wrapper">
+         <div class="col-2 d-flex justify-content-end align-items-center gap-2">
+          <label class="checkbox-container">
+            Encashable
             <input
               type="checkbox"
-              id="isEncashable"
+              class="custom-checkbox"
               [(ngModel)]="isEncashable"
-              name="isEncashable"
+              name="active"
             />
-            <label for="encashable">Encashable</label>
-          </div>
+            <span class="checkmark"></span>
+          </label>
         </div>
       </div>
 
@@ -119,7 +123,7 @@
           [disabled]="disabled"
           (click)="isEditMode ? updateLeave() : createLeave()"
         >
-          {{ isEditMode ? 'Update Leaves Master Data' : 'Create Leaves Master Data' }}
+          {{ isEditMode ? 'Update' : 'Create' }}
         </button>
       </div>
     </form>

@@ -104,17 +104,18 @@ export class SideNavBarComponent implements OnInit {
               route: 'employees-master-data/view-all-project-transfer',
               isVisible: false,
             },
+               {
+              label: 'Approval Stages',
+              route: 'users-and-roles/view-approval-stages',
+              isVisible: true,
+            },
 
             {
               label: 'Approval-template',
               route: 'users-and-roles/view-template-approval',
               isVisible: true,
             },
-            {
-              label: 'Approval Stages',
-              route: 'users-and-roles/view-approval-stages',
-              isVisible: true,
-            },
+         
             {
               label: 'Approval Tem Status',
               route: 'users-and-roles/approval-Tem-Status',
@@ -211,7 +212,7 @@ export class SideNavBarComponent implements OnInit {
           collapsed: true,
           children: [
             {
-              label: 'Leaves',
+              label: 'Leave Entitlement',
               route: 'forms/view-leaves',
               isVisible: true,
               icon: 'fa-solid fa-calendar-check',
@@ -219,6 +220,12 @@ export class SideNavBarComponent implements OnInit {
             {
               label: 'Leave Application',
               route: 'forms/view-leave-application',
+              icon: 'fa-solid fa-file-signature',
+              isVisible: true,
+            },
+              {
+              label: 'Leave Application HR',
+              route: 'forms/leave-app-hr',
               icon: 'fa-solid fa-file-signature',
               isVisible: true,
             },

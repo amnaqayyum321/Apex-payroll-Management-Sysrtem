@@ -9,10 +9,12 @@
       <button class="reset-btn" (click)="resetForm()"><i class="fa fa-refresh"></i> Reset</button>
     </div>
 
+ 
     <div class="header-divider"></div>
 
     <form class="user-form">
-      <!-- Active -->
+
+      <!-- Active Checkbox (right aligned) -->
       <div class="row">
         <div class="col-12 d-flex justify-content-end align-items-center gap-2">
           <label class="checkbox-container">
@@ -23,33 +25,50 @@
         </div>
       </div>
 
-      <!-- Employee Dropdown -->
+      <!-- Row 1: Employee, Leave Type, Total Leaves Per Year -->
       <div class="row">
-        <div class="col-md-6">
+        <!-- Employee custom dropdown -->
+        <div class="col-md-4">
           <label class="form-label">Employee</label>
-          <select class="form-control" [(ngModel)]="employeePublicId" name="employee">
-            <option value="">Select Employee</option>
-            <option *ngFor="let emp of employees" [value]="emp.publicId">
-              {{ emp.fullName }}
-            </option>
-          </select>
+          <div class="custom-dropdown" (click)="toggleEmployeeDropdown($event)">
+            <div class="dropdown-selected">
+              <span>{{ selectedEmployeeDisplay || 'Select Employee' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isEmployeeDropdownOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isEmployeeDropdownOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let emp of employees"
+                (click)="selectEmployee(emp, $event)"
+              >
+                {{ emp.fullName }}
+              </div>
+            </div>
+          </div>
         </div>
 
-        <!-- Leave Type Dropdown -->
-        <div class="col-md-6">
+        <!-- Leave Type custom dropdown -->
+        <div class="col-md-4">
           <label class="form-label">Leave Type</label>
-          <select class="form-control" [(ngModel)]="leaveTypePublicId" name="leaveType">
-            <option value="">Select Leave Type</option>
-            <option *ngFor="let type of leaveTypes" [value]="type.publicId">
-              {{ type.name }}
-            </option>
-          </select>
+          <div class="custom-dropdown" (click)="toggleLeaveTypeDropdown($event)">
+            <div class="dropdown-selected">
+              <span>{{ selectedLeaveTypeDisplay || 'Select Leave Type' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isLeaveTypeDropdownOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isLeaveTypeDropdownOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let type of leaveTypes"
+                (click)="selectLeaveType(type, $event)"
+              >
+                {{ type.name }}
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <!-- Total Leaves -->
-      <div class="row">
-        <div class="col-md-6">
+        <!-- Total Leaves Per Year -->
+        <div class="col-md-4">
           <label class="form-label">Total Leaves Per Year</label>
           <input
             type="number"
@@ -59,8 +78,11 @@
             placeholder="Enter total leaves"
           />
         </div>
+      </div>
 
-        <div class="col-md-6">
+      <!-- Row 2: Remarks (full width) -->
+      <div class="row">
+        <div class="col-md-12">
           <label class="form-label">Remarks</label>
           <input
             type="text"

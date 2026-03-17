@@ -50,7 +50,25 @@
     </div>
   </div>
 
-  
+  <div class="col-md-4">
+    <label class="form-label">Employee</label>
+    <div class="custom-dropdown" (click)="toggleDropdown('employee', $event)">
+      <div class="dropdown-selected">
+        <span>{{ selectedEmployeeName || 'Select employee' }}</span>
+        <i class="fa-solid fa-caret-down" [class.rotate]="isEmployeeDropdownOpen"></i>
+      </div>
+
+      <div class="dropdown-options" *ngIf="isEmployeeDropdownOpen">
+        <div
+          class="dropdown-option"
+          *ngFor="let emp of EmployeeList"
+          (click)="selectEmployee(emp, $event)"
+        >
+          {{ emp.fullName }}
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
       <div class="row">
         <div class="col-md-6">

@@ -34,6 +34,7 @@ import { IDType } from './master-data/id-type/id-type';
 import { ViewIDTypeList } from './master-data/view-id-type-list/view-id-type-list';
 import { ViewLeaveApplication } from './attendence/view-leave-application/view-leave-application';
 import { LeaveApplicationApprovals } from './attendence/leave-application-approvals/leave-application-approvals';
+import { LeaveAppHr } from './attendence/leave-app-hr/leave-app-hr';
 
 export const routes: Routes = [
   {
@@ -214,5 +215,9 @@ export const routes: Routes = [
     {
     path: 'leave-application-approval',
     component: LeaveApplicationApprovals,
+  },
+    {
+    path: 'leave-app-hr',
+    component: LeaveAppHr,
   },
 ];
