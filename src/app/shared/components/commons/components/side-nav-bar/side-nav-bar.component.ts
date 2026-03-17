@@ -110,9 +110,14 @@ export class SideNavBarComponent implements OnInit {
               route: 'users-and-roles/view-template-approval',
               isVisible: true,
             },
-               {
+            {
               label: 'Approval Stages',
               route: 'users-and-roles/view-approval-stages',
+              isVisible: true,
+            },
+            {
+              label: 'Approval Tem Status',
+              route: 'users-and-roles/approval-Tem-Status',
               isVisible: true,
             },
           ],
@@ -223,7 +228,7 @@ export class SideNavBarComponent implements OnInit {
               icon: 'fa-solid fa-file-alt',
               isVisible: true,
             },
-               {
+            {
               label: 'Leave Application Approval',
               route: 'forms/leave-application-approval',
               icon: 'fa-solid fa-clock',

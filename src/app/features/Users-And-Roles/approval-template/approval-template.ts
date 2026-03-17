@@ -5,6 +5,7 @@ import { UsersAndRolesService } from '../Services/user-roles';
 import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../../../core/services/management-services/loader.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { FormsService } from '../../forms/Services/forms';
 
 interface TemplateForm {
   code: string;
@@ -43,6 +44,7 @@ export class ApprovalTemplate {
     private loader: LoaderService,
     private route: ActivatedRoute,
     private router: Router,
+    private FormSv: FormsService,
   ) {}
 
   ngOnInit() {
@@ -51,7 +53,7 @@ export class ApprovalTemplate {
       this.isEditMode = true;
       this.loadApprovalTemplate(this.publicId);
     }
-    this.GetUsers();
+    this.GetEmployee();
     this.GetStageDefinitions();
   }
 
@@ -66,16 +68,17 @@ export class ApprovalTemplate {
     stageDefinitionPublicIds: [],
   };
   templateStages: any[] = [];
-  userList: any[] = [];
+  EmployeeList: any[] = [];
   stageDefinitionList: any[] = []; // fetched from API
 
   // ── Users ─────────────────────────────────────────────────────────
 
-  GetUsers() {
-    this.UserSv.getAllUser(this.currentpage, this.Pagesize).subscribe(
+  GetEmployee() {
+    this.FormSv.GetEmployees(this.currentpage, this.Pagesize).subscribe(
       (res: any) => {
         if (res.success) {
-          this.userList = res.data;
+          this.EmployeeList = res.data;
+          console.log('Employee List', res);
         }
       },
       (err: any) => console.log(err),
@@ -140,9 +143,9 @@ export class ApprovalTemplate {
   }
   onOriginatorSelect(event: Event): void {
     const select = event.target as HTMLSelectElement;
-    const publicId = select.value;
-    if (publicId && !this.form.originatorUserPublicIds.includes(publicId)) {
-      this.form.originatorUserPublicIds.push(publicId);
+    const userPublicId = select.value;
+    if (userPublicId && !this.form.originatorUserPublicIds.includes(userPublicId)) {
+      this.form.originatorUserPublicIds.push(userPublicId);
     }
     select.value = '';
   }

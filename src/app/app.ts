@@ -15,17 +15,17 @@ export class App implements OnInit {
   protected readonly title = signal('apex-onboarding-recruitment');
   constructor(private sessionService: SessionService) {}
   ngOnInit() {
-    const token = localStorage.getItem('token');
-    console.log('token get after login', token);
-    if (token) {
-      this.sessionService.loadUserAndApplyMenu().subscribe({
-        next: () => console.log('✅ Session restored'),
-        error: (err) => {
-          console.error('❌ Session restore failed:', err);
-          localStorage.clear();
-          window.location.href = '/login';
-        },
-      });
-    }
+    // const token = localStorage.getItem('token');
+    // console.log('token get after login', token);
+    // if (token) {
+    //   this.sessionService.loadUserAndApplyMenu().subscribe({
+    //     next: () => console.log('✅ Session restored'),
+    //     error: (err) => {
+    //       console.error('❌ Session restore failed:', err);
+    //       localStorage.clear();
+    //       window.location.href = '/login';
+    //     },
+    //   });
+    // }
   }
 }

@@ -147,7 +147,7 @@ export class CreateRequistion {
 
   selectEmployee(emp: any, event: Event) {
     event.stopPropagation();
-    this.hiringManagerPublicId = emp.publicId;
+    this.hiringManagerPublicId = emp.employeePublicId;
     this.selectedEmployeeName = emp.fullName;
     this.isEmployeeDropdownOpen = false;
   }
@@ -321,7 +321,7 @@ export class CreateRequistion {
 
     // Employee (if any)
     if (this.hiringManagerPublicId) {
-      const emp = this.employeeList.find((e) => e.publicId === this.hiringManagerPublicId);
+      const emp = this.employeeList.find((e) => e.employeePublicId === this.hiringManagerPublicId);
       this.selectedEmployeeName = emp ? emp.fullName : '';
     }
   }

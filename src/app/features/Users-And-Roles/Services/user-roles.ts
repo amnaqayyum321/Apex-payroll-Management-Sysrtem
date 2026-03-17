@@ -52,19 +52,24 @@ export class UsersAndRolesService {
   }
 
   // ================= APPROVAL STAGES =================
-getAllApprovalStages(page: number, size: number, filter: string = 'ALL'): Observable<any> {
-  return this.http.get(`${this.url}admin/approval-stages?filter=${filter}&page=${page}&size=${size}`);
-}
+  getAllApprovalStages(page: number, size: number, filter: string = 'ALL'): Observable<any> {
+    return this.http.get(
+      `${this.url}admin/approval-stages?filter=${filter}&page=${page}&size=${size}`,
+    );
+  }
 
-getApprovalStageById(publicId: string): Observable<any> {
-  return this.http.get(`${this.url}admin/approval-stages/${publicId}`);
-}
+  getApprovalStageById(publicId: string): Observable<any> {
+    return this.http.get(`${this.url}admin/approval-stages/${publicId}`);
+  }
 
-createApprovalStage(data: any): Observable<any> {
-  return this.http.post(`${this.url}admin/approval-stages`, data);
-}
+  createApprovalStage(data: any): Observable<any> {
+    return this.http.post(`${this.url}admin/approval-stages`, data);
+  }
 
-updateApprovalStage(publicId: string, data: any): Observable<any> {
-  return this.http.put(`${this.url}admin/approval-stages/${publicId}`, data);
-}
+  updateApprovalStage(publicId: string, data: any): Observable<any> {
+    return this.http.put(`${this.url}admin/approval-stages/${publicId}`, data);
+  }
+  activateApprovalTemplate(publicId: string): Observable<any> {
+    return this.http.patch(this.url + `admin/approval-templates/${publicId}/activate`, {});
+  }
 }

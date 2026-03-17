@@ -124,12 +124,12 @@
             <div class="form-group" style="flex: 1; margin-bottom: 0">
               <select (change)="onOriginatorSelect($event)">
                 <option value="">— Select Originator to Add —</option>
-                <ng-container *ngFor="let user of userList">
+                <ng-container *ngFor="let employee of EmployeeList">
                   <option
-                    *ngIf="!form.originatorUserPublicIds.includes(user.publicId)"
-                    [value]="user.publicId"
+                    *ngIf="!form.originatorUserPublicIds.includes(employee.userPublicId)"
+                    [value]="employee.userPublicId"
                   >
-                    {{ user.firstName }} {{ user.lastName }} ({{ user.roleCode }})
+                    {{ employee.fullName }}
                   </option>
                 </ng-container>
               </select>
@@ -147,9 +147,7 @@
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Role Code</th>
+                  <th>Full Name</th>
                   <th></th>
                 </tr>
               </thead>
@@ -161,14 +159,11 @@
                     trackBy: trackByIndex
                   "
                 >
-                  <ng-container *ngFor="let user of userList">
-                    <tr *ngIf="user.publicId === uid">
+                  <ng-container *ngFor="let user of EmployeeList">
+                    <tr *ngIf="user.userPublicId === uid">
                       <td class="td-num">{{ oi + 1 }}</td>
-                      <td>{{ user.firstName }}</td>
-                      <td>{{ user.lastName }}</td>
-                      <td>
-                        <span class="role-badge">{{ user.roleCode }}</span>
-                      </td>
+                      <td>{{ user.fullName }}</td>
+
                       <td>
                         <button class="icon-btn delete-btn" (click)="removeOriginator(oi)">
                           ✕

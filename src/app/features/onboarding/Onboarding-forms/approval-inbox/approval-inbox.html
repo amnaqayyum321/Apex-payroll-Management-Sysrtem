@@ -35,7 +35,7 @@
     </div>
 
     <div class="filter-group">
-      <select class="filter-select" [(ngModel)]="selectedPriority" (change)="applyFilters()">
+      <select class="filter-select" [(ngModel)]="selectedPriority">
         <option value="">All Priorities</option>
         <option value="High">High</option>
         <option value="Medium">Medium</option>
@@ -62,46 +62,60 @@
             />
           </th>
           <th>#</th>
-          <th>Title</th>
+          <th>Template Name</th>
           <th>Requested By</th>
           <th>Type</th>
           <th>Priority</th>
           <th>Date</th>
           <th>Status</th>
-          <th>Actions</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of filteredItems; let i = index">
+        <tr *ngFor="let item of PendingApprovalList; let i = index">
           <td>
             <input type="checkbox" class="checkbox-style" [(ngModel)]="item.selected" />
           </td>
           <td class="row-num">{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+
+          <!-- Template Name + instancePublicId -->
           <td>
             <div class="title-cell">
-              <span class="title-text">{{ item.title }}</span>
+              <span class="title-text">{{ item.templateName ?? item.title }}</span>
               <span class="instance-id">{{ item.instancePublicId | slice: 0 : 8 }}...</span>
             </div>
           </td>
+
+          <!-- Requested By -->
           <td>
             <div class="requester-cell">
-              <div class="avatar">{{ item.requestedBy.charAt(0) }}</div>
+              <div class="avatar">{{ item.requestedBy?.charAt(0) }}</div>
               <span>{{ item.requestedBy }}</span>
             </div>
           </td>
+
+          <!-- Type -->
           <td>
             <span class="type-tag">{{ item.type }}</span>
           </td>
+
+          <!-- Priority -->
           <td>
             <span [class]="getPriorityClass(item.priority)" class="priority-badge">
               <i class="fas fa-circle priority-dot"></i>
               {{ item.priority }}
             </span>
           </td>
+
+          <!-- Date -->
           <td class="date-cell">{{ item.requestedDate }}</td>
+
+          <!-- Status -->
           <td>
             <span [class]="getStatusBadgeClass(item.status)">{{ item.status }}</span>
           </td>
+
+          <!-- Actions -->
           <td>
             <div class="action-button">
               <button
@@ -133,7 +147,7 @@
         </tr>
 
         <!-- Empty State -->
-        <tr *ngIf="filteredItems.length === 0">
+        <tr *ngIf="!PendingApprovalList || PendingApprovalList.length === 0">
           <td colspan="9" class="empty-state">
             <div class="empty-inner">
               <i class="fas fa-inbox empty-icon"></i>

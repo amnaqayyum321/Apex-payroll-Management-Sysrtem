@@ -1,0 +1,77 @@
+<div class="table-main-div">
+  <!-- Header -->
+  <div class="d-flex align-items-center justify-content-between p-3">
+    <h5 style="color: var(--white-color-1); margin: 0; font-weight: 600">Approval Templates</h5>
+
+    <!-- Filter -->
+    <div class="d-flex align-items-center gap-2">
+      <div class="status-filter-wrapper">
+        <select
+          class="status-filter-select"
+          [(ngModel)]="selectedStatus"
+          (ngModelChange)="applyFilter()"
+        >
+          <option value="">All Status</option>
+          <option value="DRAFT">DRAFT</option>
+          <option value="ACTIVE">ACTIVE</option>
+        </select>
+      </div>
+
+      <button class="reset-filter-btn" (click)="resetFilter()" title="Reset Filter">
+        <i class="fa fa-refresh"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="header-divider"></div>
+
+  <!-- Table -->
+  <div class="table-scrollable">
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Code</th>
+          <th>Name</th>
+          <th>Entity</th>
+          <th>Stages</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngIf="filteredList.length === 0">
+          <td colspan="7" class="not-found">No templates found.</td>
+        </tr>
+        <tr *ngFor="let t of filteredList; let i = index">
+          <td>{{ i + 1 }}</td>
+          <td>{{ t.code }}</td>
+          <td>{{ t.name }}</td>
+          <td>{{ t.entityName }}</td>
+          <td>
+            <span class="stage-count-badge">
+              {{ t.stageDefinitionPublicIds?.length ?? 0 }} Stages
+            </span>
+          </td>
+          <td>
+            <span class="status-badge" [ngClass]="getStatusClass(t.status)">
+              {{ t.status }}
+            </span>
+          </td>
+          <td>
+            <button
+              *ngIf="t.status !== 'ACTIVE'"
+              class="create-btn"
+              (click)="activateTemplate(t.publicId)"
+            >
+              <i class="fa fa-check icon"></i> Activate
+            </button>
+            <span *ngIf="t.status === 'ACTIVE'" style="color: #22c55e; font-weight: 500">
+              ✓ Active
+            </span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

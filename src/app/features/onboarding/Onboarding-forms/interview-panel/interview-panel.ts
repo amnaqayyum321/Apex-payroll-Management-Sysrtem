@@ -73,7 +73,7 @@ export class InterviewPanel {
   }
   addOrUpdateMember() {
     const selectedEmployee = this.employees.find(
-      (e) => e.publicId === this.member.employeePublicId,
+      (e) => e.employeePublicId === this.member.employeePublicId,
     );
 
     if (!selectedEmployee) return;
@@ -198,7 +198,7 @@ export class InterviewPanel {
         this.remarks = data.remarks;
         this.active = data.isActive;
         this.members = data.members.map((m: any) => {
-          const emp = this.employees.find((e) => e.publicId === m.employeePublicId);
+          const emp = this.employees.find((e) => e.employeePublicId === m.employeePublicId);
 
           return {
             ...m,
@@ -213,7 +213,7 @@ export class InterviewPanel {
     });
   }
   getEmployeeName(id: string) {
-    const emp = this.employees.find((e) => e.publicId === id);
+    const emp = this.employees.find((e) => e.employeePublicId === id);
     return emp ? emp.name : '';
   }
 
