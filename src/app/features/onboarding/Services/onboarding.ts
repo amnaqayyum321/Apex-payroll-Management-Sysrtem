@@ -172,7 +172,6 @@ export class OnboardingService {
   getPendingApprovals(page: number, size: number): Observable<any> {
     return this.http.get(this.url + `approvals/pending?page=${page}&size=${size}`);
   }
-
   getApprovalInstance(instancePublicId: string): Observable<any> {
     return this.http.get(this.url + `approvals/${instancePublicId}`);
   }

@@ -1,0 +1,183 @@
+<section class="container-fluid p-0">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <!-- Page Title -->
+        <div class="page-title">
+            <i class="fa-solid fa-house"></i>
+            <span style="font-weight: 700; color: #566f9e">-</span>
+            <span>View All Departments</span>
+        </div>
+        <div class="d-flex align-items-end gap-2">
+            <!-- Search -->
+            <div class="search-wrapper">
+                <div class="search-note">*Search by Name or Code</div>
+                <div class="search-box">
+                    <input type="text" placeholder="Search here" [(ngModel)]="searchTerm" (input)="onSearch()" />
+                    <i class="fa fa-search"></i>
+                </div>
+            </div>
+
+         
+
+            <!-- Reset Button -->
+            <div class="mb-1">
+                <button class="reset-btn" (click)="resetFilters()" title="Reset All Filters"
+                    [disabled]="!isAnyFilterActive">
+                    <i class="fa-solid fa-rotate-left"></i>
+                </button>
+            </div>
+
+            <!-- Create Button -->
+            <div class="mb-1">
+                <button class="create-btn" [routerLink]="['/panel/users-and-roles/approval-stage']">
+                    <i class="fa-solid fa-plus icon"></i>
+                    Create
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <section class="table-main-div">
+        <div class="rounded-2xl text-gray-200 overflow-x-auto pt-4">
+            <table class="min-w-full text-sm border-separate border-spacing-y-2">
+                <thead>
+                    <tr class="text-gray-400 text-left text-xs uppercase tracking-wider">
+                        <th class="px-3 py-2">#</th>
+                        <th class="px-3 py-2">Code</th>
+                        <th class="px-3 py-2">Name</th>
+                        <th class="px-3 py-2">More</th>
+                        <th class="px-3 py-2">Actions</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let stage of approvalStages; ; let i = index"
+                        class="bg-[#1e293b] hover:bg-[#27354a] rounded-lg">
+                        <td class="px-3 py-3 font-medium">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
+                        <td class="px-3 py-3 font-medium">{{ stage.code }}</td>
+
+                        <td class="px-3 py-3 font-medium">{{ stage.name }}</td>
+                        <td class="px-3 py-3 text-gray-400">
+                            <button class="btn btn-sm btn-info" (click)="openViewModal(stage)">
+                                <i class="fa fa-eye"></i> View
+                            </button>
+                        </td>
+                        <td class="px-3 py-3 text-gray-400">
+                            <i class="fa-solid fa-pen-to-square" style="color: #1274ac; cursor: pointer"
+                                title="Edit Employee-category"
+                                [routerLink]="['/panel/users-and-roles/approval-stage', stage.publicId]"></i>
+                        </td>
+                    </tr>
+                    <tr *ngIf="approvalStages.length === 0">
+                        <td class="px-3 py-3 text-gray-400" colspan="3" class="text-center">No approval stages found.
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="table-footer d-flex justify-content-between align-items-center mt-3">
+            <div class="table-info">
+                <span class="label">Items per page</span>
+                <div class="items-select">
+                    <select [(ngModel)]="itemsPerPage" (change)="onItemsPerPageChange()">
+                        <option *ngFor="let opt of [7, 15, 25, 50, 100]" [value]="opt">{{ opt }}</option>
+                    </select>
+                </div>
+                <span class="rows-count">
+                    {{ firstItem }} - {{ lastItem }} of {{ totalItems }} Departments
+                </span>
+            </div>
+
+            <div class="d-flex justify-content-end mt-3 me-3">
+                <nav aria-label="Page navigation">
+                    <ul class="pagination">
+                        <li class="page-item" [class.disabled]="currentPage === 1">
+                            <a class="page-link" (click)="changePage(currentPage - 1)">&laquo;</a>
+                        </li>
+                        <li class="page-item" *ngFor="let page of totalPagesArray"
+                            [class.active]="page === currentPage">
+                            <a class="page-link" (click)="changePage(page)">{{ page }}</a>
+                        </li>
+                        <li class="page-item" [class.disabled]="currentPage === totalPages">
+                            <a class="page-link" (click)="changePage(currentPage + 1)">&raquo;</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </section>
+</section>
+
+
+
+<!-- View Modal -->
+<ng-template #viewModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title">Approval Stage Details</h4>
+        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+    </div>
+    <div class="modal-body" *ngIf="selectedStage">
+        <!-- Read-only fields in a two-column layout -->
+        <div class="row">
+
+            <div class="col-md-6">
+                <label class="form-label">Code</label>
+                <p class="form-control-static">{{ selectedStage.code }}</p>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Name</label>
+                <p class="form-control-static">{{ selectedStage.name }}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-label">Min Approvals</label>
+                <p class="form-control-static">{{ selectedStage.minApprovals }}</p>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Status</label>
+                <p class="form-control-static">{{ selectedStage.status }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <label class="form-label">Created Date</label>
+                <p class="form-control-static">{{ selectedStage.createdDate | date:'medium' }}</p>
+            </div>
+            <div class="col-md-6">
+                <label class="form-label">Last Modified</label>
+                <p class="form-control-static">{{ selectedStage.lastModifiedDate | date:'medium' }}</p>
+            </div>
+        </div>
+
+        <!-- Approvers table -->
+        <div class="mt-3">
+            <h5>Approvers</h5>
+            <div class="table-responsive">
+                <table class="table table-sm table-bordered">
+                    <thead>
+                        <tr>
+                            <th>User Name</th>
+                            <th>Role Code</th>
+                            <th>Sequence</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let approver of selectedStage.approvers">
+                            <td>{{ approver.userName }}</td>
+                            <td>{{ approver.roleCode }}</td>
+                            <td>{{ approver.sequence }}</td>
+                        </tr>
+                        <tr *ngIf="selectedStage.approvers.length === 0">
+                            <td colspan="4" class="text-center">No approvers assigned</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="modal.close()">Close</button>
+    </div>
+</ng-template>

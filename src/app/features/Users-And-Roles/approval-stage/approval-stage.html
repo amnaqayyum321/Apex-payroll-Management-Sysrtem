@@ -1,1 +1,169 @@
-<p>approval-stage works!</p>
+<div class="user-form-wrapper">
+  <div class="user-card">
+    <!-- Header -->
+    <div class="card-header">
+      <h3>{{ isEditMode ? 'Update Approval Stage' : 'Create Approval Stage' }}</h3>
+    </div>
+
+    <div class="header-divider"></div>
+
+    <form class="user-form" (ngSubmit)="isEditMode ? updateStage() : createStage()">
+      <!-- Basic Fields Row -->
+      <div class="row">
+        <div class="col-md-4">
+          <label class="form-label">Code <span class="text-danger">*</span></label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter Code..."
+            [(ngModel)]="code"
+            name="code"
+            required
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Name <span class="text-danger">*</span></label>
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Enter Name..."
+            [(ngModel)]="name"
+            name="name"
+            required
+          />
+        </div>
+         <div class="col-md-4">
+          <label class="form-label">Min Approvals</label>
+          <input
+            type="number"
+            class="form-control"
+            min="1"
+            [(ngModel)]="minApprovals"
+            name="minApprovals"
+          />
+          <small class="text-muted">Minimum number of approvers required.</small>
+        </div>
+      </div>
+
+    
+
+      <div class="row">
+        <div class="col-md-12">
+          <label class="form-label">Description</label>
+          <textarea
+            class="form-control"
+            rows="3"
+            [(ngModel)]="description"
+            name="description"
+            placeholder="Enter description..."
+          ></textarea>
+        </div>
+      </div>
+
+      <hr />
+
+      <!-- ================= APPROVERS SECTION ================= -->
+      <div class="members-section">
+        <h5 class="section-title">Approvers</h5>
+
+        <!-- Add/Edit Form Row -->
+        <div class="row member-fields">
+     <div class="col-md-5">
+  <label>User</label>
+  <div class="custom-dropdown" (click)="toggleUserDropdown($event)">
+    <div class="dropdown-selected">
+      <span>{{ selectedUserDisplay || 'Select User' }}</span>
+      <i class="fa-solid fa-caret-down" [class.rotate]="isUserDropdownOpen"></i>
+    </div>
+
+    <div class="dropdown-options" *ngIf="isUserDropdownOpen">
+      <div
+        class="dropdown-option"
+        *ngFor="let user of users"
+        (click)="selectUser(user, $event)"
+      >
+        {{ user.firstName }} {{ user.lastName }}
+      </div>
+    </div>
+  </div>
+</div>
+
+          <div class="col-md-5">
+            <label>Role Code</label>
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="tempApprover.roleCode"
+              name="roleCode"
+              readonly
+              placeholder="Select User"
+            />
+          </div>
+
+          <div class="col-md-2 d-flex align-items-end">
+            <button
+              type="button"
+              class="add-member-btn"
+              (click)="addOrUpdateApprover()"
+            >
+              {{ editIndex !== null ? 'Update' : 'Add' }}
+            </button>
+          </div>
+        </div>
+
+        <!-- Approvers Table -->
+        <div class="table-wrapper" *ngIf="approvers.length > 0">
+          <table class="custom-table">
+            <thead>
+              <tr>
+                <th class="text-left">Seq</th>
+                <th class="text-left">User Name</th>
+                <th class="text-left">Role Code</th>
+                <th class="text-left">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let app of approvers; let i = index">
+                <td class="text-left">{{ app.sequence }}</td>
+                <td class="text-left">{{ app.userName }}</td>
+                <td class="text-left">{{ app.roleCode }}</td>
+                <td class="text-left">
+                  <div class="action-btn-group action-btn-left">
+                    <button class="btn-edit" type="button" (click)="editApprover(i)">
+                      Edit
+                    </button>
+                    <button class="btn-delete" type="button" (click)="deleteApprover(i)">
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Warning if not enough approvers -->
+        <div
+          *ngIf="approvers.length < minApprovals"
+          class="alert alert-warning mt-2"
+        >
+          <i class="fa fa-exclamation-triangle"></i>
+          Minimum {{ minApprovals }} approver(s) required. Currently: {{ approvers.length }}
+        </div>
+      </div>
+
+      <!-- Footer Buttons -->
+      <div class="form-actions mt-3">
+        <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
+        <button
+          type="submit"
+          class="submit-btn"
+          [disabled]="disabled || approvers.length < minApprovals"
+        >
+          {{ isEditMode ? 'Update' : 'Create' }}
+        </button>
+      </div>
+    </form> 
+  </div>
+</div>
