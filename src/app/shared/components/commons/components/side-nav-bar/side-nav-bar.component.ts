@@ -104,7 +104,7 @@ export class SideNavBarComponent implements OnInit {
               route: 'employees-master-data/view-all-project-transfer',
               isVisible: false,
             },
-               {
+            {
               label: 'Approval Stages',
               route: 'users-and-roles/view-approval-stages',
               isVisible: true,
@@ -115,7 +115,7 @@ export class SideNavBarComponent implements OnInit {
               route: 'users-and-roles/view-template-approval',
               isVisible: true,
             },
-         
+
             {
               label: 'Approval Tem Status',
               route: 'users-and-roles/approval-Tem-Status',
@@ -223,7 +223,7 @@ export class SideNavBarComponent implements OnInit {
               icon: 'fa-solid fa-file-signature',
               isVisible: true,
             },
-              {
+            {
               label: 'Leave Application HR',
               route: 'forms/leave-app-hr',
               icon: 'fa-solid fa-file-signature',
@@ -258,9 +258,9 @@ export class SideNavBarComponent implements OnInit {
           children: [
             {
               label: 'Employees',
-              route: 'form/view-all-employees',
+              route: 'forms/view-all-employees',
               icon: 'fa-solid fa-user-tie',
-              isVisible: false,
+              isVisible: true,
             },
             {
               label: 'Employees Category',

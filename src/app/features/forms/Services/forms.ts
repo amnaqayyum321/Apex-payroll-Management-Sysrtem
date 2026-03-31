@@ -76,6 +76,21 @@ export class FormsService {
   GetEmployees(page: number, size: number, filter: string = 'ALL'): Observable<any> {
     return this.http.get(this.url + `employees/lookup?filter=${filter}&page=${page}&size=${size}`);
   }
+  GetEmployeesList(page: number, size: number): Observable<any> {
+    return this.http.get(this.url + `employees?page=${page}&size=${size}`);
+  }
+  GetEmployeesListById(publicId: string): Observable<any> {
+    return this.http.get(this.url + `employees/${publicId}`);
+  }
+  PostEmployeesList(data: any): Observable<any> {
+    return this.http.post(this.url + 'employees/manual', data);
+  }
+  UpdateEmployeesList(PublicId: string, data: any): Observable<any> {
+    return this.http.put(this.url + `employees/${PublicId}`, data);
+  }
+  PostEmployeeWithNewUser(payload: any): Observable<any> {
+    return this.http.post(this.url + `employees/manual-with-user`, payload);
+  }
   // Project
 
   // project
@@ -277,5 +292,11 @@ export class FormsService {
   }
   getLeaveApplicationById(publicId: string): Observable<any> {
     return this.http.get(this.url + `payroll/leave-applications/${publicId}`);
+  }
+  updateLeaveApplicationStatus(publicId: string, status: string, remarks: string = '') {
+    return this.http.patch(`${this.url}payroll/leave-applications/${publicId}/status`, {
+      status,
+      remarks,
+    });
   }
 }

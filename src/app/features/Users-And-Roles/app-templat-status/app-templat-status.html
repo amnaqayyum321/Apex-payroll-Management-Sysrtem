@@ -46,9 +46,7 @@
           <td>{{ t.name }}</td>
           <td>{{ t.entityName }}</td>
           <td>
-            <span class="stage-count-badge">
-              {{ t.stageDefinitionPublicIds?.length ?? 0 }} Stages
-            </span>
+            <span class="stage-count-badge"> {{ t.stages?.length ?? 0 }} Stages </span>
           </td>
           <td>
             <span class="status-badge" [ngClass]="getStatusClass(t.status)">

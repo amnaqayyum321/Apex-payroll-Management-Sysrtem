@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsService } from '../../Services/forms';
 import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../../../../core/services/management-services/loader.service';
@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
   templateUrl: './view-leave-application.html',
   styleUrl: './view-leave-application.scss',
 })
-export class ViewLeaveApplication {
+export class ViewLeaveApplication implements OnInit {
   LeavesApplicationList: any[] = [];
   filteredLeavesApplicationList: any[] = [];
   paginatedLeavesApplicationList: any[] = [];
@@ -22,12 +22,23 @@ export class ViewLeaveApplication {
   currentPage = 1;
   itemsPerPage = 7;
 
-  searchTerm: string = '';
-  statusFilter: string = ''; // DRAFT | APPROVED | PENDING | REJECTED | ''
-  leaveModeFilter: string = ''; // FULL_DAY | HALF_DAY | SHORT_LEAVE | ''
+  selectedLeave: any = null;
+  isStatusModalOpen: boolean = false;
 
-  publicId: string | null = null;
-  isEditMode = false;
+  searchTerm: string = '';
+  statusFilter: string = '';
+  leaveModeFilter: string = '';
+
+  // ── Approval Modal State ──────────────────────────────────────
+  selectedStatus: string = '';
+  isSubmitting: boolean = false;
+  isSuccess: boolean = false;
+
+  statusOptions = [
+    { value: 'DRAFT', label: 'Draft', icon: 'fas fa-pen' },
+    { value: 'PENDING_APPROVAL', label: 'Pending Approval', icon: 'fas fa-clock' },
+  ];
+  // ─────────────────────────────────────────────────────────────
 
   constructor(
     private formsService: FormsService,
@@ -35,6 +46,7 @@ export class ViewLeaveApplication {
     private loader: LoaderService,
   ) {}
 
+  // ── Pagination Getters ────────────────────────────────────────
   get totalPages() {
     return this.totalPagesCount || Math.ceil(this.totalItems / this.itemsPerPage);
   }
@@ -55,26 +67,55 @@ export class ViewLeaveApplication {
     return !!this.searchTerm || !!this.statusFilter || !!this.leaveModeFilter;
   }
 
-  // Unique leave modes from loaded data for dropdown
   get uniqueLeaveModes(): string[] {
     const modes = this.LeavesApplicationList.map((l) => l.leaveMode).filter(Boolean);
     return [...new Set(modes)];
   }
+  // ─────────────────────────────────────────────────────────────
 
   ngOnInit() {
     this.loadLeaves();
   }
 
+  // ── Table Actions ─────────────────────────────────────────────
+  openStatusModal(leave: any) {
+    this.selectedLeave = leave;
+    this.selectedStatus = leave?.status ?? '';
+    this.isSuccess = false;
+    this.isStatusModalOpen = true;
+  }
+
+  closeStatusModal() {
+    this.isStatusModalOpen = false;
+    this.selectedLeave = null;
+    this.selectedStatus = '';
+    this.isSuccess = false;
+    this.isSubmitting = false;
+  }
+  // ─────────────────────────────────────────────────────────────
+
+  // ── Data Loading ──────────────────────────────────────────────
   loadLeaves() {
     this.loader.show();
     const backendPage = this.currentPage - 1;
-    this.formsService.GetLeaveApplication(backendPage, this.itemsPerPage, 'ALL').subscribe({
+
+    // Agar filter active hai to saari items fetch karo
+    const pageSize = this.isAnyFilterActive ? 9999 : this.itemsPerPage;
+    const page = this.isAnyFilterActive ? 0 : backendPage;
+
+    this.formsService.GetLeaveApplication(page, pageSize, 'ALL').subscribe({
       next: (response: any) => {
         this.loader.hide();
-        this.LeavesApplicationList = response.data;
+        this.LeavesApplicationList = response.data.sort(
+          (a: any, b: any) => new Date(a.createdDate).getTime() - new Date(b.createdDate).getTime(),
+        );
         this.totalItems = response.paginator.totalItems;
         this.totalPagesCount = response.paginator.totalPages;
-        this.currentPage = response.paginator.currentPage + 1;
+
+        if (!this.isAnyFilterActive) {
+          this.currentPage = response.paginator.currentPage + 1;
+        }
+
         this.applyFilter();
       },
       error: () => {
@@ -94,20 +135,19 @@ export class ViewLeaveApplication {
     this.currentPage = 1;
     this.loadLeaves();
   }
-
   onSearch() {
     this.currentPage = 1;
-    this.applyFilter();
+    this.loadLeaves();
   }
 
   onStatusChange() {
     this.currentPage = 1;
-    this.applyFilter();
+    this.loadLeaves();
   }
 
   onLeaveModeChange() {
     this.currentPage = 1;
-    this.applyFilter();
+    this.loadLeaves();
   }
 
   applyFilter() {
@@ -118,17 +158,13 @@ export class ViewLeaveApplication {
         !term ||
         item.name?.toLowerCase().includes(term) ||
         item.leaveTypeName?.toLowerCase().includes(term);
-
       const matchesStatus = !this.statusFilter || item.status === this.statusFilter;
-
       const matchesLeaveMode = !this.leaveModeFilter || item.leaveMode === this.leaveModeFilter;
-
       return matchesSearch && matchesStatus && matchesLeaveMode;
     });
 
     this.updatePaginatedList();
   }
-
   updatePaginatedList() {
     if (this.isAnyFilterActive) {
       this.totalItems = this.filteredLeavesApplicationList.length;
@@ -142,14 +178,48 @@ export class ViewLeaveApplication {
       this.paginatedLeavesApplicationList = this.LeavesApplicationList;
     }
   }
-
   resetFilters() {
     this.searchTerm = '';
     this.statusFilter = '';
     this.leaveModeFilter = '';
     this.currentPage = 1;
-    this.applyFilter();
+    this.loadLeaves();
   }
+  getStatusClass(status: string): string {
+    const map: any = {
+      DRAFT: 'status-draft',
+      PENDING: 'status-pending',
+      PENDING_APPROVAL: 'status-pending',
+      APPROVED: 'status-approved',
+      REJECTED: 'status-rejected',
+    };
+    return map[status] || '';
+  }
+
+  onSubmitStatus(): void {
+    if (this.isSubmitting || !this.selectedLeave?.publicId || !this.selectedStatus) return;
+
+    this.isSubmitting = true;
+    this.formsService
+      .updateLeaveApplicationStatus(this.selectedLeave.publicId, this.selectedStatus, '')
+      .subscribe({
+        next: () => {
+          this.isSubmitting = false;
+          this.isSuccess = true;
+          setTimeout(() => {
+            this.isSuccess = false;
+            this.loadLeaves();
+            this.closeStatusModal();
+          }, 2000);
+        },
+        error: (err: any) => {
+          this.isSubmitting = false;
+          this.toastr.error('Failed to update status');
+          console.error('Status update failed:', err);
+        },
+      });
+  }
+  // ─────────────────────────────────────────────────────────────
 
   formatRoleName(role: string): string {
     if (!role) return '';

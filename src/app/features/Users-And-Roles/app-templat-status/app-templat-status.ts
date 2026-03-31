@@ -55,6 +55,7 @@ export class AppTemplatStatus implements OnInit {
     this.loader.show();
     this.UserSv.getApprovaLTemplate(this.currentPage, this.pageSize).subscribe({
       next: (res: any) => {
+        console.log('All Template', res);
         this.loader.hide();
         if (res.success) {
           this.templateList = res.data;
