@@ -293,10 +293,5 @@ export class FormsService {
   getLeaveApplicationById(publicId: string): Observable<any> {
     return this.http.get(this.url + `payroll/leave-applications/${publicId}`);
   }
-  // updateLeaveApplicationStatus(publicId: string, status: string, remarks: string = '') {
-  //   return this.http.patch(`${this.url}payroll/leave-applications/${publicId}/status`, {
-  //     status,
-  //     remarks,
-  //   });
-  // }
+
 }
