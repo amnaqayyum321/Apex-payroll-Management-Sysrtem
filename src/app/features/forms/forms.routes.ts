@@ -35,6 +35,7 @@ import { ViewIDTypeList } from './master-data/view-id-type-list/view-id-type-lis
 import { ViewLeaveApplication } from './attendence/view-leave-application/view-leave-application';
 import { LeaveApplicationApprovals } from './attendence/leave-application-approvals/leave-application-approvals';
 import { LeaveAppHr } from './attendence/leave-app-hr/leave-app-hr';
+import { ViewEmployeeList } from './employees-masterdata/view-employee-list/view-employee-list';
 
 export const routes: Routes = [
   {
@@ -77,6 +78,14 @@ export const routes: Routes = [
   {
     path: 'employees',
     component: Employees,
+  },
+  {
+    path: 'employees/:id',
+    component: Employees,
+  },
+  {
+    path: 'view-all-employees',
+    component: ViewEmployeeList,
   },
   {
     path: 'employees-category',
@@ -212,11 +221,11 @@ export const routes: Routes = [
     path: 'view-job-title-list',
     component: ViewJobTitleList,
   },
-    {
+  {
     path: 'leave-application-approval',
     component: LeaveApplicationApprovals,
   },
-    {
+  {
     path: 'leave-app-hr',
     component: LeaveAppHr,
   },

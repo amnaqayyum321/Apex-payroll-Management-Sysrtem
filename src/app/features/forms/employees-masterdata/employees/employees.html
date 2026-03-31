@@ -1,1 +1,224 @@
+<div class="user-form-wrapper">
+  <div class="user-card">
+    <!-- Header -->
+    <div class="card-header">
+      <h3>{{ isEditMode ? 'Edit Employee' : 'Add Employee' }}</h3>
+      <button class="reset-btn" type="button" (click)="resetForm()">
+        <i class="fa fa-rotate-right"></i>
+      </button>
+    </div>
 
+    <div class="header-divider"></div>
+
+    <!-- Form -->
+    <form class="user-form">
+      <!-- Mode Toggle (only in create mode) -->
+      <div class="mode-toggle" *ngIf="!isEditMode">
+        <button type="button" [class.active]="!createNewUser" (click)="createNewUser = false">
+          🔗 Link Existing User
+        </button>
+        <button type="button" [class.active]="createNewUser" (click)="createNewUser = true">
+          ➕ Create New User
+        </button>
+      </div>
+
+      <!-- Recruitment Bypass Checkbox -->
+      <label class="checkbox-container d-flex justify-content-end">
+        Recruitment Bypass
+        <input
+          type="checkbox"
+          [(ngModel)]="recruitmentBypassAcknowledged"
+          class="custom-checkbox"
+          name="recruitmentBypassAcknowledged"
+        />
+        <span class="checkmark"></span>
+      </label>
+
+      <!-- Code -->
+      <div class="form-group">
+        <label class="required">Code</label>
+        <input
+          type="text"
+          [(ngModel)]="code"
+          class="form-control"
+          name="code"
+          placeholder="Enter code"
+        />
+      </div>
+
+      <!-- Full Name -->
+      <div class="form-group">
+        <label class="required">Full Name</label>
+        <input
+          type="text"
+          [(ngModel)]="fullName"
+          class="form-control"
+          name="fullName"
+          placeholder="Enter full name"
+        />
+      </div>
+
+      <!-- Email -->
+      <div class="form-group">
+        <label class="required">Email</label>
+        <input
+          type="email"
+          [(ngModel)]="email"
+          class="form-control"
+          name="email"
+          placeholder="Enter email"
+        />
+      </div>
+
+      <!-- Mobile Number -->
+      <div class="form-group">
+        <label>Mobile Number</label>
+        <input
+          type="text"
+          class="form-control"
+          name="mobileNumber"
+          [(ngModel)]="mobileNumber"
+          placeholder="Enter mobile number"
+        />
+      </div>
+
+      <!-- Employment Status -->
+      <div class="form-group">
+        <label class="required">Employment Status</label>
+        <select [(ngModel)]="employmentStatus" name="employmentStatus" class="form-select">
+          <option value="">-- Select --</option>
+          <option value="ONBOARDING">Onboarding</option>
+          <option value="PROBATION">Probation</option>
+          <option value="ACTIVE">Active</option>
+          <option value="NOTICE_PERIOD">Notice Period</option>
+          <option value="INACTIVE">Inactive</option>
+        </select>
+      </div>
+
+      <!-- Onboarding Status -->
+      <div class="form-group">
+        <label>Onboarding Status</label>
+        <select [(ngModel)]="onboardingStatus" name="onboardingStatus" class="form-select">
+          <option value="">-- Select --</option>
+          <option value="NOT_STARTED">Not Started</option>
+          <option value="IN_PROGRESS">In Progress</option>
+          <option value="COMPLETED">Completed</option>
+        </select>
+      </div>
+
+      <!-- Employee Type -->
+      <div class="form-group">
+        <label class="required">Employee Type</label>
+        <select [(ngModel)]="employeeType" name="employeeType" class="form-select">
+          <option value="">-- Select --</option>
+          <option value="CONTRACT">Contract</option>
+          <option value="PERMANENT">Permanent</option>
+          <option value="INTERNEE">Internee</option>
+          <option value="TRAINEE">Trainee</option>
+        </select>
+      </div>
+
+      <!-- Date of Birth -->
+      <div class="form-group">
+        <label>Date of Birth</label>
+        <input type="date" [(ngModel)]="dateOfBirth" name="dateOfBirth" class="form-control" />
+      </div>
+
+      <!-- Date of Joining -->
+      <div class="form-group">
+        <label>Date of Joining</label>
+        <input type="date" [(ngModel)]="dateOfJoining" class="form-control" name="dateOfJoining" />
+      </div>
+
+      <!-- Date of Leaving -->
+      <div class="form-group">
+        <label>Date of Leaving</label>
+        <input type="date" [(ngModel)]="dateOfLeaving" class="form-control" name="dateOfLeaving" />
+      </div>
+
+      <!-- ===== LINK EXISTING USER ===== -->
+      <div class="form-group full-width" *ngIf="!createNewUser && !isEditMode">
+        <label class="required">User Public ID</label>
+        <input
+          type="text"
+          [(ngModel)]="userPublicId"
+          name="userPublicId"
+          class="form-control"
+          placeholder="Enter existing user public ID"
+        />
+      </div>
+
+      <!-- ===== CREATE NEW USER FIELDS ===== -->
+      <ng-container *ngIf="createNewUser && !isEditMode">
+        <div class="form-group">
+          <label class="required">First Name</label>
+          <input
+            type="text"
+            [(ngModel)]="userFirstName"
+            name="userFirstName"
+            class="form-control"
+            placeholder="Enter first name"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="required">Last Name</label>
+          <input
+            type="text"
+            [(ngModel)]="userLastName"
+            name="userLastName"
+            class="form-control"
+            placeholder="Enter last name"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="required">Role Code</label>
+          <input
+            type="text"
+            [(ngModel)]="roleCode"
+            name="roleCode"
+            class="form-control"
+            placeholder="Enter role code"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="required">Initial Password</label>
+          <input
+            type="password"
+            [(ngModel)]="initialPassword"
+            name="initialPassword"
+            class="form-control"
+            placeholder="Min 8 characters"
+          />
+        </div>
+      </ng-container>
+
+      <!-- Remarks -->
+      <div class="form-group full-width">
+        <label>Remarks</label>
+        <textarea rows="3" [(ngModel)]="remarks" name="remarks" class="form-control"></textarea>
+      </div>
+
+      <!-- Bypass Reason -->
+      <div class="form-group full-width">
+        <label>Bypass Reason</label>
+        <textarea
+          rows="2"
+          class="form-control"
+          [(ngModel)]="recruitmentBypassReason"
+          name="recruitmentBypassReason"
+        ></textarea>
+      </div>
+
+      <!-- Actions -->
+      <div class="form-actions">
+        <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
+        <button type="button" class="submit-btn" [disabled]="disabled" (click)="onSubmit()">
+          {{ isEditMode ? 'Update' : 'Submit' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

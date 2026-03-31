@@ -1,10 +1,10 @@
 <section class="container-fluid p-0">
   <div class="d-flex justify-content-between align-items-center mb-3">
     <!-- Page Title -->
-    <div class="page-title">
+    <div class="page-title me-2">
       <i class="fa-solid fa-house"></i>
       <span style="font-weight: 700; color: #566f9e">-</span>
-      <span>View All Leave Applications</span>
+      <span style="white-space: nowrap; font-size: 10px">View All Leave Applications</span>
     </div>
 
     <!-- Filters + Create Button -->
@@ -30,7 +30,7 @@
           <select [(ngModel)]="statusFilter" (change)="onStatusChange()" class="filter-select">
             <option value="">All Status</option>
             <option value="DRAFT">Draft</option>
-            <option value="PENDING">Pending</option>
+            <option value="PENDING_APPROVAL">Pending</option>
             <option value="APPROVED">Approved</option>
             <option value="REJECTED">Rejected</option>
           </select>
@@ -70,9 +70,13 @@
 
       <!-- Create Button -->
       <div class="mb-1">
-        <button class="create-btn" [routerLink]="['/panel/forms/leave-application']">
+        <button
+          class="create-btn"
+          style="white-space: nowrap; font-size: 13px"
+          [routerLink]="['/panel/forms/leave-application']"
+        >
           <i class="fa-solid fa-plus icon"></i>
-          Create Leave Application
+          Create Leave App
         </button>
       </div>
     </div>
@@ -129,6 +133,19 @@
                 title="Edit Leave Application"
                 [routerLink]="['/panel/forms/leave-application', LeaveApp.publicId]"
               ></i>
+              <button
+                class="status-btn"
+                [ngClass]="{
+                  'disabled-btn':
+                    LeaveApp.status === 'APPROVED' || LeaveApp.status === 'PENDING_APPROVAL',
+                }"
+                [disabled]="
+                  LeaveApp.status === 'APPROVED' || LeaveApp.status === 'PENDING_APPROVAL'
+                "
+                (click)="openStatusModal(LeaveApp)"
+              >
+                Change Status
+              </button>
             </td>
           </tr>
 
@@ -139,6 +156,132 @@
         </tbody>
       </table>
     </div>
+
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <!--  STATUS MODAL — inline, no child component needed          -->
+    <!-- ═══════════════════════════════════════════════════════════ -->
+    <div class="custom-modal" *ngIf="isStatusModalOpen">
+      <div class="modal-backdrop" (click)="closeStatusModal()"></div>
+
+      <div class="modal-content">
+        <div class="approval-modal-wrapper">
+          <!-- Success Overlay -->
+          <div class="success-overlay" *ngIf="isSuccess">
+            <div class="success-content">
+              <div class="success-icon-ring">
+                <i class="fas fa-check"></i>
+              </div>
+              <h3>Status Updated!</h3>
+              <p>
+                Leave application has been updated to
+                <strong>{{ selectedStatus }}</strong>
+              </p>
+            </div>
+          </div>
+
+          <!-- Header -->
+          <div class="modal-header-row">
+            <div class="modal-title-group">
+              <div class="modal-icon-wrap">
+                <i class="fas fa-clipboard-list"></i>
+              </div>
+              <div>
+                <h2 class="modal-title">Change Leave Status</h2>
+                <p class="modal-subtitle">Update the status of this application</p>
+              </div>
+            </div>
+            <button class="close-icon-btn" (click)="closeStatusModal()">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- Leave Info Summary -->
+          <div class="leave-info-grid" *ngIf="selectedLeave">
+            <div class="info-chip">
+              <span class="info-chip-label">Employee</span>
+              <span class="info-chip-value">{{ selectedLeave.name }}</span>
+            </div>
+            <div class="info-chip">
+              <span class="info-chip-label">Leave Type</span>
+              <span class="info-chip-value">{{ selectedLeave.leaveTypeName }}</span>
+            </div>
+            <div class="info-chip">
+              <span class="info-chip-label">From</span>
+              <span class="info-chip-value">{{ selectedLeave.fromDate }}</span>
+            </div>
+            <div class="info-chip">
+              <span class="info-chip-label">To</span>
+              <span class="info-chip-value">{{ selectedLeave.toDate }}</span>
+            </div>
+            <div class="info-chip span-full">
+              <span class="info-chip-label">Total Days</span>
+              <span class="info-chip-value highlight-days">
+                {{ selectedLeave.totalDays }} Days
+              </span>
+            </div>
+          </div>
+
+          <!-- Current Status Badge -->
+          <div class="current-status-row" *ngIf="selectedLeave?.status">
+            <span class="current-label">Current Status:</span>
+            <span class="status-pill" [ngClass]="getStatusClass(selectedLeave.status)">
+              {{ selectedLeave.status }}
+            </span>
+          </div>
+
+          <div class="divider"></div>
+
+          <!-- Status Selector -->
+          <div class="status-selector-section">
+            <p class="section-heading">Select Action</p>
+            <div class="status-cards-grid">
+              <div
+                class="status-card"
+                *ngFor="let opt of statusOptions"
+                [ngClass]="[
+                  opt.value.toLowerCase().replace('_', '-') + '-card',
+                  selectedStatus === opt.value ? 'selected' : '',
+                ]"
+                (click)="selectedStatus = opt.value"
+              >
+                <i [class]="opt.icon"></i>
+                <span>{{ opt.label }}</span>
+                <div class="selected-tick" *ngIf="selectedStatus === opt.value">
+                  <i class="fas fa-check"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="action-row">
+            <button class="btn-cancel" (click)="closeStatusModal()">
+              <i class="fas fa-arrow-left"></i>
+              Cancel
+            </button>
+            <button
+              class="btn-submit"
+              (click)="onSubmitStatus()"
+              [disabled]="
+                isSubmitting || !selectedStatus || selectedStatus === selectedLeave?.status
+              "
+            >
+              <span *ngIf="!isSubmitting">
+                <i class="fas fa-save"></i>
+                Update Status
+              </span>
+              <span *ngIf="isSubmitting" class="loading-dots">
+                <span class="spinner"></span>
+                Updating...
+              </span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- ═══════════════════════════════════════════════════════════ -->
 
     <!-- Footer -->
     <div class="table-footer d-flex justify-content-between align-items-center mt-3">

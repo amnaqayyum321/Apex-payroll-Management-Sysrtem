@@ -17,41 +17,38 @@
         </div>
       </div> -->
       <!-- ROW 1 -->
-    <!-- ROW 1 -->
-<div class="row">
-  <div class="col-md-4">
-    <label class="form-label">Name</label>
-    <input
-      type="text"
-      placeholder="Enter Name..."
-      [(ngModel)]="name"
-      class="form-control"
-      name="name"
-    />
-  </div>
+      <!-- ROW 1 -->
+      <div class="row">
+        <div class="col-md-6">
+          <label class="form-label">Name</label>
+          <input
+            type="text"
+            placeholder="Enter Name..."
+            [(ngModel)]="name"
+            class="form-control"
+            name="name"
+          />
+        </div>
 
-  <div class="col-md-4">
-    <label class="form-label">Leave Type</label>
-    <div class="custom-dropdown" (click)="toggleDropdown('leaveType', $event)">
-      <div class="dropdown-selected">
-        <span>{{ selectedLeaveTypeName || 'Select leave type' }}</span>
-        <i class="fa-solid fa-caret-down" [class.rotate]="isLeaveTypeDropdownOpen"></i>
-      </div>
-
-      <div class="dropdown-options" *ngIf="isLeaveTypeDropdownOpen">
-        <div
-          class="dropdown-option"
-          *ngFor="let leave of LeaveTypeList"
-          (click)="selectLeaveType(leave, $event)"
-        >
-          {{ leave.name }}
+        <div class="col-md-6">
+          <label class="form-label">Leave Type</label>
+          <div class="custom-dropdown" (click)="toggleDropdown('leaveType', $event)">
+            <div class="dropdown-selected">
+              <span>{{ selectedLeaveTypeName || 'Select leave type' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isLeaveTypeDropdownOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isLeaveTypeDropdownOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let leave of LeaveTypeList"
+                (click)="selectLeaveType(leave, $event)"
+              >
+                {{ leave.name }}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  </div>
-
-  
-</div>
       <div class="row">
         <div class="col-md-6">
           <label class="form-label">Start Date </label>
