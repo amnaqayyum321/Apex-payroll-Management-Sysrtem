@@ -293,10 +293,34 @@ export class FormsService {
   getLeaveApplicationById(publicId: string): Observable<any> {
     return this.http.get(this.url + `payroll/leave-applications/${publicId}`);
   }
+<<<<<<< HEAD
   updateLeaveApplicationStatus(publicId: string, status: string, remarks: string = '') {
     return this.http.patch(`${this.url}payroll/leave-applications/${publicId}/status`, {
       status,
       remarks,
     });
   }
+=======
+
+
+  updateLeaveStatus(publicId: string, status: string, remarks: string): Observable<any> {
+  return this.http.patch(
+    `payroll/leave-applications/${publicId}/status`,
+    {
+      status: status,
+      remarks: remarks
+    }
+  );
+}
+
+getMyLeaves(page: number, size: number): Observable<any> {
+  return this.http.get(`payroll/leave-applications/my?page=${page}&size=${size}`);
+}
+
+getLeaveHistory(publicId: string): Observable<any> {
+  return this.http.get(
+    `payroll/leave-applications/${publicId}/approval-history`
+  );
+}
+>>>>>>> a98b79b01a7b4fd60f56daa75355f05df60e3a09
 }
