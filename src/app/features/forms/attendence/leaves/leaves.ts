@@ -117,12 +117,15 @@ export class Leaves implements OnInit {
   // Select employee
   selectEmployee(emp: any, event: Event): void {
     event.stopPropagation();
+    this.employeePublicId = emp.employeePublicId;
+    console.log('employee id', this.employeePublicId);
+    this.selectedEmployeeDisplay = emp.fullName; // adjust if property name differs
     this.employeePublicId = emp.publicId;
     this.selectedEmployeeDisplay = emp.fullName; // adjust if property name differs
     this.isEmployeeDropdownOpen = false;
   }
 
-  // Toggle leave type dropdown
+  // Toggle leave type dropdown...
   toggleLeaveTypeDropdown(event: Event): void {
     event.stopPropagation();
     this.isLeaveTypeDropdownOpen = !this.isLeaveTypeDropdownOpen;
