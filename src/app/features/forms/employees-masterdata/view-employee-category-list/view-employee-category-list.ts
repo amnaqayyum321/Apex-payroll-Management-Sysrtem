@@ -58,13 +58,20 @@ export class ViewEmployeeCategoryList {
   loadEmployeeCategory() {
     this.loader.show();
     const backendPage = this.currentPage - 1;
-    this.FormSv.GetEmployeeCaterogy(backendPage, this.itemsPerPage).subscribe({
+     const pageSize = this.isAnyFilterActive ? 9999 : this.itemsPerPage;
+  const page = this.isAnyFilterActive ? 0 : backendPage;
+    this.FormSv.GetEmployeeCaterogy(page, pageSize).subscribe({
       next: (response: any) => {
         this.loader.hide();
-        this.EmployeeCategoryList = response.data;
+        this.EmployeeCategoryList = response.data.sort(
+        (a: any, b: any) =>
+          new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime()
+      );;
         this.totalItems = response.paginator.totalItems;
         this.totalPagesCount = response.paginator.totalPages;
-        this.currentPage = response.paginator.currentPage + 1;
+        this.currentPage = this.isAnyFilterActive
+        ? 1
+        : response.paginator.currentPage + 1;
         this.applyFilter();
       },
       error: () => {
@@ -87,12 +94,12 @@ export class ViewEmployeeCategoryList {
 
   onSearch() {
     this.currentPage = 1;
-    this.applyFilter();
+    this.loadEmployeeCategory();
   }
 
   onStatusChange() {
     this.currentPage = 1;
-    this.applyFilter();
+    this.loadEmployeeCategory();
   }
 
   applyFilter() {
@@ -128,6 +135,6 @@ export class ViewEmployeeCategoryList {
     this.searchTerm = '';
     this.statusFilter = '';
     this.currentPage = 1;
-    this.applyFilter();
+    this.loadEmployeeCategory();
   }
 }

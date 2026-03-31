@@ -62,13 +62,20 @@ export class ViewEmployeesGradeList {
   loadEmployeeGrade() {
     this.loader.show();
     const backendPage = this.currentPage - 1;
-    this.formsService.GetEmployeeGrade(backendPage, this.itemsPerPage, 'ALL').subscribe({
+     const pageSize = this.isAnyFilterActive ? 9999 : this.itemsPerPage;
+  const page = this.isAnyFilterActive ? 0 : backendPage;
+    this.formsService.GetEmployeeGrade(page, pageSize, 'ALL').subscribe({
       next: (response: any) => {
         this.loader.hide();
-        this.EmployeesGradeList = response.data;
+        this.EmployeesGradeList = response.data.sort(
+        (a: any, b: any) =>
+          new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime()
+      );;
         this.totalItems = response.paginator.totalItems;
         this.totalPagesCount = response.paginator.totalPages;
-        this.currentPage = response.paginator.currentPage + 1;
+        this.currentPage =this.isAnyFilterActive
+        ? 1
+        :  response.paginator.currentPage + 1;
         this.applyFilter();
       },
       error: () => {
@@ -91,12 +98,12 @@ export class ViewEmployeesGradeList {
 
   onSearch() {
     this.currentPage = 1;
-    this.applyFilter();
+    this.loadEmployeeGrade();
   }
 
   onStatusChange() {
     this.currentPage = 1;
-    this.applyFilter();
+    this.loadEmployeeGrade();
   }
 
   applyFilter() {
@@ -132,7 +139,7 @@ export class ViewEmployeesGradeList {
     this.searchTerm = '';
     this.statusFilter = '';
     this.currentPage = 1;
-    this.applyFilter();
+    this.loadEmployeeGrade();
   }
 
   formatRoleName(role: string): string {

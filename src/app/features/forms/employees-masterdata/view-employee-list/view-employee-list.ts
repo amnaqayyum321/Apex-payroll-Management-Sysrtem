@@ -61,13 +61,20 @@ export class ViewEmployeeList {
   loadEmployeeList() {
     this.loader.show();
     const backendPage = this.currentPage - 1;
-    this.formsService.GetEmployeesList(backendPage, this.itemsPerPage).subscribe({
+     const pageSize = this.isAnyFilterActive ? 9999 : this.itemsPerPage;
+  const page = this.isAnyFilterActive ? 0 : backendPage;
+    this.formsService.GetEmployeesList(page, pageSize).subscribe({
       next: (response: any) => {
         this.loader.hide();
-        this.EmployeeList = response.data;
+        this.EmployeeList = response.data.sort(
+        (a: any, b: any) =>
+          new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime()
+      );;
         this.totalItems = response.paginator.totalItems;
         this.totalPagesCount = response.paginator.totalPages;
-        this.currentPage = response.paginator.currentPage + 1;
+        this.currentPage = this.isAnyFilterActive
+        ? 1
+        : response.paginator.currentPage + 1;
         this.applyFilter();
       },
       error: () => {
@@ -90,12 +97,12 @@ export class ViewEmployeeList {
 
   onSearch() {
     this.currentPage = 1;
-    this.applyFilter();
+    this.loadEmployeeList();
   }
 
   onStatusChange() {
     this.currentPage = 1;
-    this.applyFilter();
+    this.loadEmployeeList();
   }
 
   applyFilter() {
@@ -131,7 +138,7 @@ export class ViewEmployeeList {
     this.searchTerm = '';
     this.statusFilter = '';
     this.currentPage = 1;
-    this.applyFilter();
+    this.loadEmployeeList();
   }
 
   formatRoleName(role: string): string {

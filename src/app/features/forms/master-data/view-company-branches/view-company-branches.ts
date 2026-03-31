@@ -62,13 +62,20 @@ export class ViewCompanyBranches {
   loadCompany() {
     this.loader.show();
     const backendPage = this.currentPage - 1;
-    this.FormSv.getAllComapnyBranches(backendPage, this.itemsPerPage).subscribe({
+     const pageSize = this.isAnyFilterActive ? 9999 : this.itemsPerPage;
+  const page = this.isAnyFilterActive ? 0 : backendPage;
+    this.FormSv.getAllComapnyBranches(page, pageSize).subscribe({
       next: (response: any) => {
         this.loader.hide();
-        this.companyList = response.data;
+        this.companyList = response.data.sort(
+        (a: any, b: any) =>
+          new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime()
+      );;
         this.totalItems = response.paginator.totalItems;
         this.totalPagesCount = response.paginator.totalPages;
-        this.currentPage = response.paginator.currentPage + 1;
+        this.currentPage =this.isAnyFilterActive
+        ? 1
+        :  response.paginator.currentPage + 1;
         this.applyFilter();
       },
       error: () => {
@@ -91,12 +98,12 @@ export class ViewCompanyBranches {
 
   onSearch() {
     this.currentPage = 1;
-    this.applyFilter();
+    this.loadCompany();
   }
 
   onStatusChange() {
     this.currentPage = 1;
-    this.applyFilter();
+    this.loadCompany();
   }
 
   applyFilter() {
@@ -132,6 +139,6 @@ export class ViewCompanyBranches {
     this.searchTerm = '';
     this.statusFilter = '';
     this.currentPage = 1;
-    this.applyFilter();
+    this.loadCompany();
   }
 }

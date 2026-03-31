@@ -56,24 +56,36 @@ export class ViewDepartmentList {
     this.loadDepartment();
   }
 
-  loadDepartment() {
-    this.loader.show();
-    const backendPage = this.currentPage - 1;
-    this.FormSv.GetDepartment(backendPage, this.itemsPerPage).subscribe({
-      next: (response: any) => {
-        this.loader.hide();
-        this.DepartmentList = response.data;
-        this.totalItems = response.paginator.totalItems;
-        this.totalPagesCount = response.paginator.totalPages;
-        this.currentPage = response.paginator.currentPage + 1;
-        this.applyFilter();
-      },
-      error: () => {
-        this.loader.hide();
-        this.toastr.error('Error fetching departments list');
-      },
-    });
-  }
+loadDepartment() {
+  this.loader.show();
+
+  const backendPage = this.currentPage - 1;
+  const pageSize = this.isAnyFilterActive ? 9999 : this.itemsPerPage;
+  const page = this.isAnyFilterActive ? 0 : backendPage;
+
+  this.FormSv.GetDepartment(page, pageSize).subscribe({
+    next: (response: any) => {
+      this.loader.hide();
+
+      this.DepartmentList = response.data.sort(
+        (a: any, b: any) =>
+          new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime()
+      );
+
+      this.totalItems = response.paginator.totalItems;
+      this.totalPagesCount = response.paginator.totalPages;
+      this.currentPage = this.isAnyFilterActive
+        ? 1
+        : response.paginator.currentPage + 1;
+
+      this.applyFilter();
+    },
+    error: () => {
+      this.loader.hide();
+      this.toastr.error('Error fetching departments list');
+    },
+  });
+}
 
   changePage(page: number) {
     if (page < 1 || page > this.totalPages) return;
@@ -88,12 +100,12 @@ export class ViewDepartmentList {
 
   onSearch() {
     this.currentPage = 1;
-    this.applyFilter();
+    this.loadDepartment();
   }
 
   onStatusChange() {
     this.currentPage = 1;
-    this.applyFilter();
+    this.loadDepartment();
   }
 
   applyFilter() {
@@ -129,6 +141,6 @@ export class ViewDepartmentList {
     this.searchTerm = '';
     this.statusFilter = '';
     this.currentPage = 1;
-    this.applyFilter();
+    this.loadDepartment();
   }
 }
