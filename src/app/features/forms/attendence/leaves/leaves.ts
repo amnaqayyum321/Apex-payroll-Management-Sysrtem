@@ -42,7 +42,7 @@ export class Leaves implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.getEmployees();
+    this.getEmployee();
     this.getLeaveTypes();
 
     this.publicId = this.route.snapshot.paramMap.get('id');
@@ -52,13 +52,15 @@ export class Leaves implements OnInit {
     }
   }
 
-  getEmployees() {
-    this.formsService
-      .GetEmployeesForLeaveEntilements(this.currentPage, this.pageSize)
-      .subscribe((res: any) => {
-        console.log('EMP RESPONSE:', res);
-        this.employees = res?.data?.content || res?.data || res?.content || res || [];
-        console.log('EMP ARRAY:', this.employees);
+  getEmployee() {
+    (this.formsService.GetEmployees(this.currentPage, this.pageSize).subscribe((res: any) => {
+      console.log('EMP RESPONSE:', res);
+      this.employees = res.data;
+
+      console.log('EMP ARRAY:', this.employees);
+    }),
+      (error: any) => {
+        console.log(error);
       });
   }
 
@@ -74,6 +76,7 @@ export class Leaves implements OnInit {
 
   // 🔹 Create
   createLeave() {
+    debugger;
     if (!this.employeePublicId || !this.leaveTypePublicId) {
       this.toastr.error('Please select employee and leave type');
       return;
