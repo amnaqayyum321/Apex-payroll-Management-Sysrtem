@@ -126,7 +126,7 @@ export class Leaves implements OnInit {
     this.isEmployeeDropdownOpen = false;
   }
 
-  // Toggle leave type dropdown
+  // Toggle leave type dropdown...
   toggleLeaveTypeDropdown(event: Event): void {
     event.stopPropagation();
     this.isLeaveTypeDropdownOpen = !this.isLeaveTypeDropdownOpen;
