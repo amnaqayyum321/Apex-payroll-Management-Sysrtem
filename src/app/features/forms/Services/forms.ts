@@ -305,13 +305,15 @@ export class FormsService {
   );
 }
 
-getMyLeaves(page: number, size: number): Observable<any> {
-  return this.http.get(`payroll/leave-applications/my?page=${page}&size=${size}`);
-}
-
 getLeaveHistory(publicId: string): Observable<any> {
   return this.http.get(
     `payroll/leave-applications/${publicId}/approval-history`
   );
 }
+
+getMyLeaves(page: number, size: number): Observable<any> {
+  return this.http.get(`payroll/leave-applications/my?page=${page}&size=${size}`);
+}
+
+
 }
