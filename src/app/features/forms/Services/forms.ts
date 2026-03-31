@@ -76,21 +76,6 @@ export class FormsService {
   GetEmployees(page: number, size: number, filter: string = 'ALL'): Observable<any> {
     return this.http.get(this.url + `employees/lookup?filter=${filter}&page=${page}&size=${size}`);
   }
-  GetEmployeesList(page: number, size: number): Observable<any> {
-    return this.http.get(this.url + `employees?page=${page}&size=${size}`);
-  }
-  GetEmployeesListById(publicId: string): Observable<any> {
-    return this.http.get(this.url + `employees/${publicId}`);
-  }
-  PostEmployeesList(data: any): Observable<any> {
-    return this.http.post(this.url + 'employees/manual', data);
-  }
-  UpdateEmployeesList(PublicId: string, data: any): Observable<any> {
-    return this.http.put(this.url + `employees/${PublicId}`, data);
-  }
-  PostEmployeeWithNewUser(payload: any): Observable<any> {
-    return this.http.post(this.url + `employees/manual-with-user`, payload);
-  }
   // Project
 
   // project
@@ -294,4 +279,42 @@ export class FormsService {
     return this.http.get(this.url + `payroll/leave-applications/${publicId}`);
   }
 
+
+  updateLeaveStatus(publicId: string, status: string, remarks: string): Observable<any> {
+  return this.http.patch(
+    `payroll/leave-applications/${publicId}/status`,
+    {
+      status: status,
+      remarks: remarks
+    }
+  );
+}
+
+getMyLeaves(page: number, size: number): Observable<any> {
+  return this.http.get(`payroll/leave-applications/my?page=${page}&size=${size}`);
+}
+
+getLeaveHistory(publicId: string): Observable<any> {
+  return this.http.get(
+    `payroll/leave-applications/${publicId}/approval-history`
+  );
+}
+
+
+GetEmployeesListById(publicId: string): Observable<any> {
+    return this.http.get(this.url +  `employees/${publicId}`);
+  }
+  PostEmployeesList(data: any): Observable<any> {
+    return this.http.post(this.url + 'employees/manual', data);
+  }
+  UpdateEmployeesList(PublicId: string, data: any): Observable<any> {
+    return this.http.put(this.url + `employees/${PublicId}`, data);
+  }
+  PostEmployeeWithNewUser(payload: any): Observable<any> {
+    return this.http.post(this.url +` employees/manual-with-user`, payload);
+  }
+
+  GetEmployeesList(page: number, size: number): Observable<any> {
+    return this.http.get(this.url + `employees?page=${page}&size=${size}`);
+  }
 }

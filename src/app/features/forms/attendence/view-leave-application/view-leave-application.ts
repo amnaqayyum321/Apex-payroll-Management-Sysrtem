@@ -201,7 +201,7 @@ export class ViewLeaveApplication implements OnInit {
 
     this.isSubmitting = true;
     this.formsService
-      .updateLeaveApplicationStatus(this.selectedLeave.publicId, this.selectedStatus, '')
+      .updateLeaveStatus(this.selectedLeave.publicId, this.selectedStatus, '')
       .subscribe({
         next: () => {
           this.isSubmitting = false;
