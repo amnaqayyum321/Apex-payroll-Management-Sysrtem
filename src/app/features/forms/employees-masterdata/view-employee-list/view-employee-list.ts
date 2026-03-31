@@ -27,7 +27,11 @@ export class ViewEmployeeList {
 
   publicId: string | null = null;
   isEditMode = false;
-
+  showStatusModal: boolean = false;
+  selectedEmployee: any = null;
+  statusActive: boolean = false;
+  statusReason: string = '';
+  statusSubmitDisabled: boolean = false;
   constructor(
     private formsService: FormsService,
     private toastr: ToastrService,
@@ -61,20 +65,17 @@ export class ViewEmployeeList {
   loadEmployeeList() {
     this.loader.show();
     const backendPage = this.currentPage - 1;
-     const pageSize = this.isAnyFilterActive ? 9999 : this.itemsPerPage;
-  const page = this.isAnyFilterActive ? 0 : backendPage;
+    const pageSize = this.isAnyFilterActive ? 9999 : this.itemsPerPage;
+    const page = this.isAnyFilterActive ? 0 : backendPage;
     this.formsService.GetEmployeesList(page, pageSize).subscribe({
       next: (response: any) => {
         this.loader.hide();
         this.EmployeeList = response.data.sort(
-        (a: any, b: any) =>
-          new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime()
-      );;
+          (a: any, b: any) => new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime(),
+        );
         this.totalItems = response.paginator.totalItems;
         this.totalPagesCount = response.paginator.totalPages;
-        this.currentPage = this.isAnyFilterActive
-        ? 1
-        : response.paginator.currentPage + 1;
+        this.currentPage = this.isAnyFilterActive ? 1 : response.paginator.currentPage + 1;
         this.applyFilter();
       },
       error: () => {
@@ -83,7 +84,52 @@ export class ViewEmployeeList {
       },
     });
   }
+  openStatusModal(employee: any) {
+    this.selectedEmployee = employee;
+    this.statusActive = employee.active;
+    this.statusReason = '';
+    this.statusSubmitDisabled = false;
+    this.showStatusModal = true;
+  }
 
+  closeStatusModal() {
+    this.showStatusModal = false;
+    this.selectedEmployee = null;
+    this.statusReason = '';
+    this.statusSubmitDisabled = false;
+  }
+
+  submitStatusChange() {
+    if (!this.statusReason.trim()) {
+      this.toastr.error('Please provide a reason', 'Validation Error');
+      return;
+    }
+
+    const payload = {
+      active: this.statusActive,
+      reason: this.statusReason.trim(),
+    };
+
+    this.statusSubmitDisabled = true;
+    this.loader.show();
+
+    this.formsService.UpdateEmployeeStatus(this.selectedEmployee.publicId, payload).subscribe({
+      next: () => {
+        this.loader.hide();
+        this.toastr.success('Employee status updated successfully', 'Success');
+        this.closeStatusModal();
+        this.loadEmployeeList();
+      },
+      error: (error: any) => {
+        this.loader.hide();
+        this.statusSubmitDisabled = false;
+        this.toastr.error(
+          error?.error?.message || 'Failed to update status. Please try again.',
+          'Error',
+        );
+      },
+    });
+  }
   changePage(page: number) {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
@@ -110,9 +156,11 @@ export class ViewEmployeeList {
 
     this.filteredEmployeeList = this.EmployeeList.filter((item) => {
       const matchesSearch =
-        !term || item.name?.toLowerCase().includes(term) || item.code?.toLowerCase().includes(term);
-
-      const matchesStatus = this.statusFilter === '' || String(item.isActive) === this.statusFilter;
+        !term ||
+        item.fullName?.toLowerCase().includes(term) ||
+        item.code?.toLowerCase().includes(term);
+      console.log('match', matchesSearch);
+      const matchesStatus = this.statusFilter === '' || String(item.active) === this.statusFilter;
 
       return matchesSearch && matchesStatus;
     });

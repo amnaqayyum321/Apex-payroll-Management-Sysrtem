@@ -279,30 +279,23 @@ export class FormsService {
     return this.http.get(this.url + `payroll/leave-applications/${publicId}`);
   }
 
-
   updateLeaveStatus(publicId: string, status: string, remarks: string): Observable<any> {
-  return this.http.patch(
-    `payroll/leave-applications/${publicId}/status`,
-    {
+    return this.http.patch(`payroll/leave-applications/${publicId}/status`, {
       status: status,
-      remarks: remarks
-    }
-  );
-}
+      remarks: remarks,
+    });
+  }
 
-getMyLeaves(page: number, size: number): Observable<any> {
-  return this.http.get(`payroll/leave-applications/my?page=${page}&size=${size}`);
-}
+  getMyLeaves(page: number, size: number): Observable<any> {
+    return this.http.get(`payroll/leave-applications/my?page=${page}&size=${size}`);
+  }
 
-getLeaveHistory(publicId: string): Observable<any> {
-  return this.http.get(
-    `payroll/leave-applications/${publicId}/approval-history`
-  );
-}
+  getLeaveHistory(publicId: string): Observable<any> {
+    return this.http.get(`payroll/leave-applications/${publicId}/approval-history`);
+  }
 
-
-GetEmployeesListById(publicId: string): Observable<any> {
-    return this.http.get(this.url +  `employees/${publicId}`);
+  GetEmployeesListById(publicId: string): Observable<any> {
+    return this.http.get(this.url + `employees/${publicId}`);
   }
   PostEmployeesList(data: any): Observable<any> {
     return this.http.post(this.url + 'employees/manual', data);
@@ -311,10 +304,13 @@ GetEmployeesListById(publicId: string): Observable<any> {
     return this.http.put(this.url + `employees/${PublicId}`, data);
   }
   PostEmployeeWithNewUser(payload: any): Observable<any> {
-    return this.http.post(this.url +` employees/manual-with-user`, payload);
+    return this.http.post(this.url + `employees/manual-with-user`, payload);
   }
 
   GetEmployeesList(page: number, size: number): Observable<any> {
     return this.http.get(this.url + `employees?page=${page}&size=${size}`);
+  }
+  UpdateEmployeeStatus(publicId: string, payload: { active: boolean; reason: string }) {
+    return this.http.patch(this.url + `employees/${publicId}/status`, payload);
   }
 }

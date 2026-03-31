@@ -131,9 +131,15 @@
                 class="fa-solid fa-pen-to-square"
                 style="color: #4ade80; cursor: pointer"
                 title="Edit Leave Application"
+                [ngStyle]="{
+                  color: isDisabled(LeaveApp) ? '#9ca3af' : '#4ade80',
+                  cursor: isDisabled(LeaveApp) ? 'not-allowed' : 'pointer',
+                  opacity: isDisabled(LeaveApp) ? 0.6 : 1,
+                }"
+                (click)="!isDisabled(LeaveApp) && goToEdit(LeaveApp)"
                 [routerLink]="['/panel/forms/leave-application', LeaveApp.publicId]"
               ></i>
-              <button
+              <!-- <button
                 class="status-btn"
                 [ngClass]="{
                   'disabled-btn':
@@ -145,7 +151,7 @@
                 (click)="openStatusModal(LeaveApp)"
               >
                 Change Status
-              </button>
+              </button> -->
             </td>
           </tr>
 

@@ -92,13 +92,25 @@
               </span>
             </td>
             <td class="px-3 py-3 font-medium">{{ employee.employmentStatus }}</td>
-            <td class="px-3 py-3 font-medium">
+            <td class="px-3 py-3 font-medium actions-cell">
+              <!-- Edit Icon -->
               <i
                 class="fa-solid fa-pen-to-square"
                 style="color: #4ade80; cursor: pointer"
-                title="Edit Belonging Type"
+                title="Edit Employee"
                 [routerLink]="['/panel/forms/employees', employee.publicId]"
               ></i>
+
+              <!-- Status Button (NEXT ACTION show karega) -->
+              <button
+                class="status-chip-btn"
+                [ngClass]="employee.active ? 'status-chip--inactive' : 'status-chip--active'"
+                (click)="openStatusModal(employee)"
+                title="Change Status"
+              >
+                <span class="status-chip-dot"></span>
+                {{ employee.active ? 'Inactive' : 'Active' }}
+              </button>
             </td>
           </tr>
 
@@ -144,3 +156,55 @@
     </div>
   </section>
 </section>
+
+<!-- ───── Status Change Modal ───── -->
+<div class="modal-overlay" *ngIf="showStatusModal" (click)="closeStatusModal()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+    <!-- Modal Header -->
+    <div class="modal-header-row">
+      <h5 class="modal-title">Change Employee Status</h5>
+      <button class="modal-close-btn" (click)="closeStatusModal()">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <div class="modal-divider"></div>
+
+    <!-- Employee Name -->
+    <p class="modal-employee-name">
+      <i class="fa-solid fa-user me-2"></i>
+      <span>{{ selectedEmployee?.fullName }}</span>
+    </p>
+
+    <!-- Active Checkbox -->
+    <label class="modal-checkbox-label">
+      <input
+        type="checkbox"
+        [(ngModel)]="statusActive"
+        name="statusActive"
+        class="modal-checkbox"
+      />
+      <span>Mark as Active</span>
+    </label>
+
+    <!-- Reason Textarea -->
+    <div class="modal-form-group">
+      <label class="modal-label"> Reason <span style="color: #f87171">*</span> </label>
+      <textarea
+        rows="3"
+        [(ngModel)]="statusReason"
+        name="statusReason"
+        class="modal-textarea"
+        placeholder="Enter reason for status change..."
+      ></textarea>
+    </div>
+
+    <!-- Actions -->
+    <div class="modal-actions">
+      <button class="cancel-btn" (click)="closeStatusModal()">Cancel</button>
+      <button class="submit-btn" [disabled]="statusSubmitDisabled" (click)="submitStatusChange()">
+        Submit
+      </button>
+    </div>
+  </div>
+</div>

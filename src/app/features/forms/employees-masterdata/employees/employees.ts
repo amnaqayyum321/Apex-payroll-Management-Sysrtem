@@ -28,19 +28,13 @@ export class Employees implements OnInit {
   recruitmentBypassReason: string = '';
   recruitmentBypassAcknowledged: boolean = false;
 
-  // Link existing user
-  userPublicId: string = '';
-
   // Create new user fields
-  createNewUser: boolean = false;
   userFirstName: string = '';
   userLastName: string = '';
   roleCode: string = '';
   initialPassword: string = '';
 
   // State
-  currentPage: number = 0;
-  pageSize: number = 100;
   publicId: string | null = null;
   isEditMode: boolean = false;
   disabled: boolean = false;
@@ -89,71 +83,17 @@ export class Employees implements OnInit {
     return true;
   }
 
-  private validateExistingUserFields(): boolean {
-    if (!this.userPublicId) {
-      this.toastr.error('Please enter the User Public ID', 'Validation Error');
-      return false;
-    }
-    return true;
-  }
-
   // ─── Submit Router ─────────────────────────────────────────────────────────
 
   onSubmit() {
     if (this.isEditMode) {
       this.updateEmployee();
-    } else if (this.createNewUser) {
-      this.createEmployeeWithNewUser();
     } else {
-      this.createEmployee();
+      this.createEmployeeWithNewUser(); // ← always new user
     }
   }
 
-  // ─── Create: Link Existing User ────────────────────────────────────────────
-
-  createEmployee() {
-    if (!this.validateCoreFields()) return;
-    if (!this.validateExistingUserFields()) return;
-
-    const payload = {
-      code: this.code,
-      fullName: this.fullName,
-      email: this.email,
-      dateOfBirth: this.dateOfBirth || null,
-      dateOfJoining: this.dateOfJoining || null,
-      dateOfLeaving: this.dateOfLeaving || null,
-      mobileNumber: this.mobileNumber,
-      employmentStatus: this.employmentStatus,
-      onboardingStatus: this.onboardingStatus,
-      employeeType: this.employeeType,
-      remarks: this.remarks,
-      userPublicId: this.userPublicId,
-      recruitmentBypassAcknowledged: this.recruitmentBypassAcknowledged,
-      recruitmentBypassReason: this.recruitmentBypassReason,
-    };
-
-    this.loader.show();
-    this.disabled = true;
-
-    this.formSv.PostEmployeesList(payload).subscribe({
-      next: () => {
-        this.loader.hide();
-        this.toastr.success('Employee created successfully', 'Success');
-        this.resetForm();
-        setTimeout(() => this.router.navigate(['/panel/forms/view-all-employees']), 1500);
-      },
-      error: (error: any) => {
-        this.loader.hide();
-        this.disabled = false;
-        this.toastr.error(
-          error?.error?.message || 'Failed to create Employee. Please try again.',
-          'Error',
-        );
-      },
-    });
-  }
-
-  // ─── Create: New User + Employee ───────────────────────────────────────────
+  // ─── Create Employee with New User ─────────────────────────────────────────
 
   createEmployeeWithNewUser() {
     if (!this.validateCoreFields()) return;
@@ -163,13 +103,13 @@ export class Employees implements OnInit {
       code: this.code,
       fullName: this.fullName,
       email: this.email,
-      dateOfBirth: this.dateOfBirth || null,
-      dateOfJoining: this.dateOfJoining || null,
-      dateOfLeaving: this.dateOfLeaving || null,
       mobileNumber: this.mobileNumber,
       employmentStatus: this.employmentStatus,
       onboardingStatus: this.onboardingStatus,
       employeeType: this.employeeType,
+      dateOfBirth: this.dateOfBirth || null,
+      dateOfJoining: this.dateOfJoining || null,
+      dateOfLeaving: this.dateOfLeaving || null,
       remarks: this.remarks,
       userFirstName: this.userFirstName,
       userLastName: this.userLastName,
@@ -208,19 +148,19 @@ export class Employees implements OnInit {
       next: (res: any) => {
         this.loader.hide();
         const d = res.data;
-        this.code = d.code;
-        this.fullName = d.fullName;
-        this.email = d.email;
-        this.dateOfBirth = d.dateOfBirth;
-        this.dateOfJoining = d.dateOfJoining;
-        this.dateOfLeaving = d.dateOfLeaving;
-        this.mobileNumber = d.mobileNumber;
-        this.employmentStatus = d.employmentStatus;
-        this.onboardingStatus = d.onboardingStatus;
-        this.employeeType = d.employeeType;
-        this.remarks = d.remarks;
-        this.recruitmentBypassAcknowledged = d.recruitmentBypassAcknowledged;
-        this.recruitmentBypassReason = d.recruitmentBypassReason;
+        this.code = d.code ?? '';
+        this.fullName = d.fullName ?? '';
+        this.email = d.email ?? '';
+        this.dateOfBirth = d.dateOfBirth ?? '';
+        this.dateOfJoining = d.dateOfJoining ?? '';
+        this.dateOfLeaving = d.dateOfLeaving ?? '';
+        this.mobileNumber = d.mobileNumber ?? '';
+        this.employmentStatus = d.employmentStatus ?? '';
+        this.onboardingStatus = d.onboardingStatus ?? '';
+        this.employeeType = d.employeeType ?? '';
+        this.remarks = d.remarks ?? '';
+        this.recruitmentBypassAcknowledged = d.recruitmentBypassAcknowledged ?? false;
+        this.recruitmentBypassReason = d.recruitmentBypassReason ?? '';
       },
       error: () => {
         this.loader.hide();
@@ -238,13 +178,13 @@ export class Employees implements OnInit {
       code: this.code,
       fullName: this.fullName,
       email: this.email,
-      dateOfBirth: this.dateOfBirth || null,
-      dateOfJoining: this.dateOfJoining || null,
-      dateOfLeaving: this.dateOfLeaving || null,
       mobileNumber: this.mobileNumber,
       employmentStatus: this.employmentStatus,
       onboardingStatus: this.onboardingStatus,
       employeeType: this.employeeType,
+      dateOfBirth: this.dateOfBirth || null,
+      dateOfJoining: this.dateOfJoining || null,
+      dateOfLeaving: this.dateOfLeaving || null,
       remarks: this.remarks,
       recruitmentBypassAcknowledged: this.recruitmentBypassAcknowledged,
       recruitmentBypassReason: this.recruitmentBypassReason,
@@ -284,8 +224,6 @@ export class Employees implements OnInit {
     this.remarks = '';
     this.recruitmentBypassAcknowledged = false;
     this.recruitmentBypassReason = '';
-    this.userPublicId = '';
-    this.createNewUser = false;
     this.userFirstName = '';
     this.userLastName = '';
     this.roleCode = '';

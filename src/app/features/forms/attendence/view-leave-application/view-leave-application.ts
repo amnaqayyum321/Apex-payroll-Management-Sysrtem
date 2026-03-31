@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsService } from '../../Services/forms';
 import { ToastrService } from 'ngx-toastr';
 import { LoaderService } from '../../../../core/services/management-services/loader.service';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -44,6 +44,7 @@ export class ViewLeaveApplication implements OnInit {
     private formsService: FormsService,
     private toastr: ToastrService,
     private loader: LoaderService,
+    private router: Router,
   ) {}
 
   // ── Pagination Getters ────────────────────────────────────────
@@ -227,5 +228,13 @@ export class ViewLeaveApplication implements OnInit {
       .toLowerCase()
       .replace(/_/g, ' ')
       .replace(/\b\w/g, (c) => c.toUpperCase());
+  }
+  isDisabled(app: any): boolean {
+    return (
+      app.status === 'APPROVED' || app.status === 'REJECTED' || app.status === 'PENDING_APPROVAL'
+    );
+  }
+  goToEdit(app: any) {
+    this.router.navigate(['/panel/forms/leave-application', app.publicId]);
   }
 }

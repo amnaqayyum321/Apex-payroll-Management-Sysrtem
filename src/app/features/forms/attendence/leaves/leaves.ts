@@ -92,7 +92,7 @@ export class Leaves implements OnInit {
     };
 
     this.loader.show();
-
+    console.log('final payload', JSON.stringify(payload, null, 2));
     this.formsService.CreateLeaves(payload).subscribe({
       next: () => {
         this.loader.hide();
@@ -121,6 +121,8 @@ export class Leaves implements OnInit {
     this.employeePublicId = emp.employeePublicId;
     console.log('employee id',this.employeePublicId)
     this.selectedEmployeeDisplay = emp.fullName;  // adjust if property name differs
+    this.employeePublicId = emp.publicId;
+    this.selectedEmployeeDisplay = emp.fullName; // adjust if property name differs
     this.isEmployeeDropdownOpen = false;
   }
 
@@ -181,19 +183,18 @@ export class Leaves implements OnInit {
         this.active = data.isActive;
 
         // Set display names from the loaded data by matching IDs
-        const selectedEmp = this.employees.find(e => e.publicId === data.employeePublicId);
+        const selectedEmp = this.employees.find((e) => e.publicId === data.employeePublicId);
         this.selectedEmployeeDisplay = selectedEmp ? selectedEmp.fullName : '';
 
-        const selectedType = this.leaveTypes.find(t => t.publicId === data.leaveTypePublicId);
+        const selectedType = this.leaveTypes.find((t) => t.publicId === data.leaveTypePublicId);
         this.selectedLeaveTypeDisplay = selectedType ? selectedType.name : '';
       },
       error: () => {
         this.loader.hide();
         this.toastr.error('Failed to load data');
-      }
+      },
     });
   }
-
 
   updateLeave() {
     if (!this.employeePublicId || !this.leaveTypePublicId) {
