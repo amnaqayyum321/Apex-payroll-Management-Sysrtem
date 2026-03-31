@@ -19,7 +19,7 @@ export class Leaves implements OnInit {
   totalLeavesPerYear: number = 0;
   remarks: string = '';
   active: boolean = false;
-    isEmployeeDropdownOpen = false;
+  isEmployeeDropdownOpen = false;
   isLeaveTypeDropdownOpen = false;
   selectedEmployeeDisplay = '';
   selectedLeaveTypeDisplay = '';
@@ -88,7 +88,7 @@ export class Leaves implements OnInit {
     };
 
     this.loader.show();
-
+    console.log('final payload', JSON.stringify(payload, null, 2));
     this.formsService.CreateLeaves(payload).subscribe({
       next: () => {
         this.loader.hide();
@@ -103,7 +103,7 @@ export class Leaves implements OnInit {
     });
   }
 
-    // Toggle employee dropdown
+  // Toggle employee dropdown
   toggleEmployeeDropdown(event: Event): void {
     event.stopPropagation();
     this.isEmployeeDropdownOpen = !this.isEmployeeDropdownOpen;
@@ -115,7 +115,7 @@ export class Leaves implements OnInit {
   selectEmployee(emp: any, event: Event): void {
     event.stopPropagation();
     this.employeePublicId = emp.publicId;
-    this.selectedEmployeeDisplay = emp.fullName;  // adjust if property name differs
+    this.selectedEmployeeDisplay = emp.fullName; // adjust if property name differs
     this.isEmployeeDropdownOpen = false;
   }
 
@@ -135,11 +135,11 @@ export class Leaves implements OnInit {
   }
 
   // Close any open dropdown when clicking outside
-@HostListener('document:click', ['$event'])
-closeDropdowns(event: MouseEvent): void {
-  this.isEmployeeDropdownOpen = false;
-  this.isLeaveTypeDropdownOpen = false;
-}
+  @HostListener('document:click', ['$event'])
+  closeDropdowns(event: MouseEvent): void {
+    this.isEmployeeDropdownOpen = false;
+    this.isLeaveTypeDropdownOpen = false;
+  }
   // Reset form and displays
   resetForm(): void {
     this.employeePublicId = '';
@@ -156,7 +156,7 @@ closeDropdowns(event: MouseEvent): void {
   }
 
   // 🔹 Load Single (Edit Mode)
- 
+
   // Update the displayed names when loading existing record
   loadSingleLeave(): void {
     this.loader.show();
@@ -176,19 +176,18 @@ closeDropdowns(event: MouseEvent): void {
         this.active = data.isActive;
 
         // Set display names from the loaded data by matching IDs
-        const selectedEmp = this.employees.find(e => e.publicId === data.employeePublicId);
+        const selectedEmp = this.employees.find((e) => e.publicId === data.employeePublicId);
         this.selectedEmployeeDisplay = selectedEmp ? selectedEmp.fullName : '';
 
-        const selectedType = this.leaveTypes.find(t => t.publicId === data.leaveTypePublicId);
+        const selectedType = this.leaveTypes.find((t) => t.publicId === data.leaveTypePublicId);
         this.selectedLeaveTypeDisplay = selectedType ? selectedType.name : '';
       },
       error: () => {
         this.loader.hide();
         this.toastr.error('Failed to load data');
-      }
+      },
     });
   }
-
 
   updateLeave() {
     if (!this.employeePublicId || !this.leaveTypePublicId) {

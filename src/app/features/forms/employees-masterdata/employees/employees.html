@@ -12,16 +12,6 @@
 
     <!-- Form -->
     <form class="user-form">
-      <!-- Mode Toggle (only in create mode) -->
-      <div class="mode-toggle" *ngIf="!isEditMode">
-        <button type="button" [class.active]="!createNewUser" (click)="createNewUser = false">
-          🔗 Link Existing User
-        </button>
-        <button type="button" [class.active]="createNewUser" (click)="createNewUser = true">
-          ➕ Create New User
-        </button>
-      </div>
-
       <!-- Recruitment Bypass Checkbox -->
       <label class="checkbox-container d-flex justify-content-end">
         Recruitment Bypass
@@ -136,20 +126,8 @@
         <input type="date" [(ngModel)]="dateOfLeaving" class="form-control" name="dateOfLeaving" />
       </div>
 
-      <!-- ===== LINK EXISTING USER ===== -->
-      <div class="form-group full-width" *ngIf="!createNewUser && !isEditMode">
-        <label class="required">User Public ID</label>
-        <input
-          type="text"
-          [(ngModel)]="userPublicId"
-          name="userPublicId"
-          class="form-control"
-          placeholder="Enter existing user public ID"
-        />
-      </div>
-
-      <!-- ===== CREATE NEW USER FIELDS ===== -->
-      <ng-container *ngIf="createNewUser && !isEditMode">
+      <!-- ===== CREATE NEW USER FIELDS (always shown in create mode) ===== -->
+      <ng-container *ngIf="!isEditMode">
         <div class="form-group">
           <label class="required">First Name</label>
           <input
