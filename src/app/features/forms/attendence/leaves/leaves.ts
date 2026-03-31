@@ -19,7 +19,7 @@ export class Leaves implements OnInit {
   totalLeavesPerYear: number = 0;
   remarks: string = '';
   active: boolean = false;
-    isEmployeeDropdownOpen = false;
+  isEmployeeDropdownOpen = false;
   isLeaveTypeDropdownOpen = false;
   selectedEmployeeDisplay = '';
   selectedLeaveTypeDisplay = '';
@@ -39,10 +39,10 @@ export class Leaves implements OnInit {
     private toastr: ToastrService,
     private router: Router,
     private route: ActivatedRoute,
-  ) {}
+  ) { }
 
   ngOnInit() {
-    this.getEmployees();
+    this.getEmployee();
     this.getLeaveTypes();
 
     this.publicId = this.route.snapshot.paramMap.get('id');
@@ -52,13 +52,16 @@ export class Leaves implements OnInit {
     }
   }
 
-  getEmployees() {
+  getEmployee() {
     this.formsService
-      .GetEmployeesForLeaveEntilements(this.currentPage, this.pageSize)
+      .GetEmployees(this.currentPage, this.pageSize)
       .subscribe((res: any) => {
         console.log('EMP RESPONSE:', res);
-        this.employees = res?.data?.content || res?.data || res?.content || res || [];
+        this.employees = res.data;
+
         console.log('EMP ARRAY:', this.employees);
+      }), ((error: any) => {
+        console.log(error)
       });
   }
 
@@ -74,11 +77,12 @@ export class Leaves implements OnInit {
 
   // 🔹 Create
   createLeave() {
+    debugger
     if (!this.employeePublicId || !this.leaveTypePublicId) {
       this.toastr.error('Please select employee and leave type');
       return;
     }
-
+ 
     const payload = {
       employeePublicId: this.employeePublicId,
       leaveTypePublicId: this.leaveTypePublicId,
@@ -103,7 +107,7 @@ export class Leaves implements OnInit {
     });
   }
 
-    // Toggle employee dropdown
+  // Toggle employee dropdown
   toggleEmployeeDropdown(event: Event): void {
     event.stopPropagation();
     this.isEmployeeDropdownOpen = !this.isEmployeeDropdownOpen;
@@ -114,7 +118,8 @@ export class Leaves implements OnInit {
   // Select employee
   selectEmployee(emp: any, event: Event): void {
     event.stopPropagation();
-    this.employeePublicId = emp.publicId;
+    this.employeePublicId = emp.employeePublicId;
+    console.log('employee id',this.employeePublicId)
     this.selectedEmployeeDisplay = emp.fullName;  // adjust if property name differs
     this.isEmployeeDropdownOpen = false;
   }
@@ -135,11 +140,11 @@ export class Leaves implements OnInit {
   }
 
   // Close any open dropdown when clicking outside
-@HostListener('document:click', ['$event'])
-closeDropdowns(event: MouseEvent): void {
-  this.isEmployeeDropdownOpen = false;
-  this.isLeaveTypeDropdownOpen = false;
-}
+  @HostListener('document:click', ['$event'])
+  closeDropdowns(event: MouseEvent): void {
+    this.isEmployeeDropdownOpen = false;
+    this.isLeaveTypeDropdownOpen = false;
+  }
   // Reset form and displays
   resetForm(): void {
     this.employeePublicId = '';
@@ -156,7 +161,7 @@ closeDropdowns(event: MouseEvent): void {
   }
 
   // 🔹 Load Single (Edit Mode)
- 
+
   // Update the displayed names when loading existing record
   loadSingleLeave(): void {
     this.loader.show();
