@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { LoaderService } from '../../../../core/services/management-services/loader.service';
 import { OnboardingService } from '../../Services/onboarding';
@@ -28,6 +28,24 @@ export class Interviews {
   locationOptions = ['ONSITE', 'REMOTE', 'HYBRID'];
   resultOptions = ['SCHEDULED', 'PASSED', 'FAILED', 'CANCELLED'];
   statusOptions = ['ACTIVE', 'INACTIVE'];
+
+  // Dropdown state variables
+  isApplicationDropdownOpen = false;
+  isPanelDropdownOpen = false;
+  isLocationDropdownOpen = false;
+  isResultDropdownOpen = false;
+  isStatusDropdownOpen = false;
+  
+  activeSessionIndex: number | null = null;
+  activeLocationIndex: number | null = null;
+  activeResultIndex: number | null = null;
+  activeStatusIndex: number | null = null;
+  
+  selectedApplicationLabel = '';
+  sessionPanelLabels: { [key: number]: string } = {};
+  sessionLocationLabels: { [key: number]: string } = {};
+  sessionResultLabels: { [key: number]: string } = {};
+  sessionStatusLabels: { [key: number]: string } = {};
 
   constructor(
     private loader: LoaderService,
@@ -62,15 +80,126 @@ export class Interviews {
     };
   }
 
+  // Dropdown Methods
+toggleApplicationDropdown(event: Event) {
+  event.stopPropagation();
+  this.isApplicationDropdownOpen = !this.isApplicationDropdownOpen;
+  this.closeOtherDropdowns(['application']);
+}
+
+  selectApplication(app: any, event: Event) {
+    event.stopPropagation();
+    this.applicationPublicId = app.publicId;
+    this.selectedApplicationLabel = app.candidateName;
+    this.isApplicationDropdownOpen = false;
+    this.onApplicationChange();
+  }
+
+  togglePanelDropdown(event: Event, index: number) {
+    event.stopPropagation();
+    this.isPanelDropdownOpen = !this.isPanelDropdownOpen;
+    this.activeSessionIndex = this.isPanelDropdownOpen ? index : null;
+    this.closeOtherDropdowns(['panel']);
+  }
+
+  selectPanelForSession(panel: any, index: number, event: Event) {
+    event.stopPropagation();
+    this.sessions[index].panelPublicId = panel.publicId;
+    this.sessionPanelLabels[index] = panel.name;
+    this.isPanelDropdownOpen = false;
+    this.activeSessionIndex = null;
+  }
+
+  getSelectedPanelLabel(index: number): string {
+    return this.sessionPanelLabels[index] || '';
+  }
+
+  toggleLocationDropdown(event: Event, index: number) {
+    event.stopPropagation();
+    this.isLocationDropdownOpen = !this.isLocationDropdownOpen;
+    this.activeLocationIndex = this.isLocationDropdownOpen ? index : null;
+    this.closeOtherDropdowns(['location']);
+  }
+
+  selectLocation(location: string, index: number, event: Event) {
+    event.stopPropagation();
+    this.sessions[index].location = location;
+    this.sessionLocationLabels[index] = location;
+    this.isLocationDropdownOpen = false;
+    this.activeLocationIndex = null;
+  }
+
+  getSelectedLocationLabel(index: number): string {
+    return this.sessionLocationLabels[index] || '';
+  }
+
+  toggleResultDropdown(event: Event, index: number) {
+    event.stopPropagation();
+    this.isResultDropdownOpen = !this.isResultDropdownOpen;
+    this.activeResultIndex = this.isResultDropdownOpen ? index : null;
+    this.closeOtherDropdowns(['result']);
+  }
+
+  selectResult(result: string, index: number, event: Event) {
+    event.stopPropagation();
+    this.sessions[index].result = result;
+    this.sessionResultLabels[index] = result;
+    this.isResultDropdownOpen = false;
+    this.activeResultIndex = null;
+  }
+
+  getSelectedResultLabel(index: number): string {
+    return this.sessionResultLabels[index] || '';
+  }
+
+  toggleStatusDropdown(event: Event, index: number) {
+    event.stopPropagation();
+    this.isStatusDropdownOpen = !this.isStatusDropdownOpen;
+    this.activeStatusIndex = this.isStatusDropdownOpen ? index : null;
+    this.closeOtherDropdowns(['status']);
+  }
+
+  selectStatus(status: string, index: number, event: Event) {
+    event.stopPropagation();
+    this.sessions[index].status = status;
+    this.sessionStatusLabels[index] = status;
+    this.isStatusDropdownOpen = false;
+    this.activeStatusIndex = null;
+  }
+
+  getSelectedStatusLabel(index: number): string {
+    return this.sessionStatusLabels[index] || '';
+  }
+
+  private closeOtherDropdowns(except?: string[]) {
+    if (!except || !except.includes('application')) this.isApplicationDropdownOpen = false;
+    if (!except || !except.includes('panel')) this.isPanelDropdownOpen = false;
+    if (!except || !except.includes('location')) this.isLocationDropdownOpen = false;
+    if (!except || !except.includes('result')) this.isResultDropdownOpen = false;
+    if (!except || !except.includes('status')) this.isStatusDropdownOpen = false;
+  }
+
+  @HostListener('document:click', ['$event'])
+  closeAllDropdowns(event?: Event) {
+    this.isApplicationDropdownOpen = false;
+    this.isPanelDropdownOpen = false;
+    this.isLocationDropdownOpen = false;
+    this.isResultDropdownOpen = false;
+    this.isStatusDropdownOpen = false;
+    this.activeSessionIndex = null;
+    this.activeLocationIndex = null;
+    this.activeResultIndex = null;
+    this.activeStatusIndex = null;
+  }
+
   loadApplications() {
     this.onBoardingSV.getAllCandidateApplications(this.currentPage, this.pageSize).subscribe({
       next: (res: any) => {
         if (res.success) {
           this.applicationList = res.data;
-          console.log('Application List', res);
-        }
-        if (this.publicId) {
-          this.loadSingleInterview(this.publicId);
+          if (this.publicId) {
+            this.loadSingleInterview(this.publicId);
+          }
         }
       },
       error: () => {
@@ -86,7 +215,6 @@ export class Interviews {
       (res: any) => {
         if (res.success) {
           this.panelList = res.data;
-          console.log('Panel', res);
         }
       },
       (error: any) => {
@@ -94,6 +222,7 @@ export class Interviews {
       },
     );
   }
+
   onApplicationChange() {
     if (!this.applicationPublicId) {
       this.isEditMode = false;
@@ -119,6 +248,16 @@ export class Interviews {
               this.name = data.name;
               this.remarks = data.remarks;
               this.sessions = [...(data.sessions || []), this.newSession()];
+              
+              // Set labels for sessions
+              data.sessions.forEach((session: any, idx: number) => {
+                const panel = this.panelList.find(p => p.publicId === session.panelPublicId);
+                if (panel) this.sessionPanelLabels[idx] = panel.name;
+                this.sessionLocationLabels[idx] = session.location;
+                this.sessionResultLabels[idx] = session.result;
+                this.sessionStatusLabels[idx] = session.status;
+              });
+              
               this.toastr.info('Existing interview found — new session added below');
             },
             error: () => {
@@ -152,8 +291,21 @@ export class Interviews {
         this.code = data.code;
         this.name = data.name;
         this.applicationPublicId = data.applicationPublicId;
+        
+        const application = this.applicationList.find(a => a.publicId === data.applicationPublicId);
+        this.selectedApplicationLabel = application ? application.candidateName : '';
+        
         this.remarks = data.remarks;
         this.sessions = [...(data.sessions || []), this.newSession()];
+        
+        // Set labels for sessions
+        data.sessions.forEach((session: any, idx: number) => {
+          const panel = this.panelList.find(p => p.publicId === session.panelPublicId);
+          if (panel) this.sessionPanelLabels[idx] = panel.name;
+          this.sessionLocationLabels[idx] = session.location;
+          this.sessionResultLabels[idx] = session.result;
+          this.sessionStatusLabels[idx] = session.status;
+        });
       },
       error: () => {
         this.loader.hide();
@@ -174,6 +326,11 @@ export class Interviews {
   removeSession(index: number) {
     if (this.sessions.length > 1) {
       this.sessions.splice(index, 1);
+      // Clean up labels
+      delete this.sessionPanelLabels[index];
+      delete this.sessionLocationLabels[index];
+      delete this.sessionResultLabels[index];
+      delete this.sessionStatusLabels[index];
     } else {
       this.toastr.error('At least one session is required');
     }
@@ -211,32 +368,8 @@ export class Interviews {
       })),
     };
   }
-  // isFormValid(): boolean {
-  //   if (!this.code || !this.name || !this.applicationPublicId) {
-  //     this.toastr.error('Please fill in all required fields');
-  //     return false;
-  //   }
 
-  //   const newSessions = this.isEditMode ? this.sessions.filter((s) => !s.publicId) : this.sessions;
-
-  //   if (newSessions.length === 0) {
-  //     this.toastr.error('Please add at least one new session');
-  //     return false;
-  //   }
-
-  //   const invalidSessions = newSessions.filter(
-  //     (s) => !s.panelPublicId || !s.startTime || !s.endTime || !s.interviewDate,
-  //   );
-
-  //   if (invalidSessions.length > 0) {
-  //     this.toastr.error('Please fill in all required session fields');
-  //     return false;
-  //   }
-
-  //   return true;
-  // }
   isFormValid(): boolean {
-    // -------- MAIN FORM VALIDATION --------
     if (!this.code?.trim()) {
       this.toastr.error('Interview Code is required');
       return false;
@@ -264,6 +397,7 @@ export class Interviews {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
     const urlPattern = /^(https?:\/\/)[^\s$.?#].[^\s]*$/m;
+    
     for (let i = 0; i < this.sessions.length; i++) {
       const s = this.sessions[i];
 
@@ -317,7 +451,6 @@ export class Interviews {
       }
       for (let j = i + 1; j < this.sessions.length; j++) {
         const next = this.sessions[j];
-
         if (
           s.panelPublicId === next.panelPublicId &&
           s.interviewDate === next.interviewDate &&
@@ -331,6 +464,7 @@ export class Interviews {
 
     return true;
   }
+
   saveInterview() {
     if (!this.isFormValid()) return;
 
@@ -341,12 +475,10 @@ export class Interviews {
     }
   }
 
-  // ---- Create ----
   createInterview() {
     this.loader.show();
     this.disabled = true;
     const payload = this.buildPayload();
-    console.log('Create payload:', JSON.stringify(payload, null, 2));
 
     this.onBoardingSV.CreatenewInterviews(payload).subscribe({
       next: (res: any) => {
@@ -354,7 +486,6 @@ export class Interviews {
         this.disabled = false;
         this.publicId = res.data.publicId;
         this.isEditMode = true;
-        console.log('Create success:', res);
         this.toastr.success('Interview created successfully');
         setTimeout(() => {
           this.router.navigate(['/panel/onboarding/view-interviews-list']);
@@ -368,17 +499,14 @@ export class Interviews {
     });
   }
 
-  // ---- Update ----
   updateInterview() {
     this.loader.show();
     this.disabled = true;
     const payload = this.buildUpdatePayload();
-    console.log('Update payload:', JSON.stringify(payload, null, 2));
     this.onBoardingSV.updateInterviews(this.publicId!, payload).subscribe({
       next: (res: any) => {
         this.loader.hide();
         this.disabled = false;
-        console.log('Update success:', res);
         this.toastr.success('Interview session updated successfully');
         setTimeout(() => {
           this.router.navigate(['/panel/onboarding/view-interviews-list']);
@@ -401,6 +529,11 @@ export class Interviews {
     this.disabled = false;
     this.isEditMode = false;
     this.publicId = null;
+    this.selectedApplicationLabel = '';
+    this.sessionPanelLabels = {};
+    this.sessionLocationLabels = {};
+    this.sessionResultLabels = {};
+    this.sessionStatusLabels = {};
   }
 
   cancel() {

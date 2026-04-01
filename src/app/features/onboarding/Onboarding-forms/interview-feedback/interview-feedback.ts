@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -231,4 +231,52 @@ export class InterviewFeedback implements OnInit {
     if (!timeString) return '';
     return timeString.substring(0, 5);
   }
+
+
+  // Add these properties with your existing ones
+isPanelDropdownOpen = false;
+isSessionDropdownOpen = false;
+selectedPanelLabel = '';
+selectedSessionLabel = '';
+
+// Add these methods
+togglePanelDropdown(event: Event) {
+  event.stopPropagation();
+  this.isPanelDropdownOpen = !this.isPanelDropdownOpen;
+  this.isSessionDropdownOpen = false;
+}
+
+selectPanel(panel: any, event: Event) {
+  event.stopPropagation();
+  this.selectedPanelId = panel.publicId;
+  this.selectedPanelLabel = `${panel.name} (${panel.code})`;
+  this.isPanelDropdownOpen = false;
+  
+  // Reset session when panel changes
+  this.selectedSessionId = '';
+  this.selectedSessionLabel = '';
+  this.sessions = [];
+  
+  this.onPanelChange();
+}
+
+toggleSessionDropdown(event: Event) {
+  event.stopPropagation();
+  if (!this.selectedPanelId || this.isLoadingSessions || this.sessions.length === 0) return;
+  this.isSessionDropdownOpen = !this.isSessionDropdownOpen;
+  this.isPanelDropdownOpen = false;
+}
+
+selectSession(session: any, event: Event) {
+  event.stopPropagation();
+  this.selectedSessionId = session.publicId;
+  this.selectedSessionLabel = `${session.candidateName} · ${session.interviewDate} (${session.startTime} - ${session.endTime})`;
+  this.isSessionDropdownOpen = false;
+}
+
+@HostListener('document:click', ['$event'])
+closeAllDropdowns(event?: Event) {
+  this.isPanelDropdownOpen = false;
+  this.isSessionDropdownOpen = false;
+}
 }

@@ -65,7 +65,7 @@
 }
 
 .section-form {
-    background-color: var(--primary-color);
+    background-color: var(--second-primary-color);
     padding: 20px;
     border-radius: 10px;
     display: flex;
@@ -85,7 +85,7 @@
 
 .form-title {
     color: var(--text-primary);
-    font-size: 23px;
+    font-size: 22px;
     font-weight: 600;
     margin: 0 0 12px 0;
 
@@ -218,9 +218,6 @@
     display: flex;
     align-items: center;
     padding: 10px 16px;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    background-color: var(--second-primary-color);
     width: 100%;
     cursor: pointer;
     margin-top: 33px;
@@ -256,7 +253,7 @@
 .form-control {
     width: 100%;
     padding: 9px 16px;
-    border-radius: 6px;
+    border-radius: 10px;
     border: 1px solid var(--border-color);
     background-color: var(--second-primary-color);
     color: var(--white-color-1);
@@ -391,7 +388,7 @@ table tbody td {
 .tab-content-section {
     background-color: var(--primary-color);
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 15px;
     margin-top: 20px;
 }
 
@@ -861,29 +858,45 @@ input:checked+.slider {
     }
 
     .btn-cancel-action {
-        background-color: transparent;
-        color: var(--white-color-1);
-        border: 1px solid var(--border-color);
+        height: 42px;
+    padding: 0 22px;
+    border-radius: 22px;
+    border: 1px solid var(--border-color);
+    background: var(--red-color);
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
 
-        &:hover {
-            background-color: rgba(255, 255, 255, 0.06);
-            border-color: rgba(255, 255, 255, 0.3);
-        }
+    &:hover {
+        transform: translateY(-2px);
+        filter: brightness(1.05);
+    }
+
+    &:active {
+        transform: scale(0.97);
+        box-shadow: none;
+    }
     }
 
     .btn-submit-action {
-        background-color: var(--purple-1);
-        color: #fff;
-        box-shadow: 0 4px 14px rgba(112, 71, 238, 0.35);
+     height: 42px;
+    padding: 0 22px;
+    border-radius: 22px;
+    border: 1px solid var(--border-color);
+    background: var(--purple-1);
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
 
-        &:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(112, 71, 238, 0.5);
-        }
+    &:hover {
+        transform: translateY(-2px);
+        filter: brightness(1.02);
+    }
 
-        &:active {
-            transform: translateY(0);
-        }
+    &:active {
+        transform: scale(0.97);
+        box-shadow: none;
+    }
     }
 }
 .experience-table-wrapper {
@@ -1315,5 +1328,306 @@ input:checked+.slider {
     background: rgba(156, 163, 175, 0.12);
     color: #9ca3af;
     border: 1px solid rgba(156, 163, 175, 0.25);
+  }
+}
+
+/* ------------------------------
+   Basic Details Card (matching create user)
+--------------------------------- */
+.user-form-wrapper {
+  padding: 20px;
+  background: var(--primary-color);
+  border-radius: 16px;
+  margin-bottom: 30px; // space before tabs
+}
+
+.user-card {
+  background: var(--primary-color);
+  border-radius: 16px;
+  padding: 24px;
+}
+
+.card-header {
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+  }
+}
+
+.header-divider {
+  width: 100%;
+  height: 1px;
+  background: var(--border-color);
+  margin: 10px 0 25px 0;
+  opacity: 0.6;
+}
+
+/* Form Grid - 3 columns */
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+}
+
+/* Inputs & Selects & Textarea */
+input,
+.form-select,
+.form-textarea {
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  padding: 0 14px;
+  font-size: 14px;
+  background: var(--second-primary-color);
+  outline: none;
+  color: var(--text-primary);
+
+  &::placeholder {
+    color: #98a2b3;
+  }
+
+  &:focus {
+    border-color: var(--border-color);
+    background: var(--primary-color);
+  }
+}
+
+/* Specific for select dropdown arrow */
+.form-select {
+  appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%2398a2b3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  cursor: pointer;
+}
+
+/* Textarea */
+.form-textarea {
+  height: auto;
+  padding: 10px 14px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+/* Span 2 columns */
+.span-2 {
+  grid-column: span 2;
+
+  @media (max-width: 992px) {
+    grid-column: span 1;
+  }
+}
+
+/* Modern Checkbox */
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  user-select: none;
+}
+
+/* Hide default checkbox */
+.custom-checkbox {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Custom box */
+.checkmark {
+  height: 20px;
+  width: 20px;
+  background-color: var(--primary-color);
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  transition: all 0.25s ease;
+  display: inline-block;
+  position: relative;
+}
+
+/* Check icon */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* When checked */
+.custom-checkbox:checked + .checkmark {
+  background: var(--purple-1);
+  border-color: var(--purple-1);
+  box-shadow: 0 4px 10px rgba(71, 110, 144, 0.3);
+}
+
+.custom-checkbox:checked + .checkmark:after {
+  display: block;
+  animation: checkAnim 0.2s ease-in-out;
+}
+
+/* Animation */
+@keyframes checkAnim {
+  from {
+    transform: rotate(45deg) scale(0);
+  }
+  to {
+    transform: rotate(45deg) scale(1);
+  }
+}
+
+/* Reset Button in Header */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  .reset-btn {
+    background: var(--second-primary-color);
+    color: var(--purple-1);
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    &:hover {
+      background: var(--purple-1);
+      color: white;
+    }
+  }
+}
+.form-label{
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* Dropdown */
+.custom-dropdown {
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown-selected {
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  padding: 0 14px;
+  font-size: 14px;
+  background: var(--second-primary-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  span {
+    color: var(--text-primary);
+  }
+
+  i {
+    color: var(--text-secondary);
+    transition: 0.3s;
+  }
+}
+
+.rotate {
+  transform: rotate(180deg);
+}
+
+/* Dropdown menu */
+.dropdown-options {
+  position: absolute;
+  top: 45px;
+  left: 0;
+  right: 0;
+  background: var(--primary-color);
+  border-radius: 10px;
+  border: 1px solid var(--second-primary-color);
+  box-shadow: 0 10px 18px rgba(0,0,0,0.08);
+  z-index: 10;
+  max-height: 220px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 4px;
+}
+/* Thin modern scrollbar */
+.dropdown-options::-webkit-scrollbar {
+  width: 6px;
+}
+.dropdown-options::-webkit-scrollbar-track {
+  background: transparent;
+}
+.dropdown-options::-webkit-scrollbar-thumb {
+  background: rgba(150, 150, 160, 0.35);
+  border-radius: 10px;
+}
+.dropdown-options::-webkit-scrollbar-thumb:hover {
+  background: rgba(140,140,160,0.6);
+}
+.dropdown-options {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(140,140,160,0.4) transparent;
+}
+.dropdown-option {
+  padding: 10px 14px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  transition: 0.2s;
+
+  &:hover {
+    background: linear-gradient(90deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+    backdrop-filter: blur(6px);
+    transform: translateX(2px);
+  }
+
+  &:active {
+    background: rgba(255, 255, 255, 0.12);
+  }
+}
+/* Remarks full width - outside the grid */
+.remarks-full-width {
+  margin-top: 18px;
+  width: 100%;
+
+  .form-group {
+    width: 100%;
   }
 }

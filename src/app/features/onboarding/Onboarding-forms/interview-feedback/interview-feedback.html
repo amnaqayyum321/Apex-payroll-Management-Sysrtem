@@ -9,62 +9,65 @@
       <h5 class="section-title">Select Panel & Session</h5>
 
       <div class="row">
-        <!-- ─── Panel Dropdown ─────────────────────────────────── -->
-        <div class="col-md-6">
-          <div class="form-group">
-            <label>Panel <span class="required">*</span></label>
-            <select
-              class="form-select"
-              name="selectedPanelId"
-              [(ngModel)]="selectedPanelId"
-              (ngModelChange)="onPanelChange()"
-            >
-              <option value="">-- Select Panel --</option>
-              <option *ngFor="let panel of panels" [value]="panel.publicId">
-                {{ panel.name }} ({{ panel.code }})
-              </option>
-            </select>
-            <small class="text-muted" *ngIf="panels.length === 0">
-              No Interview Panel is Available.
-            </small>
+          <!-- Panel -->
+            <div class="col-md-6">
+    <div class="form-group">
+      <label>Panel <span class="required">*</span></label>
+      <div class="custom-dropdown" (click)="togglePanelDropdown($event)">
+        <div class="dropdown-selected">
+          <span>{{ selectedPanelLabel || 'Select Panel' }}</span>
+          <i class="fa-solid fa-caret-down" [class.rotate]="isPanelDropdownOpen"></i>
+        </div>
+        <div class="dropdown-options" *ngIf="isPanelDropdownOpen">
+          <div
+            class="dropdown-option"
+            *ngFor="let panel of panels"
+            (click)="selectPanel(panel, $event)"
+          >
+            {{ panel.name }} ({{ panel.code }})
           </div>
+        </div>
+      </div>
+    </div>
         </div>
 
-        <!-- ─── Session Dropdown ──────────────────────────────── -->
-        <div class="col-md-6">
-          <div class="form-group">
-            <label>Session <span class="required">*</span></label>
-            <select
-              class="form-control"
-              name="selectedSessionId"
-              [(ngModel)]="selectedSessionId"
-              [disabled]="!selectedPanelId || isLoadingSessions || sessions.length === 0"
-            >
-              <option value="">
-                <ng-container *ngIf="!selectedPanelId">— Select Panel First —</ng-container>
-                <ng-container *ngIf="selectedPanelId && isLoadingSessions"
-                  >— Loading... —</ng-container
-                >
-                <ng-container *ngIf="selectedPanelId && !isLoadingSessions && sessions.length === 0"
-                  >— No Session Found —</ng-container
-                >
-                <ng-container *ngIf="selectedPanelId && !isLoadingSessions && sessions.length > 0"
-                  >— Select Session —</ng-container
-                >
-              </option>
-              <option *ngFor="let session of sessions" [value]="session.publicId">
-                {{ session.candidateName }} · {{ session.interviewDate }} ({{ session.startTime }} -
-                {{ session.endTime }})
-              </option>
-            </select>
-            <small
-              class="text-muted"
+
+    <!-- Session -->
+      <div class="col-md-6">
+    <div class="form-group">
+      <label>Session <span class="required">*</span></label>
+      <div
+        class="custom-dropdown"
+        (click)="toggleSessionDropdown($event)"
+        [class.disabled]="!selectedPanelId || isLoadingSessions"
+      >
+        <div class="dropdown-selected">
+          <span>
+            <ng-container *ngIf="!selectedPanelId">— Select Panel First —</ng-container>
+            <ng-container *ngIf="selectedPanelId && isLoadingSessions">— Loading... —</ng-container>
+            <ng-container
               *ngIf="selectedPanelId && !isLoadingSessions && sessions.length === 0"
             >
-              No Session is Available in this Panel.
-            </small>
-          </div>
+              — No Session Found —
+            </ng-container>
+            <ng-container
+              *ngIf="selectedPanelId && !isLoadingSessions && sessions.length > 0 && !selectedSessionLabel"
+            >
+              — Select Session —
+            </ng-container>
+            <ng-container *ngIf="selectedSessionLabel">
+              {{ selectedSessionLabel }}
+            </ng-container>
+          </span>
+          <i
+            class="fa-solid fa-caret-down"
+            [class.rotate]="isSessionDropdownOpen"
+          ></i>
         </div>
+      </div>
+    </div>
+        </div>
+
       </div>
 
       <h5 class="section-title">Feedback Details</h5>

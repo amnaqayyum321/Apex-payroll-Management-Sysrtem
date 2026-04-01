@@ -2,7 +2,12 @@
   <div class="user-card">
     <!-- Header -->
     <div class="card-header">
-      <h3>{{ isEditMode ? 'Update Interview' : 'Create Interview' }}</h3>
+      <h3>
+        <h3>{{ isEditMode ? 'Update Interview' : 'Create Interview' }}</h3>
+      </h3>
+      <button class="reset-btn" (click)="resetForm()">
+        <i class="fa fa-refresh"></i> Reset
+      </button>
     </div>
     <div class="header-divider"></div>
 
@@ -10,173 +15,220 @@
       <!-- ROW 1: Code & Name -->
       <div class="row">
         <div class="col-md-6">
-          <label class="form-label">Code <span class="text-danger">*</span></label>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Enter Code..."
-            [(ngModel)]="code"
-            name="code"
-          />
+          <div class="form-group">
+            <label>Code <span class="text-danger">*</span></label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Enter Code..."
+              [(ngModel)]="code"
+              name="code"
+            />
+          </div>
         </div>
         <div class="col-md-6">
-          <label class="form-label">Name <span class="text-danger">*</span></label>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Enter Name..."
-            [(ngModel)]="name"
-            name="name"
-          />
+          <div class="form-group">
+            <label>Name <span class="text-danger">*</span></label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Enter Name..."
+              [(ngModel)]="name"
+              name="name"
+            />
+          </div>
         </div>
       </div>
 
       <!-- ROW 2: Application & Remarks -->
       <div class="row">
         <div class="col-md-6">
-          <label class="form-label">Application <span class="text-danger">*</span></label>
-          <select
-            class="form-control"
-            [(ngModel)]="applicationPublicId"
-            name="applicationPublicId"
-            (ngModelChange)="onApplicationChange()"
-          >
-            <option value="">-- Select Application --</option>
-            <option *ngFor="let app of applicationList" [value]="app.publicId">
-              {{ app.candidateName }}
-            </option>
-          </select>
+          <div class="form-group">
+            <label>Application <span class="text-danger">*</span></label>
+            <div class="custom-dropdown" (click)="toggleApplicationDropdown($event)">
+              <div class="dropdown-selected">
+                <span>{{ selectedApplicationLabel || '-- Select Application --' }}</span>
+                <i class="fa-solid fa-caret-down" [class.rotate]="isApplicationDropdownOpen"></i>
+              </div>
+              <div class="dropdown-options" *ngIf="isApplicationDropdownOpen">
+                <div class="dropdown-option" *ngFor="let app of applicationList" (click)="selectApplication(app, $event)">
+                  {{ app.candidateName }}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
         <div class="col-md-6">
-          <label class="form-label">Remarks</label>
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Enter Remarks..."
-            [(ngModel)]="remarks"
-            name="remarks"
-          />
+          <div class="form-group">
+            <label>Remarks</label>
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Enter Remarks..."
+              [(ngModel)]="remarks"
+              name="remarks"
+            />
+          </div>
         </div>
       </div>
 
       <!-- Sessions Header -->
       <div class="header-divider mt-3"></div>
       <div class="d-flex justify-content-between align-items-center my-3">
-        <h5 class="mb-0">
+        <h5 class="session-title1">
           Interview Sessions
-          <span class="badge bg-primary ms-2">{{ sessions.length }}</span>
+          <span class="badge  ms-2">{{ sessions.length }}</span>
         </h5>
         <button type="button" class="submit-btn" (click)="addSession()">+ Add Session</button>
       </div>
 
       <!-- Sessions Loop -->
       <div *ngFor="let session of sessions; let i = index">
-        <div class="mb-3 p-3 border rounded">
+        <div class="mb-3 p-3 border rounded session-card">
           <div class="d-flex justify-content-between align-items-center mb-3">
-            <h6 class="mb-0">Session {{ i + 1 }}</h6>
-            <button type="button" class="cancel-btn" (click)="removeSession(i)">Remove</button>
-          </div>
+            <h5 class="session-title">Session {{ i + 1 }}</h5>
+<button type="button" class="remove-btn" (click)="removeSession(i)" title="Remove Session">
+  <i class="fa fa-trash"></i>
+</button>          </div>
+          
           <div class="row">
-            <div class="col-md-6">
-              <label class="form-label">Panel</label>
-              <select
-                class="form-control"
-                [(ngModel)]="session.panelPublicId"
-                [name]="'panelPublicId_' + i"
-              >
-                <option value="">-- Select Panel --</option>
-                <option *ngFor="let panel of panelList" [value]="panel.publicId">
-                  {{ panel.name }}
-                </option>
-              </select>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Panel</label>
+                <div class="custom-dropdown" (click)="togglePanelDropdown($event, i)">
+                  <div class="dropdown-selected">
+                    <span>{{ getSelectedPanelLabel(i) || '-- Select Panel --' }}</span>
+                    <i class="fa-solid fa-caret-down" [class.rotate]="isPanelDropdownOpen && activeSessionIndex === i"></i>
+                  </div>
+                  <div class="dropdown-options" *ngIf="isPanelDropdownOpen && activeSessionIndex === i">
+                    <div class="dropdown-option" *ngFor="let panel of panelList" (click)="selectPanelForSession(panel, i, $event)">
+                      {{ panel.name }}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="col-md-6">
-              <label class="form-label">Interview Date</label>
-              <input
-                type="date"
-                class="form-control"
-                [(ngModel)]="session.interviewDate"
-                [name]="'interviewDate_' + i"
-              />
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Interview Date</label>
+                <input
+                  type="date"
+                  class="form-control"
+                  [(ngModel)]="session.interviewDate"
+                  [name]="'interviewDate_' + i"
+                />
+              </div>
+            </div>
+             <div class="col-md-4">
+              <div class="form-group">
+                <label>Start Time</label>
+                <input
+                  type="time"
+                  class="form-control"
+                  [(ngModel)]="session.startTime"
+                  [name]="'startTime_' + i"
+                />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>End Time</label>
+                <input
+                  type="time"
+                  class="form-control"
+                  [(ngModel)]="session.endTime"
+                  [name]="'endTime_' + i"
+                />
+              </div>
+            </div>
+                <div class="col-md-4">
+              <div class="form-group">
+                <label>Location</label>
+                <div class="custom-dropdown" (click)="toggleLocationDropdown($event, i)">
+                  <div class="dropdown-selected">
+                    <span>{{ getSelectedLocationLabel(i) || 'Select Location' }}</span>
+                    <i class="fa-solid fa-caret-down" [class.rotate]="isLocationDropdownOpen && activeLocationIndex === i"></i>
+                  </div>
+                  <div class="dropdown-options" *ngIf="isLocationDropdownOpen && activeLocationIndex === i">
+                    <div class="dropdown-option" *ngFor="let loc of locationOptions" (click)="selectLocation(loc, i, $event)">
+                      {{ loc }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4" *ngIf="session.location === 'REMOTE'">
+              <div class="form-group">
+                <label>Meeting URL</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter Meeting URL..."
+                  [(ngModel)]="session.meetingUrl"
+                  [name]="'meetingUrl_' + i"
+                />
+              </div>
+            </div>
+                <div class="col-md-4">
+              <div class="form-group">
+                <label>Result</label>
+                <div class="custom-dropdown" (click)="toggleResultDropdown($event, i)">
+                  <div class="dropdown-selected">
+                    <span>{{ getSelectedResultLabel(i) || 'Select Result' }}</span>
+                    <i class="fa-solid fa-caret-down" [class.rotate]="isResultDropdownOpen && activeResultIndex === i"></i>
+                  </div>
+                  <div class="dropdown-options" *ngIf="isResultDropdownOpen && activeResultIndex === i">
+                    <div class="dropdown-option" *ngFor="let res of resultOptions" (click)="selectResult(res, i, $event)">
+                      {{ res }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Status</label>
+                <div class="custom-dropdown" (click)="toggleStatusDropdown($event, i)">
+                  <div class="dropdown-selected">
+                    <span>{{ getSelectedStatusLabel(i) || 'Select Status' }}</span>
+                    <i class="fa-solid fa-caret-down" [class.rotate]="isStatusDropdownOpen && activeStatusIndex === i"></i>
+                  </div>
+                  <div class="dropdown-options" *ngIf="isStatusDropdownOpen && activeStatusIndex === i">
+                    <div class="dropdown-option" *ngFor="let st of statusOptions" (click)="selectStatus(st, i, $event)">
+                      {{ st }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+               <div class="col-md-4">
+              <div class="form-group">
+                <label>Line Number</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  placeholder="Enter Line Number..."
+                  [(ngModel)]="session.lineNumber"
+                  [name]="'lineNumber_' + i"
+                  min="0"
+                />
+              </div>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label>Session Remarks</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Enter Session Remarks..."
+                  [(ngModel)]="session.remarks"
+                  [name]="'sessionRemarks_' + i"
+                />
+              </div>
             </div>
           </div>
-          <div class="row">
-            <div class="col-md-6">
-              <label class="form-label">Start Time</label>
-              <input
-                type="time"
-                class="form-control"
-                [(ngModel)]="session.startTime"
-                [name]="'startTime_' + i"
-              />
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">End Time</label>
-              <input
-                type="time"
-                class="form-control"
-                [(ngModel)]="session.endTime"
-                [name]="'endTime_' + i"
-              />
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <label class="form-label">Location</label>
-              <select class="form-control" [(ngModel)]="session.location" [name]="'location_' + i">
-                <option *ngFor="let loc of locationOptions" [value]="loc">{{ loc }}</option>
-              </select>
-            </div>
-            <div class="col-md-6" *ngIf="session.location === 'REMOTE'">
-              <label class="form-label">Meeting URL</label>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Enter Meeting URL..."
-                [(ngModel)]="session.meetingUrl"
-                [name]="'meetingUrl_' + i"
-              />
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-6">
-              <label class="form-label">Result</label>
-              <select class="form-control" [(ngModel)]="session.result" [name]="'result_' + i">
-                <option *ngFor="let res of resultOptions" [value]="res">{{ res }}</option>
-              </select>
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">Status</label>
-              <select class="form-control" [(ngModel)]="session.status" [name]="'status_' + i">
-                <option *ngFor="let st of statusOptions" [value]="st">{{ st }}</option>
-              </select>
-            </div>
-          </div>
-
-          <!-- Session ROW 5: Line Number & Remarks -->
-          <div class="row">
-            <div class="col-md-6">
-              <label class="form-label">Line Number</label>
-              <input
-                type="number"
-                class="form-control"
-                placeholder="Enter Line Number..."
-                [(ngModel)]="session.lineNumber"
-                [name]="'lineNumber_' + i"
-                min="0"
-              />
-            </div>
-            <div class="col-md-6">
-              <label class="form-label">Session Remarks</label>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Enter Session Remarks..."
-                [(ngModel)]="session.remarks"
-                [name]="'sessionRemarks_' + i"
-              />
-            </div>
-          </div>
+          
+       
         </div>
       </div>
 

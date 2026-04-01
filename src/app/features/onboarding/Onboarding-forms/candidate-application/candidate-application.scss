@@ -9,6 +9,37 @@
   padding: 24px;
   box-shadow: 0 6px 20px rgba(0,0,0,0.06);
 }
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+
+  h3 {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+  }
+     .reset-btn {
+      background: var(--primary-color);
+      color: var(--purple-1);
+      padding: 8px 14px;
+      border-radius: 6px;
+      border: none;
+      font-size: 14px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+
+      &:hover {
+        background: var(--purple-1);
+        color: white;
+      }
+    }
+}
+
 
 /* Header */
 .user-header {
@@ -23,6 +54,7 @@
     color: var(--text-primary);
     margin: 0;
   }
+  
 
  
 }
@@ -330,5 +362,92 @@ textarea {
   }
   to {
     transform: rotate(45deg) scale(1);
+  }
+}
+
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+
+  label {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+}
+
+/* Custom dropdown styles (already in your SCSS) */
+.custom-dropdown {
+  position: relative;
+  cursor: pointer;
+  width: 100%;
+}
+
+.dropdown-selected {
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  padding: 0 14px;
+  font-size: 14px;
+  background: var(--second-primary-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  span {
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  i {
+    color: var(--text-secondary);
+    transition: 0.3s;
+    flex-shrink: 0;
+  }
+}
+
+.rotate {
+  transform: rotate(180deg);
+}
+
+.dropdown-options {
+  position: absolute;
+  top: 45px;
+  left: 0;
+  right: 0;
+  background: var(--primary-color);
+  border-radius: 10px;
+  border: 1px solid var(--second-primary-color);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.08);
+  z-index: 10;
+  max-height: 220px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 4px;
+}
+
+.dropdown-option {
+  padding: 10px 14px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  transition: 0.2s;
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  &:hover {
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+    backdrop-filter: blur(6px);
+    transform: translateX(2px);
+  }
+
+  &:active {
+    background: rgba(255, 255, 255, 0.12);
   }
 }

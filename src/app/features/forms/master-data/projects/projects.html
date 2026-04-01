@@ -1,7 +1,12 @@
 <div class="user-form-wrapper">
   <div class="user-card">
-    <div class="card-header">
-      <h3>{{ isEditMode ? 'Update Project' : 'Create Project' }}</h3>
+   <div class="card-header">
+      <h3>
+        <h3>{{ isEditMode ? 'Update Project' : 'Create Project' }}</h3>
+      </h3>
+      <button class="reset-btn" (click)="resetprojectForm()">
+        <i class="fa fa-refresh"></i> Reset
+      </button>
     </div>
     <div class="header-divider"></div>
 

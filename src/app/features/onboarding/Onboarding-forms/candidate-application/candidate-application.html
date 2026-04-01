@@ -1,134 +1,148 @@
 <div class="user-form-wrapper">
   <div class="user-card">
-
-    <div class="card-header">
-      <h3>{{ isEditMode ? 'Update Candidate Application' : 'Create Candidate Application' }}</h3>
-    </div>
-
-    <div class="d-flex gap-2">
+  <div class="card-header">
+      <h3>
+        <h3>{{ isEditMode ? 'Update Application' : 'Create Application' }}</h3>
+      </h3>
       <button class="reset-btn" (click)="resetForm()">
         <i class="fa fa-refresh"></i> Reset
       </button>
     </div>
-
     <div class="header-divider"></div>
 
     <form class="user-form">
-
-      <!-- Code -->
+      <!-- Code & Application Date Row -->
       <div class="row">
         <div class="col-md-6">
-          <label class="form-label">Application Code</label>
-          <input type="text" class="form-control"
-            [(ngModel)]="code" name="code"
-            placeholder="Enter application code">
+          <div class="form-group">
+            <label>Application Code</label>
+            <input type="text" class="form-control" [(ngModel)]="code" name="code" placeholder="Enter application code">
+          </div>
         </div>
 
         <div class="col-md-6">
-          <label class="form-label">Application Date</label>
-          <input type="date" class="form-control"
-            [(ngModel)]="applicationDate"
-            name="applicationDate">
+          <div class="form-group">
+            <label>Application Date</label>
+            <input type="date" class="form-control" [(ngModel)]="applicationDate" name="applicationDate">
+          </div>
         </div>
       </div>
 
-      <!-- Candidate & Requisition -->
+      <!-- Candidate & Requisition Row -->
       <div class="row">
         <div class="col-md-6">
-          <label class="form-label">Candidate</label>
-          <select class="form-control"
-            [(ngModel)]="candidatePublicId"
-            name="candidate">
-            <option value="">Select Candidate</option>
-            <option *ngFor="let c of candidates"
-              [value]="c.publicId">
-             {{ c.firstName }} {{ c.lastName }}
-            </option>
-          </select>
+          <div class="form-group">
+            <label>Candidate</label>
+            <div class="custom-dropdown" (click)="toggleCandidateDropdown($event)">
+              <div class="dropdown-selected">
+                <span>{{ selectedCandidateLabel || 'Select Candidate' }}</span>
+                <i class="fa-solid fa-caret-down" [class.rotate]="isCandidateDropdownOpen"></i>
+              </div>
+              <div class="dropdown-options" *ngIf="isCandidateDropdownOpen">
+                <div class="dropdown-option" *ngFor="let candidate of candidates" (click)="selectCandidate(candidate, $event)">
+                  {{ candidate.firstName }} {{ candidate.lastName }}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="col-md-6">
-          <label class="form-label">Job Requisition</label>
-          <select class="form-control"
-            [(ngModel)]="requisitionPublicId"
-            name="requisition">
-            <option value="">Select Requisition</option>
-            <option *ngFor="let r of requisitions"
-              [value]="r.publicId">
-              {{ r.title || r.name }}
-            </option>
-          </select>
+          <div class="form-group">
+            <label>Job Requisition</label>
+            <div class="custom-dropdown" (click)="toggleRequisitionDropdown($event)">
+              <div class="dropdown-selected">
+                <span>{{ selectedRequisitionLabel || 'Select Requisition' }}</span>
+                <i class="fa-solid fa-caret-down" [class.rotate]="isRequisitionDropdownOpen"></i>
+              </div>
+              <div class="dropdown-options" *ngIf="isRequisitionDropdownOpen">
+                <div class="dropdown-option" *ngFor="let req of requisitions" (click)="selectRequisition(req, $event)">
+                  {{ req.title || req.name }}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <!-- Department / Designation / Company -->
-<div class="row">
-  <div class="col-md-4">
-    <label class="form-label">Department</label>
-    <select class="form-control"
-      [(ngModel)]="departmentPublicId"
-      name="department">
-      <option value="">Select Department</option>
-      <option *ngFor="let d of departments"
-        [value]="d.publicId">
-        {{ d.name }}
-      </option>
-    </select>
-  </div>
 
-  <div class="col-md-4">
-    <label class="form-label">Designation</label>
-    <select class="form-control"
-      [(ngModel)]="designationPublicId"
-      name="designation">
-      <option value="">Select Designation</option>
-      <option *ngFor="let d of designations"
-        [value]="d.publicId">
-        {{ d.name }}
-      </option>
-    </select>
-  </div>
+      <!-- Department / Designation / Company Branch Row -->
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>Department</label>
+            <div class="custom-dropdown" (click)="toggleDepartmentDropdown($event)">
+              <div class="dropdown-selected">
+                <span>{{ selectedDepartmentLabel || 'Select Department' }}</span>
+                <i class="fa-solid fa-caret-down" [class.rotate]="isDepartmentDropdownOpen"></i>
+              </div>
+              <div class="dropdown-options" *ngIf="isDepartmentDropdownOpen">
+                <div class="dropdown-option" *ngFor="let dept of departments" (click)="selectDepartment(dept, $event)">
+                  {{ dept.name }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-  <div class="col-md-4">
-    <label class="form-label">Company Branch</label>
-    <select class="form-control"
-      [(ngModel)]="companyBranchPublicId"
-      name="companyBranch">
-      <option value="">Select Branch</option>
-      <option *ngFor="let b of companyBranches"
-        [value]="b.publicId">
-        {{ b.name }}
-      </option>
-    </select>
-  </div>
-</div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>Designation</label>
+            <div class="custom-dropdown" (click)="toggleDesignationDropdown($event)">
+              <div class="dropdown-selected">
+                <span>{{ selectedDesignationLabel || 'Select Designation' }}</span>
+                <i class="fa-solid fa-caret-down" [class.rotate]="isDesignationDropdownOpen"></i>
+              </div>
+              <div class="dropdown-options" *ngIf="isDesignationDropdownOpen">
+                <div class="dropdown-option" *ngFor="let desig of designations" (click)="selectDesignation(desig, $event)">
+                  {{ desig.name }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-      <!-- Expected DOJ + Remarks -->
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>Company Branch</label>
+            <div class="custom-dropdown" (click)="toggleBranchDropdown($event)">
+              <div class="dropdown-selected">
+                <span>{{ selectedBranchLabel || 'Select Branch' }}</span>
+                <i class="fa-solid fa-caret-down" [class.rotate]="isBranchDropdownOpen"></i>
+              </div>
+              <div class="dropdown-options" *ngIf="isBranchDropdownOpen">
+                <div class="dropdown-option" *ngFor="let branch of companyBranches" (click)="selectBranch(branch, $event)">
+                  {{ branch.name }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Expected DOJ & Remarks Row -->
       <div class="row">
         <div class="col-md-6">
-          <label class="form-label">Expected DOJ</label>
-          <input type="date" class="form-control"
-            [(ngModel)]="expectedDoj"
-            name="expectedDoj">
+          <div class="form-group">
+            <label>Expected DOJ</label>
+            <input type="date" class="form-control" [(ngModel)]="expectedDoj" name="expectedDoj">
+          </div>
         </div>
 
         <div class="col-md-6">
-          <label class="form-label">Remarks</label>
-          <input type="text" class="form-control"
-            [(ngModel)]="remarks"
-            name="remarks"
-            placeholder="Enter remarks">
+          <div class="form-group">
+            <label>Remarks</label>
+            <input type="text" class="form-control" [(ngModel)]="remarks" name="remarks" placeholder="Enter remarks">
+          </div>
         </div>
       </div>
 
       <!-- Buttons -->
       <div class="form-actions">
         <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
-        <button type="button" class="submit-btn"
-          (click)="isEditMode ? updateApplication() : createApplication()">
+        <button type="button" class="submit-btn" (click)="isEditMode ? updateApplication() : createApplication()">
           {{ isEditMode ? 'Update' : 'Create' }}
         </button>
       </div>
-
     </form>
   </div>
 </div>

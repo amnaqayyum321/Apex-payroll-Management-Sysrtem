@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { FormsService } from '../../../forms/Services/forms';
 import { ActivatedRoute, Router, RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -95,23 +95,32 @@ export class InterviewPanel {
     this.resetMemberForm();
   }
 
-  editMember(index: number) {
-    this.member = { ...this.members[index] };
-    this.editMemberIndex = index;
-  }
+
+editMember(index: number) {
+  const memberToEdit = this.members[index];
+  this.member = { ...memberToEdit };
+  this.editMemberIndex = index;
+  
+  // Set dropdown labels
+  const employee = this.employees.find(e => e.employeePublicId === memberToEdit.employeePublicId);
+  this.selectedEmployeeLabel = employee ? employee.fullName : '';
+  this.selectedStatusLabel = memberToEdit.status;
+}
 
   deleteMember(index: number) {
     this.members.splice(index, 1);
   }
-
-  resetMemberForm() {
-    this.member = {
-      employeePublicId: '',
-      responsibility: '',
-      lineNumber: 0,
-      status: 'ACTIVE',
-    };
-  }
+resetMemberForm() {
+  this.member = {
+    employeePublicId: '',
+    responsibility: '',
+    lineNumber: 0,
+    status: 'ACTIVE',
+  };
+  this.selectedEmployeeLabel = '';
+  this.selectedStatusLabel = 'ACTIVE';
+  this.selectedEmployeeId = '';
+}
 
   createPanel() {
     if (!this.code || !this.name) {
@@ -229,4 +238,51 @@ export class InterviewPanel {
   cancel() {
     this.router.navigate(['/panel/onboarding/view-interview-panel-list']);
   }
+
+
+  // Add these properties with your existing ones
+isEmployeeDropdownOpen = false;
+isStatusDropdownOpen = false;
+selectedEmployeeLabel = '';
+selectedStatusLabel = '';
+selectedEmployeeId = '';
+
+statusOptions = [
+  { value: 'ACTIVE', label: 'ACTIVE' },
+  { value: 'INACTIVE', label: 'INACTIVE' }
+];
+
+// Add these methods
+toggleEmployeeDropdown(event: Event) {
+  event.stopPropagation();
+  this.isEmployeeDropdownOpen = !this.isEmployeeDropdownOpen;
+  this.isStatusDropdownOpen = false;
+}
+
+selectEmployee(emp: any, event: Event) {
+  event.stopPropagation();
+  this.member.employeePublicId = emp.employeePublicId;
+  this.selectedEmployeeLabel = emp.fullName;
+  this.selectedEmployeeId = emp.employeePublicId;
+  this.isEmployeeDropdownOpen = false;
+}
+
+toggleStatusDropdown(event: Event) {
+  event.stopPropagation();
+  this.isStatusDropdownOpen = !this.isStatusDropdownOpen;
+  this.isEmployeeDropdownOpen = false;
+}
+
+selectStatus(status: any, event: Event) {
+  event.stopPropagation();
+  this.member.status = status.value;
+  this.selectedStatusLabel = status.label;
+  this.isStatusDropdownOpen = false;
+}
+
+@HostListener('document:click', ['$event'])
+closeAllDropdowns(event?: Event) {   // ← Add optional event parameter
+  this.isEmployeeDropdownOpen = false;
+  this.isStatusDropdownOpen = false;
+}
 }
