@@ -13,6 +13,8 @@ import { FormsModule } from '@angular/forms';
 })
 export class InterviewApproval {
   interviewList: any[] = [];
+   filteredInterviewList: any[] = [];
+  paginatedInterviewList: any[] = [];
   selectedInterview: any;
   selectedStatus: string = '';
   allowedStatuses: string[] = [];
@@ -21,6 +23,8 @@ export class InterviewApproval {
   totalPagesCount: number = 0;
   currentPage = 1;
   itemsPerPage = 7;
+   searchTerm: string = '';
+  statusFilter: string = '';
 
   // ✅ FIXED: Correct flow confirmed by backend
   // RESCHEDULE is NOT a status — going back to SCHEDULED means reschedule
@@ -52,23 +56,39 @@ export class InterviewApproval {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
-  changePage(page: number) {
-    if (page < 1 || page > this.totalPages) return;
-    this.currentPage = page;
-    this.loadInterviews();
+  get firstItem(): number {
+    return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.itemsPerPage + 1;
+  }
+
+  get lastItem(): number {
+    return Math.min(this.currentPage * this.itemsPerPage, this.totalItems);
+  }
+
+  get isAnyFilterActive(): boolean {
+    return !!this.searchTerm || !!this.statusFilter;
   }
 
   loadInterviews() {
     this.loader.show();
-    const backendPage = this.currentPage - 1;
-    this.onboardingService.getAllInterviews(backendPage, this.itemsPerPage).subscribe({
+ const backendPage = this.currentPage - 1;
+  const pageSize = this.isAnyFilterActive ? 9999 : this.itemsPerPage;
+  const page = this.isAnyFilterActive ? 0 : backendPage;
+      this.onboardingService.getAllInterviews(page, pageSize).subscribe({
       next: (res: any) => {
         this.loader.hide();
-        this.interviewList = res.data;
+        this.interviewList = res.data.sort(
+        (a: any, b: any) =>
+          new Date(b.createdDate).getTime() -
+          new Date(a.createdDate).getTime()
+      );
         this.totalItems = res.paginator.totalItems;
         this.totalPagesCount = res.paginator.totalPages;
-        this.currentPage = res.paginator.currentPage + 1;
-      },
+        this.currentPage =this.isAnyFilterActive
+        ? 1
+        : res.paginator.currentPage + 1;
+
+      this.applyFilter();
+    },
       error: () => {
         this.loader.hide();
         this.toastr.error('Failed to load interviews');
@@ -140,4 +160,68 @@ export class InterviewApproval {
   hasNextStatus(status: string): boolean {
     return (this.STATUS_FLOW[status]?.length ?? 0) > 0;
   }
+
+
+   changePage(page: number) {
+    if (page < 1 || page > this.totalPages) return;
+    this.currentPage = page;
+    this.loadInterviews();
+  }
+
+  onItemsPerPageChange() {
+    this.currentPage = 1;
+    this.loadInterviews();
+  }
+
+  onSearch() {
+    this.currentPage = 1;
+    this.loadInterviews();
+  }
+
+  onStatusChange() {
+    this.currentPage = 1;
+    this.
+    loadInterviews();
+  }
+
+ applyFilter() {
+  const term = this.searchTerm.toLowerCase().trim();
+
+  this.filteredInterviewList = this.interviewList.filter((item) => {
+    const matchesSearch =
+      !term ||
+      item.name?.toLowerCase().includes(term) ||
+      item.code?.toLowerCase().includes(term);
+
+    const matchesStatus =
+      this.statusFilter === '' || item.status === this.statusFilter;
+
+    return matchesSearch && matchesStatus;
+  });
+
+  this.updatePaginatedList();
+}
+  updatePaginatedList() {
+    if (this.isAnyFilterActive) {
+      this.totalItems = this.filteredInterviewList.length;
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      this.paginatedInterviewList = this.
+      filteredInterviewList.slice(
+        start,
+        start + this.itemsPerPage,
+      );
+    } else {
+      this.totalItems = this.totalPagesCount * this.itemsPerPage;
+      this.paginatedInterviewList = this.interviewList;
+    }
+  }
+
+  resetFilters() {
+    this.searchTerm = '';
+    this.statusFilter = '';
+    this.currentPage = 1;
+    this.loadInterviews();
+  }
+
+
 }

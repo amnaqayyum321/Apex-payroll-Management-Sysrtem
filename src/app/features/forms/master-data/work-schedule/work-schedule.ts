@@ -134,16 +134,14 @@ export class WorkSchedule implements OnInit {
     error: (err) => console.error('PayPeriod error:', err)
   });
 
-  this.formsService.getAllShifts(0, 100).subscribe({
-    next: (res) => {
-      console.log('Shifts response:', res);
-      // The shifts array is directly in res.data
-      const allShifts = res?.data || [];
-      // Filter to only include active shifts
-      this.shiftsList = allShifts.filter((shift: any) => shift.isActive === true);
-    },
-    error: (err) => console.error('Shifts error:', err)
-  });
+this.formsService.getAllShifts(0, 100).subscribe({
+  next: (res) => {
+    console.log('Shifts response:', res);
+    const allShifts = res?.data || [];
+    this.shiftsList = allShifts; // show all shifts
+  },
+  error: (err) => console.error('Shifts error:', err)
+});
 }
 
   // --- Days handling ---

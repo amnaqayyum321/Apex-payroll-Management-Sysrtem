@@ -80,11 +80,11 @@
             <td class="px-3 py-3 font-medium">{{ p.name }}</td>
             <td class="px-3 py-3 font-medium">
               <span
-                class="status-badge"
-                [ngClass]="p.isActive ? 'active-badge' : 'inactive-badge'"
-              >
-                {{ p.isActive ? 'Active' : 'Inactive' }}
-              </span>
+  class="status-badge"
+  [ngClass]="p.status === 'ACTIVE' ? 'active-badge' :  'inactive-badge'"
+>
+  {{ p.status==="ACTIVE"?'Active':'Inactive' }}
+</span>
             </td>
             <td class="px-3 py-3 text-gray-400">
               <i

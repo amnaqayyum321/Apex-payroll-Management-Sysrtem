@@ -92,7 +92,9 @@ export class PayPeriod {
     this.loader.show();
     this.FormSv.getPayperiodbyId(publicId!).subscribe({
       next: (res: any) => {
+
         this.loader.hide();
+        console.log('res',res)
         this.Code = res.data.code;
         this.Name = res.data.name;
         this.description = res.data.description;

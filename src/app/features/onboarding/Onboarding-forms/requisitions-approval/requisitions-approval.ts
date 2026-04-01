@@ -7,13 +7,15 @@ import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-requisitions-approval',
-  imports:[CommonModule,FormsModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './requisitions-approval.html',
   styleUrl: './requisitions-approval.scss'
 })
 export class RequisitionsApproval {
 
   requisitionList: any[] = [];
+  filteredReqList: any[] = [];
+  paginatedReqList: any[] = [];
   selectedReq: any;
   selectedStatus: string = '';
   allowedStatuses: string[] = [];
@@ -22,6 +24,8 @@ export class RequisitionsApproval {
   totalPagesCount: number = 0;
   currentPage = 1;
   itemsPerPage = 7;
+  searchTerm: string = '';
+  statusFilter: string = '';
 
   STATUS_FLOW: any = {
     DRAFT: ['SUBMITTED', 'CANCELLED', 'CLOSED'],
@@ -37,7 +41,7 @@ export class RequisitionsApproval {
     private toastr: ToastrService,
     private loader: LoaderService,
     private onboardingService: OnboardingService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.loadRequisition();
@@ -51,23 +55,43 @@ export class RequisitionsApproval {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
-  changePage(page: number) {
-    if (page < 1 || page > this.totalPages) return;
-    this.currentPage = page;
-    this.loadRequisition();
+  get firstItem(): number {
+    return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.itemsPerPage + 1;
   }
+
+  get lastItem(): number {
+    return Math.min(this.currentPage * this.itemsPerPage, this.totalItems);
+  }
+
+  get isAnyFilterActive(): boolean {
+    return !!this.searchTerm || !!this.statusFilter;
+  }
+
 
   loadRequisition() {
     this.loader.show();
-    // Use the pagination parameters (backend typically uses 0-based indexing)
+
     const backendPage = this.currentPage - 1;
-    this.onboardingService.getAllJobRequisition(backendPage, this.itemsPerPage).subscribe({
+    const pageSize = this.isAnyFilterActive ? 9999 : this.itemsPerPage;
+    const page = this.isAnyFilterActive ? 0 : backendPage;
+
+    this.onboardingService.getAllJobRequisition(page, pageSize).subscribe({
       next: (res: any) => {
         this.loader.hide();
-        this.requisitionList = res.data;
+
+        this.requisitionList = res.data.sort(
+          (a: any, b: any) =>
+            new Date(b.createdDate).getTime() -
+            new Date(a.createdDate).getTime()
+        );
+
         this.totalItems = res.paginator.totalItems;
         this.totalPagesCount = res.paginator.totalPages;
-        this.currentPage = res.paginator.currentPage + 1; // Convert back to 1-based for UI
+        this.currentPage = this.isAnyFilterActive
+          ? 1
+          : res.paginator.currentPage + 1;
+
+        this.applyFilter();
       },
       error: () => {
         this.loader.hide();
@@ -75,6 +99,69 @@ export class RequisitionsApproval {
       }
     });
   }
+
+
+  changePage(page: number) {
+    if (page < 1 || page > this.totalPages) return;
+    this.currentPage = page;
+    this.loadRequisition();
+  }
+
+  onItemsPerPageChange() {
+    this.currentPage = 1;
+    this.loadRequisition();
+  }
+
+  onSearch() {
+    this.currentPage = 1;
+    this.loadRequisition();
+  }
+
+  onStatusChange() {
+    this.currentPage = 1;
+    this.loadRequisition();
+  }
+
+  applyFilter() {
+    const term = this.searchTerm.toLowerCase().trim();
+
+    this.filteredReqList = this.requisitionList.filter((item) => {
+      const matchesSearch =
+        !term ||
+        item.name?.toLowerCase().includes(term) ||
+        item.code?.toLowerCase().includes(term);
+
+      const matchesStatus =
+        this.statusFilter === '' || item.status === this.statusFilter;
+
+      return matchesSearch && matchesStatus;
+    });
+
+    this.updatePaginatedList();
+  }
+  updatePaginatedList() {
+    if (this.isAnyFilterActive) {
+      this.totalItems = this.filteredReqList.length;
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      this.paginatedReqList = this.
+        filteredReqList.slice(
+          start,
+          start + this.itemsPerPage,
+        );
+    } else {
+      this.totalItems = this.totalPagesCount * this.itemsPerPage;
+      this.paginatedReqList = this.requisitionList;
+    }
+  }
+
+  resetFilters() {
+    this.searchTerm = '';
+    this.statusFilter = '';
+    this.currentPage = 1;
+    this.loadRequisition();
+  }
+
+
 
   openApprovalModal(req: any) {
     this.selectedReq = req;

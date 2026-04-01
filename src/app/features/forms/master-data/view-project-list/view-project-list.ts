@@ -109,8 +109,10 @@ export class ViewProjectList {
       const matchesSearch =
         !term || item.name?.toLowerCase().includes(term) || item.code?.toLowerCase().includes(term);
 
-      const matchesStatus = this.statusFilter === '' || String(item.isActive) === this.statusFilter;
-
+const matchesStatus =
+  this.statusFilter === '' ||
+  (this.statusFilter === 'true' && item.status === 'ACTIVE') ||
+  (this.statusFilter === 'false' && item.status !== 'ACTIVE');
       return matchesSearch && matchesStatus;
     });
 

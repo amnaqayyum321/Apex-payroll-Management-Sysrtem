@@ -13,6 +13,8 @@ import { FormsModule } from '@angular/forms';
 })
 export class CandidatesApproval {
  applicationList: any[] = [];
+  filteredCandidateList: any[] = [];
+  paginatedCandidateList: any[] = [];
 selectedApp: any;
 selectedStatus: string = '';
 allowedStatuses: string[] = [];
@@ -21,6 +23,8 @@ showModal = false;
   totalPagesCount: number = 0;
   currentPage = 1;
   itemsPerPage = 7;
+    searchTerm: string = '';
+  statusFilter: string = '';
 
 APPLICATION_STATUS_FLOW: any = {
   APPLIED: ['SHORTLISTED', 'REJECTED', 'WITHDRAWN'],
@@ -52,7 +56,7 @@ APPLICATION_STATUS_FLOW: any = {
   this.showModal = true;
 }
 
-  get totalPages() {
+get totalPages() {
     return this.totalPagesCount || Math.ceil(this.totalItems / this.itemsPerPage);
   }
 
@@ -60,24 +64,40 @@ APPLICATION_STATUS_FLOW: any = {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
-  changePage(page: number) {
-    if (page < 1 || page > this.totalPages) return;
-    this.currentPage = page;
-    this.loadApplications();
+  get firstItem(): number {
+    return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.itemsPerPage + 1;
   }
+
+  get lastItem(): number {
+    return Math.min(this.currentPage * this.itemsPerPage, this.totalItems);
+  }
+
+  get isAnyFilterActive(): boolean {
+    return !!this.searchTerm || !!this.statusFilter;
+  }
+
 
   loadApplications() {
     this.loader.show();
     // Use the pagination parameters (backend typically uses 0-based indexing)
-    const backendPage = this.currentPage - 1;
-    this.onboardingService.getAllCandidateApplications(backendPage, this.itemsPerPage).subscribe({
+ const backendPage = this.currentPage - 1;
+  const pageSize = this.isAnyFilterActive ? 9999 : this.itemsPerPage;
+  const page = this.isAnyFilterActive ? 0 : backendPage;    this.onboardingService.getAllCandidateApplications(page, pageSize).subscribe({
       next: (res: any) => {
         this.loader.hide();
-        this.applicationList  = res.data;
+        this.applicationList  = res.data.sort(
+        (a: any, b: any) =>
+          new Date(b.createdDate).getTime() -
+          new Date(a.createdDate).getTime()
+      );
         this.totalItems = res.paginator.totalItems;
         this.totalPagesCount = res.paginator.totalPages;
-        this.currentPage = res.paginator.currentPage + 1; // Convert back to 1-based for UI
-      },
+        this.currentPage = this.isAnyFilterActive
+        ? 1
+        : res.paginator.currentPage + 1;
+
+      this.applyFilter();
+    },
       error: () => {
         this.loader.hide();
         this.toastr.error('Failed to load requisitions');
@@ -147,5 +167,70 @@ APPLICATION_STATUS_FLOW: any = {
 
   return [];
 }
+
+
+
+ changePage(page: number) {
+    if (page < 1 || page > this.totalPages) return;
+    this.currentPage = page;
+    this.loadApplications();
+  }
+
+  onItemsPerPageChange() {
+    this.currentPage = 1;
+    this.loadApplications();
+  }
+
+  onSearch() {
+    this.currentPage = 1;
+    this.
+    loadApplications();
+  }
+
+  onStatusChange() {
+    this.currentPage = 1;
+    this.
+    loadApplications();
+  }
+
+ applyFilter() {
+  const term = this.searchTerm.toLowerCase().trim();
+
+  this.filteredCandidateList = this.applicationList.filter((item) => {
+    const matchesSearch =
+      !term ||
+      item.name?.toLowerCase().includes(term) ||
+      item.code?.toLowerCase().includes(term);
+
+    const matchesStatus =
+      this.statusFilter === '' || item.status === this.statusFilter;
+
+    return matchesSearch && matchesStatus;
+  });
+
+  this.updatePaginatedList();
+}
+  updatePaginatedList() {
+    if (this.isAnyFilterActive) {
+      this.totalItems = this.filteredCandidateList.length;
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      this.paginatedCandidateList = this.
+      filteredCandidateList.slice(
+        start,
+        start + this.itemsPerPage,
+      );
+    } else {
+      this.totalItems = this.totalPagesCount * this.itemsPerPage;
+      this.paginatedCandidateList = this.applicationList;
+    }
+  }
+
+  resetFilters() {
+    this.searchTerm = '';
+    this.statusFilter = '';
+    this.currentPage = 1;
+    this.loadApplications();
+  }
+
 
 }

@@ -66,7 +66,8 @@ export class ViewPayPeriod {
         this.Payperiod = response.data.sort(
         (a: any, b: any) =>
           new Date(b.createdDate).getTime() - new Date(a.createdDate).getTime()
-      );;
+      );
+      
         this.totalItems = response.paginator.totalItems;
         this.totalPagesCount = response.paginator.totalPages;
         this.currentPage = this.isAnyFilterActive
@@ -109,8 +110,10 @@ export class ViewPayPeriod {
       const matchesSearch =
         !term || item.name?.toLowerCase().includes(term) || item.code?.toLowerCase().includes(term);
 
-      const matchesStatus = this.statusFilter === '' || String(item.isActive) === this.statusFilter;
-
+const matchesStatus =
+  this.statusFilter === '' ||
+  (this.statusFilter === 'true' && item.status === 'ACTIVE') ||
+  (this.statusFilter === 'false' && item.status === 'INACTIVE');
       return matchesSearch && matchesStatus;
     });
 
