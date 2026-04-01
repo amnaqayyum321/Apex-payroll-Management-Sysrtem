@@ -72,10 +72,11 @@ export class InterviewPanel {
     });
   }
   addOrUpdateMember() {
+    debugger;
     const selectedEmployee = this.employees.find(
       (e) => e.employeePublicId === this.member.employeePublicId,
     );
-
+    console.log('employee id', selectedEmployee);
     if (!selectedEmployee) return;
 
     const newMember = {

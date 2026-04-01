@@ -72,34 +72,63 @@
             </tr>
 
             <!-- Sessions Expandable Row -->
-            <tr *ngIf="expandedInterviewId === interview.publicId" class="table-secondary">
+            <!-- Sessions Expandable Row -->
+            <tr *ngIf="expandedInterviewId === interview.publicId" class="sessions-expanded-row">
               <td colspan="8" class="p-0">
-                <div class="p-3">
-                  <h6 class="mb-3 fw-semibold">
-                    <i class="fa-solid fa-list me-2"></i>Sessions for {{ interview.name }}
-                  </h6>
-                  <table class="table table-bordered table-sm mb-0">
-                    <thead class="table-dark">
+                <div class="sessions-wrapper">
+                  <div class="sessions-header">
+                    <i class="fa-solid fa-layer-group"></i>
+                    <span
+                      >Sessions for <strong>{{ interview.name }}</strong></span
+                    >
+                    <span class="session-total-badge"
+                      >{{ interview.sessions?.length || 0 }} session{{
+                        interview.sessions?.length !== 1 ? 's' : ''
+                      }}</span
+                    >
+                  </div>
+
+                  <table class="sessions-table">
+                    <thead>
                       <tr>
                         <th>#</th>
                         <th>Panel</th>
                         <th>Date</th>
-                        <th>Start</th>
-                        <th>End</th>
+                        <th>Time</th>
                         <th>Location</th>
                         <th>Result</th>
                         <th>Status</th>
                         <th>Remarks</th>
+                        <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
                       <tr *ngFor="let session of interview.sessions; let j = index">
-                        <td>{{ j + 1 }}</td>
-                        <td>{{ session.panelName }}</td>
-                        <td>{{ session.interviewDate }}</td>
-                        <td>{{ session.startTime }}</td>
-                        <td>{{ session.endTime }}</td>
-                        <td>{{ session.location }}</td>
+                        <td class="serial-col">{{ j + 1 }}</td>
+                        <td class="panel-col">
+                          <div class="panel-cell">
+                            <div class="panel-avatar">
+                              {{ getInitials(session.panelName) }}
+                            </div>
+                            <span style="color: #fff">{{ session.panelName }}</span>
+                          </div>
+                        </td>
+                        <td class="date-col" style="color: #fff !important">
+                          {{ session.interviewDate }}
+                        </td>
+                        <td class="time-col">
+                          <span class="time-range">
+                            <i class="fa-regular fa-clock"></i>
+                            {{ session.startTime | slice: 0 : 5 }} –
+                            {{ session.endTime | slice: 0 : 5 }}
+                          </span>
+                        </td>
+                        <td class="location-col">
+                          <span class="location-chip">
+                            <i class="fa-solid fa-location-dot"></i>
+                            {{ session.location }}
+                          </span>
+                        </td>
                         <td>
                           <span
                             class="status-badge"
@@ -113,23 +142,48 @@
                             {{ session.result }}
                           </span>
                         </td>
-                        <td>{{ session.status }}</td>
-                        <td>{{ session.remarks }}</td>
-                        <td></td>
+                        <td>
+                          <span
+                            class="status-badge"
+                            [ngClass]="{
+                              'approved-badge': session.status === 'ACTIVE',
+                              'pending-badge': session.status === 'PENDING',
+                              'rejected-badge': session.status === 'INACTIVE',
+                              'draft-badge': session.status === 'CANCELLED',
+                            }"
+                          >
+                            {{ session.status }}
+                          </span>
+                        </td>
+                        <td class="remarks-col">
+                          <span
+                            class="remarks-text"
+                            style="color: #fff !important"
+                            [attr.data-tooltip]="
+                              session.remarks?.length > 20 ? session.remarks : null
+                            "
+                          >
+                            {{ session.remarks || '—' }}
+                          </span>
+                        </td>
                         <td>
                           <a
-                            class="btn btn-sm btn-primary"
+                            class="feedback-btn"
                             [routerLink]="[
                               '/panel/onboarding/view-interview-feedback-list',
                               session.publicId,
                             ]"
                           >
-                            View Feedback
+                            <i class="fa-solid fa-comment-dots"></i>
+                            Feedback
                           </a>
                         </td>
                       </tr>
                       <tr *ngIf="!interview.sessions || interview.sessions.length === 0">
-                        <td colspan="9" class="text-center text-muted">No sessions found</td>
+                        <td colspan="9" class="empty-sessions">
+                          <i class="fa-solid fa-inbox"></i>
+                          <span>No sessions found</span>
+                        </td>
                       </tr>
                     </tbody>
                   </table>
