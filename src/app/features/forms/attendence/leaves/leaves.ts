@@ -39,7 +39,7 @@ export class Leaves implements OnInit {
     private toastr: ToastrService,
     private router: Router,
     private route: ActivatedRoute,
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.getEmployee();
@@ -53,15 +53,14 @@ export class Leaves implements OnInit {
   }
 
   getEmployee() {
-    this.formsService
-      .GetEmployees(this.currentPage, this.pageSize)
-      .subscribe((res: any) => {
-        console.log('EMP RESPONSE:', res);
-        this.employees = res.data;
+    (this.formsService.GetEmployees(this.currentPage, this.pageSize).subscribe((res: any) => {
+      console.log('EMP RESPONSE:', res);
+      this.employees = res.data;
 
-        console.log('EMP ARRAY:', this.employees);
-      }), ((error: any) => {
-        console.log(error)
+      console.log('EMP ARRAY:', this.employees);
+    }),
+      (error: any) => {
+        console.log(error);
       });
   }
 
@@ -77,12 +76,12 @@ export class Leaves implements OnInit {
 
   // 🔹 Create
   createLeave() {
-    debugger
+    debugger;
     if (!this.employeePublicId || !this.leaveTypePublicId) {
       this.toastr.error('Please select employee and leave type');
       return;
     }
- 
+
     const payload = {
       employeePublicId: this.employeePublicId,
       leaveTypePublicId: this.leaveTypePublicId,
@@ -119,8 +118,8 @@ export class Leaves implements OnInit {
   selectEmployee(emp: any, event: Event): void {
     event.stopPropagation();
     this.employeePublicId = emp.employeePublicId;
-    console.log('employee id',this.employeePublicId)
-    this.selectedEmployeeDisplay = emp.fullName;  // adjust if property name differs
+    console.log('employee id', this.employeePublicId);
+    this.selectedEmployeeDisplay = emp.fullName; // adjust if property name differs
     this.employeePublicId = emp.publicId;
     this.selectedEmployeeDisplay = emp.fullName; // adjust if property name differs
     this.isEmployeeDropdownOpen = false;
