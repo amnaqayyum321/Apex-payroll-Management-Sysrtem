@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { FormsService } from '../../../forms/Services/forms';
 import { OnboardingService } from '../../Services/onboarding';
 import { ToastrService } from 'ngx-toastr';
@@ -30,6 +30,25 @@ export class Offers implements OnInit {
   publicId: string | null = null;
   isEditMode = false;
 
+  // Dropdown state variables
+  isApplicationDropdownOpen = false;
+  isPayElementDropdownOpen = false;
+  isFrequencyDropdownOpen = false;
+  isStatusDropdownOpen = false;
+
+  selectedApplicationLabel = '';
+
+  activePayElementIndex: number | null = null;
+  activeFrequencyIndex: number | null = null;
+  activeStatusIndex: number | null = null;
+
+  rowPayElementLabels: { [key: number]: string } = {};
+  rowFrequencyLabels: { [key: number]: string } = {};
+  rowStatusLabels: { [key: number]: string } = {};
+
+  frequencyOptions = ['MONTHLY', 'WEEKLY', 'BI_WEEKLY', 'HOURLY'];
+  statusOptions = ['ACTIVE', 'INACTIVE', 'CANCELLED'];
+
   constructor(
     private formsService: FormsService,
     private onboarding: OnboardingService,
@@ -52,6 +71,95 @@ export class Offers implements OnInit {
     this.addRow();
   }
 
+  // Dropdown Methods
+toggleApplicationDropdown(event: Event) {
+  event.stopPropagation();
+  this.closeOtherDropdowns(['application']);
+  this.isApplicationDropdownOpen = !this.isApplicationDropdownOpen;
+}
+
+  selectApplication(app: any, event: Event) {
+    event.stopPropagation();
+    this.applicationPublicId = app.publicId;
+    this.selectedApplicationLabel = app.candidateName;
+    this.isApplicationDropdownOpen = false;
+  }
+
+  togglePayElementDropdown(event: Event, index: number) {
+    event.stopPropagation();
+    this.isPayElementDropdownOpen = !this.isPayElementDropdownOpen;
+    this.activePayElementIndex = this.isPayElementDropdownOpen ? index : null;
+    this.closeOtherDropdowns(['payelement']);
+  }
+
+  selectPayElement(payElement: any, index: number, event: Event) {
+    event.stopPropagation();
+    this.salaryRows[index].payElementPublicId = payElement.publicId;
+    this.rowPayElementLabels[index] = payElement.name;
+    this.isPayElementDropdownOpen = false;
+    this.activePayElementIndex = null;
+  }
+
+  getSelectedPayElementLabel(index: number): string {
+    return this.rowPayElementLabels[index] || '';
+  }
+
+  toggleFrequencyDropdown(event: Event, index: number) {
+    event.stopPropagation();
+    this.isFrequencyDropdownOpen = !this.isFrequencyDropdownOpen;
+    this.activeFrequencyIndex = this.isFrequencyDropdownOpen ? index : null;
+    this.closeOtherDropdowns(['frequency']);
+  }
+
+  selectFrequency(frequency: string, index: number, event: Event) {
+    event.stopPropagation();
+    this.salaryRows[index].payFrequency = frequency;
+    this.rowFrequencyLabels[index] = frequency;
+    this.isFrequencyDropdownOpen = false;
+    this.activeFrequencyIndex = null;
+  }
+
+  getSelectedFrequencyLabel(index: number): string {
+    return this.rowFrequencyLabels[index] || '';
+  }
+
+  toggleStatusDropdown(event: Event, index: number) {
+    event.stopPropagation();
+    this.isStatusDropdownOpen = !this.isStatusDropdownOpen;
+    this.activeStatusIndex = this.isStatusDropdownOpen ? index : null;
+    this.closeOtherDropdowns(['status']);
+  }
+
+  selectStatus(status: string, index: number, event: Event) {
+    event.stopPropagation();
+    this.salaryRows[index].status = status;
+    this.rowStatusLabels[index] = status;
+    this.isStatusDropdownOpen = false;
+    this.activeStatusIndex = null;
+  }
+
+  getSelectedStatusLabel(index: number): string {
+    return this.rowStatusLabels[index] || '';
+  }
+
+  private closeOtherDropdowns(except?: string[]) {
+    if (!except || !except.includes('application')) this.isApplicationDropdownOpen = false;
+    if (!except || !except.includes('payelement')) this.isPayElementDropdownOpen = false;
+    if (!except || !except.includes('frequency')) this.isFrequencyDropdownOpen = false;
+    if (!except || !except.includes('status')) this.isStatusDropdownOpen = false;
+  }
+
+  @HostListener('document:click', ['$event'])
+  closeAllDropdowns(event?: Event) {
+    this.isApplicationDropdownOpen = false;
+    this.isPayElementDropdownOpen = false;
+    this.isFrequencyDropdownOpen = false;
+    this.isStatusDropdownOpen = false;
+    this.activePayElementIndex = null;
+    this.activeFrequencyIndex = null;
+    this.activeStatusIndex = null;
+  }
+
   loadApplications() {
     this.onboarding.getAllCandidateApplications(0, 100).subscribe((res: any) => {
       this.applications = res?.data?.content || res?.data || [];
@@ -65,6 +173,7 @@ export class Offers implements OnInit {
   }
 
   addRow() {
+    const newIndex = this.salaryRows.length;
     this.salaryRows.push({
       payElementPublicId: '',
       amount: 0,
@@ -76,11 +185,17 @@ export class Offers implements OnInit {
       status: 'ACTIVE',
       remarks: '',
     });
+    this.rowFrequencyLabels[newIndex] = 'MONTHLY';
+    this.rowStatusLabels[newIndex] = 'ACTIVE';
   }
 
   removeRow(index: number) {
     this.salaryRows.splice(index, 1);
+    delete this.rowPayElementLabels[index];
+    delete this.rowFrequencyLabels[index];
+    delete this.rowStatusLabels[index];
   }
+
   validateForm(): boolean {
     if (!this.code?.trim()) {
       this.toastr.error('Offer Code is required');
@@ -117,6 +232,7 @@ export class Offers implements OnInit {
     const offer = parseDate(this.offerDate);
     const expiry = parseDate(this.expiryDate);
     const joining = parseDate(this.joiningDate);
+    
     if (!this.isEditMode && offer < today) {
       this.toastr.error('Offer Date cannot be in the past');
       return false;
@@ -183,6 +299,7 @@ export class Offers implements OnInit {
 
     return true;
   }
+
   createOffer() {
     if (!this.validateForm()) return;
     const payload = {
@@ -192,7 +309,7 @@ export class Offers implements OnInit {
       offerDate: this.offerDate,
       expiryDate: this.expiryDate,
       joiningDate: this.joiningDate,
-      approvedByPublicId: null, // 👈 as required
+      approvedByPublicId: null,
       remarks: this.remarks,
       salaryRows: this.salaryRows,
     };
@@ -252,11 +369,24 @@ export class Offers implements OnInit {
         this.code = data.code;
         this.name = data.name;
         this.applicationPublicId = data.applicationPublicId;
+        
+        // Set application label
+        const app = this.applications.find(a => a.publicId === data.applicationPublicId);
+        this.selectedApplicationLabel = app ? app.candidateName : '';
+        
         this.offerDate = data.offerDate;
         this.expiryDate = data.expiryDate;
         this.joiningDate = data.joiningDate;
         this.remarks = data.remarks;
         this.salaryRows = data.salaryRows || [];
+        
+        // Set row labels
+        this.salaryRows.forEach((row: any, idx: number) => {
+          const payElement = this.payElements.find(pe => pe.publicId === row.payElementPublicId);
+          if (payElement) this.rowPayElementLabels[idx] = payElement.name;
+          this.rowFrequencyLabels[idx] = row.payFrequency;
+          this.rowStatusLabels[idx] = row.status;
+        });
       },
       error: () => {
         this.loader.hide();
@@ -269,11 +399,15 @@ export class Offers implements OnInit {
     this.code = '';
     this.name = '';
     this.applicationPublicId = '';
+    this.selectedApplicationLabel = '';
     this.offerDate = '';
     this.expiryDate = '';
     this.joiningDate = '';
     this.remarks = '';
     this.salaryRows = [];
+    this.rowPayElementLabels = {};
+    this.rowFrequencyLabels = {};
+    this.rowStatusLabels = {};
     this.addRow();
   }
 

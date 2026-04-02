@@ -293,3 +293,185 @@ textarea {
         transform: rotate(45deg) scale(1);
     }
 }
+.section-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 20px 6px;
+  letter-spacing: 0.3px;
+}
+
+.salary-row-card {
+  background: var(--second-primary-color);
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
+  border: 1px solid var(--border-color);
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: var(--purple-1);
+    background: rgba(255, 255, 255, 0.05);
+  }
+}
+
+.btn-remove-row {
+  height: 42px;
+  width: 42px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: var(--red-color);
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+  }
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.btn-add-row {
+  height: 42px;
+  padding: 0 22px;
+  border-radius: 10px;
+  border: 1px dashed var(--border-color);
+  background: transparent;
+  color: var(--purple-1);
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 8px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: var(--purple-1);
+    background: rgba(112, 71, 238, 0.1);
+  }
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* label aur field ke darmiyan spacing */
+  width: 100%;
+  margin-bottom: 12px;
+}
+.form-group label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 0px;
+  line-height: 1.4;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+  }
+}
+
+.reset-btn {
+  background: var(--second-primary-color);
+  color: var(--purple-1);
+  padding: 8px 14px;
+  border-radius: 6px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  &:hover {
+    background: var(--purple-1);
+    color: white;
+  }
+}
+
+.section-card {
+  background: var(--primary-color);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+.section-card1 {
+  background: var(--second-primary-color);
+  border: 1px solid var(--border-color);
+  border-radius: 14px;
+  padding: 18px;
+  margin-bottom: 18px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+.row-action-buttons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  margin-top: 13px; /* thora neeche se upar lift */
+}
+
+.btn-icon-add,
+.btn-icon-delete {
+  width: 45px;
+  height: 40px;
+  border-radius: 6px;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: white;
+  font-size: 14px;
+}
+
+.btn-icon-add {
+  background: rgba(18, 116, 172, 0.12);
+  color: #1274ac;
+}
+
+.btn-icon-delete {
+  background: rgba(255, 77, 77, 0.12); /* soft red transparent */
+  color: #ff6b6b;
+}
+
+.btn-icon-add:hover,
+.btn-icon-delete:hover {
+  transform: translateY(-2px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.12);
+}
+
+.btn-icon-add:hover {
+  background: rgba(48, 193, 246, 0.2);
+}
+
+.btn-icon-delete:hover {
+  background: rgba(255, 77, 77, 0.2);
+}
+
+.btn-icon-add:active,
+.btn-icon-delete:active {
+  transform: scale(0.96);
+}

@@ -247,6 +247,7 @@
               type="text"
               class="form-control"
               name="companyName"
+              placeholder="Enter Compamy name"
               [(ngModel)]="expForm.companyName"
             />
           </div>
@@ -257,6 +258,7 @@
               type="text"
               class="form-control"
               name="position"
+              placeholder="Enter Position here..."
               [(ngModel)]="expForm.position"
             />
           </div>
@@ -284,7 +286,8 @@
 
           <div class="col-md-4">
             <label class="form-label">Last Salary Drawn</label>
-            <input type="number" class="form-control" name="salary" [(ngModel)]="expForm.salary" />
+            <input type="number" class="form-control" name="salary" [(ngModel)]="expForm.salary"
+            placeholder="e.g. 10,000" />
           </div>
 
          <div class="col-md-4 d-flex align-items-end pb-2">
@@ -302,6 +305,7 @@
               name="expRemarks"
               rows="3"
               [(ngModel)]="expForm.expRemarks"
+              placeholder="Enter Remarks here..."
             ></textarea>
           </div>
         </div>

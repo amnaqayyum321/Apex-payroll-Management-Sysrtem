@@ -4,20 +4,27 @@ import { RouterModule, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { NgbDropdownModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoaderService } from '../../../../core/services/management-services/loader.service';
-import { PaginationComponent } from '../../../../shared/components/commons/components/pagination/pagination.component';
 import { UsersAndRolesService } from '../../Services/user-roles';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-view-roles',
   standalone: true,
-  imports: [CommonModule, RouterModule, NgbDropdownModule, PaginationComponent],
+  imports: [CommonModule, FormsModule, RouterModule, NgbDropdownModule],
   templateUrl: './view-roles.html',
   styleUrl: './view-roles.scss',
 })
 export class ViewRoles {
-  usersList: any[] = [];
+  rolesList: any[] = [];
+  filteredRolesList: any[] = [];
+  paginatedRolesList: any[] = [];
+
   totalItems: number = 0;
   totalPagesCount: number = 0;
+  currentPage = 1;
+  itemsPerPage = 7;
+
+  searchTerm: string = '';
 
   constructor(
     private UsersAndRolesService: UsersAndRolesService,
@@ -25,10 +32,6 @@ export class ViewRoles {
     private loader: LoaderService,
     private router: Router,
   ) {}
-
-  currentPage = 1;
-  itemsPerPage = 7;
-  paginatedUsersList: any[] = [];
 
   get totalPages() {
     return this.totalPagesCount || Math.ceil(this.totalItems / this.itemsPerPage);
@@ -38,20 +41,41 @@ export class ViewRoles {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
-  ngOnInit() {
-    this.loadUsers();
+  get firstItem(): number {
+    return this.totalItems === 0 ? 0 : (this.currentPage - 1) * this.itemsPerPage + 1;
   }
 
-  loadUsers() {
+  get lastItem(): number {
+    return Math.min(this.currentPage * this.itemsPerPage, this.totalItems);
+  }
+
+  get isAnyFilterActive(): boolean {
+    return !!this.searchTerm;
+  }
+
+  ngOnInit() {
+    this.loadRoles();
+  }
+
+  loadRoles() {
     this.loader.show();
-    this.UsersAndRolesService.getRoles(this.currentPage - 1, this.itemsPerPage).subscribe({
+
+    const backendPage = this.currentPage - 1;
+    const pageSize = this.isAnyFilterActive ? 9999 : this.itemsPerPage;
+    const page = this.isAnyFilterActive ? 0 : backendPage;
+
+    this.UsersAndRolesService.getRoles(page, pageSize).subscribe({
       next: (response: any) => {
         this.loader.hide();
-        this.usersList = response.data;
+        this.rolesList = response.data;
+
         this.totalItems = response.paginator.totalItems;
         this.totalPagesCount = response.paginator.totalPages;
-        this.currentPage = response.paginator.currentPage + 1; // Backend 0-indexed
-        this.paginatedUsersList = this.usersList;
+        this.currentPage = this.isAnyFilterActive
+          ? 1
+          : response.paginator.currentPage + 1;
+
+        this.applyFilter();
       },
       error: (error) => {
         this.loader.hide();
@@ -63,20 +87,57 @@ export class ViewRoles {
   changePage(page: number) {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
-    this.loadUsers();
+    this.loadRoles();
   }
 
-  formatRoleName(role: string): string {
-    if (!role) return '';
-
-    return role
-      .toLowerCase()
-      .replace(/_/g, ' ')
-      .replace(/\b\w/g, (c) => c.toUpperCase());
+  onItemsPerPageChange() {
+    this.currentPage = 1;
+    this.loadRoles();
   }
-  goToPermissions(user: any) {
+
+  onSearch() {
+    this.currentPage = 1;
+    this.loadRoles();
+  }
+
+  applyFilter() {
+    const term = this.searchTerm.toLowerCase().trim();
+
+    this.filteredRolesList = this.rolesList.filter((role) => {
+      const matchesSearch =
+        !term ||
+        role.name?.toLowerCase().includes(term) ||
+        role.code?.toLowerCase().includes(term);
+
+      return matchesSearch;
+    });
+
+    this.updatePaginatedList();
+  }
+
+  updatePaginatedList() {
+    if (this.isAnyFilterActive) {
+      this.totalItems = this.filteredRolesList.length;
+      const start = (this.currentPage - 1) * this.itemsPerPage;
+      this.paginatedRolesList = this.filteredRolesList.slice(
+        start,
+        start + this.itemsPerPage,
+      );
+    } else {
+      this.totalItems = this.totalPagesCount * this.itemsPerPage;
+      this.paginatedRolesList = this.filteredRolesList;
+    }
+  }
+
+  resetFilters() {
+    this.searchTerm = '';
+    this.currentPage = 1;
+    this.loadRoles();
+  }
+
+  goToPermissions(role: any) {
     this.router.navigate(['/panel/users-and-roles/view-permissions'], {
-      queryParams: { publicId: user.publicId },
+      queryParams: { publicId: role.publicId },
     });
   }
 }

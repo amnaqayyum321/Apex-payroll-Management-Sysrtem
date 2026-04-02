@@ -1,180 +1,198 @@
 <div class="user-form-wrapper">
   <div class="user-card">
-
     <!-- Header -->
     <div class="card-header">
       <h3>{{ isEditMode ? 'Update Offer' : 'Create Offer' }}</h3>
-    </div>
-
-    <div class="d-flex gap-2">
       <button class="reset-btn" (click)="resetForm()">
         <i class="fa fa-refresh"></i> Reset
       </button>
     </div>
-
     <div class="header-divider"></div>
 
     <form class="user-form">
-
       <!-- ============================= -->
       <!-- 🔵 MAIN OFFER DETAILS SECTION -->
       <!-- ============================= -->
-
+<div class="section-card">
       <h5 class="section-title">Offer Details</h5>
 
       <div class="row">
-        <div class="col-md-6">
-          <label>Code</label>
-          <input type="text" class="form-control"
-                 [(ngModel)]="code" name="code" />
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>Code</label>
+            <input type="text" class="form-control" [(ngModel)]="code" name="code" placeholder="Enter offer code" />
+          </div>
         </div>
-
-        <div class="col-md-6">
-          <label>Name</label>
-          <input type="text" class="form-control"
-                 [(ngModel)]="name" name="name" />
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>Name</label>
+            <input type="text" class="form-control" [(ngModel)]="name" name="name" placeholder="Enter offer name" />
+          </div>
         </div>
+             <div class="col-md-4">
+          <div class="form-group">
+            <label>Application</label>
+            <div class="custom-dropdown" (click)="toggleApplicationDropdown($event)">
+              <div class="dropdown-selected">
+                <span>{{ selectedApplicationLabel || 'Select Application' }}</span>
+                <i class="fa-solid fa-caret-down" [class.rotate]="isApplicationDropdownOpen"></i>
+              </div>
+              <div class="dropdown-options" *ngIf="isApplicationDropdownOpen">
+                <div class="dropdown-option" *ngFor="let app of applications" (click)="selectApplication(app, $event)">
+                  {{ app.candidateName }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>Offer Date</label>
+            <input type="date" class="form-control" [(ngModel)]="offerDate" name="offerDate" />
+          </div>
+        </div>
+           <div class="col-md-4">
+          <div class="form-group">
+            <label>Expiry Date</label>
+            <input type="date" class="form-control" [(ngModel)]="expiryDate" name="expiryDate" />
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="form-group">
+            <label>Joining Date</label>
+            <input type="date" class="form-control" [(ngModel)]="joiningDate" name="joiningDate" />
+          </div>
+        </div>
+      
       </div>
 
       <div class="row">
-        <div class="col-md-6">
-          <label>Application</label>
-          <select class="form-control"
-                  [(ngModel)]="applicationPublicId"
-                  name="applicationPublicId">
-            <option value="">Select Application</option>
-            <option *ngFor="let app of applications"
-                    [value]="app.publicId">
-              {{ app.candidateName }}
-            </option>
-          </select>
-        </div>
-
-        <div class="col-md-6">
-          <label>Offer Date</label>
-          <input type="date" class="form-control"
-                 [(ngModel)]="offerDate" name="offerDate" />
-        </div>
+   <div class="form-group full-width">
+  <label>Remarks</label>
+  <textarea
+    class="form-control"
+    [(ngModel)]="remarks"
+    name="description"
+            placeholder="Enter Remarks..."
+  ></textarea>
+</div>
       </div>
 
       <div class="row">
-        <div class="col-md-4">
-          <label>Expiry Date</label>
-          <input type="date" class="form-control"
-                 [(ngModel)]="expiryDate" name="expiryDate" />
-        </div>
-
-        <div class="col-md-4">
-          <label>Joining Date</label>
-          <input type="date" class="form-control"
-                 [(ngModel)]="joiningDate" name="joiningDate" />
-        </div>
-
-        <div class="col-md-4">
-          <label>Remarks</label>
-          <input type="text" class="form-control"
-                 [(ngModel)]="remarks" name="remarks" />
-        </div>
+     
+      </div>
       </div>
 
       <!-- ============================= -->
       <!-- 🟣 SALARY ROWS SECTION -->
       <!-- ============================= -->
-
-      <div class="header-divider"></div>
+<div class="section-card">
       <h5 class="section-title">Salary Structure</h5>
 
-      <div *ngFor="let row of salaryRows; let i = index"
-           class="salary-row-card">
-
-        <div class="row">
-
+      <div *ngFor="let row of salaryRows; let i = index" class="salary-row-card">
+        <div class="row align-items-center">
           <div class="col-md-3">
-            <label>Pay Element</label>
-            <select class="form-control"
-                    [(ngModel)]="row.payElementPublicId"
-                    name="payElement{{i}}">
-              <option value="">Select</option>
-              <option *ngFor="let pe of payElements"
-                      [value]="pe.publicId">
-                {{ pe.name }}
-              </option>
-            </select>
+            <div class="form-group">
+              <label>Pay Element</label>
+              <div class="custom-dropdown" (click)="togglePayElementDropdown($event, i)">
+                <div class="dropdown-selected">
+                  <span>{{ getSelectedPayElementLabel(i) || 'Select Pay Element' }}</span>
+                  <i class="fa-solid fa-caret-down" [class.rotate]="isPayElementDropdownOpen && activePayElementIndex === i"></i>
+                </div>
+                <div class="dropdown-options" *ngIf="isPayElementDropdownOpen && activePayElementIndex === i">
+                  <div class="dropdown-option" *ngFor="let pe of payElements" (click)="selectPayElement(pe, i, $event)">
+                    {{ pe.name }}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="col-md-2">
-            <label>Amount</label>
-            <input type="number" class="form-control"
-                   [(ngModel)]="row.amount"
-                   name="amount{{i}}" />
+            <div class="form-group">
+              <label>Amount</label>
+              <input type="number" class="form-control" [(ngModel)]="row.amount" [name]="'amount' + i" placeholder="0" />
+            </div>
           </div>
 
           <div class="col-md-2">
-            <label>Currency</label>
-            <input type="text" class="form-control"
-                   [(ngModel)]="row.currency"
-                   name="currency{{i}}" />
+            <div class="form-group">
+              <label>Currency</label>
+              <input type="text" class="form-control" [(ngModel)]="row.currency" [name]="'currency' + i" placeholder="PKR" />
+            </div>
           </div>
 
           <div class="col-md-2">
-            <label>Frequency</label>
-            <select class="form-control"
-                    [(ngModel)]="row.payFrequency"
-                    name="frequency{{i}}">
-              <option value="MONTHLY">MONTHLY</option>
-              <option value="WEEKLY">WEEKLY</option>
-              <option value="BI_WEEKLY">BI_WEEKLY</option>
-              <option value="HOURLY">HOURLY</option>
-            </select>
+            <div class="form-group">
+              <label>Frequency</label>
+              <div class="custom-dropdown" (click)="toggleFrequencyDropdown($event, i)">
+                <div class="dropdown-selected">
+                  <span>{{ getSelectedFrequencyLabel(i) || 'Select Frequency' }}</span>
+                  <i class="fa-solid fa-caret-down" [class.rotate]="isFrequencyDropdownOpen && activeFrequencyIndex === i"></i>
+                </div>
+                <div class="dropdown-options" *ngIf="isFrequencyDropdownOpen && activeFrequencyIndex === i">
+                  <div class="dropdown-option" *ngFor="let freq of frequencyOptions" (click)="selectFrequency(freq, i, $event)">
+                    {{ freq }}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
           <div class="col-md-2">
-            <label>Status</label>
-            <select class="form-control"
-                    [(ngModel)]="row.status"
-                    name="status{{i}}">
-              <option value="ACTIVE">ACTIVE</option>
-              <option value="INACTIVE">INACTIVE</option>
-              <option value="CANCELLED">CANCELLED</option>
-            </select>
+            <div class="form-group">
+              <label>Status</label>
+              <div class="custom-dropdown" (click)="toggleStatusDropdown($event, i)">
+                <div class="dropdown-selected">
+                  <span>{{ getSelectedStatusLabel(i) || 'Select Status' }}</span>
+                  <i class="fa-solid fa-caret-down" [class.rotate]="isStatusDropdownOpen && activeStatusIndex === i"></i>
+                </div>
+                <div class="dropdown-options" *ngIf="isStatusDropdownOpen && activeStatusIndex === i">
+                  <div class="dropdown-option" *ngFor="let st of statusOptions" (click)="selectStatus(st, i, $event)">
+                    {{ st }}
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
-          <div class="col-md-1 d-flex align-items-end">
-            <button type="button"
-                    class="btn btn-danger btn-sm"
-                    (click)="removeRow(i)">
-              ✕
-            </button>
-          </div>
+         <div class="col-md-1">
+  <div class="row-action-buttons">
+    <button type="button" class="btn-icon-add" (click)="addRow()">
+      <i class="fa-solid fa-plus"></i>
+    </button>
 
+    <button
+      type="button"
+      class="btn-icon-delete"
+      (click)="removeRow(i)"
+      *ngIf="salaryRows.length > 1"
+    >
+      <i class="fa-solid fa-trash"></i>
+    </button>
+  </div>
+</div>
         </div>
 
+        <!-- Hidden effective date field (required for validation) -->
+        <input type="hidden" [(ngModel)]="row.effectiveDate" [name]="'effectiveDate' + i" />
+        <input type="hidden" [(ngModel)]="row.lineNumber" [name]="'lineNumber' + i" />
+        <input type="hidden" [(ngModel)]="row.remarks" [name]="'rowRemarks' + i" />
       </div>
 
-      <button type="button"
-              class="btn btn-outline-light mt-2"
-              (click)="addRow()">
-        + Add Salary Row
-      </button>
+      
+</div>
 
       <!-- ============================= -->
       <!-- ACTION BUTTONS -->
       <!-- ============================= -->
 
       <div class="form-actions">
-        <button type="button"
-                class="cancel-btn"
-                (click)="cancel()">
-          Cancel
-        </button>
-
-        <button type="button"
-                class="submit-btn"
-                (click)="isEditMode ? updateOffer() : createOffer()">
+        <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
+        <button type="button" class="submit-btn" (click)="isEditMode ? updateOffer() : createOffer()">
           {{ isEditMode ? 'Update' : 'Create' }}
         </button>
       </div>
-
     </form>
   </div>
 </div>

@@ -58,9 +58,9 @@
 
                         <td class="px-3 py-3 font-medium">{{ stage.name }}</td>
                         <td class="px-3 py-3 text-gray-400">
-                            <button class="btn btn-sm btn-info" (click)="openViewModal(stage)">
-                                <i class="fa fa-eye"></i> View
-                            </button>
+                           <button class="btn-custom" (click)="openViewModal(stage)">
+  <i class="fa fa-eye"></i> View
+</button>
                         </td>
                         <td class="px-3 py-3 text-gray-400">
                             <i class="fa-solid fa-pen-to-square" style="color: #1274ac; cursor: pointer"
@@ -114,68 +114,67 @@
 <ng-template #viewModal let-modal>
     <div class="modal-header">
         <h4 class="modal-title">Approval Stage Details</h4>
-        <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss()"></button>
+       
     </div>
     <div class="modal-body" *ngIf="selectedStage">
         <!-- Read-only fields in a two-column layout -->
         <div class="row">
 
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <label class="form-label">Code</label>
                 <p class="form-control-static">{{ selectedStage.code }}</p>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <label class="form-label">Name</label>
                 <p class="form-control-static">{{ selectedStage.name }}</p>
             </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6">
+              <div class="col-md-4">
                 <label class="form-label">Min Approvals</label>
                 <p class="form-control-static">{{ selectedStage.minApprovals }}</p>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <label class="form-label">Status</label>
                 <p class="form-control-static">{{ selectedStage.status }}</p>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
+             <div class="col-md-4">
                 <label class="form-label">Created Date</label>
                 <p class="form-control-static">{{ selectedStage.createdDate | date:'medium' }}</p>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-4">
                 <label class="form-label">Last Modified</label>
                 <p class="form-control-static">{{ selectedStage.lastModifiedDate | date:'medium' }}</p>
             </div>
         </div>
 
-        <!-- Approvers table -->
-        <div class="mt-3">
-            <h5>Approvers</h5>
-            <div class="table-responsive">
-                <table class="table table-sm table-bordered">
-                    <thead>
-                        <tr>
-                            <th>User Name</th>
-                            <th>Role Code</th>
-                            <th>Sequence</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let approver of selectedStage.approvers">
-                            <td>{{ approver.userName }}</td>
-                            <td>{{ approver.roleCode }}</td>
-                            <td>{{ approver.sequence }}</td>
-                        </tr>
-                        <tr *ngIf="selectedStage.approvers.length === 0">
-                            <td colspan="4" class="text-center">No approvers assigned</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+      
+
+      <div class="mt-3">
+  <h5 class="approvers-heading">Approvers</h5>
+
+  <div class="table-main-div">
+    <div class="rounded-2xl text-gray-200 overflow-x-auto pt-2">
+      <table class="min-w-full text-sm border-separate border-spacing-y-2">
+        <thead>
+          <tr class="text-gray-400 text-left text-xs uppercase tracking-wider">
+            <th class="px-3 py-2">User Name</th>
+            <th class="px-3 py-2">Role Code</th>
+            <th class="px-3 py-2">Sequence</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let approver of selectedStage.approvers" class="bg-[#1e293b] hover:bg-[#27354a] rounded-lg">
+            <td class="px-3 py-3 font-medium">{{ approver.userName }}</td>
+            <td class="px-3 py-3 font-medium">{{ approver.roleCode }}</td>
+            <td class="px-3 py-3 font-medium">{{ approver.sequence }}</td>
+          </tr>
+          <tr *ngIf="selectedStage.approvers.length === 0">
+            <td colspan="3" class="not-found">No approvers assigned</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-secondary" (click)="modal.close()">Close</button>
