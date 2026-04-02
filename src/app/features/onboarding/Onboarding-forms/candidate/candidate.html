@@ -1031,8 +1031,8 @@
                     <!-- Download Button -->
                     <button
                       class="btn-icon btn-download"
-                      (click)="downloadAttachment(att.publicId!)"
-                      [disabled]="!att.publicId"
+                      (click)="downloadAttachment(att.publicId, att)"
+                      [disabled]="!att.publicId && !att.file"
                       title="Download Attachment"
                     >
                       <i class="fa-solid fa-download"></i>

@@ -717,8 +717,16 @@ export class Candidate {
     this.activeTab = 'experience';
     this.activeTabId = 'experience';
   }
-  downloadAttachment(publicId: string) {
-    debugger;
+  downloadAttachment(publicId: string | undefined, attachment?: AttachmentEntry) {
+    if (!publicId && attachment?.file) {
+      const url = URL.createObjectURL(attachment.file);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = attachment.fileName;
+      a.click();
+      URL.revokeObjectURL(url);
+      return;
+    }
     if (!publicId) return;
     debugger;
     this.loader.show();
