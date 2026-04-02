@@ -118,50 +118,47 @@ export class Candidate {
   title: 'create' | 'edit' = 'create';
   candidateId!: string;
 
-
-
-
   // Dropdown flags
-isGenderDropdownOpen = false;
-isReligionDropdownOpen = false;
-isCountryDropdownOpen = false;
-isCityDropdownOpen = false;
-isSourceDropdownOpen = false;
+  isGenderDropdownOpen = false;
+  isReligionDropdownOpen = false;
+  isCountryDropdownOpen = false;
+  isCityDropdownOpen = false;
+  isSourceDropdownOpen = false;
 
-// Option lists (if you want to keep values as objects; you can also use plain strings)
-genderOptions = [
-  { value: 'MALE', label: 'Male' },
-  { value: 'FEMALE', label: 'Female' },
-  { value: 'OTHER', label: 'Other' },
-];
+  // Option lists (if you want to keep values as objects; you can also use plain strings)
+  genderOptions = [
+    { value: 'MALE', label: 'Male' },
+    { value: 'FEMALE', label: 'Female' },
+    { value: 'OTHER', label: 'Other' },
+  ];
 
-religionOptions = [
-  { value: 'ISLAM', label: 'Islam' },
-  { value: 'CHRISTIANITY', label: 'Christianity' },
-  { value: 'HINDUISM', label: 'Hinduism' },
-  { value: 'BUDDHISM', label: 'Buddhism' },
-  { value: 'SIKHISM', label: 'Sikhism' },
-  { value: 'JUDAISM', label: 'Judaism' },
-  { value: 'OTHER', label: 'Other' },
-];
+  religionOptions = [
+    { value: 'ISLAM', label: 'Islam' },
+    { value: 'CHRISTIANITY', label: 'Christianity' },
+    { value: 'HINDUISM', label: 'Hinduism' },
+    { value: 'BUDDHISM', label: 'Buddhism' },
+    { value: 'SIKHISM', label: 'Sikhism' },
+    { value: 'JUDAISM', label: 'Judaism' },
+    { value: 'OTHER', label: 'Other' },
+  ];
 
-sourceOptions = [
-  { value: 'REQUISITION', label: 'Requisition' },
-  { value: 'WALK_IN', label: 'Walk In' },
-  { value: 'REFERRAL', label: 'Referral' },
-  { value: 'PORTAL', label: 'Portal' },
-  { value: 'OTHER', label: 'Other' },
-];
+  sourceOptions = [
+    { value: 'REQUISITION', label: 'Requisition' },
+    { value: 'WALK_IN', label: 'Walk In' },
+    { value: 'REFERRAL', label: 'Referral' },
+    { value: 'PORTAL', label: 'Portal' },
+    { value: 'OTHER', label: 'Other' },
+  ];
 
-// For country and city we already have arrays, but we need to store selected objects.
-// We'll keep selectedCountry and selectedCity as codes/names.
+  // For country and city we already have arrays, but we need to store selected objects.
+  // We'll keep selectedCountry and selectedCity as codes/names.
 
-// Selected labels for display
-selectedGenderLabel = '';
-selectedReligionLabel = '';
-selectedCountryLabel = '';
-selectedCityLabel = '';
-selectedSourceLabel = '';
+  // Selected labels for display
+  selectedGenderLabel = '';
+  selectedReligionLabel = '';
+  selectedCountryLabel = '';
+  selectedCityLabel = '';
+  selectedSourceLabel = '';
   constructor(
     private router: Router,
     private toastr: ToastrService,
@@ -576,11 +573,15 @@ selectedSourceLabel = '';
         this.remarks = data.remarks;
         this.active = data.isActive;
         // After setting gender, religion, etc.
-this.selectedGenderLabel = this.genderOptions.find(g => g.value === this.gender)?.label || '';
-this.selectedReligionLabel = this.religionOptions.find(r => r.value === this.religion)?.label || '';
-this.selectedCountryLabel = this.countries.find(c => c.code === this.selectedCountry)?.name || '';
-this.selectedCityLabel = this.selectedCity;
-this.selectedSourceLabel = this.sourceOptions.find(s => s.value === this.source)?.label || '';
+        this.selectedGenderLabel =
+          this.genderOptions.find((g) => g.value === this.gender)?.label || '';
+        this.selectedReligionLabel =
+          this.religionOptions.find((r) => r.value === this.religion)?.label || '';
+        this.selectedCountryLabel =
+          this.countries.find((c) => c.code === this.selectedCountry)?.name || '';
+        this.selectedCityLabel = this.selectedCity;
+        this.selectedSourceLabel =
+          this.sourceOptions.find((s) => s.value === this.source)?.label || '';
         this.experienceList = res.data.experiences.map((e: any) => ({
           companyName: e.companyName,
           position: e.position,
@@ -673,10 +674,10 @@ this.selectedSourceLabel = this.sourceOptions.find(s => s.value === this.source)
     this.selectedCountry = '';
     this.selectedCity = '';
     this.selectedGenderLabel = '';
-this.selectedReligionLabel = '';
-this.selectedCountryLabel = '';
-this.selectedCityLabel = '';
-this.selectedSourceLabel = '';
+    this.selectedReligionLabel = '';
+    this.selectedCountryLabel = '';
+    this.selectedCityLabel = '';
+    this.selectedSourceLabel = '';
     this.cities = [];
     this.experienceList = [];
     this.expForm = {
@@ -716,7 +717,16 @@ this.selectedSourceLabel = '';
     this.activeTab = 'experience';
     this.activeTabId = 'experience';
   }
-  downloadAttachment(publicId: string) {
+  downloadAttachment(publicId: string | undefined, attachment?: AttachmentEntry) {
+    if (!publicId && attachment?.file) {
+      const url = URL.createObjectURL(attachment.file);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = attachment.fileName;
+      a.click();
+      URL.revokeObjectURL(url);
+      return;
+    }
     if (!publicId) return;
     debugger;
     this.loader.show();
@@ -745,97 +755,98 @@ this.selectedSourceLabel = '';
   }
 
   toggleGenderDropdown(event: Event) {
-  event.stopPropagation();
-  this.isGenderDropdownOpen = !this.isGenderDropdownOpen;
-  // close other dropdowns
-  this.isReligionDropdownOpen = false;
-  this.isCountryDropdownOpen = false;
-  this.isCityDropdownOpen = false;
-  this.isSourceDropdownOpen = false;
-}
+    event.stopPropagation();
+    this.isGenderDropdownOpen = !this.isGenderDropdownOpen;
+    // close other dropdowns
+    this.isReligionDropdownOpen = false;
+    this.isCountryDropdownOpen = false;
+    this.isCityDropdownOpen = false;
+    this.isSourceDropdownOpen = false;
+  }
 
-selectGender(option: any, event: Event) {
-  event.stopPropagation();
-  this.gender = option.value;
-  this.selectedGenderLabel = option.label;
-  this.isGenderDropdownOpen = false;
-}
+  selectGender(option: any, event: Event) {
+    event.stopPropagation();
+    this.gender = option.value;
+    this.selectedGenderLabel = option.label;
+    this.isGenderDropdownOpen = false;
+  }
 
-// Similarly for religion
-toggleReligionDropdown(event: Event) {
-  event.stopPropagation();
-  this.isReligionDropdownOpen = !this.isReligionDropdownOpen;
-  this.closeOtherDropdowns('religion');
-}
+  // Similarly for religion
+  toggleReligionDropdown(event: Event) {
+    event.stopPropagation();
+    this.isReligionDropdownOpen = !this.isReligionDropdownOpen;
+    this.closeOtherDropdowns('religion');
+  }
 
-selectReligion(option: any, event: Event) {
-  event.stopPropagation();
-  this.religion = option.value;
-  this.selectedReligionLabel = option.label;
-  this.isReligionDropdownOpen = false;
-}
+  selectReligion(option: any, event: Event) {
+    event.stopPropagation();
+    this.religion = option.value;
+    this.selectedReligionLabel = option.label;
+    this.isReligionDropdownOpen = false;
+  }
 
-// Country dropdown
-toggleCountryDropdown(event: Event) {
-  event.stopPropagation();
-  this.isCountryDropdownOpen = !this.isCountryDropdownOpen;
-  this.closeOtherDropdowns('country');
-}
+  // Country dropdown
+  toggleCountryDropdown(event: Event) {
+    event.stopPropagation();
+    this.isCountryDropdownOpen = !this.isCountryDropdownOpen;
+    this.closeOtherDropdowns('country');
+  }
 
-selectCountry(country: any, event: Event) {
-  event.stopPropagation();
-  this.selectedCountry = country.code;
-  this.selectedCountryLabel = country.name;
-  this.isCountryDropdownOpen = false;
-  // Also clear city selection when country changes
-  this.selectedCity = '';
-  this.selectedCityLabel = '';
-  this.cities = this.countryCityService.getCitiesByCountryCode(country.code);
-}
+  selectCountry(country: any, event: Event) {
+    event.stopPropagation();
+    this.selectedCountry = country.code;
+    this.selectedCountryLabel = country.name;
+    this.isCountryDropdownOpen = false;
+    // Also clear city selection when country changes
+    this.selectedCity = '';
+    this.selectedCityLabel = '';
+    this.cities = this.countryCityService.getCitiesByCountryCode(country.code);
+  }
 
-// City dropdown
-toggleCityDropdown(event: Event) {
-  event.stopPropagation();
-  this.isCityDropdownOpen = !this.isCityDropdownOpen;
-  this.closeOtherDropdowns('city');
-}
+  // City dropdown
+  toggleCityDropdown(event: Event) {
+    event.stopPropagation();
+    this.isCityDropdownOpen = !this.isCityDropdownOpen;
+    this.closeOtherDropdowns('city');
+  }
 
-selectCity(city: string, event: Event) {
-  event.stopPropagation();
-  this.selectedCity = city;
-  this.selectedCityLabel = city;
-  this.isCityDropdownOpen = false;
-}
+  selectCity(city: string, event: Event) {
+    event.stopPropagation();
+    this.selectedCity = city;
+    this.selectedCityLabel = city;
+    this.isCityDropdownOpen = false;
+  }
 
-// Source dropdown
-toggleSourceDropdown(event: Event) {
-  event.stopPropagation();
-  this.isSourceDropdownOpen = !this.isSourceDropdownOpen;
-  this.closeOtherDropdowns('source');
-}
+  // Source dropdown
+  toggleSourceDropdown(event: Event) {
+    event.stopPropagation();
+    this.isSourceDropdownOpen = !this.isSourceDropdownOpen;
+    this.closeOtherDropdowns('source');
+  }
 
-selectSource(option: any, event: Event) {
-  event.stopPropagation();
-  this.source = option.value;
-  this.selectedSourceLabel = option.label;
-  this.isSourceDropdownOpen = false;
-}
+  selectSource(option: any, event: Event) {
+    event.stopPropagation();
+    this.source = option.value;
+    this.selectedSourceLabel = option.label;
+    this.isSourceDropdownOpen = false;
+  }
 
-// Helper to close all other dropdowns
-private closeOtherDropdowns(current: string) {
-  if (current !== 'gender') this.isGenderDropdownOpen = false;
-  if (current !== 'religion') this.isReligionDropdownOpen = false;
-  if (current !== 'country') this.isCountryDropdownOpen = false;
-  if (current !== 'city') this.isCityDropdownOpen = false;
-  if (current !== 'source') this.isSourceDropdownOpen = false;
-}
+  // Helper to close all other dropdowns
+  private closeOtherDropdowns(current: string) {
+    if (current !== 'gender') this.isGenderDropdownOpen = false;
+    if (current !== 'religion') this.isReligionDropdownOpen = false;
+    if (current !== 'country') this.isCountryDropdownOpen = false;
+    if (current !== 'city') this.isCityDropdownOpen = false;
+    if (current !== 'source') this.isSourceDropdownOpen = false;
+  }
 
-@HostListener('document:click', ['$event'])
-closeAllDropdowns(event?: Event) {   // ← add event parameter (optional)
-  this.isGenderDropdownOpen = false;
-  this.isReligionDropdownOpen = false;
-  this.isCountryDropdownOpen = false;
-  this.isCityDropdownOpen = false;
-  this.isSourceDropdownOpen = false;
-}
+  @HostListener('document:click', ['$event'])
+  closeAllDropdowns(event?: Event) {
+    // ← add event parameter (optional)
+    this.isGenderDropdownOpen = false;
+    this.isReligionDropdownOpen = false;
+    this.isCountryDropdownOpen = false;
+    this.isCityDropdownOpen = false;
+    this.isSourceDropdownOpen = false;
+  }
 }
