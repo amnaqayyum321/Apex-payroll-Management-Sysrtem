@@ -164,18 +164,37 @@
         </div>
 
         <!-- Hiring Manager Mode (native for simplicity, but you can also make it custom if needed) -->
-        <div class="form-group">
-          <label>Hiring Manager Type</label>
-          <select
-            class="form-control native-select"
-            [(ngModel)]="hiringManagerMode"
-            name="hiringManagerMode"
-            (ngModelChange)="onHiringManagerModeChange()"
-          >
-            <option value="SELF">Self</option>
-            <option value="SELECTED">Employee (Select manually)</option>
-          </select>
-        </div>
+        <!-- Hiring Manager Type -->
+<div class="form-group">
+  <label>Hiring Manager Type</label>
+  <div class="custom-dropdown" (click)="toggleHiringManagerTypeDropdown($event)">
+    <div class="dropdown-selected">
+      <span>
+        {{ hiringManagerMode === 'SELF' ? 'Self' : 'Employee (Select manually)' }}
+      </span>
+      <i
+        class="fa-solid fa-caret-down"
+        [class.rotate]="isHiringManagerTypeDropdownOpen"
+      ></i>
+    </div>
+
+    <div class="dropdown-options" *ngIf="isHiringManagerTypeDropdownOpen">
+      <div
+        class="dropdown-option"
+        (click)="selectHiringManagerType('SELF', $event)"
+      >
+        Self
+      </div>
+
+      <div
+        class="dropdown-option"
+        (click)="selectHiringManagerType('SELECTED', $event)"
+      >
+        Employee (Select manually)
+      </div>
+    </div>
+  </div>
+</div>
         <!-- Conditional Employee Dropdown (full width row) -->
         <div class="form-grid" *ngIf="hiringManagerMode === 'SELECTED'">
           <div class="form-group" style="grid-column: span 3">
