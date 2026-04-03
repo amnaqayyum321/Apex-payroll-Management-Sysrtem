@@ -317,19 +317,19 @@ export class SideNavBarComponent implements OnInit {
               isVisible: true,
               icon: 'fa-solid fa-stream',
             },
-
-            {
-              label: 'Interview',
-              route: 'onboarding/view-interviews-list',
-              icon: 'fa-solid fa-calendar-check',
-              isVisible: true,
-            },
             {
               label: 'Interview Panel',
               route: 'onboarding/view-interview-panel-list',
               icon: 'fa-solid fa-handshake',
               isVisible: true,
             },
+            {
+              label: 'Interview',
+              route: 'onboarding/view-interviews-list',
+              icon: 'fa-solid fa-calendar-check',
+              isVisible: true,
+            },
+
             {
               label: 'Interview Feedback',
               route: 'onboarding/interview-feedback',

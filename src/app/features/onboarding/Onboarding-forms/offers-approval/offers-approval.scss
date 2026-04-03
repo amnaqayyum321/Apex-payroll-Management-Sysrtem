@@ -299,9 +299,9 @@ tbody tr td {
 /* ===== Style for search & dropdown (dark theme) ===== */
 .form-control,
 .form-select {
-    background-color: #1e293b !important;
+    // background-color: #1e293b !important;
     border: 1px solid #334155 !important;
-    color: #fff !important;
+    // color: #fff !important;
     border-radius: 8px;
     padding: 6px 12px;
     font-size: 14px;
@@ -314,10 +314,10 @@ tbody tr td {
 }
 
 /* Ensure the dropdown options also have dark background */
-.form-select option {
-    background-color: #1e293b;
-    color: #fff;
-}
+// .form-select option {
+//     background-color: #1e293b;
+//     color: #fff;
+// }
 
 .not-found {
     text-align: center;
@@ -641,9 +641,9 @@ tbody tr td {
 
 // Form select styling
 .form-select {
-  background-color: var(--primary-color);
+  // background-color: var(--primary-color);
   border: 1px solid var(--border-color);
-  color: var(--text-primary);
+  // color: var(--text-primary);
   padding: 0.6rem 1rem;
   border-radius: 0.75rem;
   font-size: 0.95rem;
