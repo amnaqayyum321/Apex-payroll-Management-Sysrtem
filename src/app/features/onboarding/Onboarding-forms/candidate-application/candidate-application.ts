@@ -14,7 +14,6 @@ import { FormsService } from '../../../forms/Services/forms';
   styleUrl: './candidate-application.scss',
 })
 export class CandidateApplication implements OnInit {
-
   code = '';
   candidatePublicId = '';
   requisitionPublicId = '';
@@ -58,8 +57,8 @@ export class CandidateApplication implements OnInit {
     private toastr: ToastrService,
     private router: Router,
     private formsv: FormsService,
-    private route: ActivatedRoute
-  ) { }
+    private route: ActivatedRoute,
+  ) {}
 
   ngOnInit() {
     this.loadCandidates();
@@ -160,30 +159,39 @@ export class CandidateApplication implements OnInit {
 
   // Data Loading Methods
   loadCandidates() {
-    this.onboarding.getAllCandidate(0, 100, 'ALL')
-      .subscribe(res => this.candidates = res.data);
+    this.onboarding.getAllCandidate(0, 100, 'ALL').subscribe(
+      (res: any) => {
+        if (res.success) {
+          this.candidates = res.data;
+          console.log('Candidate res', res);
+        }
+      },
+      (err: any) => {
+        console.log(err);
+      },
+    );
   }
 
   loadRequisitions() {
-    this.onboarding.getAllJobRequisition(0, 100)
-      .subscribe(res => {
-        this.requisitions = res.data.filter((r: any) => r.status === 'OPEN');
-      });
+    this.onboarding.getAllJobRequisition(0, 100).subscribe((res) => {
+      this.requisitions = res.data.filter((r: any) => r.status === 'OPEN');
+    });
   }
 
   loadDepartments() {
-    this.formsv.GetDepartment(0, 100, 'ALL')
-      .subscribe(res => this.departments = res.data);
+    this.formsv.GetDepartment(0, 100, 'ALL').subscribe((res) => (this.departments = res.data));
   }
 
   loadDesignations() {
-    this.formsv.getAllDesignations(0, 100, 'ALL')
-      .subscribe(res => this.designations = res.data);
+    this.formsv
+      .getAllDesignations(0, 100, 'ALL')
+      .subscribe((res) => (this.designations = res.data));
   }
 
   loadCompanyBranches() {
-    this.formsv.getAllComapnyBranches(0, 100, 'ALL')
-      .subscribe(res => this.companyBranches = res.data);
+    this.formsv
+      .getAllComapnyBranches(0, 100, 'ALL')
+      .subscribe((res) => (this.companyBranches = res.data));
   }
 
   createApplication() {
@@ -201,23 +209,22 @@ export class CandidateApplication implements OnInit {
       companyBranchPublicId: this.companyBranchPublicId,
       applicationDate: this.applicationDate,
       expectedDoj: this.expectedDoj,
-      remarks: this.remarks
+      remarks: this.remarks,
     };
 
     this.loader.show();
 
-    this.onboarding.CreatenewCandidateApplication(payload)
-      .subscribe({
-        next: () => {
-          this.loader.hide();
-          this.toastr.success('Application Created');
-          this.router.navigate(['/panel/onboarding/view-candidate-application-list']);
-        },
-        error: err => {
-          this.loader.hide();
-          this.toastr.error(err.error?.message || 'Creation Failed');
-        }
-      });
+    this.onboarding.CreatenewCandidateApplication(payload).subscribe({
+      next: () => {
+        this.loader.hide();
+        this.toastr.success('Application Created');
+        this.router.navigate(['/panel/onboarding/view-candidate-application-list']);
+      },
+      error: (err) => {
+        this.loader.hide();
+        this.toastr.error(err.error?.message || 'Creation Failed');
+      },
+    });
   }
 
   updateApplication() {
@@ -230,59 +237,57 @@ export class CandidateApplication implements OnInit {
       companyBranchPublicId: this.companyBranchPublicId,
       applicationDate: this.applicationDate,
       expectedDoj: this.expectedDoj,
-      remarks: this.remarks
+      remarks: this.remarks,
     };
 
     this.loader.show();
 
-    this.onboarding.updateCandidateApplication(this.publicId!, payload)
-      .subscribe({
-        next: () => {
-          this.loader.hide();
-          this.toastr.success('Updated Successfully');
-          this.router.navigate(['/panel/onboarding/view-candidate-application-list']);
-        },
-        error: err => {
-          this.loader.hide();
-          this.toastr.error(err.error?.message || 'Update Failed');
-        }
-      });
+    this.onboarding.updateCandidateApplication(this.publicId!, payload).subscribe({
+      next: () => {
+        this.loader.hide();
+        this.toastr.success('Updated Successfully');
+        this.router.navigate(['/panel/onboarding/view-candidate-application-list']);
+      },
+      error: (err) => {
+        this.loader.hide();
+        this.toastr.error(err.error?.message || 'Update Failed');
+      },
+    });
   }
 
   loadSingleApplication() {
     this.loader.show();
 
-    this.onboarding.getCandidateApplicationById(this.publicId!)
-      .subscribe(res => {
-        this.loader.hide();
-        const data = res.data;
+    this.onboarding.getCandidateApplicationById(this.publicId!).subscribe((res) => {
+      this.loader.hide();
+      const data = res.data;
 
-        this.code = data.code;
-        this.candidatePublicId = data.candidatePublicId;
-        this.requisitionPublicId = data.requisitionPublicId;
-        this.departmentPublicId = data.departmentPublicId;
-        this.designationPublicId = data.designationPublicId;
-        this.companyBranchPublicId = data.companyBranchPublicId;
-        this.applicationDate = data.applicationDate;
-        this.expectedDoj = data.expectedDoj;
-        this.remarks = data.remarks;
+      this.code = data.code;
+      this.candidatePublicId = data.candidatePublicId;
+      this.requisitionPublicId = data.requisitionPublicId;
+      this.departmentPublicId = data.departmentPublicId;
+      this.designationPublicId = data.designationPublicId;
+      this.companyBranchPublicId = data.companyBranchPublicId;
+      this.applicationDate = data.applicationDate;
+      this.expectedDoj = data.expectedDoj;
+      this.remarks = data.remarks;
 
-        // Set dropdown labels
-        const candidate = this.candidates.find(c => c.publicId === data.candidatePublicId);
-        this.selectedCandidateLabel = candidate ? `${candidate.firstName} ${candidate.lastName}` : '';
+      // Set dropdown labels
+      const candidate = this.candidates.find((c) => c.publicId === data.candidatePublicId);
+      this.selectedCandidateLabel = candidate ? `${candidate.firstName} ${candidate.lastName}` : '';
 
-        const requisition = this.requisitions.find(r => r.publicId === data.requisitionPublicId);
-        this.selectedRequisitionLabel = requisition ? (requisition.title || requisition.name) : '';
+      const requisition = this.requisitions.find((r) => r.publicId === data.requisitionPublicId);
+      this.selectedRequisitionLabel = requisition ? requisition.title || requisition.name : '';
 
-        const department = this.departments.find(d => d.publicId === data.departmentPublicId);
-        this.selectedDepartmentLabel = department ? department.name : '';
+      const department = this.departments.find((d) => d.publicId === data.departmentPublicId);
+      this.selectedDepartmentLabel = department ? department.name : '';
 
-        const designation = this.designations.find(d => d.publicId === data.designationPublicId);
-        this.selectedDesignationLabel = designation ? designation.name : '';
+      const designation = this.designations.find((d) => d.publicId === data.designationPublicId);
+      this.selectedDesignationLabel = designation ? designation.name : '';
 
-        const branch = this.companyBranches.find(b => b.publicId === data.companyBranchPublicId);
-        this.selectedBranchLabel = branch ? branch.name : '';
-      });
+      const branch = this.companyBranches.find((b) => b.publicId === data.companyBranchPublicId);
+      this.selectedBranchLabel = branch ? branch.name : '';
+    });
   }
 
   resetForm() {
