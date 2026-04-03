@@ -76,7 +76,8 @@ export class Leaves implements OnInit {
 
   // 🔹 Create
   createLeave() {
-    debugger;
+     console.log('EMP ID:', this.employeePublicId);
+  console.log('LEAVE ID:', this.leaveTypePublicId);
     if (!this.employeePublicId || !this.leaveTypePublicId) {
       this.toastr.error('Please select employee and leave type');
       return;
@@ -115,15 +116,16 @@ export class Leaves implements OnInit {
   }
 
   // Select employee
-  selectEmployee(emp: any, event: Event): void {
-    event.stopPropagation();
-    this.employeePublicId = emp.employeePublicId;
-    console.log('employee id', this.employeePublicId);
-    this.selectedEmployeeDisplay = emp.fullName; // adjust if property name differs
-    this.employeePublicId = emp.publicId;
-    this.selectedEmployeeDisplay = emp.fullName; // adjust if property name differs
-    this.isEmployeeDropdownOpen = false;
-  }
+ selectEmployee(emp: any, event: Event): void {
+  event.stopPropagation();
+
+  this.employeePublicId = emp.employeePublicId; 
+  this.selectedEmployeeDisplay = emp.fullName;
+
+  this.isEmployeeDropdownOpen = false;
+
+  console.log('Selected Employee ID:', this.employeePublicId);
+}
 
   // Toggle leave type dropdown...
   toggleLeaveTypeDropdown(event: Event): void {

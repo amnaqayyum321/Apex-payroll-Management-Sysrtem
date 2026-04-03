@@ -38,6 +38,7 @@ export class CreateRequistion {
   publicId: string | null = null;
   isEditMode: boolean = false;
 
+
   employeeList: any[] = [];
   companyBranchList: any[] = [];
   DepartmentList: any[] = [];
@@ -48,6 +49,7 @@ export class CreateRequistion {
   isDesignationDropdownOpen: boolean = false;
   isBranchDropdownOpen: boolean = false;
   isEmployeeDropdownOpen: boolean = false;
+  isHiringManagerTypeDropdownOpen: boolean = false;
 
   // Selected display names
   selectedDepartmentName: string = '';
@@ -114,14 +116,19 @@ export class CreateRequistion {
     this.isEmployeeDropdownOpen = !this.isEmployeeDropdownOpen;
     this.closeOtherDropdowns('employee');
   }
+  toggleHiringManagerTypeDropdown(event: Event) {
+  event.stopPropagation();
+  this.isHiringManagerTypeDropdownOpen = !this.isHiringManagerTypeDropdownOpen;
+  this.closeOtherDropdowns('hiringType');
+}
 
-  // Close all except the one we're toggling
-  private closeOtherDropdowns(except: string) {
-    if (except !== 'department') this.isDepartmentDropdownOpen = false;
-    if (except !== 'designation') this.isDesignationDropdownOpen = false;
-    if (except !== 'branch') this.isBranchDropdownOpen = false;
-    if (except !== 'employee') this.isEmployeeDropdownOpen = false;
-  }
+private closeOtherDropdowns(except: string) {
+  if (except !== 'department') this.isDepartmentDropdownOpen = false;
+  if (except !== 'designation') this.isDesignationDropdownOpen = false;
+  if (except !== 'branch') this.isBranchDropdownOpen = false;
+  if (except !== 'employee') this.isEmployeeDropdownOpen = false;
+  if (except !== 'hiringType') this.isHiringManagerTypeDropdownOpen = false;
+}
 
   // Selection methods
   selectDepartment(dept: any, event: Event) {
@@ -138,6 +145,13 @@ export class CreateRequistion {
     this.isDesignationDropdownOpen = false;
   }
 
+  selectHiringManagerType(mode: 'SELF' | 'SELECTED', event: Event) {
+  event.stopPropagation();
+  this.hiringManagerMode = mode;
+  this.isHiringManagerTypeDropdownOpen = false;
+  this.onHiringManagerModeChange();
+}
+
   selectBranch(branch: any, event: Event) {
     event.stopPropagation();
     this.companyBranchPublicId = branch.publicId;
@@ -152,14 +166,14 @@ export class CreateRequistion {
     this.isEmployeeDropdownOpen = false;
   }
 
-  // Close all dropdowns when clicking outside
-  @HostListener('document:click')
-  closeAllDropdowns() {
-    this.isDepartmentDropdownOpen = false;
-    this.isDesignationDropdownOpen = false;
-    this.isBranchDropdownOpen = false;
-    this.isEmployeeDropdownOpen = false;
-  }
+@HostListener('document:click')
+closeAllDropdowns() {
+  this.isDepartmentDropdownOpen = false;
+  this.isDesignationDropdownOpen = false;
+  this.isBranchDropdownOpen = false;
+  this.isEmployeeDropdownOpen = false;
+  this.isHiringManagerTypeDropdownOpen = false;
+}
 
   onHiringManagerModeChange() {
     this.hiringManagerPublicId = '';

@@ -68,16 +68,19 @@
             <td class="px-3 py-3 font-medium">{{ role.code }}</td>
             <td class="px-3 py-3 text-gray-400">{{ role.createdDate | date: 'short' }}</td>
             <td class="px-3 py-3 text-gray-400">
-              <div ngbDropdown class="d-inline-block">
-                <i
-                  ngbDropdownToggle
-                  class="fa-solid fa-ellipsis-vertical"
-                  style="color: var(--white-color-1); font-size: 18px; cursor: pointer"
-                ></i>
-                <div ngbDropdownMenu class="dropdown-menu">
-                  <button ngbDropdownItem (click)="goToPermissions(role)">View Permissions</button>
-                </div>
-              </div>
+              <div ngbDropdown class="d-inline-block action-dropdown">
+  <i
+    ngbDropdownToggle
+    class="fa-solid fa-ellipsis-vertical action-toggle"
+  ></i>
+
+  <div ngbDropdownMenu class="custom-dropdown-menu">
+    <button ngbDropdownItem (click)="goToPermissions(role)">
+      <i class="fa-solid fa-shield-halved me-2"></i>
+      View Permissions
+    </button>
+  </div>
+</div>
             </td>
           </tr>
 
