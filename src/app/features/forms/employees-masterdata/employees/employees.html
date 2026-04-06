@@ -151,9 +151,13 @@
       <!-- Role Code -->
       <div class="form-group">
         <label class="required">Role Code</label>
-        <select [(ngModel)]="roleCode" name="roleCode" class="form-select">
-          <option *ngFor="let role of roleList" [value]="role.publicId">{{ role.code }}</option>
-        </select>
+        <input
+          type="text"
+          [(ngModel)]="roleCode"
+          class="form-control"
+          name="roleCode"
+          placeholder="Enter role code"
+        />
       </div>
 
       <!-- Password -->
