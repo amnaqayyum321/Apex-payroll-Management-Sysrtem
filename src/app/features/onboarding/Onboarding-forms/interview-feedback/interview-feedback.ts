@@ -187,6 +187,7 @@ export class InterviewFeedback implements OnInit {
           this.loader.hide();
           this.toastr.success('Feedback submitted successfully');
           this.resetForm();
+           this.router.navigate(['/panel/onboarding/view-interview-feedback-list']);
         },
         error: (err: any) => {
           this.loader.hide();

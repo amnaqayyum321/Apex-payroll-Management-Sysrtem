@@ -13,11 +13,7 @@
         <button class="tab-btn" [class.active]="activeTab === 'form'" (click)="activeTab = 'form'">
           Builder
         </button>
-        <button
-          class="tab-btn"
-          [class.active]="activeTab === 'preview'"
-          (click)="activeTab = 'preview'"
-        >
+        <button class="tab-btn" [class.active]="activeTab === 'preview'" (click)="activeTab = 'preview'">
           &#123;&#125; JSON Preview
         </button>
       </div>
@@ -43,47 +39,39 @@
 
           <div class="form-group">
             <label>Name <span class="required">*</span></label>
-            <input
-              type="text"
-              [(ngModel)]="form.name"
-              placeholder="e.g. Leave Approval - Engineering"
-            />
+            <input type="text" [(ngModel)]="form.name" placeholder="e.g. Leave Approval - Engineering" />
           </div>
 
           <div class="form-group">
             <label>Entity Name <span class="required">*</span></label>
-            <select [(ngModel)]="form.entityName">
-              <option value="">— Select Entity —</option>
-              <option *ngFor="let e of entityNameOptions" [value]="e">{{ e }}</option>
-            </select>
+           <div class="custom-dropdown" (click)="toggleEntityDropdown($event)">
+  <div class="dropdown-selected">
+    <span>{{ selectedEntityLabel || '— Select Entity —' }}</span>
+    <i class="fa-solid fa-caret-down" [class.rotate]="isEntityDropdownOpen"></i>
+  </div>
+  <div class="dropdown-options" *ngIf="isEntityDropdownOpen">
+    <div class="dropdown-option" *ngFor="let entity of entityNameOptions" (click)="selectEntity(entity, $event)">
+      {{ entity }}
+    </div>
+  </div>
+</div>
           </div>
 
           <div class="form-group">
             <label>Condition JSON</label>
-            <input
-              type="text"
-              [(ngModel)]="form.conditionJson"
-              placeholder='e.g. {"type":"annual"}'
-              class="mono-input"
-            />
+            <input type="text" [(ngModel)]="form.conditionJson" placeholder='e.g. {"type":"annual"}'
+              class="mono-input" />
           </div>
 
           <div class="form-group full-span">
             <label>Description</label>
-            <textarea
-              [(ngModel)]="form.description"
-              rows="2"
-              placeholder="Describe what this template is used for..."
-            ></textarea>
+            <textarea [(ngModel)]="form.description" rows="2"
+              placeholder="Describe what this template is used for..."></textarea>
           </div>
 
           <div class="form-group full-span">
             <label>Remarks</label>
-            <textarea
-              [(ngModel)]="form.remarks"
-              rows="2"
-              placeholder="Any additional internal notes..."
-            ></textarea>
+            <textarea [(ngModel)]="form.remarks" rows="2" placeholder="Any additional internal notes..."></textarea>
           </div>
         </div>
       </div>
@@ -92,19 +80,11 @@
       <div class="section-card">
         <!-- Inner Tab Header -->
         <div class="inner-tab-header">
-          <button
-            class="inner-tab-btn"
-            [class.active]="innerTab === 'originators'"
-            (click)="innerTab = 'originators'"
-          >
+          <button class="inner-tab-btn" [class.active]="innerTab === 'originators'" (click)="innerTab = 'originators'">
             Originators
             <span class="inner-tab-count">{{ form.originatorUserPublicIds.length }}</span>
           </button>
-          <button
-            class="inner-tab-btn"
-            [class.active]="innerTab === 'stages'"
-            (click)="innerTab = 'stages'"
-          >
+          <button class="inner-tab-btn" [class.active]="innerTab === 'stages'" (click)="innerTab = 'stages'">
             Approval Stages
             <span class="inner-tab-count">{{ form.stageDefinitionPublicIds.length }}</span>
           </button>
@@ -114,25 +94,29 @@
         <div *ngIf="innerTab === 'originators'">
           <div class="section-sub" style="margin-bottom: 12px">
             Users whose documents will be routed through this template.
-            <span class="hint-text"
-              >Leave empty to make this a <strong>catch-all</strong> template.</span
-            >
+            <span class="hint-text">Leave empty to make this a <strong>catch-all</strong> template.</span>
           </div>
 
           <!-- Dropdown Row to add originator -->
           <div class="originator-add-row">
             <div class="form-group" style="flex: 1; margin-bottom: 0">
-              <select (change)="onOriginatorSelect($event)">
-                <option value="">— Select Originator to Add —</option>
-                <ng-container *ngFor="let employee of EmployeeList">
-                  <option
-                    *ngIf="!form.originatorUserPublicIds.includes(employee.userPublicId)"
-                    [value]="employee.userPublicId"
-                  >
-                    {{ employee.fullName }}
-                  </option>
-                </ng-container>
-              </select>
+             <div class="custom-dropdown" (click)="toggleOriginatorDropdown($event)">
+  <div class="dropdown-selected">
+    <span>{{ selectedOriginatorLabel || '— Select Originator to Add —' }}</span>
+    <i class="fa-solid fa-caret-down" [class.rotate]="isOriginatorDropdownOpen"></i>
+  </div>
+ <div class="dropdown-options" *ngIf="isOriginatorDropdownOpen">
+  <ng-container *ngFor="let employee of EmployeeList">
+    <div
+      class="dropdown-option"
+      *ngIf="!form.originatorUserPublicIds.includes(employee.userPublicId)"
+      (click)="selectOriginator(employee, $event)"
+    >
+      {{ employee.fullName }}
+    </div>
+  </ng-container>
+</div>
+</div>
             </div>
           </div>
 
@@ -152,13 +136,11 @@
                 </tr>
               </thead>
               <tbody>
-                <ng-container
-                  *ngFor="
+                <ng-container *ngFor="
                     let uid of form.originatorUserPublicIds;
                     let oi = index;
                     trackBy: trackByIndex
-                  "
-                >
+                  ">
                   <ng-container *ngFor="let user of EmployeeList">
                     <tr *ngIf="user.userPublicId === uid">
                       <td class="td-num">{{ oi + 1 }}</td>
@@ -166,7 +148,7 @@
 
                       <td>
                         <button class="icon-btn delete-btn" (click)="removeOriginator(oi)">
-                          ✕
+                          <i class="fa-solid fa-trash"></i>
                         </button>
                       </td>
                     </tr>
@@ -186,17 +168,24 @@
           <!-- Dropdown Row to add stage definition -->
           <div class="originator-add-row">
             <div class="form-group" style="flex: 1; margin-bottom: 0">
-              <select (change)="onStageDefinitionSelect($event)">
-                <option value="">— Select Stage to Add —</option>
-                <ng-container *ngFor="let stage of stageDefinitionList">
-                  <option
-                    *ngIf="!form.stageDefinitionPublicIds.includes(stage.publicId)"
-                    [value]="stage.publicId"
-                  >
-                    {{ stage.stageName ?? stage.name }} ({{ stage.stageCode ?? stage.code }})
-                  </option>
-                </ng-container>
-              </select>
+             <div class="custom-dropdown" (click)="toggleStageDropdown($event)">
+  <div class="dropdown-selected">
+    <span>{{ selectedStageLabel || '— Select Stage to Add —' }}</span>
+    <i class="fa-solid fa-caret-down" [class.rotate]="isStageDropdownOpen"></i>
+  </div>
+  <div class="dropdown-options" *ngIf="isStageDropdownOpen">
+  <ng-container *ngFor="let stage of stageDefinitionList">
+    <div
+      class="dropdown-option"
+      *ngIf="!form.stageDefinitionPublicIds.includes(stage.publicId)"
+      (click)="selectStage(stage, $event)"
+    >
+      {{ stage.stageName ?? stage.name }}
+      ({{ stage.stageCode ?? stage.code }})
+    </div>
+  </ng-container>
+</div>
+</div>
             </div>
           </div>
 
@@ -218,13 +207,11 @@
                 </tr>
               </thead>
               <tbody>
-                <tr
-                  *ngFor="
+                <tr *ngFor="
                     let sid of form.stageDefinitionPublicIds;
                     let si = index;
                     trackBy: trackByIndex
-                  "
-                >
+                  ">
                   <ng-container *ngIf="getStageDefinitionById(sid) as stage; else unknownStage">
                     <td class="td-num">{{ si + 1 }}</td>
                     <td>
@@ -232,24 +219,17 @@
                     </td>
                     <td>{{ stage.stageName ?? stage.name }}</td>
                     <td>
-                      <button
-                        class="icon-btn move-btn"
-                        [disabled]="si === 0"
-                        (click)="moveStageDefinition(si, -1)"
-                      >
+                      <button class="icon-btn move-btn" [disabled]="si === 0" (click)="moveStageDefinition(si, -1)">
                         ↑
                       </button>
-                      <button
-                        class="icon-btn move-btn"
-                        [disabled]="si === form.stageDefinitionPublicIds.length - 1"
-                        (click)="moveStageDefinition(si, 1)"
-                      >
+                      <button class="icon-btn move-btn" [disabled]="si === form.stageDefinitionPublicIds.length - 1"
+                        (click)="moveStageDefinition(si, 1)">
                         ↓
                       </button>
                     </td>
                     <td>
                       <button class="icon-btn delete-btn" (click)="removeStageDefinition(si)">
-                        ✕
+                        <i class="fa-solid fa-trash"></i>
                       </button>
                     </td>
                   </ng-container>
@@ -261,7 +241,7 @@
                     <td></td>
                     <td>
                       <button class="icon-btn delete-btn" (click)="removeStageDefinition(si)">
-                        ✕
+                        <i class="fa-solid fa-trash"></i>
                       </button>
                     </td>
                   </ng-template>

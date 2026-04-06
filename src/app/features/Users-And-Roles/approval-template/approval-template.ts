@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UsersAndRolesService } from '../Services/user-roles';
@@ -16,6 +16,7 @@ interface TemplateForm {
   remarks: string;
   originatorUserPublicIds: string[];
   stageDefinitionPublicIds: string[];
+  
 }
 
 @Component({
@@ -35,6 +36,16 @@ export class ApprovalTemplate {
   Pagesize: number = 100;
   publicId: string | null = null;
   isEditMode = false;
+  // Dropdown state variables
+isEntityDropdownOpen = false;
+selectedEntityLabel = '';
+// Originator dropdown variables
+isOriginatorDropdownOpen = false;
+selectedOriginatorLabel = '';
+
+// Stage dropdown variables
+isStageDropdownOpen = false;
+selectedStageLabel = '';
 
   entityNameOptions: string[] = ['LEAVE_APPLICATION'];
 
@@ -47,15 +58,18 @@ export class ApprovalTemplate {
     private FormSv: FormsService,
   ) {}
 
-  ngOnInit() {
-    this.publicId = this.route.snapshot.paramMap.get('id');
+ngOnInit() {
+  this.publicId = this.route.snapshot.paramMap.get('id');
+
+  this.GetEmployee();
+
+  this.GetStageDefinitions(() => {
     if (this.publicId) {
       this.isEditMode = true;
       this.loadApprovalTemplate(this.publicId);
     }
-    this.GetEmployee();
-    this.GetStageDefinitions();
-  }
+  });
+}
 
   form: TemplateForm = {
     code: '',
@@ -96,16 +110,17 @@ export class ApprovalTemplate {
   //     (err: any) => console.log(err),
   //   );
   // }
-  GetStageDefinitions() {
-    this.UserSv.getApprovaLStages(this.currentpage, this.Pagesize).subscribe(
-      (res: any) => {
-        if (res.success) {
-          this.stageDefinitionList = res.data;
-        }
-      },
-      (err: any) => console.log(err),
-    );
-  }
+  GetStageDefinitions(callback?: () => void) {
+  this.UserSv.getApprovaLStages(this.currentpage, this.Pagesize).subscribe(
+    (res: any) => {
+      if (res.success) {
+        this.stageDefinitionList = res.data;
+        callback?.(); // stage list load hone ke baad edit data load
+      }
+    },
+    (err: any) => console.log(err),
+  );
+}
   getStageDefinitionById(publicId: string): any {
     return this.stageDefinitionList.find((d: any) => d.publicId === publicId) ?? null;
   }
@@ -122,6 +137,8 @@ export class ApprovalTemplate {
           this.form.description = result.description;
           this.form.conditionJson = result.conditionJson ?? '';
           this.form.remarks = result.remarks ?? '';
+          // loadApprovalTemplate method mein
+this.selectedEntityLabel = result.entityName;
           this.form.originatorUserPublicIds = (result.originators || []).map(
             (o: any) => o.userPublicId,
           );
@@ -255,26 +272,77 @@ export class ApprovalTemplate {
       setTimeout(() => (this.jsonCopied = false), 2000);
     });
   }
-
-  resetForm(): void {
-    this.form = {
-      code: '',
-      name: '',
-      entityName: '',
-      description: '',
-      conditionJson: '',
-      remarks: '',
-      originatorUserPublicIds: [],
-      stageDefinitionPublicIds: [],
-    };
-    this.submitted = false;
-    this.activeTab = 'form';
-    this.innerTab = 'originators';
-  }
+resetForm(): void {
+  this.form = {
+    code: '',
+    name: '',
+    entityName: '',
+    description: '',
+    conditionJson: '',
+    remarks: '',
+    originatorUserPublicIds: [],
+    stageDefinitionPublicIds: [],
+  };
+  this.selectedEntityLabel = '';
+  this.selectedOriginatorLabel = '';
+  this.selectedStageLabel = '';
+  this.submitted = false;
+  this.activeTab = 'form';
+  this.innerTab = 'originators';
+}
   cancel() {
     this.router.navigate(['/panel/users-and-roles/view-template-approval']);
   }
   trackByIndex(index: number): number {
     return index;
   }
+
+
+  toggleEntityDropdown(event: Event) {
+  event.stopPropagation();
+  this.isEntityDropdownOpen = !this.isEntityDropdownOpen;
+}
+
+selectEntity(entity: string, event: Event) {
+  event.stopPropagation();
+  this.form.entityName = entity;
+  this.selectedEntityLabel = entity;
+  this.isEntityDropdownOpen = false;
+}
+@HostListener('document:click', ['$event'])
+closeAllDropdowns(event?: Event) {
+  this.isEntityDropdownOpen = false;
+  this.isOriginatorDropdownOpen = false;
+  this.isStageDropdownOpen = false;
+}
+
+toggleOriginatorDropdown(event: Event) {
+  event.stopPropagation();
+  this.isOriginatorDropdownOpen = !this.isOriginatorDropdownOpen;
+}
+
+selectOriginator(employee: any, event: Event) {
+  event.stopPropagation();
+  const userPublicId = employee.userPublicId;
+  if (userPublicId && !this.form.originatorUserPublicIds.includes(userPublicId)) {
+    this.form.originatorUserPublicIds.push(userPublicId);
+    this.selectedOriginatorLabel = ''; // Reset after selection
+  }
+  this.isOriginatorDropdownOpen = false;
+}
+
+toggleStageDropdown(event: Event) {
+  event.stopPropagation();
+  this.isStageDropdownOpen = !this.isStageDropdownOpen;
+}
+
+selectStage(stage: any, event: Event) {
+  event.stopPropagation();
+  const publicId = stage.publicId;
+  if (publicId && !this.form.stageDefinitionPublicIds.includes(publicId)) {
+    this.form.stageDefinitionPublicIds.push(publicId);
+    this.selectedStageLabel = ''; // Reset after selection
+  }
+  this.isStageDropdownOpen = false;
+}
 }

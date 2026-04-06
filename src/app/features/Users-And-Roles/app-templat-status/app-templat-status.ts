@@ -148,4 +148,15 @@ export class AppTemplatStatus implements OnInit {
     if (status === 'DRAFT') return 'draft-badge';
     return 'inactive-badge';
   }
+
+  toggleStatus(template: any) {
+  const isActive = template.status === 'ACTIVE';
+  if (isActive) {
+    this.deactivateTemplate(template.publicId);
+  } else {
+    this.openActivateModal(template); // if you want modal for activation
+    // OR directly activate:
+    // this.UserSv.activateApprovalTemplate(template.publicId).subscribe(...)
+  }
+}
 }

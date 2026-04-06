@@ -18,6 +18,7 @@
         height: 60px;
         width: 170px;
         color: var(--gray-color-1);
+
         cursor: pointer;
         transition: all 0.3s ease;
 
@@ -25,17 +26,21 @@
             display: block;
         }
 
+        /* Hover optional */
         &:hover {
             background: rgba(86, 111, 158, 0.2);
         }
     }
 
+    /* ✅ Active Button Style */
     button.active {
         background: var(--purple-1);
         color: var(--second-primary-color);
         border-color: var(--purple-1);
     }
+
 }
+
 
 @media (max-width: 850px) {
     .btn-groups-main-div {
@@ -43,30 +48,9 @@
     }
 }
 
-/* ===================== ROOT FIX — container-fluid sidebar overflow ===================== */
-
-:host {
-    display: block;
-    width: 100%;
-    min-width: 0;
-    overflow: hidden;
-    box-sizing: border-box;
-}
-
-:host>section.container-fluid {
-    width: 100% !important;
-    max-width: 100% !important;
-    min-width: 0 !important;
-    overflow: hidden;
-    box-sizing: border-box;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-}
-
-/* ===================== TABLE ===================== */
-
 table {
     width: 100%;
+    border-collapse: separate;
     border-spacing: 0 8px;
     caption-side: bottom;
     border-collapse: collapse;
@@ -83,243 +67,274 @@ td {
 
 table thead tr th {
     color: var(--gray-color-1);
+        background-color: var(--second-primary-color);
+
     border-bottom: 1px solid #d8d3d3b1;
-    background-color: var(--second-primary-color) !important;
+
 }
 
 table tbody tr td {
+    background-color: var(--second-primary-color);
     color: var(--gray-color-2);
     border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-    background-color: transparent !important;
+
 }
-
-/* ===================== BOOTSTRAP TABLE OVERRIDE ===================== */
-
-.table {
-    --bs-table-bg: transparent !important;
-    --bs-table-hover-bg: rgba(86, 111, 158, 0.1) !important;
-    --bs-table-striped-bg: transparent !important;
-    --bs-table-active-bg: transparent !important;
-    --bs-table-color: var(--gray-color-2) !important;
-    color: var(--gray-color-2) !important;
-    background-color: transparent !important;
-}
-
-.table thead th {
-    background-color: var(--second-primary-color) !important;
-    color: var(--gray-color-1) !important;
-}
-
-.table tbody tr {
-    background-color: transparent !important;
-}
-
-.table tbody tr td {
-    color: var(--gray-color-2) !important;
-    background-color: transparent !important;
-}
-
-.table-hover tbody tr:hover {
-    background-color: rgba(86, 111, 158, 0.1) !important;
-    --bs-table-hover-bg: rgba(86, 111, 158, 0.1) !important;
-}
-
-/* Sessions expandable row */
-.table-secondary {
-    --bs-table-bg: var(--second-primary-color) !important;
-    --bs-table-color: var(--gray-color-2) !important;
-    background-color: var(--second-primary-color) !important;
-}
-
-.table-secondary td {
-    background-color: var(--second-primary-color) !important;
-    color: var(--gray-color-2) !important;
-}
-
-/* Nested sessions inner table */
-.table-bordered {
-    --bs-table-bg: transparent !important;
-    --bs-table-border-color: var(--border-color) !important;
-    background-color: transparent !important;
-}
-
-.table-bordered td,
-.table-bordered th {
-    border-color: var(--border-color) !important;
-    color: var(--gray-color-2) !important;
-    background-color: var(--second-primary-color) !important;
-}
-
-/* Nested table dark header */
-.table-dark thead tr th {
-    background-color: #1e293b !important;
-    color: #f1f5f9 !important;
-    border-color: #334155 !important;
-}
-
-/* ===================== TABLE MAIN DIV — FIXED ===================== */
 
 .table-main-div {
     border: 1px solid var(--border-color);
-    border-radius: 8px;
-    max-height: calc(100vh - 150px);
-    overflow-y: auto;
-    overflow-x: auto;
-    /* ✅ hidden → auto (yahi asli fix hai) */
+    border-radius: 12px;
     background-color: var(--second-primary-color);
+    //   overflow-x: auto;
+    padding: 0 4px;
+}
+
+/* ===== Table ===== */
+table {
     width: 100%;
-    /* ✅ full width lo */
-    min-width: 0;
-    /* ✅ flex child crush na ho */
-    box-sizing: border-box;
-    /* ✅ border width mein count ho */
+    border-collapse: separate;
+    border-spacing: 0 3px; // rows ke beech mein gap
+    caption-side: bottom;
 }
 
-/* ===================== TABLE RESPONSIVE OVERRIDE ===================== */
-
-.table-responsive {
-    overflow-x: auto;
-    overflow-y: visible;
-    width: 100%;
-    min-width: 0;
-    box-sizing: border-box;
-    -webkit-overflow-scrolling: touch;
+/* ===== Header Styling ===== */
+thead tr th {
+    color: var(--primary-color); // light gray-blue like screenshot
+    font-weight: 600;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    white-space: nowrap;
 }
 
-/* ===================== DROPDOWN ===================== */
-
-::ng-deep .dropdown-toggle::after {
-    display: none !important;
-}
-
-.dropdown .dropdown-menu {
-    background-color: var(--primary-color);
-    border: 1px solid var(--border-color) !important;
-
-    button {
-        color: var(--white-color-1) !important;
-        background-color: transparent !important;
-        border: none !important;
-
-        &:hover {
-            cursor: pointer;
-            background: var(--light-purple) !important;
-            color: white !important;
-        }
-    }
-
-    li a {
-        color: var(--white-color-1) !important;
-    }
-
-    li a:hover {
-        cursor: pointer;
-        background: var(--light-purple) !important;
-        color: white !important;
-    }
-}
-
-/* ===================== CHECKBOX ===================== */
-
-.checkbox-style {
-    appearance: none;
-    -webkit-appearance: none;
-    width: 20px;
-    height: 20px;
-    border: 2px solid var(--border-color, #999);
-    border-radius: 4px;
-    background-color: transparent;
-    cursor: pointer;
+/* ===== Row Styling ===== */
+tbody tr {
+    background-color: var(--second-primary-color); // dark card background
+    border-radius: 10px;
     transition: all 0.2s ease;
+
+    &:hover {
+        background-color: #27354a; // subtle hover
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+    }
 }
 
-.checkbox-style:checked {
-    background-color: var(--purple-1);
-    border-color: var(--purple-1);
-    position: relative;
+tbody tr td {
+    padding: 14px 16px;
+    color: var(--white-color-1); // light text
+    font-weight: 400;
+    font-size: 0.9rem;
+    border-bottom: none; // remove extra border (row spacing already handles it)
+    white-space: nowrap;
+
+    &:first-child {
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+    }
+
+    &:last-child {
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+    }
 }
 
-.checkbox-style:checked::after {
-    content: "✓";
-    color: #ffffff;
-    font-size: 14px;
-    position: absolute;
-    top: -2px;
-    left: 4px;
-}
+.pagination {
+    .page-item {
+        .page-link {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            color: #cbd5e1;
+            margin: 0 2px;
+            border-radius: 10px;
 
-/* ===================== ACTION BUTTONS ===================== */
 
-:host ::ng-deep {
-    .action-button {
-        display: flex;
-        gap: 0;
 
-        .btn {
-            background: transparent !important;
-            color: #333;
-            padding: 6px 12px;
-            border-style: solid !important;
-            border-width: 2px !important;
-            border-color: transparent !important;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            border-radius: 0;
+
         }
 
-        .btn-1 {
-            border-left-color: green !important;
-            border-top-color: green !important;
-            border-bottom-color: green !important;
-            border-right-color: purple !important;
-            border-top-left-radius: 6px;
-            border-bottom-left-radius: 6px;
-            color: #b5b5c3 !important;
-        }
-
-        .btn-2 {
-            border-top-color: purple !important;
-            border-bottom-color: purple !important;
-            border-right-color: purple !important;
-            border-left: none !important;
-            color: #b5b5c3 !important;
-        }
-
-        .btn-3 {
-            border-top-color: red !important;
-            border-bottom-color: red !important;
-            border-right-color: red !important;
-            border-left: none !important;
-            border-top-right-radius: 6px;
-            border-bottom-right-radius: 6px;
-            color: #b5b5c3 !important;
+        &.active .page-link {
+            background-color: #4ade80;
+            border-color: #4ade80;
+            color: #0f172a;
+            font-weight: bold;
         }
     }
 }
 
-.btn-1:hover {
-    background-color: #05825f !important;
-    color: #ffffff !important;
+
+.table-footer {
+    padding: 10px 12px;
 }
 
-.btn-2:hover {
-    background-color: var(--purple-1) !important;
-    color: #ffffff !important;
+/* left section */
+
+.table-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
-.btn-3:hover {
-    background-color: #ee3158 !important;
-    color: #ffffff !important;
+/* label */
+
+.table-info .label {
+    font-size: 14px;
+    color: #94a3b8;
 }
 
-/* ===================== CREATE BUTTON ===================== */
+/* dropdown pill */
+
+.items-select {
+    background: var(--second-primary-color);
+    border: none;
+    border-radius: 10px;
+    padding: 2px 6px;
+    display: flex;
+    align-items: center;
+}
+
+.items-select select {
+    background: var(--primary-color);
+    border: none;
+    color: var(--white-color-1);
+    font-size: 14px;
+    padding: 4px 8px;
+    outline: none;
+    cursor: pointer;
+}
+
+/* rows text */
+
+.rows-count {
+    font-size: 14px;
+    color: #94a3b8;
+}
+
+/* hover effect */
+
+
+/* ===== Scrollable table wrapper ===== */
+.table-scrollable {
+    max-height: 450px; // adjust as needed
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--second-primary-color);
+
+    // WebKit (Chrome, Safari, Edge)
+    &::-webkit-scrollbar {
+        width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+        background: transparent;
+        border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+        background-color: #4ade80;
+        border-radius: 20px;
+        border: 1px solid #1e293b;
+    }
+}
+
+
+/* ===== Search Box Style ===== */
+.search-box {
+    position: relative;
+    width: 200px;
+
+    input {
+        width: 100%;
+        padding: 6px 34px 6px 10px; // right space icon ke liye
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        background: var(--second-primary-color); // light grey like screenshot
+        font-size: 14px;
+        outline: none;
+        color: var(--white-color-1);
+    }
+
+    /* 🔹 Vertical divider line */
+    &::after {
+        content: "";
+        position: absolute;
+        right: 32px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1px;
+        height: 18px;
+        background: #94a3b8;
+    }
+
+    i {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #475569;
+        font-size: 14px;
+        pointer-events: none;
+    }
+}
+
+.search-wrapper {
+    display: flex;
+    flex-direction: column;
+}
+
+/* red instruction text */
+.search-note {
+    font-size: 9px;
+    color: #ef4444;
+    margin-bottom: 1px;
+    font-weight: 500;
+}
+
+/* Sticky table header */
+.table-scrollable thead th {
+    position: sticky;
+    top: 0;
+    z-index: 5;
+    background: var(--second-primary-color);
+    /* header background same rakho */
+}
+
+/* ===== Style for search & dropdown (dark theme) ===== */
+.form-control,
+.form-select {
+    background-color: #1e293b !important;
+    border: 1px solid #334155 !important;
+    color: #fff !important;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 14px;
+
+    &:focus {
+        outline: none;
+        border-color: #4ade80 !important;
+        box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.2);
+    }
+}
+
+/* Ensure the dropdown options also have dark background */
+.form-select option {
+    background-color: #1e293b;
+    color: #fff;
+}
+
+.not-found {
+    text-align: center;
+    padding: 25px;
+    color: #94a3b8;
+    font-size: 14px;
+    font-weight: 500;
+}
 
 .create-btn {
     font-size: 15px;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
+    gap: 6px; // icon aur text ki distance control
     outline: 0;
     border: 0;
     cursor: pointer;
@@ -327,7 +342,7 @@ table tbody tr td {
     box-shadow:
         0px 2px 6px rgba(18, 116, 172, 0.35),
         inset 0px -2px 0px rgba(0, 0, 0, 0.2);
-    padding: 6px 14px;
+    padding: 6px 14px; // compact size
     border-radius: 8px;
     color: #fff;
     height: 34px;
@@ -336,11 +351,13 @@ table tbody tr td {
     font-weight: 500;
 }
 
+/* icon spacing fix */
 .create-btn .icon {
     font-size: 14px;
-    margin-right: 2px;
+    margin-right: 2px; // pehle zyada gap tha
 }
 
+/* hover */
 .create-btn:hover {
     background: radial-gradient(100% 100% at 100% 0%, #4aa6d6 0%, #0f6698 100%);
     box-shadow:
@@ -349,12 +366,11 @@ table tbody tr td {
     transform: translateY(-1px);
 }
 
+/* click */
 .create-btn:active {
     box-shadow: inset 0px 3px 8px rgba(0, 0, 0, 0.3);
     transform: translateY(0);
 }
-
-/* ===================== STATUS BADGES ===================== */
 
 .status-badge {
     padding: 4px 10px;
@@ -379,35 +395,207 @@ table tbody tr td {
     border: 1px solid #ef4444;
 }
 
-.draft-badge {
-    background-color: #334155;
+/* ===== Reset Button ===== */
+.reset-btn {
+    height: 32px;
+    width: 32px;
+    border-radius: 8px;
+    border: 1px solid #334155;
+    background-color: #1e293b;
     color: #94a3b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+
+    i {
+        font-size: 13px;
+    }
+
+    &:hover:not([disabled]) {
+        background-color: rgba(239, 68, 68, 0.15);
+        border-color: #ef4444;
+        color: #ef4444;
+    }
+
+    &:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+    }
 }
 
+/* ===== Leaves Per Year Filter Dropdown ===== */
+.filter-select-box {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    .filter-select {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 160px;
+        padding: 6px 32px 6px 10px;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        background: var(--second-primary-color);
+        color: var(--white-color-1);
+        font-size: 14px;
+        outline: none;
+        cursor: pointer;
+
+        &:focus {
+            border-color: var(--gray-color-1);
+            box-shadow: 0 0 0 2px rgba(74, 222, 128, 0.15);
+        }
+    }
+
+    .select-icon {
+        position: absolute;
+        right: 10px;
+        color: #475569;
+        font-size: 11px;
+        pointer-events: none;
+    }
+}
+
+/* ===== Reset Button ===== */
+.reset-btn {
+    height: 32px;
+    width: 32px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    background-color: var(--purple-1);
+    color: #94a3b8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    outline: none;
+
+    i {
+        font-size: 13px;
+    }
+
+    &:hover:not([disabled]) {
+        background-color: rgba(239, 68, 68, 0.15);
+        border-color: #ef4444;
+        color: #ef4444;
+    }
+
+    &:disabled {
+        opacity: 0.35;
+        cursor: not-allowed;
+    }
+}
+
+/* ===================== STATUS BADGES ===================== */
+
+/* ===================== STATUS BADGES — LIGHT VERSION ===================== */
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    display: inline-block;
+    min-width: 75px;
+    text-align: center;
+}
+
+/* Light background badges */
 .approved-badge {
-    background-color: #14532d;
-    color: #4ade80;
-}
-
-.open-badge {
-    background-color: #14532d;
-    color: #4ade80;
+    background-color: rgba(74, 222, 128, 0.15); /* light green */
+    color: #16a34a; /* green text */
+    border: 1px solid rgba(74, 222, 128, 0.3);
 }
 
 .pending-badge {
-    background-color: #78350f;
-    color: #fbbf24;
+    background-color: rgba(251, 191, 36, 0.15); /* light yellow */
+    color: #b45309; /* amber text */
+    border: 1px solid rgba(251, 191, 36, 0.3);
 }
 
 .rejected-badge {
-    background-color: #7f1d1d;
-    color: #f87171;
+    background-color: rgba(248, 113, 113, 0.15); /* light red */
+    color: #b91c1c; /* red text */
+    border: 1px solid rgba(248, 113, 113, 0.3);
+}
+
+.draft-badge {
+    background-color: rgba(148, 163, 184, 0.15); /* light gray */
+    color: #475569; /* gray text */
+    border: 1px solid rgba(148, 163, 184, 0.3);
+}
+
+.active-badge {
+    background-color: rgba(34, 197, 94, 0.15); /* light green */
+    color: #15803d;
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+.inactive-badge {
+    background-color: rgba(239, 68, 68, 0.15); /* light red */
+    color: #b91c1c;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+.open-badge {
+    background-color: rgba(74, 222, 128, 0.15); /* light green */
+    color: #16a34a;
+    border: 1px solid rgba(74, 222, 128, 0.3);
+}
+
+/* Interview Status */
+.scheduled-badge, .SCHEDULED {
+    background-color: rgba(59, 130, 246, 0.15); /* light blue */
+    color: #1e40af; /* dark blue text */
+    border: 1px solid rgba(59, 130, 246, 0.3);
+}
+
+.in-progress-badge, .IN_PROGRESS {
+    background-color: rgba(250, 204, 21, 0.15); /* light yellow */
+    color: #78350f; /* amber/brown text */
+    border: 1px solid rgba(233, 216, 146, 0.3);
+}
+
+.completed-badge, .COMPLETED {
+    background-color: rgba(34, 197, 94, 0.15); /* light green */
+    color: #15803d; /* green text */
+    border: 1px solid rgba(34, 197, 94, 0.3);
+}
+
+/* Session Result */
+.pass-badge, .PASS {
+    background-color: rgba(74, 222, 128, 0.15); /* light green */
+    color: #16a34a;
+    border: 1px solid rgba(74, 222, 128, 0.3);
+}
+
+.fail-badge, .FAIL {
+    background-color: rgba(248, 113, 113, 0.15); /* light red */
+    color: #b91c1c;
+    border: 1px solid rgba(248, 113, 113, 0.3);
+}
+
+.reschedule-badge, .RESCHEDULE {
+    background-color: rgba(251, 191, 36, 0.15); /* light yellow/orange */
+    color: #b45309;
+    border: 1px solid rgba(251, 191, 36, 0.3);
+}
+
+.cancelled-badge, .CANCELLED {
+    background-color: rgba(239, 68, 68, 0.15); /* light red */
+    color: #b91c1c;
+    border: 1px solid rgba(239, 68, 68, 0.3);
 }
 /* ===================== SESSIONS EXPANDED ROW ===================== */
 
 .sessions-expanded-row>td {
-    border-bottom: 2px solid #566f9e !important;
-    border-left: 3px solid #566f9e !important;
+    border-bottom: 2px solid #1274ac !important;
+    border-left: 3px solid #1274ac !important;
     background-color: transparent !important;
     padding: 0 !important;
 }
@@ -430,7 +618,7 @@ table tbody tr td {
 }
 
 .sessions-header i {
-    color: #566f9e;
+    color: var(--white-color-1);
     font-size: 13px;
 }
 
@@ -452,27 +640,27 @@ table tbody tr td {
     font-size: 13px;
     border-radius: 8px;
     overflow: hidden;
-    background-color: #0f1929;
+    background-color: var(--second-primary-color);
     border: 1px solid var(--border-color);
 }
 
 .sessions-table thead tr th {
-    background-color: #2548a1 !important;
+    background-color: var(--purple-1) !important;
     color: #dfe4eb !important;
     font-weight: 500;
     font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 0.6px;
     padding: 9px 12px;
-    border-bottom: 1px solid rgba(86, 111, 158, 0.3) !important;
+    border-bottom: 1px solid var(--border-color)!important;
     white-space: nowrap;
 }
 
 .sessions-table tbody tr td {
     padding: 10px 12px;
     color: var(--gray-color-2);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
-    background-color: #0f1929 !important;
+    border-bottom: 1px solid var(--border-color) !important;
+    background-color: var(--second-primary-color) !important;
     vertical-align: middle;
 }
 
@@ -480,9 +668,9 @@ table tbody tr td {
     border-bottom: none !important;
 }
 
-.sessions-table tbody tr:hover td {
-    background-color: rgba(86, 111, 158, 0.12) !important;
-}
+// .sessions-table tbody tr:hover td {
+//     // background-color: rgba(86, 111, 158, 0.12) !important;
+// }
 
 /* --- Serial col --- */
 .serial-col {
@@ -632,9 +820,9 @@ table tbody tr td {
     border-radius: 6px;
     font-size: 12px;
     font-weight: 500;
-    color: #e5e9ef !important;
-    background-color: rgba(59, 130, 246, 0.1);
-    border: 1px solid rgba(59, 130, 246, 0.25);
+   background-color: rgba(106, 145, 165, 0.15);
+color: #2c3e50; /* darker text for contrast */
+border: 1px solid rgba(106, 145, 165, 0.3);
     text-decoration: none;
     white-space: nowrap;
     transition: all 0.2s ease;
@@ -642,9 +830,8 @@ table tbody tr td {
 }
 
 .feedback-btn:hover {
-    background-color: rgba(59, 130, 246, 0.22);
-    border-color: rgba(59, 130, 246, 0.5);
-    color: #edf2f7 !important;
+    background-color: var(--purple-1);
+    color: white !important;
     text-decoration: none;
 }
 
@@ -669,4 +856,34 @@ table tbody tr td {
 .empty-sessions span {
     font-size: 13px;
     opacity: 0.7;
+}
+
+/* Sessions button custom style */
+table tbody tr td button.btn-outline-info {
+    background-color: rgba(106, 145, 165, 0.15); // light transparent bg
+    color: #2c3e50; // text color
+    border: 1px solid rgba(106, 145, 165, 0.3);
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+
+   
+
+    i {
+        font-size: 12px;
+        margin-right: 4px;
+    }
+}
+
+/* Custom Sessions badge */
+button.btn-outline-info .badge {
+    background-color: var(--purple-1); // light blue transparent
+    color: white; // dark blue text
+    border: 1px solid rgba(59, 130, 246, 0.3);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 6px;
+    border-radius: 12px;
 }
