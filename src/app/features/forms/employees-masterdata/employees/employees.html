@@ -28,6 +28,7 @@
           type="text"
           [(ngModel)]="userFirstName"
           class="form-control"
+          autocomplete="off"
           name="userFirstName"
           placeholder="Enter first name"
         />
@@ -41,6 +42,7 @@
           [(ngModel)]="userLastName"
           class="form-control"
           name="userLastName"
+          autocomplete="off"
           placeholder="Enter last name"
         />
       </div>
@@ -149,13 +151,9 @@
       <!-- Role Code -->
       <div class="form-group">
         <label class="required">Role Code</label>
-        <input
-          type="text"
-          [(ngModel)]="roleCode"
-          class="form-control"
-          name="roleCode"
-          placeholder="Enter role code"
-        />
+        <select [(ngModel)]="roleCode" name="roleCode" class="form-select">
+          <option *ngFor="let role of roleList" [value]="role.publicId">{{ role.code }}</option>
+        </select>
       </div>
 
       <!-- Password -->

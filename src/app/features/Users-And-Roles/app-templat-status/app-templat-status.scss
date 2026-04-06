@@ -391,14 +391,10 @@ tbody tr td {
     color: #ef4444;
     border: 1px solid #ef4444;
 }
-
 .draft-badge {
-    background-color: rgba(234, 179, 8, 0.15);
-    color: #eab308;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 500;
+  background: rgba(148, 163, 184, 0.15);
+  color: #cbd5e1;
+  border-color: rgba(148, 163, 184, 0.25);
 }
 
 .stage-count-badge {
@@ -524,7 +520,7 @@ tbody tr td {
 }
 
 .modal-box {
-    background: var(--dark-bg, #1e2130);
+    background: var(--second-primary-color);
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 12px;
     width: 460px;
@@ -550,29 +546,29 @@ tbody tr td {
 .modal-close-btn {
     background: transparent;
     border: none;
-    color: #aaa;
+    color: red;
     cursor: pointer;
     font-size: 16px;
 
     &:hover {
-        color: #fff;
+        color: red;
     }
 }
 
 .modal-template-info {
-    background: rgba(255, 255, 255, 0.05);
+    background: var(--second-primary-color);
     border-radius: 8px;
     padding: 10px 14px;
     margin-bottom: 16px;
 
     .info-label {
-        color: #888;
+        color: var(--white-color-1);
         font-size: 12px;
         margin-right: 8px;
     }
 
     .info-value {
-        color: #fff;
+        color: var(--text-primary);
         font-size: 13px;
         font-weight: 500;
     }
@@ -580,12 +576,12 @@ tbody tr td {
 
 .modal-divider {
     height: 1px;
-    background: rgba(255, 255, 255, 0.08);
+    background: var(--border-color);
     margin-bottom: 16px;
 }
 
 .modal-section-label {
-    color: #aaa;
+    color: var(--white-color-1);
     font-size: 12px;
     font-weight: 600;
     text-transform: uppercase;
@@ -606,7 +602,7 @@ tbody tr td {
     gap: 12px;
     padding: 12px 14px;
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border-color);
     cursor: pointer;
     transition: all 0.2s;
 
@@ -616,7 +612,7 @@ tbody tr td {
     }
 
     &.selected {
-        border-color: #6366f1;
+        border-color: #1274ac;
         background: rgba(99, 102, 241, 0.1);
     }
 }
@@ -626,7 +622,7 @@ tbody tr td {
     width: 16px;
     height: 16px;
     border-radius: 50%;
-    border: 2px solid #555;
+    border: 2px solid var(--border-color);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -640,7 +636,7 @@ tbody tr td {
         transition: background 0.2s;
 
         &.active {
-            background: #6366f1;
+            background: #1274ac;
         }
     }
 }
@@ -651,13 +647,13 @@ tbody tr td {
     gap: 3px;
 
     .option-label {
-        color: #fff;
+        color: var(--text-primary);
         font-size: 13px;
         font-weight: 500;
     }
 
     .option-desc {
-        color: #888;
+        color: var(--white-color-1);
         font-size: 11px;
     }
 }
@@ -678,7 +674,7 @@ tbody tr td {
         font-size: 13px;
 
         small {
-            color: #888;
+            color: var(--text-primary);
             font-size: 11px;
         }
     }
@@ -693,23 +689,20 @@ tbody tr td {
 .cancel-modal-btn {
     padding: 8px 20px;
     border-radius: 8px;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    border: 1px solid var(--border-color);
     background: transparent;
-    color: #aaa;
+    color: var(--white-color-1);
     cursor: pointer;
     font-size: 13px;
 
-    &:hover {
-        color: #fff;
-        border-color: #fff;
-    }
+  
 }
 
 .confirm-modal-btn {
     padding: 8px 20px;
     border-radius: 8px;
     border: none;
-    background: #6366f1;
+    background: var(--purple-1);
     color: #fff;
     cursor: pointer;
     font-size: 13px;
@@ -748,4 +741,48 @@ tbody tr td {
 /* Icon Styling */
 .deactivate-btn .icon {
     font-size: 12px;
+}
+
+/* Container for the switch */
+.toggle-switch {
+  cursor: pointer;
+  width: 40px;   /* smaller width */
+  height: 20px;  /* smaller height */
+  display: flex;
+  align-items: center;
+}
+
+/* Track of the toggle */
+.toggle-track {
+  width: 100%;
+  height: 100%;
+  border-radius: 50px;
+  background: #ccc; /* inactive */
+  display: flex;
+  align-items: center;
+  transition: background 0.3s;
+  position: relative;
+}
+
+/* Active gradient background */
+.toggle-track.active {
+  background: linear-gradient(90deg, #1274ac, #3a97c9);
+}
+
+/* The moving circle (thumb) */
+.toggle-thumb {
+  width: 16px;   /* smaller thumb */
+  height: 16px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  left: 2px;
+  top: 2px;
+  transition: transform 0.3s;
+  box-shadow: 0 1.5px 4px rgba(0,0,0,0.2);
+}
+
+/* Move thumb when active */
+.toggle-track.active .toggle-thumb {
+  transform: translateX(20px); /* adjust to new width */
 }

@@ -390,14 +390,10 @@ tbody tr td {
     background-color: rgba(239, 68, 68, 0.15);
     color: #ef4444;
     border: 1px solid #ef4444;
-}
-.draft-badge {
-    background-color: rgba(234, 179, 8, 0.15);
-    color: #eab308;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 500;
+}.draft-badge {
+  background: rgba(148, 163, 184, 0.15);
+  color: #cbd5e1;
+  border-color: rgba(148, 163, 184, 0.25);
 }
 
 .stage-count-badge {

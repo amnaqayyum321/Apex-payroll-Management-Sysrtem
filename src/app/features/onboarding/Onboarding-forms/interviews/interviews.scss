@@ -393,3 +393,8 @@ h6 {
     }
   }
 }
+
+.form-control[type="time"]::-webkit-calendar-picker-indicator {
+  filter: invert(80%) sepia(0%) saturate(0%) brightness(90%) contrast(90%);
+  cursor: pointer;
+}

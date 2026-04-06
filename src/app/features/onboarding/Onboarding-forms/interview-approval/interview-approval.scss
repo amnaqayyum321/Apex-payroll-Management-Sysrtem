@@ -523,13 +523,11 @@ tbody tr td {
     border-color: rgba(239, 68, 68, 0.45);
 }
 
-// ── DRAFT ──
 .draft-badge {
-    background: rgba(148, 163, 184, 0.12);
-    color: #cbd5e1;
-    border-color: rgba(148, 163, 184, 0.25);
+  background: rgba(148, 163, 184, 0.15);
+  color: #cbd5e1;
+  border-color: rgba(148, 163, 184, 0.25);
 }
-
 // ── SUBMITTED ──
 .submitted-badge {
     background: rgba(79, 70, 229, 0.12);
@@ -910,11 +908,10 @@ tbody tr td {
     color: #fcd34d !important;
     border-color: rgba(245, 158, 11, 0.35) !important;
 }
-
 .draft-badge {
-    background: rgba(148, 163, 184, 0.12) !important;
-    color: #cbd5e1 !important;
-    border-color: rgba(148, 163, 184, 0.25) !important;
+  background: rgba(148, 163, 184, 0.15);
+  color: #cbd5e1;
+  border-color: rgba(148, 163, 184, 0.25);
 }
 
 .submitted-badge {

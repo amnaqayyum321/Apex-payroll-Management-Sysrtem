@@ -53,22 +53,13 @@
               {{ t.status }}
             </span>
           </td>
-          <td>
-            <!-- ✅ Now opens modal instead of direct API call -->
-            <button *ngIf="t.status !== 'ACTIVE'" class="create-btn" (click)="openActivateModal(t)">
-              <i class="fa fa-check icon"></i> Activate
-            </button>
-            <!-- <span *ngIf="t.status === 'ACTIVE'" style="color: #22c55e; font-weight: 500">
-              ✓ Active
-            </span> -->
-            <button
-              *ngIf="t.status === 'ACTIVE'"
-              class="deactivate-btn"
-              (click)="deactivateTemplate(t.publicId)"
-            >
-              <i class="fa fa-times icon"></i> Deactivate
-            </button>
-          </td>
+       <td>
+  <div class="toggle-switch" (click)="toggleStatus(t)">
+    <div class="toggle-track" [class.active]="t.status === 'ACTIVE'">
+      <div class="toggle-thumb"></div>
+    </div>
+  </div>
+</td>
         </tr>
       </tbody>
     </table>

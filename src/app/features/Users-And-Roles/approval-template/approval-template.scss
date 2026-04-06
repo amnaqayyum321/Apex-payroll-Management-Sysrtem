@@ -31,7 +31,7 @@
             width: 36px;
             height: 36px;
             border-radius: 10px;
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            background: linear-gradient(135deg, #1274ac, #119ff2);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -79,9 +79,9 @@
         transition: all 0.2s;
 
         &.active {
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            background: linear-gradient(135deg, #1274ac, #119ff2);
             color: #fff;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
+            box-shadow: 0 4px 12px rgba(99, 205, 241, 0.35);
         }
 
         &:hover:not(.active) {
@@ -366,9 +366,8 @@ select {
 // ── Role Badge (inside table) ────────────────────────
 .role-badge {
     display: inline-block;
-    background: rgba(99, 102, 241, 0.12);
-    color: #818cf8;
-    border: 1px solid rgba(99, 102, 241, 0.25);
+background: rgba(18, 116, 172, 0.15);
+    color: white;
     border-radius: 6px;
     padding: 2px 10px;
     font-size: 11px;
@@ -399,9 +398,9 @@ select {
     align-items: center;
     gap: 12px;
     padding: 14px 16px;
-    background: linear-gradient(90deg,
-            rgba(99, 102, 241, 0.08),
-            rgba(139, 92, 246, 0.05));
+   background: linear-gradient(90deg,
+            rgba(18, 116, 172, 0.12),
+            rgba(18, 116, 172, 0.04));
     cursor: pointer;
     border-bottom: 1px solid var(--border-color);
     transition: background 0.2s;
@@ -417,7 +416,7 @@ select {
     width: 32px;
     height: 32px;
     border-radius: 8px;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    background: linear-gradient(135deg, #1274ac, #119ff2);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -499,14 +498,14 @@ select {
         }
     }
 
-    &.delete-btn {
-        background: rgba(239, 68, 68, 0.1);
-        color: #ef4444;
+    // &.delete-btn {
+    //     background: rgba(239, 68, 68, 0.1);
+    //     color: #ef4444;
 
-        &:hover {
-            background: rgba(239, 68, 68, 0.2);
-        }
-    }
+    //     &:hover {
+    //         background: rgba(239, 68, 68, 0.2);
+    //     }
+    // }
 }
 
 // ── Approvers Section ────────────────────────────────
@@ -640,17 +639,15 @@ select {
     padding: 0 28px;
     border-radius: 22px;
     border: none;
-    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    background: var(--purple-1);
     color: white;
     font-weight: 600;
     font-size: 14px;
     cursor: pointer;
-    box-shadow: 0 4px 16px rgba(99, 102, 241, 0.35);
     transition: all 0.2s;
 
     &:hover {
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
     }
 
     &:active {
@@ -765,12 +762,12 @@ select {
     transition: color 0.2s, border-color 0.2s;
 
     &:hover {
-        color: var(--primary, #4f46e5);
+        color: var(--primary, #1274ac);
     }
 
     &.active {
-        color: var(--primary, #4f46e5);
-        border-bottom-color: var(--primary, #4f46e5);
+        color: var(--primary, #1274ac);
+        border-bottom-color: var(--primary, #1274ac);
     }
 }
 
@@ -782,13 +779,84 @@ select {
     height: 20px;
     padding: 0 6px;
     border-radius: 10px;
-    background: var(--primary-light, #ede9fe);
-    color: var(--primary, #4f46e5);
+    background: var(--primary-light, #4eade464);
+    color: var(--primary, #1274ac);
     font-size: 0.75rem;
     font-weight: 600;
 
     .inner-tab-btn.active & {
-        background: var(--primary, #4f46e5);
+        background: var(--primary, #1274ac);
         color: #fff;
     }
+}
+
+
+.icon-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    transition: all 0.2s;
+
+    &.move-btn {
+        background: rgba(148, 163, 184, 0.1);
+        color: var(--text-secondary);
+    }
+
+    &.delete-btn {
+        width: 38px;
+        height: 38px;
+        border-radius: 8px;
+         background: rgba(255, 77, 77, 0.12); /* soft red transparent */
+  color: #ff6b6b;
+    }
+
+    &.delete-btn:hover {
+        background: rgba(18, 116, 172, 0.2);
+        transform: scale(1.05);
+    }
+}
+
+
+.custom-dropdown {
+  position: relative;
+  cursor: pointer;
+}
+
+.dropdown-selected {
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  padding: 0 14px;
+  background: var(--second-primary-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dropdown-options {
+  position: absolute;
+  top: 45px;
+  left: 0;
+  right: 0;
+  background: var(--primary-color);
+  border-radius: 10px;
+  border: 1px solid var(--second-primary-color);
+  z-index: 10;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.dropdown-option {
+  padding: 10px 14px;
+  cursor: pointer;
+}
+
+.rotate {
+  transform: rotate(180deg);
 }

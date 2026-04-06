@@ -20,6 +20,9 @@
   --red-color: #dc3545;
   --text-primary: #ffffff;
   --text-secondary: #73737a;
+    --session-btn: rgba(52, 130, 180, 0.5);
+
+
 }
 
 .light-theme {
@@ -34,6 +37,8 @@
   --red-color: #e32134;
   --text-primary: #1a202c;
   --text-secondary: #757d8a;
+      --session-btn: rgba(127, 180, 220, 0.25);
+
 }
 
 // document.documentElement.style.setProperty('--primary-color', '#ffffff');

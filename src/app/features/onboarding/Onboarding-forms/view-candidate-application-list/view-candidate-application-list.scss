@@ -490,49 +490,69 @@ tbody tr td {
 
 
 .status-badge {
-  padding: 4px 10px;
+  padding: 6px 12px;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 600;
   text-transform: capitalize;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
 }
 
+/* Applied */
 .badge-applied {
-  background: #3b82f6;
-  color: white;
+  background: rgba(59, 130, 246, 0.12);
+  color: #3b82f6;
+  border-color: rgba(59, 130, 246, 0.25);
 }
 
+/* Shortlisted */
 .badge-shortlisted {
-  background: #6366f1;
-  color: white;
+  background: rgba(99, 102, 241, 0.12);
+  color: #6366f1;
+  border-color: rgba(99, 102, 241, 0.25);
 }
 
+/* Interview */
 .badge-interview {
-  background: #f59e0b;
-  color: white;
+  background: rgba(245, 158, 11, 0.12);
+  color: #d97706;
+  border-color: rgba(245, 158, 11, 0.25);
 }
 
+/* Hired / Success */
 .badge-success {
-  background: #22c55e;
-  color: white;
+  background: rgba(34, 197, 94, 0.12);
+  color: #16a34a;
+  border-color: rgba(34, 197, 94, 0.25);
 }
 
+/* Screening */
 .badge-screening {
-  background: #8b5cf6;
-  color: white;
+  background: rgba(139, 92, 246, 0.12);
+  color: #7c3aed;
+  border-color: rgba(139, 92, 246, 0.25);
 }
 
+/* Offer */
 .badge-offer {
-  background: #10b981;
-  color: white;
+  background: rgba(16, 185, 129, 0.12);
+  color: #059669;
+  border-color: rgba(16, 185, 129, 0.25);
 }
 
+/* Rejected */
 .badge-rejected {
-  background: #ef4444;
-  color: white;
+  background: rgba(239, 68, 68, 0.12);
+  color: #dc2626;
+  border-color: rgba(239, 68, 68, 0.25);
 }
 
+/* Default */
 .badge-default {
-  background: #64748b;
-  color: white;
+  background: rgba(100, 116, 139, 0.12);
+  color: #475569;
+  border-color: rgba(100, 116, 139, 0.25);
 }

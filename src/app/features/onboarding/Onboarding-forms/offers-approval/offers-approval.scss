@@ -500,11 +500,10 @@ tbody tr td {
   border: 1px solid transparent;
 }
 
-/* Draft - gray */
-.draft-badge {
+/* Draft - gray */.draft-badge {
   background: rgba(148, 163, 184, 0.15);
   color: #cbd5e1;
-  border-color: rgba(148, 163, 184, 0.35);
+  border-color: rgba(148, 163, 184, 0.25);
 }
 
 /* Pending Approval - amber */
@@ -810,7 +809,6 @@ tbody tr td {
   transition: all 0.2s;
   border: 1px solid transparent;
 }
-
 .draft-badge {
   background: rgba(148, 163, 184, 0.15);
   color: #cbd5e1;
