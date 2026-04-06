@@ -303,8 +303,8 @@ export class FormsService {
   UpdateEmployeesList(PublicId: string, data: any): Observable<any> {
     return this.http.put(this.url + `employees/${PublicId}`, data);
   }
-  PostEmployeeWithNewUser(payload: any): Observable<any> {
-    return this.http.post(this.url + `employees/manual-with-user`, payload);
+  PostManualEmployee(payload: any): Observable<any> {
+    return this.http.post(this.url + `employees/manual`, payload);
   }
 
   GetEmployeesList(page: number, size: number): Observable<any> {

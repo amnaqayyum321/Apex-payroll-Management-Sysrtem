@@ -63,6 +63,7 @@
   .main-content {
     width: 100%;
     min-width: 0;
+    margin-left: 20px;
     /* ✅ YAHI ASLI FIX HAI — flex child ko shrink hone do */
     overflow: hidden;
     /* ✅ content bahar na jaye */
