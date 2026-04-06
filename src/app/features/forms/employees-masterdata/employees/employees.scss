@@ -1,401 +1,855 @@
-user-form-wrapper {
+.user-form-wrapper {
     padding: 20px;
     background: var(--primary-color);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
 .user-card {
-    background: var(--second-primary-color);
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+background: var(--primary-color) !important;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
 }
 
 /* Header */
 .card-header {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  .reset-btn {
+    background: var(--primary-color);
+    color: var(--purple-1);
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    display: inline-flex;
     align-items: center;
-    margin-bottom: 10px;
+    gap: 6px;
 
-    h3 {
-        font-size: 18px;
-        font-weight: 600;
-        color: var(--text-primary);
-        margin: 0;
+    &:hover {
+      background: var(--purple-1);
+      color: white;
     }
-
-    .reset-btn {
-        background: var(--primary-color);
-        color: var(--purple-1);
-        padding: 8px 14px;
-        border-radius: 6px;
-        border: none;
-        font-size: 14px;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-
-        &:hover {
-            background: var(--purple-1);
-            color: white;
-        }
-    }
+  }
 }
 
 .header-divider {
-    width: 100%;
-    height: 1px;
-    background: var(--border-color);
-    margin: 10px 0 25px 0;
-    opacity: 0.6;
+  width: 100%;
+  height: 1px;
+  background: var(--border-color);
+  margin: 10px 0 25px 0;
+  opacity: 0.6;
 }
 
 label {
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--text-primary);
-    margin-bottom: 4px;
-    display: block;
-    letter-spacing: 0.3px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  display: block;
+  letter-spacing: 0.3px;
 }
 
 /* Agar required field ho */
 label.required::after {
-    content: " *";
-    color: #ef4444;
-    font-weight: 600;
+  content: ' *';
+  color: #ef4444;
+  font-weight: 600;
 }
 
 .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 /* Form Grid */
 .user-form {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
 /* Inputs */
 input {
-    height: 42px;
-    border-radius: 10px;
-    border: 1px solid var(--border-color);
-    padding: 0 14px;
-    font-size: 14px;
-    background: var(--second-primary-color);
-    outline: none;
-    color: var(--text-primary);
-    /* 👈 typed text color */
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  padding: 0 14px;
+  font-size: 14px;
+  background: var(--second-primary-color);
+  outline: none;
+  color: var(--text-primary);
+  /* 👈 typed text color */
 
-    &::placeholder {
-        color: #98a2b3;
-    }
+  &::placeholder {
+    color: #98a2b3;
+  }
 
-    &:focus {
-        border-color: var(--border-color);
-        background: var(--primary-color);
-    }
+  &:focus {
+    border-color: var(--border-color);
+    background: var(--primary-color);
+  }
 }
 
 textarea {
-    border-radius: 10px;
-    border: 1px solid var(--border-color);
-    background: var(--second-primary-color);
-    outline: none;
-    color: var(--text-primary);
-    /* 👈 typed text color */
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: var(--second-primary-color);
+  outline: none;
+  color: var(--text-primary);
+  /* 👈 typed text color */
 
-    &::placeholder {
-        color: #98a2b3;
-    }
+  &::placeholder {
+    color: #98a2b3;
+  }
 
-    &:focus {
-        border-color: var(--border-color);
-        background: var(--primary-color);
-    }
+  &:focus {
+    border-color: var(--border-color);
+    background: var(--primary-color);
+  }
 }
-
-
-
-
-
 
 /* Buttons */
 .form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 12px;
 }
 
 .cancel-btn {
-    height: 42px;
-    padding: 0 22px;
-    border-radius: 22px;
-    border: 1px solid var(--border-color);
-    background: var(--red-color);
-    color: white;
-    font-weight: 500;
-    cursor: pointer;
+  height: 42px;
+  padding: 0 22px;
+  border-radius: 22px;
+  border: 1px solid var(--border-color);
+  background: var(--red-color);
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
 
-    &:hover {
-        transform: translateY(-2px);
-        filter: brightness(1.05);
-    }
+  &:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+  }
 
-    &:active {
-        transform: scale(0.97);
-        box-shadow: none;
-    }
+  &:active {
+    transform: scale(0.97);
+    box-shadow: none;
+  }
 }
 
 .submit-btn {
-    height: 42px;
-    padding: 0 22px;
-    border-radius: 22px;
-    border: 1px solid var(--border-color);
-    background: var(--purple-1);
-    color: white;
-    font-weight: 500;
-    cursor: pointer;
+  height: 42px;
+  padding: 0 22px;
+  border-radius: 22px;
+  border: 1px solid var(--border-color);
+  background: var(--purple-1);
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
 
-    &:hover {
-        transform: translateY(-2px);
-        filter: brightness(1.02);
-    }
+  &:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.02);
+  }
 
-    &:active {
-        transform: scale(0.97);
-        box-shadow: none;
-    }
+  &:active {
+    transform: scale(0.97);
+    box-shadow: none;
+  }
 }
-
 
 /* ========================= */
 /* MODERN CHECKBOX */
 /* ========================= */
 
 .checkbox-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    position: relative;
-    cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text-primary);
-    user-select: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  user-select: none;
 }
 
 /* Hide default checkbox */
 .custom-checkbox {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
 }
 
 /* Custom box */
 .checkmark {
-    height: 20px;
-    width: 20px;
-    background-color: var(--primary-color);
-    border: 2px solid var(--border-color);
-    border-radius: 6px;
-    transition: all 0.25s ease;
-    display: inline-block;
-    position: relative;
+  height: 20px;
+  width: 20px;
+  background-color: var(--primary-color);
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  transition: all 0.25s ease;
+  display: inline-block;
+  position: relative;
 }
 
 /* Check icon */
 .checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
-    left: 6px;
-    top: 2px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
+  content: '';
+  position: absolute;
+  display: none;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
 }
 
 /* When checked */
-.custom-checkbox:checked+.checkmark {
-    background: var(--purple-1);
-    border-color: var(--purple-1);
-    box-shadow: 0 4px 10px rgba(71, 110, 144, 0.3);
+.custom-checkbox:checked + .checkmark {
+  background: var(--purple-1);
+  border-color: var(--purple-1);
+  box-shadow: 0 4px 10px rgba(71, 110, 144, 0.3);
 }
 
-.custom-checkbox:checked+.checkmark:after {
-    display: block;
-    animation: checkAnim 0.2s ease-in-out;
+.custom-checkbox:checked + .checkmark:after {
+  display: block;
+  animation: checkAnim 0.2s ease-in-out;
 }
 
 /* Animation */
 @keyframes checkAnim {
-    from {
-        transform: rotate(45deg) scale(0);
-    }
+  from {
+    transform: rotate(45deg) scale(0);
+  }
 
-    to {
-        transform: rotate(45deg) scale(1);
-    }
+  to {
+    transform: rotate(45deg) scale(1);
+  }
 }
 user-form-wrapper {
-    padding: 20px;
-    background: var(--primary-color);
+  padding: 20px;
+  background: var(--primary-color);
 }
 
 .user-card {
-    background: var(--second-primary-color);
-    border-radius: 16px;
-    padding: 24px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  background: var(--second-primary-color);
+  border-radius: 16px;
+  padding: 24px;
+margin-bottom: 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
 }
 
 /* Header */
 .card-header {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+
+  h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+  .reset-btn {
+    background: var(--primary-color);
+    color: var(--purple-1);
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: none;
+    font-size: 14px;
+    cursor: pointer;
+    display: inline-flex;
     align-items: center;
-    margin-bottom: 10px;
+    gap: 6px;
 
-    h3 {
-        font-size: 18px;
-        font-weight: 600;
-        color: var(--text-primary);
-        margin: 0;
+    &:hover {
+      background: var(--purple-1);
+      color: white;
     }
-
-    .reset-btn {
-        background: var(--primary-color);
-        color: var(--purple-1);
-        padding: 8px 14px;
-        border-radius: 6px;
-        border: none;
-        font-size: 14px;
-        cursor: pointer;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-
-        &:hover {
-            background: var(--purple-1);
-            color: white;
-        }
-    }
+  }
 }
 
 .header-divider {
-    width: 100%;
-    height: 1px;
-    background: var(--border-color);
-    margin: 10px 0 25px 0;
-    opacity: 0.6;
+  width: 100%;
+  height: 1px;
+  background: var(--border-color);
+  margin: 10px 0 25px 0;
+  opacity: 0.6;
 }
 
 label {
-    font-size: 15px;
-    font-weight: 500;
-    color: var(--text-primary);
-    margin-bottom: 4px;
-    display: block;
-    letter-spacing: 0.3px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+  display: block;
+  letter-spacing: 0.3px;
 }
 
 /* Agar required field ho */
 label.required::after {
-    content: " *";
-    color: #ef4444;
-    font-weight: 600;
+  content: ' *';
+  color: #ef4444;
+  font-weight: 600;
 }
 
 .form-group {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 /* Form Grid */
 .user-form {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
 }
 
 /* Form Grid - 2 columns */
 .user-form {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 18px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
 }
 
 /* Full width elements */
 .form-group.full-width,
 .checkbox-container,
 .form-actions {
-    grid-column: 1 / -1;
+  grid-column: 1 / -1;
 }
 /* Inputs */
 input {
-    height: 42px;
-    border-radius: 10px;
-    border: 1px solid var(--border-color);
-    padding: 0 14px;
-    font-size: 14px;
-    background: var(--second-primary-color);
-    outline: none;
-    color: var(--text-primary);
-    /* 👈 typed text color */
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  padding: 0 14px;
+  font-size: 14px;
+  background: var(--second-primary-color);
+  outline: none;
+  color: var(--text-primary);
+  /* 👈 typed text color */
 
-    &::placeholder {
-        color: #98a2b3;
-    }
+  &::placeholder {
+    color: #98a2b3;
+  }
 
-    &:focus {
-        border-color: var(--border-color);
-        background: var(--primary-color);
-    }
+  &:focus {
+    border-color: var(--border-color);
+    background: var(--primary-color);
+  }
 }
 
 textarea {
-    border-radius: 10px;
-    border: 1px solid var(--border-color);
-    background: var(--second-primary-color);
-    outline: none;
-    color: var(--text-primary);
-    /* 👈 typed text color */
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: var(--second-primary-color);
+  outline: none;
+  color: var(--text-primary);
+  /* 👈 typed text color */
 
-    &::placeholder {
-        color: #98a2b3;
-    }
+  &::placeholder {
+    color: #98a2b3;
+  }
 
-    &:focus {
-        border-color: var(--border-color);
-        background: var(--primary-color);
-    }
+  &:focus {
+    border-color: var(--border-color);
+    background: var(--primary-color);
+  }
 }
-
-
-
-
-
 
 /* Buttons */
 .form-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 12px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 12px;
 }
 
 .cancel-btn {
+  height: 42px;
+  padding: 0 22px;
+  border-radius: 22px;
+  border: 1px solid var(--border-color);
+  background: var(--red-color);
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.05);
+  }
+
+  &:active {
+    transform: scale(0.97);
+    box-shadow: none;
+  }
+}
+
+.submit-btn {
+  height: 42px;
+  padding: 0 22px;
+  border-radius: 22px;
+  border: 1px solid var(--border-color);
+  background: var(--purple-1);
+  color: white;
+  font-weight: 500;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.02);
+  }
+
+  &:active {
+    transform: scale(0.97);
+    box-shadow: none;
+  }
+}
+
+/* ========================= */
+/* MODERN CHECKBOX */
+/* ========================= */
+
+.checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: relative;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+  user-select: none;
+}
+
+/* Hide default checkbox */
+.custom-checkbox {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+}
+
+/* Custom box */
+.checkmark {
+  height: 20px;
+  width: 20px;
+  background-color: var(--primary-color);
+  border: 2px solid var(--border-color);
+  border-radius: 6px;
+  transition: all 0.25s ease;
+  display: inline-block;
+  position: relative;
+}
+
+/* Check icon */
+.checkmark:after {
+  content: '';
+  position: absolute;
+  display: none;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* When checked */
+.custom-checkbox:checked + .checkmark {
+  background: var(--purple-1);
+  border-color: var(--purple-1);
+  box-shadow: 0 4px 10px rgba(71, 110, 144, 0.3);
+}
+
+.custom-checkbox:checked + .checkmark:after {
+  display: block;
+  animation: checkAnim 0.2s ease-in-out;
+}
+
+/* Animation */
+@keyframes checkAnim {
+  from {
+    transform: rotate(45deg) scale(0);
+  }
+
+  to {
+    transform: rotate(45deg) scale(1);
+  }
+}
+.mode-toggle {
+  display: flex;
+  grid-column: 1 / -1;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+
+  button {
+    flex: 1;
+    padding: 11px;
+    border: none;
+    background: var(--primary-color);
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &.active {
+      background: var(--purple-1);
+      color: white;
+    }
+
+    &:hover:not(.active) {
+      background: var(--border-color);
+    }
+  }
+}
+.form-select {
+  width: 100%;
+  height: 42px;
+  padding: 0 16px;
+  font-size: 14px;
+  color: var(--text-primary);
+  background-color: var(--second-primary-color);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: var(--purple-1);
+    background: var(--primary-color);
+  }
+
+  &:hover {
+    border-color: var(--purple-1);
+  }
+
+  option {
+    color: var(--text-primary);
+    background: var(--second-primary-color);
+  }
+
+  option[value=''] {
+    color: #98a2b3;
+  }
+}
+.horizontal-tabs {
+background: var(--primary-color) !important; // ← white/dark card background
+    border-radius: 16px;
+    padding: 0;
+margin: 0 20px 20px 20px; // ← sides pe margin taake wrapper se match kare
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+    border-bottom: none; // ← purani border hatao
+
+    .tabs-container {
+        border-bottom: 2px solid var(--border-color);
+        padding: 0 16px;
+        display: flex;
+        gap: 0;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        border-radius: 16px 16px 0 0; // ← top corners rounded
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        .tab-button {
+            background: transparent;
+            border: none;
+            padding: 14px 24px;
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--white-color-1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+            white-space: nowrap;
+            flex-shrink: 0;
+
+            &:hover {
+                color: var(--purple-1);
+                background-color: rgba(var(--purple-1-rgb), 0.1);
+            }
+
+            &.active {
+                color: var(--purple-1);
+                border-bottom-color: var(--purple-1);
+                font-weight: 600;
+            }
+        }
+    }}
+ .tab-content-section {
+     padding: 24px;
+ }
+.experience-table-wrapper {
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: var(--second-primary-color);
+  animation: slideDown 0.3s ease;
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}
+
+.table-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-color);
+  background-color: rgba(255, 255, 255, 0.03);
+
+  .table-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--white-color-1);
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .table-count {
+    font-size: 12px;
+    color: var(--purple-1);
+    background: rgba(112, 71, 238, 0.12);
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+}
+
+.exp-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  thead tr th {
+    padding: 12px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--gray-color-1);
+    background-color: rgba(255, 255, 255, 0.02);
+    border-bottom: 1px solid var(--border-color);
+    white-space: nowrap;
+  }
+
+  tbody .exp-row {
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: rgba(112, 71, 238, 0.06);
+    }
+
+    td {
+      padding: 12px 16px;
+      font-size: 13.5px;
+      color: var(--gray-color-2);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    &:last-child td {
+      border-bottom: none;
+    }
+  }
+}
+
+.exp-table thead tr th,
+.exp-table tbody .exp-row td {
+  text-align: left;
+  padding-left: 16px;
+}
+
+.exp-table thead tr th:first-child,
+.exp-table tbody .exp-row td:first-child {
+  padding-left: 16px;
+}
+
+.company-name {
+  font-weight: 500;
+  color: var(--white-color-1);
+}
+
+.badge-present {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.badge-status {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--gray-color-1);
+
+  &.current {
+    background: rgba(112, 71, 238, 0.15);
+    color: var(--purple-1);
+  }
+}
+
+.btn-remove {
+  background: rgba(238, 49, 88, 0.1);
+  border: 1px solid rgba(238, 49, 88, 0.25);
+  color: #ee3158;
+  border-radius: 6px;
+  padding: 6px 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+
+  &:hover {
+    background: #ee3158;
+    color: white;
+    transform: scale(1.05);
+  }
+}
+
+.empty-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 12px 16px;
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  color: var(--gray-color-1);
+  font-size: 13px;
+  opacity: 0.7;
+
+  strong {
+    color: var(--purple-1);
+  }
+}
+
+// Star Rating
+.star-display {
+  display: inline-flex;
+  gap: 2px;
+  font-size: 16px;
+
+  span {
+    color: rgba(255, 255, 255, 0.15);
+    transition: color 0.2s;
+
+    &.filled {
+      color: #f59e0b;
+    }
+  }
+}
+
+// Level Badges
+.badge-level {
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+
+  &.l1 {
+    background: rgba(156, 163, 175, 0.15);
+    color: #9ca3af;
+  }
+
+  &.l2 {
+    background: rgba(59, 130, 246, 0.15);
+    color: #3b82f6;
+  }
+
+  &.l3 {
+    background: rgba(234, 179, 8, 0.15);
+    color: #eab308;
+  }
+
+  &.l4 {
+    background: rgba(34, 197, 94, 0.15);
+    color: #22c55e;
+  }
+
+  &.l5 {
+    background: rgba(112, 71, 238, 0.15);
+    color: var(--purple-1);
+  }
+}
+.form-actions-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px 0 8px 0;
+  border-top: 1px solid var(--border-color);
+  margin-top: 10px;
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: none;
+    transition: all 0.25s ease;
+
+    svg {
+      flex-shrink: 0;
+    }
+  }
+
+  .btn-cancel-action {
     height: 42px;
     padding: 0 22px;
     border-radius: 22px;
@@ -406,17 +860,17 @@ textarea {
     cursor: pointer;
 
     &:hover {
-        transform: translateY(-2px);
-        filter: brightness(1.05);
+      transform: translateY(-2px);
+      filter: brightness(1.05);
     }
 
     &:active {
-        transform: scale(0.97);
-        box-shadow: none;
+      transform: scale(0.97);
+      box-shadow: none;
     }
-}
+  }
 
-.submit-btn {
+  .btn-submit-action {
     height: 42px;
     padding: 0 22px;
     border-radius: 22px;
@@ -427,149 +881,46 @@ textarea {
     cursor: pointer;
 
     &:hover {
-        transform: translateY(-2px);
-        filter: brightness(1.02);
+      transform: translateY(-2px);
+      filter: brightness(1.02);
     }
 
     &:active {
-        transform: scale(0.97);
-        box-shadow: none;
+      transform: scale(0.97);
+      box-shadow: none;
     }
+  }
+}
+.badge-expired {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
 }
 
-
-/* ========================= */
-/* MODERN CHECKBOX */
-/* ========================= */
-
-.checkbox-container {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    position: relative;
-    cursor: pointer;
-    font-size: 14px;
+.badge-inactive {
+    background: rgba(234, 179, 8, 0.15);
+    color: #eab308;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
     font-weight: 500;
-    color: var(--text-primary);
-    user-select: none;
 }
-
-/* Hide default checkbox */
-.custom-checkbox {
-    position: absolute;
-    opacity: 0;
-    cursor: pointer;
-}
-
-/* Custom box */
-.checkmark {
-    height: 20px;
-    width: 20px;
-    background-color: var(--primary-color);
-    border: 2px solid var(--border-color);
-    border-radius: 6px;
-    transition: all 0.25s ease;
-    display: inline-block;
-    position: relative;
-}
-
-/* Check icon */
-.checkmark:after {
-    content: "";
-    position: absolute;
-    display: none;
-    left: 6px;
-    top: 2px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 2px 2px 0;
-    transform: rotate(45deg);
-}
-
-/* When checked */
-.custom-checkbox:checked+.checkmark {
-    background: var(--purple-1);
-    border-color: var(--purple-1);
-    box-shadow: 0 4px 10px rgba(71, 110, 144, 0.3);
-}
-
-.custom-checkbox:checked+.checkmark:after {
-    display: block;
-    animation: checkAnim 0.2s ease-in-out;
-}
-
-/* Animation */
-@keyframes checkAnim {
-    from {
-        transform: rotate(45deg) scale(0);
-    }
-
-    to {
-        transform: rotate(45deg) scale(1);
-    }
-}
-.mode-toggle {
+// Gray background wrapper
+.user-form-wrapper {
+    padding: 20px;
+    background: var(--primary-color);
+    min-height: 100vh;
     display: flex;
-    grid-column: 1 / -1;
-    border-radius: 10px;
-    overflow: hidden;
-    border: 1px solid var(--border-color);
-
-    button {
-        flex: 1;
-        padding: 11px;
-        border: none;
-        background: var(--primary-color);
-        color: var(--text-primary);
-        font-size: 14px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s ease;
-
-        &.active {
-            background: var(--purple-1);
-            color: white;
-        }
-
-        &:hover:not(.active) {
-            background: var(--border-color);
-        }
-    }
+    flex-direction: column;
+    gap: 20px; // ← cards ke beech gap
 }
-.form-select {
-    width: 100%;
-    height: 42px;
-    padding: 0 16px;
-    font-size: 14px;
-    color: var(--text-primary);
-    background-color: var(--second-primary-color);
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
-    appearance: none;
-    -webkit-appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-    cursor: pointer;
-    transition: border-color 0.2s ease;
 
-    &:focus {
-        outline: none;
-        border-color: var(--purple-1);
-        background: var(--primary-color);
-    }
-
-    &:hover {
-        border-color: var(--purple-1);
-    }
-
-    option {
-        color: var(--text-primary);
-        background: var(--second-primary-color);
-    }
-
-    option[value=""] {
-        color: #98a2b3;
-    }
+// Submit buttons - cards ke bahar
+.form-actions-outer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
 }
