@@ -46,7 +46,10 @@
               'scheduled-badge': interview.status === 'SCHEDULED',
     'in-progress-badge': interview.status === 'IN_PROGRESS',
     'completed-badge': interview.status === 'COMPLETED',
-    'cancelled-badge': interview.status === 'CANCELLED'
+    'pass-badge': interview.status === 'PASS',
+      'fail-badge': interview.status === 'FAIL',
+      'reschedule-badge': interview.status === 'RESCHEDULE',
+    
           }">{{ interview.status }}</span>
         </td>
         <td>

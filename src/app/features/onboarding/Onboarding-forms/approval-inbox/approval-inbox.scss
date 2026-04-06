@@ -41,40 +41,41 @@
 
 // ===== Tab Buttons =====
 .btn-groups-main-div {
-    display: flex;
-    align-items: center;
-    justify-content: start;
-    gap: 0;
-    flex-wrap: wrap;
+     display: flex;
+    align-items: stretch;
     width: 100%;
-    background-color: var(--second-primary-color, #1e293b);
+    background-color: var(--second-primary-color);
     padding: 20px;
     border-radius: 10px;
-    border: 1px solid var(--border-color, rgba(255, 255, 255, 0.1));
+    border: 1px solid var(--border-color);
     margin-bottom: 15px;
+    overflow: hidden; // smooth corners
+
 
     button {
-        background: transparent;
-        outline: none;
+       flex: 1;
+        min-width: 0;
+        height: 74px;
         border: 1px solid #566f9e;
-        height: 60px;
-        width: 170px;
-        color: var(--gray-color-1, #94a3b8);
+        background: transparent;
+        color: var(--gray-color-1);
         cursor: pointer;
         transition: all 0.3s ease;
+
         display: flex;
         flex-direction: column;
-        align-items: center;
         justify-content: center;
-        gap: 2px;
+        align-items: center;
+        
 
         .tab-label {
-            font-size: 0.85rem;
+              font-size: 15px;
             font-weight: 600;
         }
 
         .tab-count {
-            font-size: 0.75rem;
+             margin-top: 6px;
+            font-size: 13px;
             opacity: 0.7;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 20px;
@@ -342,15 +343,16 @@ tbody tr td {
     min-width: 80px;
     text-align: center;
 }
-
 .draft-badge {
-    background-color: rgba(148, 163, 184, 0.15);
-    color: #94a3b8;
+  background: rgba(148, 163, 184, 0.15);
+  color: #cbd5e1;
+  border-color: rgba(148, 163, 184, 0.25);
 }
 
 .open-badge {
-    background-color: rgba(59, 130, 246, 0.15);
-    color: #60a5fa;
+  background: rgba(14, 165, 233, 0.15);
+  color: #7dd3fc;
+  border-color: rgba(14, 165, 233, 0.35);
 }
 
 .approved-badge {
