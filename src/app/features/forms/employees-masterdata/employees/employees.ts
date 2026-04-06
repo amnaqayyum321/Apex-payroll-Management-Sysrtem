@@ -5,6 +5,7 @@ import { LoaderService } from '../../../../core/services/management-services/loa
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { UsersAndRolesService } from '../../../Users-And-Roles/Services/user-roles';
 
 // ─── Interfaces ───────────────────────────────────────────────────────────────
 
@@ -149,6 +150,7 @@ export class Employees implements OnInit {
   WorkScheduleList: any[] = [];
   EmployeeList: any[] = [];
   qualifications: Qualification[] = [];
+  roleList: any;
   skills: Skill[] = [];
   skillsForm = {
     skillName: '',
@@ -273,6 +275,7 @@ export class Employees implements OnInit {
   constructor(
     private loader: LoaderService,
     private formSv: FormsService,
+    private usersv: UsersAndRolesService,
     private toastr: ToastrService,
     private router: Router,
     private route: ActivatedRoute,
@@ -293,6 +296,7 @@ export class Employees implements OnInit {
     this.loadshift();
     this.loadEmployee();
     this.loadWorkSchedule();
+    this.getRole();
   }
   setTab(tab: string) {
     this.activeTab = tab;
@@ -948,5 +952,18 @@ export class Employees implements OnInit {
 
   prevTabPage() {
     if (this.hasPrevPage) this.tabPage--;
+  }
+  getRole() {
+    this.usersv.getRoles(this.currentPage, this.pageSize).subscribe(
+      (res: any) => {
+        if (res.success) {
+          this.roleList = res.data;
+          console.log('role List', res);
+        }
+      },
+      (err: any) => {
+        console.log(err);
+      },
+    );
   }
 }
