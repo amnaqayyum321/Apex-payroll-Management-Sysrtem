@@ -157,6 +157,12 @@ export class SideNavBarComponent implements OnInit {
               icon: 'fa-solid fa-city',
               isVisible: true,
             },
+              {
+              label: 'Shifts',
+              route: 'forms/view-shifts',
+              icon: 'fa-solid fa-clock',
+              isVisible: true,
+            },
             {
               label: 'Pay Period',
               route: 'forms/view-Pay-period-List',
@@ -242,12 +248,7 @@ export class SideNavBarComponent implements OnInit {
               isVisible: true,
             },
 
-            {
-              label: 'Shifts',
-              route: 'forms/view-shifts',
-              icon: 'fa-solid fa-clock',
-              isVisible: true,
-            },
+          
           ],
         },
         {
