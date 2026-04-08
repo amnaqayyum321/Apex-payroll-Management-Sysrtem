@@ -1192,7 +1192,7 @@
             <tr *ngFor="let doc of documents; let i = index" class="exp-row">
               <td>{{ i + 1 }}</td>
               <td>
-                <span class="company-name">{{ doc.idTypePublicId || '—' }}</span>
+               <span class="company-name">{{ doc.idTypeName || '—' }}</span>
               </td>
               <td>{{ doc.documentNumber || '—' }}</td>
               <td>{{ doc.issuedDate ? (doc.issuedDate | date: 'dd MMM yyyy') : '—' }}</td>

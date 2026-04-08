@@ -65,6 +65,8 @@ interface BankAccount {
 interface EmployeeDocument {
   lineNumber: number;
   idTypePublicId: string;
+  // FIX 4: store display name separately so table shows name, not publicId
+  idTypeName: string;
   documentNumber: string;
   issuedDate: string;
   expiryDate: string;
@@ -215,6 +217,7 @@ export class Employees implements OnInit {
   documents: EmployeeDocument[] = [];
   documentForm = {
     idTypePublicId: '',
+    idTypeName: '',   // FIX 4: store name for display
     documentNumber: '',
     issuedDate: '',
     expiryDate: '',
@@ -324,8 +327,6 @@ export class Employees implements OnInit {
   isBelongingStatusOpen = false;
   isExperienceStatusOpen = false;
 
-  // ... aise hi baaki ke liye bhi
-
   // Selected values
   selectedEmploymentStatus: string = '';
   selectLeaveType: string = '';
@@ -355,7 +356,6 @@ export class Employees implements OnInit {
   selectedJobTitle: any = null;
   selectedShift: any = null;
   selectedWorkSchedule: any = null;
-  // ... baaki ke liye bhi
 
   // Options arrays
   employmentStatusOptions = ['ONBOARDING', 'PROBATION', 'ACTIVE', 'NOTICE_PERIOD', 'INACTIVE'];
@@ -398,6 +398,7 @@ export class Employees implements OnInit {
     this.getBelongingType();
     this.getLeaveType();
   }
+
   setTab(tab: string) {
     this.activeTab = tab;
     this.activeTabId = tab;
@@ -417,6 +418,7 @@ export class Employees implements OnInit {
     this.resetQualificationForm();
   }
 
+  // FIX 2: resetQualificationForm clears selected dropdown values too
   resetQualificationForm() {
     this.qualificationForm = {
       qualificationName: '',
@@ -425,9 +427,12 @@ export class Employees implements OnInit {
       grade: '',
       resultStatus: '',
       remarks: '',
-      status: '',
+      status: 'ACTIVE',
     };
+    this.selectedResultStatus = '';
+    this.selectedQualificationStatus = '';
   }
+
   removeQualification(index: number) {
     this.qualifications.splice(index, 1);
     this.reindexArray(this.qualifications);
@@ -446,6 +451,7 @@ export class Employees implements OnInit {
     this.resetSkillForm();
   }
 
+  // FIX 2: resetSkillForm clears selected dropdown values too
   resetSkillForm() {
     this.skillsForm = {
       skillName: '',
@@ -453,8 +459,10 @@ export class Employees implements OnInit {
       yearsOfExperience: null,
       lastUsedYear: null,
       remarks: '',
-      status: '',
+      status: 'ACTIVE',
     };
+    this.selectedProficiency = '';
+    this.selectedSkillStatus = '';
   }
 
   removeSkill(index: number) {
@@ -476,10 +484,13 @@ export class Employees implements OnInit {
     });
     this.resetExpForm();
   }
+
   removeExperience(index: number) {
     this.experiences.splice(index, 1);
     this.reindexArray(this.experiences);
   }
+
+  // FIX 2: resetExpForm clears selected dropdown values too
   resetExpForm() {
     this.expform = {
       lineNumber: '',
@@ -489,9 +500,10 @@ export class Employees implements OnInit {
       endDate: '',
       currentlyWorking: '',
       responsibilities: '',
-      status: '',
+      status: 'ACTIVE',
       remarks: '',
     };
+    this.selectedExperienceStatus = '';
   }
 
   addBankAccount() {
@@ -511,6 +523,7 @@ export class Employees implements OnInit {
     this.resetBankAccountForm();
   }
 
+  // FIX 2: resetBankAccountForm clears selected dropdown values too
   resetBankAccountForm() {
     this.bankAccountForm = {
       bankName: '',
@@ -520,9 +533,10 @@ export class Employees implements OnInit {
       iban: '',
       swiftCode: '',
       isPrimaryAccount: false,
-      status: '',
+      status: 'ACTIVE',
       remarks: '',
     };
+    this.selectedBankStatus = '';
   }
 
   removeBankAccount(index: number) {
@@ -533,10 +547,12 @@ export class Employees implements OnInit {
   setPrimaryAccount(index: number) {
     this.bankAccounts.forEach((acc, i) => (acc.isPrimaryAccount = i === index));
   }
+
   addDocument() {
     this.documents.push({
       lineNumber: this.documents.length + 1,
       idTypePublicId: this.documentForm.idTypePublicId,
+      idTypeName: this.documentForm.idTypeName,  // FIX 4: save name
       documentNumber: this.documentForm.documentNumber,
       issuedDate: this.documentForm.issuedDate,
       expiryDate: this.documentForm.expiryDate,
@@ -547,17 +563,22 @@ export class Employees implements OnInit {
     this.resetDocumentForm();
   }
 
+  // FIX 2: resetDocumentForm clears selected dropdown values too
   resetDocumentForm() {
     this.documentForm = {
       idTypePublicId: '',
+      idTypeName: '',
       documentNumber: '',
       issuedDate: '',
       expiryDate: '',
       fileUrl: '',
-      status: '',
+      status: 'ACTIVE',
       remarks: '',
     };
+    this.selectedDocType = '';
+    this.selectedDocStatus = '';
   }
+
   removeDocument(index: number) {
     this.documents.splice(index, 1);
     this.reindexArray(this.documents);
@@ -578,6 +599,7 @@ export class Employees implements OnInit {
     this.resetBelongingForm();
   }
 
+  // FIX 2: resetBelongingForm clears selected dropdown values too
   resetBelongingForm() {
     this.belongingForm = {
       belongingTypePublicId: '',
@@ -586,15 +608,19 @@ export class Employees implements OnInit {
       issuedDate: '',
       returnDate: '',
       conditionStatus: '',
-      status: '',
+      status: 'ACTIVE',
       remarks: '',
     };
+    this.selectedBelongingType = '';
+    this.selectedConditionStatus = '';
+    this.selectedBelongingStatus = '';
   }
 
   removeBelonging(index: number) {
     this.belongings.splice(index, 1);
     this.reindexArray(this.belongings);
   }
+
   addFamilyMember() {
     this.familyMembers.push({
       lineNumber: this.familyMembers.length + 1,
@@ -616,6 +642,7 @@ export class Employees implements OnInit {
     this.resetFamilyMemberForm();
   }
 
+  // FIX 2: resetFamilyMemberForm clears selected dropdown values too
   resetFamilyMemberForm() {
     this.familyMemberForm = {
       memberName: '',
@@ -627,18 +654,21 @@ export class Employees implements OnInit {
       passportExpiry: '',
       visaIqamaNo: '',
       visaIqamaExpiry: '',
-      status: '',
+      status: 'ACTIVE',
       isDependent: false,
       isBeneficiary: false,
       isEmergencyContact: false,
       remarks: '',
     };
+    this.selectedRelation = '';
+    this.selectedFamilyMemberStatus = '';
   }
 
   removeFamilyMember(index: number) {
     this.familyMembers.splice(index, 1);
     this.reindexArray(this.familyMembers);
   }
+
   addPosition() {
     this.positions.push({
       lineNumber: this.positions.length + 1,
@@ -662,6 +692,7 @@ export class Employees implements OnInit {
     this.resetPositionForm();
   }
 
+  // FIX 2: resetPositionForm clears all selected dropdown values too
   resetPositionForm() {
     this.positionForm = {
       departmentPublicId: '',
@@ -679,8 +710,18 @@ export class Employees implements OnInit {
       effectiveTo: '',
       isPrimaryPosition: false,
       remarks: '',
-      status: '',
+      status: 'ACTIVE',
     };
+    this.selectedDepartment = null;
+    this.selectedDesignation = null;
+    this.selcetedBranch = null;
+    this.selectedReportingManager = null;
+    this.selectedEmployeeGrade = null;
+    this.SlectedEmployeeCategory = null;
+    this.selectedJobTitle = null;
+    this.selectedShift = null;
+    this.selectedWorkSchedule = null;
+    this.selectedPositionStatus = '';
   }
 
   removePosition(index: number) {
@@ -695,6 +736,7 @@ export class Employees implements OnInit {
   private reindexArray(arr: { lineNumber: number }[]) {
     arr.forEach((item, i) => (item.lineNumber = i + 1));
   }
+
   private validateCoreFields(): boolean {
     if (
       !this.code ||
@@ -721,30 +763,6 @@ export class Employees implements OnInit {
     return true;
   }
 
-  // private buildEmployeePayload() {
-  //   return {
-  //     code: this.code,
-  //     userFirstName: this.userFirstName,
-  //     userLastName: this.userLastName,
-  //     email: this.email,
-  //     mobileNumber: this.mobileNumber,
-  //     employmentStatus: this.employmentStatus,
-  //     onboardingStatus: this.onboardingStatus,
-  //     employeeType: this.employeeType,
-  //     dateOfBirth: this.dateOfBirth || null,
-  //     dateOfJoining: this.dateOfJoining || null,
-  //     dateOfLeaving: this.dateOfLeaving || null,
-  //     remarks: this.remarks,
-  //     qualifications: this.qualifications,
-  //     skills: this.skills,
-  //     experiences: this.experiences,
-  //     bankAccounts: this.bankAccounts,
-  //     documents: this.documents,
-  //     belongings: this.belongings,
-  //     familyMembers: this.familyMembers,
-  //     positions: this.positions,
-  //   };
-  // }
   private buildEmployeePayload() {
     return {
       code: this.code,
@@ -767,11 +785,14 @@ export class Employees implements OnInit {
       })),
       bankAccounts: this.bankAccounts,
       documents: this.documents.map((doc) => ({
-        ...doc,
-        idTypePublicId:
-          typeof doc.idTypePublicId === 'object'
-            ? ((doc.idTypePublicId as any)?.publicId ?? null)
-            : doc.idTypePublicId,
+        lineNumber: doc.lineNumber,
+        idTypePublicId: doc.idTypePublicId,
+        documentNumber: doc.documentNumber,
+        issuedDate: doc.issuedDate,
+        expiryDate: doc.expiryDate,
+        fileUrl: doc.fileUrl,
+        status: doc.status,
+        remarks: doc.remarks,
       })),
       belongings: this.belongings,
       familyMembers: this.familyMembers,
@@ -823,7 +844,8 @@ export class Employees implements OnInit {
       next: () => {
         this.loader.hide();
         this.toastr.success('Employee created successfully', 'Success');
-        this.resetForm();
+        // FIX 5: full form reset on successful submit
+        this.resetFullForm();
         setTimeout(() => this.router.navigate(['/panel/forms/view-all-employees']), 1500);
       },
       error: (error: any) => {
@@ -834,6 +856,7 @@ export class Employees implements OnInit {
     });
   }
 
+  // FIX 1: After loading single employee for edit, sync all dropdown selected values
   loadSingleEmployee(publicId: string) {
     this.loader.show();
     this.formSv.GetEmployeesListById(publicId).subscribe({
@@ -847,13 +870,10 @@ export class Employees implements OnInit {
         this.code = d.code ?? '';
         this.email = d.email ?? '';
         this.mobileNumber = d.mobileNumber ?? '';
-        this.employmentStatus = d.employmentStatus ?? '';
-        this.onboardingStatus = d.onboardingStatus ?? '';
-        this.employeeType = d.employeeType ?? '';
+        this.remarks = d.remarks ?? '';
         this.dateOfBirth = d.dateOfBirth ?? '';
         this.dateOfJoining = d.dateOfJoining ?? '';
         this.dateOfLeaving = d.dateOfLeaving ?? '';
-        this.remarks = d.remarks ?? '';
         this.qualifications = d.qualifications ?? [];
         this.skills = d.skills ?? [];
         this.experiences = d.experiences ?? [];
@@ -863,6 +883,16 @@ export class Employees implements OnInit {
         this.familyMembers = d.familyMembers ?? [];
         this.positions = d.positions ?? [];
         this.Leaves = d.leaveEntitlements ?? [];
+
+        // FIX 1: sync dropdown selected values for main card fields
+        this.employmentStatus = d.employmentStatus ?? '';
+        this.selectedEmploymentStatus = d.employmentStatus ?? '';
+
+        this.onboardingStatus = d.onboardingStatus ?? '';
+        this.selectedOnboardingStatus = d.onboardingStatus ?? '';
+
+        this.employeeType = d.employeeType ?? '';
+        this.selectedEmployeeType = d.employeeType ?? '';
       },
       error: () => {
         this.loader.hide();
@@ -895,7 +925,9 @@ export class Employees implements OnInit {
     });
   }
 
-  resetForm() {
+  // FIX 5: single method that resets absolutely everything
+  resetFullForm() {
+    // Core fields
     this.code = '';
     this.userFirstName = '';
     this.userLastName = '';
@@ -909,6 +941,12 @@ export class Employees implements OnInit {
     this.dateOfLeaving = '';
     this.remarks = '';
 
+    // Main card dropdowns
+    this.selectedEmploymentStatus = '';
+    this.selectedOnboardingStatus = '';
+    this.selectedEmployeeType = '';
+
+    // Arrays
     this.qualifications = [];
     this.skills = [];
     this.experiences = [];
@@ -918,6 +956,8 @@ export class Employees implements OnInit {
     this.familyMembers = [];
     this.positions = [];
     this.Leaves = [];
+
+    // User account fields
     this.userPublicId = '';
     this.userEmail = '';
     this.userPassword = '';
@@ -926,132 +966,132 @@ export class Employees implements OnInit {
     this.userLastNameNew = '';
     this.userPhoneNumber = '';
     this.disabled = false;
+
+    // Sub-form resets (each also clears their dropdown selected values)
+    this.resetExpForm();
+    this.resetSkillForm();
+    this.resetQualificationForm();
+    this.resetBankAccountForm();
+    this.resetDocumentForm();
+    this.resetBelongingForm();
+    this.resetFamilyMemberForm();
+    this.resetPositionForm();
+    this.resetLeaveForm();
+  }
+
+  // Keep old resetForm() pointing to resetFullForm() for backward compatibility
+  resetForm() {
+    this.resetFullForm();
   }
 
   cancel() {
     this.router.navigate(['/panel/forms/view-all-employees']);
   }
+
   isNotExpired(dateStr: string): boolean {
     if (!dateStr) return true;
     return new Date(dateStr) >= new Date();
   }
+
   loadDepartment() {
     this.formSv.GetDepartment(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.departmentList = res.data;
-          console.log('deaprtment Lsit', res);
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => { console.log(err); },
     );
   }
+
   loadDesignation() {
     this.formSv.getAllDesignations(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.designationList = res.data;
-          console.log('designation Lsit', res);
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => { console.log(err); },
     );
   }
+
   loadCompanyBranch() {
     this.formSv.getAllComapnyBranches(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.companyBranchList = res.data;
-          console.log('companyBranch Lsit', res);
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => { console.log(err); },
     );
   }
+
   loadEmployeeGrade() {
     this.formSv.GetEmployeeGrade(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.EmployeeGradeList = res.data;
-          console.log('EmployeeGrade Lsit', res);
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => { console.log(err); },
     );
   }
+
   loadEmployeeCategory() {
     this.formSv.GetEmployeeCaterogy(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.EmployeeCategoryList = res.data;
-          console.log('EmployeeCategory Lsit', res);
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => { console.log(err); },
     );
   }
+
   loadJobTitle() {
     this.formSv.GetJobTitle(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.JobTitleList = res.data;
-          console.log('JobTitle Lsit', res);
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => { console.log(err); },
     );
   }
+
   loadshift() {
     this.formSv.getAllShifts(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.shiftList = res.data;
-          console.log('shift Lsit', res);
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => { console.log(err); },
     );
   }
+
   loadWorkSchedule() {
     this.formSv.getAllWorkSchedules(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.WorkScheduleList = res.data;
-          console.log('WorkSchedule Lsit', res);
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => { console.log(err); },
     );
   }
+
   loadEmployee() {
     this.formSv.GetEmployees(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.EmployeeList = res.data;
-          console.log('employee Lsit', res);
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => { console.log(err); },
     );
   }
+
   tabPage: number = 0;
   tabsPerPage: number = 7;
 
@@ -1075,17 +1115,15 @@ export class Employees implements OnInit {
   prevTabPage() {
     if (this.hasPrevPage) this.tabPage--;
   }
+
   getRole() {
     this.usersv.getRoles(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.roleList = res.data;
-          console.log('role List', res);
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => { console.log(err); },
     );
   }
 
@@ -1137,6 +1175,7 @@ export class Employees implements OnInit {
       case 'positionStatus':
         this.isPositionStatusOpen = !this.isPositionStatusOpen;
         break;
+      // FIX 3: belongingStatus was closing isBelongingTypeOpen instead of isBelongingStatusOpen
       case 'belongingStatus':
         this.isBelongingStatusOpen = !this.isBelongingStatusOpen;
         break;
@@ -1173,7 +1212,6 @@ export class Employees implements OnInit {
       case 'LeaveType':
         this.isLeaveTypeOpen = !this.isLeaveTypeOpen;
         break;
-
       default:
         break;
     }
@@ -1222,18 +1260,21 @@ export class Employees implements OnInit {
     this.isExperienceStatusOpen = false;
   }
 
+  // FIX 3 (also): selectFamilyMemberStatus was setting belongingForm.status — corrected
   selectFamilyMemberStatus(status: string, event: Event) {
     event.stopPropagation();
     this.selectedFamilyMemberStatus = status;
-    this.belongingForm.status = status;
+    this.familyMemberForm.status = status;
     this.isFamilyMemberStatusOpen = false;
   }
+
   selectPositionStatus(status: string, event: Event) {
     event.stopPropagation();
     this.selectedPositionStatus = status;
     this.positionForm.status = status;
     this.isPositionStatusOpen = false;
   }
+
   selectResultStatus(result: string, event: Event) {
     event.stopPropagation();
     this.selectedResultStatus = result;
@@ -1241,11 +1282,12 @@ export class Employees implements OnInit {
     this.isResultStatusOpen = false;
   }
 
+  // FIX 3: selectBelongingStatus now correctly closes isBelongingStatusOpen
   selectBelongingStatus(status: string, event: Event) {
     event.stopPropagation();
     this.selectedBelongingStatus = status;
     this.belongingForm.status = status;
-    this.isBelongingTypeOpen = false;
+    this.isBelongingStatusOpen = false;
   }
 
   selectQualificationStatus(status: string, event: Event) {
@@ -1262,10 +1304,12 @@ export class Employees implements OnInit {
     this.isBankStatusOpen = false;
   }
 
+  // FIX 4: selectDocType now also stores type.name in documentForm.idTypeName
   selectDocType(type: any, event: Event) {
     event.stopPropagation();
     this.selectedDocType = type.name;
     this.documentForm.idTypePublicId = type.publicId;
+    this.documentForm.idTypeName = type.name;
     this.isDocTypeOpen = false;
   }
 
@@ -1278,11 +1322,9 @@ export class Employees implements OnInit {
 
   selectBelongingType(belonging: any, event: Event) {
     event.stopPropagation();
-
     this.selectedBelongingType = belonging.name;
     this.belongingForm.belongingTypePublicId = belonging.publicId;
     this.belongingForm.belongingname = belonging.name;
-
     this.isBelongingTypeOpen = false;
   }
 
@@ -1309,7 +1351,7 @@ export class Employees implements OnInit {
 
   selectDesignation(designation: any, event: Event) {
     event.stopPropagation();
-    this.selectedDesignation = designation; // ✅ variable use karo
+    this.selectedDesignation = designation;
     this.positionForm.designationPublicId = designation.publicId;
     this.isDesignatiomOpen = false;
   }
@@ -1334,6 +1376,7 @@ export class Employees implements OnInit {
     this.positionForm.employeeGradePublicId = employeeGrade.publicId;
     this.isEmployeeGradeOpen = false;
   }
+
   selectedLeaveType(leaveType: any, event: Event) {
     event.stopPropagation();
     this.selectLeaveType = leaveType.name;
@@ -1362,6 +1405,7 @@ export class Employees implements OnInit {
     this.positionForm.shiftPublicId = shift.publicId;
     this.isShiftOpen = false;
   }
+
   selectWorkSchedule(workSchedule: any, event: Event) {
     event.stopPropagation();
     this.selectedWorkSchedule = workSchedule;
@@ -1369,7 +1413,6 @@ export class Employees implements OnInit {
     this.isWorkScheduleOpen = false;
   }
 
-  // @HostListener for closing dropdowns on outside click
   @HostListener('document:click', ['$event'])
   closeAllDropdowns(event: Event) {
     this.isEmploymentStatusOpen = false;
@@ -1381,13 +1424,11 @@ export class Employees implements OnInit {
     this.isBelongingTypeOpen = false;
     this.isFamilyMemberStatusOpen = false;
     this.isExperienceStatusOpen = false;
-
     this.isResultStatusOpen = false;
     this.isQualificationStatusOpen = false;
     this.isBankStatusOpen = false;
     this.isDocTypeOpen = false;
     this.isDocStatusOpen = false;
-    this.isBelongingTypeOpen = false;
     this.isConditionStatusOpen = false;
     this.isRelationOpen = false;
     this.isDepartmentOpen = false;
@@ -1400,46 +1441,43 @@ export class Employees implements OnInit {
     this.isJobTitleOpen = false;
     this.isShiftOpen = false;
     this.isWorkScheduleOpen = false;
+    // FIX 3: isBelongingStatusOpen was missing from closeAllDropdowns
+    this.isBelongingStatusOpen = false;
   }
+
   GetIdType() {
     this.formSv.GetIDType(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.IdTypeList = res.data;
-          console.log('Id Type List', res);
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => { console.log(err); },
     );
   }
+
   getBelongingType() {
     this.formSv.GetBelongingTypes(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.belongingList = res.data;
-          console.log('belonging Type', res);
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => { console.log(err); },
     );
   }
+
   getLeaveType() {
     this.formSv.GetLeaveType(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.LeaveTypeList = res.data;
-          console.log('Leave Type List', res);
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => { console.log(err); },
     );
   }
+
   addLeaveForm() {
     this.Leaves.push({
       leaveTypeName: this.leaveForm.leaveTypeName,
@@ -1450,13 +1488,17 @@ export class Employees implements OnInit {
     });
     this.resetLeaveForm();
   }
+
+  // FIX 2: resetLeaveForm also clears the leave type dropdown display value
   resetLeaveForm() {
     this.leaveForm.leaveTypeName = '';
     this.leaveForm.leaveTypePublicId = '';
     this.leaveForm.totalLeavesPerYear = '';
     this.leaveForm.remarks = '';
     this.leaveForm.active = false;
+    this.selectLeaveType = '';
   }
+
   removeLeaveForm(index: number) {
     this.Leaves.splice(index, 1);
   }
