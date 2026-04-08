@@ -42,6 +42,13 @@ interface Experience {
   remarks: string;
 }
 
+interface Leave {
+  leaveTypeName: string;
+  leaveTypePublicId: string;
+  totalLeavesPerYear: string;
+  remarks: string;
+  active: boolean;
+}
 interface BankAccount {
   lineNumber: number;
   bankName: string;
@@ -68,6 +75,7 @@ interface EmployeeDocument {
 
 interface Belonging {
   lineNumber: number;
+  belongingname: string;
   belongingTypePublicId: string;
   serialNumber: string;
   issuedDate: string;
@@ -146,6 +154,8 @@ export class Employees implements OnInit {
   EmployeeGradeList: any;
   EmployeeCategoryList: any;
   JobTitleList: any;
+  IdTypeList: any;
+  belongingList: any;
   shiftList: any;
   WorkScheduleList: any[] = [];
   EmployeeList: any[] = [];
@@ -172,6 +182,15 @@ export class Employees implements OnInit {
     status: 'ACTIVE',
     remarks: '',
   };
+  Leaves: Leave[] = [];
+  leaveForm = {
+    leaveTypeName: '',
+    leaveTypePublicId: '',
+    totalLeavesPerYear: '',
+    remarks: '',
+    active: false,
+  };
+
   qualificationForm = {
     qualificationName: '',
     institutionName: '',
@@ -205,6 +224,7 @@ export class Employees implements OnInit {
   };
   belongings: Belonging[] = [];
   belongingForm = {
+    belongingname: '',
     belongingTypePublicId: '',
     serialNumber: '',
     issuedDate: '',
@@ -262,6 +282,7 @@ export class Employees implements OnInit {
   publicId: string | null = null;
   isEditMode: boolean = false;
   disabled: boolean = false;
+  LeaveTypeList: any;
   sidebarTabs: Tab[] = [
     { id: 'experience', title: 'Experience' },
     { id: 'skills', title: 'Skills' },
@@ -271,12 +292,12 @@ export class Employees implements OnInit {
     { id: 'belongings', title: 'Belongings' },
     { id: 'familyMembers', title: 'FamilyMembers' },
     { id: 'positions', title: 'Positions' },
+    { id: 'leaves', title: 'Leaves' },
   ];
-
-
 
   // Dropdown toggle states
   isEmploymentStatusOpen = false;
+  isLeaveTypeOpen = false;
   isOnboardingStatusOpen = false;
   isEmployeeTypeOpen = false;
   isProficiencyOpen = false;
@@ -290,23 +311,24 @@ export class Employees implements OnInit {
   isConditionStatusOpen = false;
   isRelationOpen = false;
   isDepartmentOpen = false;
-  isDesignatiomOpen=false;
-  isBranchOpen=false;
-  isReportingManagerOpen= false;
-  isEmployeeCategoryOpen= false;
-  isEmployeeGradeOpen= false;
-  isJobTitleOpen= false;
-  isShiftOpen= false;
-  isWorkScheduleOpen= false;
+  isDesignatiomOpen = false;
+  isBranchOpen = false;
+  isReportingManagerOpen = false;
+  isEmployeeCategoryOpen = false;
+  isEmployeeGradeOpen = false;
+  isJobTitleOpen = false;
+  isShiftOpen = false;
+  isWorkScheduleOpen = false;
   isFamilyMemberStatusOpen = false;
   isPositionStatusOpen = false;
-  isBelongingStatusOpen= false;
-  isExperienceStatusOpen= false;
+  isBelongingStatusOpen = false;
+  isExperienceStatusOpen = false;
 
   // ... aise hi baaki ke liye bhi
 
   // Selected values
   selectedEmploymentStatus: string = '';
+  selectLeaveType: string = '';
   selectedOnboardingStatus: string = '';
   selectedEmployeeType: string = '';
   selectedProficiency: string = '';
@@ -319,16 +341,16 @@ export class Employees implements OnInit {
   selectedBelongingType: string = '';
   selectedConditionStatus: string = '';
   selectedRelation: string = '';
-  
+
   selectedFamilyMemberStatus: string = '';
   selectedPositionStatus: string = '';
-  selectedBelongingStatus: string= '';
-  selectedExperienceStatus: string ='';
+  selectedBelongingStatus: string = '';
+  selectedExperienceStatus: string = '';
   selectedDepartment: any = null;
   selectedDesignation: any = null;
   selcetedBranch: any = null;
   selectedReportingManager: any = null;
-SlectedEmployeeCategory: any = null; 
+  SlectedEmployeeCategory: any = null;
   selectedEmployeeGrade: any = null;
   selectedJobTitle: any = null;
   selectedShift: any = null;
@@ -354,7 +376,7 @@ SlectedEmployeeCategory: any = null;
     private toastr: ToastrService,
     private router: Router,
     private route: ActivatedRoute,
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.publicId = this.route.snapshot.paramMap.get('id');
@@ -372,6 +394,9 @@ SlectedEmployeeCategory: any = null;
     this.loadEmployee();
     this.loadWorkSchedule();
     this.getRole();
+    this.GetIdType();
+    this.getBelongingType();
+    this.getLeaveType();
   }
   setTab(tab: string) {
     this.activeTab = tab;
@@ -542,6 +567,7 @@ SlectedEmployeeCategory: any = null;
     this.belongings.push({
       lineNumber: this.belongings.length + 1,
       belongingTypePublicId: this.belongingForm.belongingTypePublicId,
+      belongingname: this.belongingForm.belongingname,
       serialNumber: this.belongingForm.serialNumber,
       issuedDate: this.belongingForm.issuedDate,
       returnDate: this.belongingForm.returnDate,
@@ -555,6 +581,7 @@ SlectedEmployeeCategory: any = null;
   resetBelongingForm() {
     this.belongingForm = {
       belongingTypePublicId: '',
+      belongingname: '',
       serialNumber: '',
       issuedDate: '',
       returnDate: '',
@@ -739,10 +766,28 @@ SlectedEmployeeCategory: any = null;
         endDate: exp.endDate || null,
       })),
       bankAccounts: this.bankAccounts,
-      documents: this.documents,
+      documents: this.documents.map((doc) => ({
+        ...doc,
+        idTypePublicId:
+          typeof doc.idTypePublicId === 'object'
+            ? ((doc.idTypePublicId as any)?.publicId ?? null)
+            : doc.idTypePublicId,
+      })),
       belongings: this.belongings,
       familyMembers: this.familyMembers,
-      positions: this.positions,
+      positions: this.positions.map((pos) => ({
+        ...pos,
+        isPrimaryPosition: (pos as any).primaryPosition ?? pos.isPrimaryPosition,
+      })),
+      leaveEntitlements: this.Leaves.map((leave) => ({
+        leaveTypePublicId:
+          typeof leave.leaveTypePublicId === 'object'
+            ? ((leave.leaveTypePublicId as any)?.publicId ?? null)
+            : leave.leaveTypePublicId,
+        totalLeavesPerYear: Number(leave.totalLeavesPerYear),
+        remarks: leave.remarks,
+        active: leave.active,
+      })),
     };
   }
 
@@ -793,6 +838,7 @@ SlectedEmployeeCategory: any = null;
     this.loader.show();
     this.formSv.GetEmployeesListById(publicId).subscribe({
       next: (res: any) => {
+        console.log('FULL API RESPONSE:', JSON.stringify(res, null, 2));
         this.loader.hide();
         const d = res.data?.employee ?? res.data ?? {};
         const nameParts = (d.fullName ?? '').trim().split(' ');
@@ -816,6 +862,7 @@ SlectedEmployeeCategory: any = null;
         this.belongings = d.belongings ?? [];
         this.familyMembers = d.familyMembers ?? [];
         this.positions = d.positions ?? [];
+        this.Leaves = d.leaveEntitlements ?? [];
       },
       error: () => {
         this.loader.hide();
@@ -870,7 +917,7 @@ SlectedEmployeeCategory: any = null;
     this.belongings = [];
     this.familyMembers = [];
     this.positions = [];
-
+    this.Leaves = [];
     this.userPublicId = '';
     this.userEmail = '';
     this.userPassword = '';
@@ -1042,44 +1089,95 @@ SlectedEmployeeCategory: any = null;
     );
   }
 
-
   toggleDropdown(event: Event, dropdownName: string) {
     event.stopPropagation();
     switch (dropdownName) {
-      case 'employmentStatus': this.isEmploymentStatusOpen = !this.isEmploymentStatusOpen; break;
-      case 'onboardingStatus': this.isOnboardingStatusOpen = !this.isOnboardingStatusOpen; break;
-      case 'employeeType': this.isEmployeeTypeOpen = !this.isEmployeeTypeOpen; break;
-      case 'proficiency': this.isProficiencyOpen = !this.isProficiencyOpen; break;
-      case 'skillStatus': this.isSkillStatusOpen = !this.isSkillStatusOpen; break;
-      case 'resultStatus': this.isResultStatusOpen = !this.isResultStatusOpen; break;
-      case 'qualificationStatus': this.isQualificationStatusOpen = !this.isQualificationStatusOpen; break;
-      case 'bankStatus': this.isBankStatusOpen = !this.isBankStatusOpen; break;
-      case 'docType': this.isDocTypeOpen = !this.isDocTypeOpen; break;
-      case 'docStatus': this.isDocStatusOpen = !this.isDocStatusOpen; break;
-      case 'belongingType': this.isBelongingTypeOpen = !this.isBelongingTypeOpen; break;
-      case 'conditionStatus': this.isConditionStatusOpen = !this.isConditionStatusOpen; break;
-      case 'relation': this.isRelationOpen = !this.isRelationOpen; break;
-      case 'familyMemberStatus': this.isFamilyMemberStatusOpen = !this.isFamilyMemberStatusOpen; break;
-      case 'positionStatus': this.isPositionStatusOpen = !this.isPositionStatusOpen; break;
-      case 'BelongingStatus': this.isBelongingStatusOpen = !this.isBelongingStatusOpen; break;
-case 'experienceStatus': this.isExperienceStatusOpen = !this.isExperienceStatusOpen; break;
-            case 'department': this.isDepartmentOpen = !this.isDepartmentOpen; break;
-      case 'designation': this.isDesignatiomOpen = !this.isDesignatiomOpen; break;
-      case 'reportingManager': this.isReportingManagerOpen = !this.isReportingManagerOpen; break;
-      case 'branch': this.isBranchOpen = !this.isBranchOpen; break;
-      case 'employeeCategory': this.isEmployeeCategoryOpen = !this.isEmployeeCategoryOpen; break;
-      case 'employeeGrade': this.isEmployeeGradeOpen = !this.isEmployeeGradeOpen; break;
-      case 'jobTitle': this.isJobTitleOpen = !this.isJobTitleOpen; break;
-            case 'shift': this.isShiftOpen = !this.isShiftOpen; break;
-      case 'workSchedule': this.isWorkScheduleOpen = !this.isWorkScheduleOpen; break;
+      case 'employmentStatus':
+        this.isEmploymentStatusOpen = !this.isEmploymentStatusOpen;
+        break;
+      case 'onboardingStatus':
+        this.isOnboardingStatusOpen = !this.isOnboardingStatusOpen;
+        break;
+      case 'employeeType':
+        this.isEmployeeTypeOpen = !this.isEmployeeTypeOpen;
+        break;
+      case 'proficiency':
+        this.isProficiencyOpen = !this.isProficiencyOpen;
+        break;
+      case 'skillStatus':
+        this.isSkillStatusOpen = !this.isSkillStatusOpen;
+        break;
+      case 'resultStatus':
+        this.isResultStatusOpen = !this.isResultStatusOpen;
+        break;
+      case 'qualificationStatus':
+        this.isQualificationStatusOpen = !this.isQualificationStatusOpen;
+        break;
+      case 'bankStatus':
+        this.isBankStatusOpen = !this.isBankStatusOpen;
+        break;
+      case 'docType':
+        this.isDocTypeOpen = !this.isDocTypeOpen;
+        break;
+      case 'docStatus':
+        this.isDocStatusOpen = !this.isDocStatusOpen;
+        break;
+      case 'belongingType':
+        this.isBelongingTypeOpen = !this.isBelongingTypeOpen;
+        break;
+      case 'conditionStatus':
+        this.isConditionStatusOpen = !this.isConditionStatusOpen;
+        break;
+      case 'relation':
+        this.isRelationOpen = !this.isRelationOpen;
+        break;
+      case 'familyMemberStatus':
+        this.isFamilyMemberStatusOpen = !this.isFamilyMemberStatusOpen;
+        break;
+      case 'positionStatus':
+        this.isPositionStatusOpen = !this.isPositionStatusOpen;
+        break;
+      case 'belongingStatus':
+        this.isBelongingStatusOpen = !this.isBelongingStatusOpen;
+        break;
+      case 'experienceStatus':
+        this.isExperienceStatusOpen = !this.isExperienceStatusOpen;
+        break;
+      case 'department':
+        this.isDepartmentOpen = !this.isDepartmentOpen;
+        break;
+      case 'designation':
+        this.isDesignatiomOpen = !this.isDesignatiomOpen;
+        break;
+      case 'reportingManager':
+        this.isReportingManagerOpen = !this.isReportingManagerOpen;
+        break;
+      case 'branch':
+        this.isBranchOpen = !this.isBranchOpen;
+        break;
+      case 'employeeCategory':
+        this.isEmployeeCategoryOpen = !this.isEmployeeCategoryOpen;
+        break;
+      case 'employeeGrade':
+        this.isEmployeeGradeOpen = !this.isEmployeeGradeOpen;
+        break;
+      case 'jobTitle':
+        this.isJobTitleOpen = !this.isJobTitleOpen;
+        break;
+      case 'shift':
+        this.isShiftOpen = !this.isShiftOpen;
+        break;
+      case 'workSchedule':
+        this.isWorkScheduleOpen = !this.isWorkScheduleOpen;
+        break;
+      case 'LeaveType':
+        this.isLeaveTypeOpen = !this.isLeaveTypeOpen;
+        break;
 
-
-
-
-      default: break;
+      default:
+        break;
     }
   }
-
 
   // Select methods
   selectEmploymentStatus(status: string, event: Event) {
@@ -1117,15 +1215,12 @@ case 'experienceStatus': this.isExperienceStatusOpen = !this.isExperienceStatusO
     this.isSkillStatusOpen = false;
   }
 
-
-
-
-selectExperienceStatus(status: string, event: Event) {
-  event.stopPropagation();
-  this.selectedExperienceStatus = status;
-  this.expform.status = status;
-  this.isExperienceStatusOpen = false;
-}
+  selectExperienceStatus(status: string, event: Event) {
+    event.stopPropagation();
+    this.selectedExperienceStatus = status;
+    this.expform.status = status;
+    this.isExperienceStatusOpen = false;
+  }
 
   selectFamilyMemberStatus(status: string, event: Event) {
     event.stopPropagation();
@@ -1146,7 +1241,7 @@ selectExperienceStatus(status: string, event: Event) {
     this.isResultStatusOpen = false;
   }
 
-    selectBelongingStatus(status: string, event: Event) {
+  selectBelongingStatus(status: string, event: Event) {
     event.stopPropagation();
     this.selectedBelongingStatus = status;
     this.belongingForm.status = status;
@@ -1167,10 +1262,10 @@ selectExperienceStatus(status: string, event: Event) {
     this.isBankStatusOpen = false;
   }
 
-  selectDocType(type: string, event: Event) {
+  selectDocType(type: any, event: Event) {
     event.stopPropagation();
-    this.selectedDocType = type;
-    this.documentForm.idTypePublicId = type;
+    this.selectedDocType = type.name;
+    this.documentForm.idTypePublicId = type.publicId;
     this.isDocTypeOpen = false;
   }
 
@@ -1181,10 +1276,13 @@ selectExperienceStatus(status: string, event: Event) {
     this.isDocStatusOpen = false;
   }
 
-  selectBelongingType(type: string, event: Event) {
+  selectBelongingType(belonging: any, event: Event) {
     event.stopPropagation();
-    this.selectedBelongingType = type;
-    this.belongingForm.belongingTypePublicId = type;
+
+    this.selectedBelongingType = belonging.name;
+    this.belongingForm.belongingTypePublicId = belonging.publicId;
+    this.belongingForm.belongingname = belonging.name;
+
     this.isBelongingTypeOpen = false;
   }
 
@@ -1209,51 +1307,56 @@ selectExperienceStatus(status: string, event: Event) {
     this.isDepartmentOpen = false;
   }
 
+  selectDesignation(designation: any, event: Event) {
+    event.stopPropagation();
+    this.selectedDesignation = designation; // ✅ variable use karo
+    this.positionForm.designationPublicId = designation.publicId;
+    this.isDesignatiomOpen = false;
+  }
 
-selectDesignation(designation: any, event: Event) {
-  event.stopPropagation();
-  this.selectedDesignation = designation;  // ✅ variable use karo
-  this.positionForm.designationPublicId = designation.publicId;
-  this.isDesignatiomOpen = false;
-}
+  selectReportingManager(manager: any, event: Event) {
+    event.stopPropagation();
+    this.selectedReportingManager = manager;
+    this.positionForm.reportingManagerPublicId = manager.employeePublicId;
+    this.isReportingManagerOpen = false;
+  }
 
-selectReportingManager(manager: any, event: Event) {
-  event.stopPropagation();
-  this.selectedReportingManager = manager;
-  this.positionForm.reportingManagerPublicId = manager.employeePublicId;
-  this.isReportingManagerOpen = false;
-}
-
-    selectBranch(branch: any, event: Event) {
+  selectBranch(branch: any, event: Event) {
     event.stopPropagation();
     this.selcetedBranch = branch;
     this.positionForm.branchPublicId = branch.publicId;
     this.isBranchOpen = false;
   }
 
-
-    selectEmployeeGrade(employeeGrade: any, event: Event) {
+  selectEmployeeGrade(employeeGrade: any, event: Event) {
     event.stopPropagation();
     this.selectedEmployeeGrade = employeeGrade;
     this.positionForm.employeeGradePublicId = employeeGrade.publicId;
     this.isEmployeeGradeOpen = false;
   }
+  selectedLeaveType(leaveType: any, event: Event) {
+    event.stopPropagation();
+    this.selectLeaveType = leaveType.name;
+    this.leaveForm.leaveTypeName = leaveType.name;
+    this.leaveForm.leaveTypePublicId = leaveType.publicId;
+    this.isLeaveTypeOpen = false;
+  }
 
-    selectemployeeCatergory(employeeCategory: any, event: Event) {
+  selectemployeeCatergory(employeeCategory: any, event: Event) {
     event.stopPropagation();
     this.SlectedEmployeeCategory = employeeCategory;
     this.positionForm.employeeCategoryPublicId = employeeCategory.publicId;
     this.isEmployeeCategoryOpen = false;
   }
 
-    selectJobTitle(jobTitle: any, event: Event) {
+  selectJobTitle(jobTitle: any, event: Event) {
     event.stopPropagation();
     this.selectedJobTitle = jobTitle;
     this.positionForm.jobTitlePublicId = jobTitle.publicId;
     this.isJobTitleOpen = false;
   }
 
-    selectShift(shift: any, event: Event) {
+  selectShift(shift: any, event: Event) {
     event.stopPropagation();
     this.selectedShift = shift;
     this.positionForm.shiftPublicId = shift.publicId;
@@ -1266,12 +1369,6 @@ selectReportingManager(manager: any, event: Event) {
     this.isWorkScheduleOpen = false;
   }
 
-
-
-
-
-
-
   // @HostListener for closing dropdowns on outside click
   @HostListener('document:click', ['$event'])
   closeAllDropdowns(event: Event) {
@@ -1281,10 +1378,9 @@ selectReportingManager(manager: any, event: Event) {
     this.isProficiencyOpen = false;
     this.isSkillStatusOpen = false;
     this.isPositionStatusOpen = false;
-this.isBelongingTypeOpen= false;
+    this.isBelongingTypeOpen = false;
     this.isFamilyMemberStatusOpen = false;
-    this.isExperienceStatusOpen=false;
-
+    this.isExperienceStatusOpen = false;
 
     this.isResultStatusOpen = false;
     this.isQualificationStatusOpen = false;
@@ -1295,14 +1391,73 @@ this.isBelongingTypeOpen= false;
     this.isConditionStatusOpen = false;
     this.isRelationOpen = false;
     this.isDepartmentOpen = false;
-     this.isDesignatiomOpen = false;
-      this.isBranchOpen = false;
-       this.isReportingManagerOpen = false;
-        this.isEmployeeCategoryOpen = false;
-         this.isEmployeeGradeOpen = false;
-          this.isJobTitleOpen = false;
-           this.isShiftOpen = false;
-            this.isWorkScheduleOpen = false;
+    this.isDesignatiomOpen = false;
+    this.isBranchOpen = false;
+    this.isLeaveTypeOpen = false;
+    this.isReportingManagerOpen = false;
+    this.isEmployeeCategoryOpen = false;
+    this.isEmployeeGradeOpen = false;
+    this.isJobTitleOpen = false;
+    this.isShiftOpen = false;
+    this.isWorkScheduleOpen = false;
   }
-
+  GetIdType() {
+    this.formSv.GetIDType(this.currentPage, this.pageSize).subscribe(
+      (res: any) => {
+        if (res.success) {
+          this.IdTypeList = res.data;
+          console.log('Id Type List', res);
+        }
+      },
+      (err: any) => {
+        console.log(err);
+      },
+    );
+  }
+  getBelongingType() {
+    this.formSv.GetBelongingTypes(this.currentPage, this.pageSize).subscribe(
+      (res: any) => {
+        if (res.success) {
+          this.belongingList = res.data;
+          console.log('belonging Type', res);
+        }
+      },
+      (err: any) => {
+        console.log(err);
+      },
+    );
+  }
+  getLeaveType() {
+    this.formSv.GetLeaveType(this.currentPage, this.pageSize).subscribe(
+      (res: any) => {
+        if (res.success) {
+          this.LeaveTypeList = res.data;
+          console.log('Leave Type List', res);
+        }
+      },
+      (err: any) => {
+        console.log(err);
+      },
+    );
+  }
+  addLeaveForm() {
+    this.Leaves.push({
+      leaveTypeName: this.leaveForm.leaveTypeName,
+      leaveTypePublicId: this.leaveForm.leaveTypePublicId,
+      totalLeavesPerYear: this.leaveForm.totalLeavesPerYear,
+      remarks: this.leaveForm.remarks,
+      active: this.leaveForm.active,
+    });
+    this.resetLeaveForm();
+  }
+  resetLeaveForm() {
+    this.leaveForm.leaveTypeName = '';
+    this.leaveForm.leaveTypePublicId = '';
+    this.leaveForm.totalLeavesPerYear = '';
+    this.leaveForm.remarks = '';
+    this.leaveForm.active = false;
+  }
+  removeLeaveForm(index: number) {
+    this.Leaves.splice(index, 1);
+  }
 }

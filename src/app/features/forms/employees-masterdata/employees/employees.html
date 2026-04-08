@@ -12,34 +12,63 @@
       <!-- Code -->
       <div class="form-group">
         <label class="required">Code</label>
-        <input type="text" [(ngModel)]="code" class="form-control" name="code" placeholder="Enter code" />
+        <input
+          type="text"
+          [(ngModel)]="code"
+          class="form-control"
+          name="code"
+          placeholder="Enter code"
+        />
       </div>
 
       <!-- First Name -->
       <div class="form-group">
         <label class="required">First Name</label>
-        <input type="text" [(ngModel)]="userFirstName" class="form-control" autocomplete="off" name="userFirstName"
-          placeholder="Enter first name" />
+        <input
+          type="text"
+          [(ngModel)]="userFirstName"
+          class="form-control"
+          autocomplete="off"
+          name="userFirstName"
+          placeholder="Enter first name"
+        />
       </div>
 
       <!-- Last Name -->
       <div class="form-group">
         <label class="required">Last Name</label>
-        <input type="text" [(ngModel)]="userLastName" class="form-control" name="userLastName" autocomplete="off"
-          placeholder="Enter last name" />
+        <input
+          type="text"
+          [(ngModel)]="userLastName"
+          class="form-control"
+          name="userLastName"
+          autocomplete="off"
+          placeholder="Enter last name"
+        />
       </div>
 
       <!-- Email -->
       <div class="form-group">
         <label>Email</label>
-        <input type="email" [(ngModel)]="email" class="form-control" name="email" placeholder="Enter email" />
+        <input
+          type="email"
+          [(ngModel)]="email"
+          class="form-control"
+          name="email"
+          placeholder="Enter email"
+        />
       </div>
 
       <!-- Mobile Number -->
       <div class="form-group">
         <label>Mobile Number</label>
-        <input type="text" [(ngModel)]="mobileNumber" class="form-control" name="mobileNumber"
-          placeholder="Enter mobile number" />
+        <input
+          type="text"
+          [(ngModel)]="mobileNumber"
+          class="form-control"
+          name="mobileNumber"
+          placeholder="Enter mobile number"
+        />
       </div>
 
       <!-- Employment Status -->
@@ -52,8 +81,11 @@
             <i class="fa-solid fa-caret-down" [class.rotate]="isEmploymentStatusOpen"></i>
           </div>
           <div class="dropdown-options" *ngIf="isEmploymentStatusOpen">
-            <div class="dropdown-option" *ngFor="let status of employmentStatusOptions"
-              (click)="selectEmploymentStatus(status, $event)">
+            <div
+              class="dropdown-option"
+              *ngFor="let status of employmentStatusOptions"
+              (click)="selectEmploymentStatus(status, $event)"
+            >
               {{ status }}
             </div>
           </div>
@@ -70,8 +102,11 @@
             <i class="fa-solid fa-caret-down" [class.rotate]="isOnboardingStatusOpen"></i>
           </div>
           <div class="dropdown-options" *ngIf="isOnboardingStatusOpen">
-            <div class="dropdown-option" *ngFor="let status of onboardingStatusOptions"
-              (click)="selectOnboardingStatus(status, $event)">
+            <div
+              class="dropdown-option"
+              *ngFor="let status of onboardingStatusOptions"
+              (click)="selectOnboardingStatus(status, $event)"
+            >
               {{ status }}
             </div>
           </div>
@@ -88,8 +123,11 @@
             <i class="fa-solid fa-caret-down" [class.rotate]="isEmployeeTypeOpen"></i>
           </div>
           <div class="dropdown-options" *ngIf="isEmployeeTypeOpen">
-            <div class="dropdown-option" *ngFor="let type of employeeTypeOptions"
-              (click)="selectEmployeeType(type, $event)">
+            <div
+              class="dropdown-option"
+              *ngFor="let type of employeeTypeOptions"
+              (click)="selectEmployeeType(type, $event)"
+            >
               {{ type }}
             </div>
           </div>
@@ -140,14 +178,25 @@
       <!-- Role Code -->
       <div class="form-group">
         <label class="required">Role Code</label>
-        <input type="text" [(ngModel)]="roleCode" class="form-control" name="roleCode" placeholder="Enter role code" />
+        <input
+          type="text"
+          [(ngModel)]="roleCode"
+          class="form-control"
+          name="roleCode"
+          placeholder="Enter role code"
+        />
       </div>
 
       <!-- Password -->
       <div class="form-group">
         <label class="required">Password</label>
-        <input type="password" [(ngModel)]="userPassword" class="form-control" name="userPassword"
-          placeholder="Min 8 characters" />
+        <input
+          type="password"
+          [(ngModel)]="userPassword"
+          class="form-control"
+          name="userPassword"
+          placeholder="Min 8 characters"
+        />
       </div>
     </form>
   </div>
@@ -159,8 +208,12 @@
     <div *ngIf="hasPrevPage" class="tab-button tab-nav-btn" (click)="prevTabPage()">← Back</div>
 
     <!-- Visible Tabs -->
-    <div *ngFor="let tab of visibleTabs" class="tab-button" [class.active]="activeTabId === tab.id"
-      (click)="setTab(tab.id)">
+    <div
+      *ngFor="let tab of visibleTabs"
+      class="tab-button"
+      [class.active]="activeTabId === tab.id"
+      (click)="setTab(tab.id)"
+    >
       {{ tab.title }}
     </div>
 
@@ -174,7 +227,12 @@
     <div class="row g-3">
       <div class="col-md-4">
         <label class="form-label">Organization Name <span class="text-danger">*</span></label>
-        <input type="text" class="form-control" name="organizationName" [(ngModel)]="expform.organizationName" />
+        <input
+          type="text"
+          class="form-control"
+          name="organizationName"
+          [(ngModel)]="expform.organizationName"
+        />
       </div>
 
       <div class="col-md-4">
@@ -189,13 +247,23 @@
 
       <div class="col-md-4">
         <label class="form-label">End Date<span class="text-danger">*</span></label>
-        <input type="date" class="form-control" name="endDate" [(ngModel)]="expform.endDate"
-          [attr.disabled]="expform.currentlyWorking ? true : null" />
+        <input
+          type="date"
+          class="form-control"
+          name="endDate"
+          [(ngModel)]="expform.endDate"
+          [attr.disabled]="expform.currentlyWorking ? true : null"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label">Responsibilities</label>
-        <input type="text" class="form-control" name="responsibilities" [(ngModel)]="expform.responsibilities" />
+        <input
+          type="text"
+          class="form-control"
+          name="responsibilities"
+          [(ngModel)]="expform.responsibilities"
+        />
       </div>
       <div class="col-md-4">
         <label class="form-label">Status</label>
@@ -205,8 +273,11 @@
             <i class="fa-solid fa-caret-down" [class.rotate]="isExperienceStatusOpen"></i>
           </div>
           <div class="dropdown-options" *ngIf="isExperienceStatusOpen">
-           <div class="dropdown-option" *ngFor="let status of statusOptions"
-  (click)="selectExperienceStatus(status, $event)">
+            <div
+              class="dropdown-option"
+              *ngFor="let status of statusOptions"
+              (click)="selectExperienceStatus(status, $event)"
+            >
               {{ status }}
             </div>
           </div>
@@ -215,22 +286,38 @@
       <div class="col-md-4 d-flex align-items-end pb-2">
         <label class="checkbox-container">
           Currently Working Here
-          <input type="checkbox" class="custom-checkbox" [(ngModel)]="expform.currentlyWorking"
-            name="currentlyWorking" />
+          <input
+            type="checkbox"
+            class="custom-checkbox"
+            [(ngModel)]="expform.currentlyWorking"
+            name="currentlyWorking"
+          />
           <span class="checkmark"></span>
         </label>
       </div>
 
       <div class="col-12">
         <label class="form-label">Remarks</label>
-        <textarea class="form-control" name="remarks" rows="3" [(ngModel)]="expform.remarks"></textarea>
+        <textarea
+          class="form-control"
+          name="remarks"
+          rows="3"
+          [(ngModel)]="expform.remarks"
+        ></textarea>
       </div>
     </div>
 
     <!-- Buttons -->
     <div class="form-actions-footer">
       <button type="button" class="btn-submit-action me-3" (click)="addExperience()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
           <path d="M12 5v14M5 12l7 7 7-7" />
         </svg>
         Add Experience
@@ -241,7 +328,14 @@
     <div class="experience-table-wrapper mt-1" *ngIf="experiences.length > 0">
       <div class="table-header-bar" *ngIf="activeTab === 'experience'">
         <span class="table-title">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
             <path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z" />
             <path d="M16 3H8a2 2 0 00-2 2v2h12V5a2 2 0 00-2-2z" />
           </svg>
@@ -287,14 +381,25 @@
                 </span>
               </td>
               <td>
-                <span class="badge-status" [class.current]="exp.status === 'ACTIVE'"
-                  [class.badge-expired]="exp.status === 'CANCELLED'" [class.badge-inactive]="exp.status === 'INACTIVE'">
+                <span
+                  class="badge-status"
+                  [class.current]="exp.status === 'ACTIVE'"
+                  [class.badge-expired]="exp.status === 'CANCELLED'"
+                  [class.badge-inactive]="exp.status === 'INACTIVE'"
+                >
                   {{ exp.status || '—' }}
                 </span>
               </td>
               <td>
                 <button class="btn-remove" (click)="removeExperience(i)" title="Remove">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
                     <polyline points="3 6 5 6 21 6" />
                     <path d="M19 6l-1 14H6L5 6" />
                     <path d="M10 11v6M14 11v6" />
@@ -308,7 +413,14 @@
       </div>
     </div>
     <div class="empty-hint" *ngIf="experiences.length === 0 && activeTab === 'experience'">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
         <circle cx="12" cy="12" r="10" />
         <path d="M12 8v4M12 16h.01" />
       </svg>
@@ -322,7 +434,12 @@
     <div class="row g-3">
       <div class="col-md-6">
         <label class="form-label">Skill Name <span class="text-danger">*</span></label>
-        <input type="text" class="form-control" name="skillName" [(ngModel)]="skillsForm.skillName" />
+        <input
+          type="text"
+          class="form-control"
+          name="skillName"
+          [(ngModel)]="skillsForm.skillName"
+        />
       </div>
 
       <div class="col-md-6">
@@ -333,8 +450,11 @@
             <i class="fa-solid fa-caret-down" [class.rotate]="isProficiencyOpen"></i>
           </div>
           <div class="dropdown-options" *ngIf="isProficiencyOpen">
-            <div class="dropdown-option" *ngFor="let level of proficiencyOptions"
-              (click)="selectProficiency(level, $event)">
+            <div
+              class="dropdown-option"
+              *ngFor="let level of proficiencyOptions"
+              (click)="selectProficiency(level, $event)"
+            >
               {{ level }}
             </div>
           </div>
@@ -343,12 +463,22 @@
 
       <div class="col-md-4">
         <label class="form-label">Years of Experience</label>
-        <input type="number" class="form-control" name="yearsOfExperience" [(ngModel)]="skillsForm.yearsOfExperience" />
+        <input
+          type="number"
+          class="form-control"
+          name="yearsOfExperience"
+          [(ngModel)]="skillsForm.yearsOfExperience"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label">Last Used Year</label>
-        <input type="number" class="form-control" name="lastUsedYear" [(ngModel)]="skillsForm.lastUsedYear" />
+        <input
+          type="number"
+          class="form-control"
+          name="lastUsedYear"
+          [(ngModel)]="skillsForm.lastUsedYear"
+        />
       </div>
       <div class="col-md-4">
         <label class="form-label">Status</label>
@@ -358,8 +488,11 @@
             <i class="fa-solid fa-caret-down" [class.rotate]="isSkillStatusOpen"></i>
           </div>
           <div class="dropdown-options" *ngIf="isSkillStatusOpen">
-            <div class="dropdown-option" *ngFor="let status of statusOptions"
-              (click)="selectSkillStatus(status, $event)">
+            <div
+              class="dropdown-option"
+              *ngFor="let status of statusOptions"
+              (click)="selectSkillStatus(status, $event)"
+            >
               {{ status }}
             </div>
           </div>
@@ -367,12 +500,24 @@
       </div>
       <div class="col-12">
         <label class="form-label">Remarks</label>
-        <textarea class="form-control" name="skillRemarks" rows="3" [(ngModel)]="skillsForm.remarks"></textarea>
+        <textarea
+          class="form-control"
+          name="skillRemarks"
+          rows="3"
+          [(ngModel)]="skillsForm.remarks"
+        ></textarea>
       </div>
     </div>
     <div class="form-actions-footer">
       <button type="button" class="btn-submit-action me-3" (click)="addSkill()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
           <path d="M12 5v14M5 12l7 7 7-7" />
         </svg>
         Add Skill
@@ -381,9 +526,17 @@
     <div class="experience-table-wrapper mt-1" *ngIf="skills.length > 0">
       <div class="table-header-bar">
         <span class="table-title">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
             <path
-              d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2v-4M9 21H5a2 2 0 01-2-2v-4m0 0h18" />
+              d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2v-4M9 21H5a2 2 0 01-2-2v-4m0 0h18"
+            />
           </svg>
           Skill Records
         </span>
@@ -410,24 +563,38 @@
                 <span class="company-name">{{ skill.skillName }}</span>
               </td>
               <td>
-                <span class="badge-level" [class.l1]="skill.proficiencyLevel === 'BEGINNER'"
+                <span
+                  class="badge-level"
+                  [class.l1]="skill.proficiencyLevel === 'BEGINNER'"
                   [class.l2]="skill.proficiencyLevel === 'INTERMEDIATE'"
-                  [class.l3]="skill.proficiencyLevel === 'ADVANCED'" [class.l4]="skill.proficiencyLevel === 'EXPERT'">
+                  [class.l3]="skill.proficiencyLevel === 'ADVANCED'"
+                  [class.l4]="skill.proficiencyLevel === 'EXPERT'"
+                >
                   {{ skill.proficiencyLevel || '—' }}
                 </span>
               </td>
               <td>{{ skill.yearsOfExperience ?? '—' }}</td>
               <td>{{ skill.lastUsedYear ?? '—' }}</td>
               <td>
-                <span class="badge-status" [class.current]="skill.status === 'ACTIVE'"
+                <span
+                  class="badge-status"
+                  [class.current]="skill.status === 'ACTIVE'"
                   [class.badge-inactive]="skill.status === 'INACTIVE'"
-                  [class.badge-expired]="skill.status === 'CANCELLED'">
+                  [class.badge-expired]="skill.status === 'CANCELLED'"
+                >
                   {{ skill.status || '—' }}
                 </span>
               </td>
               <td>
                 <button class="btn-remove" (click)="removeSkill(i)" title="Remove">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
                     <polyline points="3 6 5 6 21 6" />
                     <path d="M19 6l-1 14H6L5 6" />
                     <path d="M10 11v6M14 11v6" />
@@ -442,7 +609,14 @@
     </div>
 
     <div class="empty-hint" *ngIf="skills.length === 0">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
         <circle cx="12" cy="12" r="10" />
         <path d="M12 8v4M12 16h.01" />
       </svg>
@@ -456,24 +630,42 @@
     <div class="row g-3">
       <div class="col-md-4">
         <label class="form-label">Qualification Name <span class="text-danger">*</span></label>
-        <input type="text" class="form-control" name="qualificationName"
-          [(ngModel)]="qualificationForm.qualificationName" />
+        <input
+          type="text"
+          class="form-control"
+          name="qualificationName"
+          [(ngModel)]="qualificationForm.qualificationName"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label">Institution Name <span class="text-danger">*</span></label>
-        <input type="text" class="form-control" name="institutionName"
-          [(ngModel)]="qualificationForm.institutionName" />
+        <input
+          type="text"
+          class="form-control"
+          name="institutionName"
+          [(ngModel)]="qualificationForm.institutionName"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label">Passing Year</label>
-        <input type="number" class="form-control" name="passingYear" [(ngModel)]="qualificationForm.passingYear" />
+        <input
+          type="number"
+          class="form-control"
+          name="passingYear"
+          [(ngModel)]="qualificationForm.passingYear"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label">Grade</label>
-        <input type="text" class="form-control" name="grade" [(ngModel)]="qualificationForm.grade" />
+        <input
+          type="text"
+          class="form-control"
+          name="grade"
+          [(ngModel)]="qualificationForm.grade"
+        />
       </div>
 
       <div class="col-md-4">
@@ -484,8 +676,11 @@
             <i class="fa-solid fa-caret-down" [class.rotate]="isResultStatusOpen"></i>
           </div>
           <div class="dropdown-options" *ngIf="isResultStatusOpen">
-            <div class="dropdown-option" *ngFor="let result of resultStatusOptions"
-              (click)="selectResultStatus(result, $event)">
+            <div
+              class="dropdown-option"
+              *ngFor="let result of resultStatusOptions"
+              (click)="selectResultStatus(result, $event)"
+            >
               {{ result }}
             </div>
           </div>
@@ -499,8 +694,11 @@
             <i class="fa-solid fa-caret-down" [class.rotate]="isQualificationStatusOpen"></i>
           </div>
           <div class="dropdown-options" *ngIf="isQualificationStatusOpen">
-            <div class="dropdown-option" *ngFor="let status of statusOptions"
-              (click)="selectQualificationStatus(status, $event)">
+            <div
+              class="dropdown-option"
+              *ngFor="let status of statusOptions"
+              (click)="selectQualificationStatus(status, $event)"
+            >
               {{ status }}
             </div>
           </div>
@@ -509,14 +707,26 @@
 
       <div class="col-12">
         <label class="form-label">Remarks</label>
-        <textarea class="form-control" name="qualRemarks" rows="3" [(ngModel)]="qualificationForm.remarks"></textarea>
+        <textarea
+          class="form-control"
+          name="qualRemarks"
+          rows="3"
+          [(ngModel)]="qualificationForm.remarks"
+        ></textarea>
       </div>
     </div>
 
     <!-- Button -->
     <div class="form-actions-footer">
       <button type="button" class="btn-submit-action me-3" (click)="addQualification()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
           <path d="M12 5v14M5 12l7 7 7-7" />
         </svg>
         Add Qualification
@@ -527,7 +737,14 @@
     <div class="experience-table-wrapper mt-1" *ngIf="qualifications.length > 0">
       <div class="table-header-bar">
         <span class="table-title">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
             <path d="M12 2L2 7l10 5 10-5-10-5z" />
             <path d="M2 17l10 5 10-5M2 12l10 5 10-5" />
           </svg>
@@ -565,15 +782,25 @@
                 </span>
               </td>
               <td>
-                <span class="badge-status" [class.current]="qual.status === 'ACTIVE'"
+                <span
+                  class="badge-status"
+                  [class.current]="qual.status === 'ACTIVE'"
                   [class.badge-inactive]="qual.status === 'INACTIVE'"
-                  [class.badge-expired]="qual.status === 'CANCELLED'">
+                  [class.badge-expired]="qual.status === 'CANCELLED'"
+                >
                   {{ qual.status || '—' }}
                 </span>
               </td>
               <td>
                 <button class="btn-remove" (click)="removeQualification(i)" title="Remove">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
                     <polyline points="3 6 5 6 21 6" />
                     <path d="M19 6l-1 14H6L5 6" />
                     <path d="M10 11v6M14 11v6" />
@@ -588,7 +815,14 @@
     </div>
 
     <div class="empty-hint" *ngIf="qualifications.length === 0">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
         <circle cx="12" cy="12" r="10" />
         <path d="M12 8v4M12 16h.01" />
       </svg>
@@ -602,23 +836,42 @@
     <div class="row g-3">
       <div class="col-md-4">
         <label class="form-label">Bank Name <span class="text-danger">*</span></label>
-        <input type="text" class="form-control" name="bankName" [(ngModel)]="bankAccountForm.bankName" />
+        <input
+          type="text"
+          class="form-control"
+          name="bankName"
+          [(ngModel)]="bankAccountForm.bankName"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label">Account Holder Name <span class="text-danger">*</span></label>
-        <input type="text" class="form-control" name="accountHolderName"
-          [(ngModel)]="bankAccountForm.accountHolderName" />
+        <input
+          type="text"
+          class="form-control"
+          name="accountHolderName"
+          [(ngModel)]="bankAccountForm.accountHolderName"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label">Account Number <span class="text-danger">*</span></label>
-        <input type="text" class="form-control" name="accountNumber" [(ngModel)]="bankAccountForm.accountNumber" />
+        <input
+          type="text"
+          class="form-control"
+          name="accountNumber"
+          [(ngModel)]="bankAccountForm.accountNumber"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label">Branch Code</label>
-        <input type="text" class="form-control" name="branchCode" [(ngModel)]="bankAccountForm.branchCode" />
+        <input
+          type="text"
+          class="form-control"
+          name="branchCode"
+          [(ngModel)]="bankAccountForm.branchCode"
+        />
       </div>
 
       <div class="col-md-4">
@@ -628,7 +881,12 @@
 
       <div class="col-md-4">
         <label class="form-label">Swift Code</label>
-        <input type="text" class="form-control" name="swiftCode" [(ngModel)]="bankAccountForm.swiftCode" />
+        <input
+          type="text"
+          class="form-control"
+          name="swiftCode"
+          [(ngModel)]="bankAccountForm.swiftCode"
+        />
       </div>
       <div class="col-md-4">
         <label class="form-label">Status</label>
@@ -638,8 +896,11 @@
             <i class="fa-solid fa-caret-down" [class.rotate]="isBankStatusOpen"></i>
           </div>
           <div class="dropdown-options" *ngIf="isBankStatusOpen">
-            <div class="dropdown-option" *ngFor="let status of statusOptions"
-              (click)="selectBankStatus(status, $event)">
+            <div
+              class="dropdown-option"
+              *ngFor="let status of statusOptions"
+              (click)="selectBankStatus(status, $event)"
+            >
               {{ status }}
             </div>
           </div>
@@ -648,22 +909,38 @@
       <div class="col-md-4 d-flex align-items-end pb-2">
         <label class="checkbox-container">
           Primary Account
-          <input type="checkbox" class="custom-checkbox" name="isPrimaryAccount"
-            [(ngModel)]="bankAccountForm.isPrimaryAccount" />
+          <input
+            type="checkbox"
+            class="custom-checkbox"
+            name="isPrimaryAccount"
+            [(ngModel)]="bankAccountForm.isPrimaryAccount"
+          />
           <span class="checkmark"></span>
         </label>
       </div>
 
       <div class="col-12">
         <label class="form-label">Remarks</label>
-        <textarea class="form-control" name="bankRemarks" rows="3" [(ngModel)]="bankAccountForm.remarks"></textarea>
+        <textarea
+          class="form-control"
+          name="bankRemarks"
+          rows="3"
+          [(ngModel)]="bankAccountForm.remarks"
+        ></textarea>
       </div>
     </div>
 
     <!-- Button -->
     <div class="form-actions-footer">
       <button type="button" class="btn-submit-action me-3" (click)="addBankAccount()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
           <path d="M12 5v14M5 12l7 7 7-7" />
         </svg>
         Add Bank Account
@@ -674,7 +951,14 @@
     <div class="experience-table-wrapper mt-1" *ngIf="bankAccounts.length > 0">
       <div class="table-header-bar">
         <span class="table-title">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
             <rect x="2" y="5" width="20" height="14" rx="2" />
             <path d="M2 10h20" />
           </svg>
@@ -712,14 +996,25 @@
                 </span>
               </td>
               <td>
-                <span class="badge-status" [class.current]="acc.status === 'ACTIVE'"
-                  [class.badge-inactive]="acc.status === 'INACTIVE'" [class.badge-expired]="acc.status === 'CANCELLED'">
+                <span
+                  class="badge-status"
+                  [class.current]="acc.status === 'ACTIVE'"
+                  [class.badge-inactive]="acc.status === 'INACTIVE'"
+                  [class.badge-expired]="acc.status === 'CANCELLED'"
+                >
                   {{ acc.status || '—' }}
                 </span>
               </td>
               <td>
                 <button class="btn-remove" (click)="removeBankAccount(i)" title="Remove">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
                     <polyline points="3 6 5 6 21 6" />
                     <path d="M19 6l-1 14H6L5 6" />
                     <path d="M10 11v6M14 11v6" />
@@ -734,7 +1029,14 @@
     </div>
 
     <div class="empty-hint" *ngIf="bankAccounts.length === 0">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
         <circle cx="12" cy="12" r="10" />
         <path d="M12 8v4M12 16h.01" />
       </svg>
@@ -754,8 +1056,12 @@
             <i class="fa-solid fa-caret-down" [class.rotate]="isDocTypeOpen"></i>
           </div>
           <div class="dropdown-options" *ngIf="isDocTypeOpen">
-            <div class="dropdown-option" *ngFor="let type of docTypeOptions" (click)="selectDocType(type, $event)">
-              {{ type }}
+            <div
+              class="dropdown-option"
+              *ngFor="let type of IdTypeList"
+              (click)="selectDocType(type, $event)"
+            >
+              {{ type.name }}
             </div>
           </div>
         </div>
@@ -763,23 +1069,43 @@
 
       <div class="col-md-4">
         <label class="form-label">Document Number <span class="text-danger">*</span></label>
-        <input type="text" class="form-control" name="documentNumber" [(ngModel)]="documentForm.documentNumber" />
+        <input
+          type="text"
+          class="form-control"
+          name="documentNumber"
+          [(ngModel)]="documentForm.documentNumber"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label">Issued Date</label>
-        <input type="date" class="form-control" name="issuedDate" [(ngModel)]="documentForm.issuedDate" />
+        <input
+          type="date"
+          class="form-control"
+          name="issuedDate"
+          [(ngModel)]="documentForm.issuedDate"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label">Expiry Date</label>
-        <input type="date" class="form-control" name="expiryDate" [(ngModel)]="documentForm.expiryDate" />
+        <input
+          type="date"
+          class="form-control"
+          name="expiryDate"
+          [(ngModel)]="documentForm.expiryDate"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label">File URL</label>
-        <input type="text" class="form-control" name="fileUrl" placeholder="https://..."
-          [(ngModel)]="documentForm.fileUrl" />
+        <input
+          type="text"
+          class="form-control"
+          name="fileUrl"
+          placeholder="https://..."
+          [(ngModel)]="documentForm.fileUrl"
+        />
       </div>
       <div class="col-md-4">
         <label class="form-label">Status</label>
@@ -789,7 +1115,11 @@
             <i class="fa-solid fa-caret-down" [class.rotate]="isDocStatusOpen"></i>
           </div>
           <div class="dropdown-options" *ngIf="isDocStatusOpen">
-            <div class="dropdown-option" *ngFor="let status of statusOptions" (click)="selectDocStatus(status, $event)">
+            <div
+              class="dropdown-option"
+              *ngFor="let status of statusOptions"
+              (click)="selectDocStatus(status, $event)"
+            >
               {{ status }}
             </div>
           </div>
@@ -798,14 +1128,26 @@
 
       <div class="col-12">
         <label class="form-label">Remarks</label>
-        <textarea class="form-control" name="docRemarks" rows="3" [(ngModel)]="documentForm.remarks"></textarea>
+        <textarea
+          class="form-control"
+          name="docRemarks"
+          rows="3"
+          [(ngModel)]="documentForm.remarks"
+        ></textarea>
       </div>
     </div>
 
     <!-- Button -->
     <div class="form-actions-footer">
       <button type="button" class="btn-submit-action me-3" (click)="addDocument()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
           <path d="M12 5v14M5 12l7 7 7-7" />
         </svg>
         Add Document
@@ -816,7 +1158,14 @@
     <div class="experience-table-wrapper mt-1" *ngIf="documents.length > 0">
       <div class="table-header-bar">
         <span class="table-title">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
             <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
             <polyline points="14 2 14 8 20 8" />
           </svg>
@@ -848,25 +1197,45 @@
               <td>{{ doc.documentNumber || '—' }}</td>
               <td>{{ doc.issuedDate ? (doc.issuedDate | date: 'dd MMM yyyy') : '—' }}</td>
               <td>
-                <span class="badge-status" [class.current]="doc.status === 'ACTIVE'"
-                  [class.badge-inactive]="doc.status === 'INACTIVE'" [class.badge-expired]="doc.status === 'CANCELLED'">
+                <span
+                  class="badge-status"
+                  [class.current]="doc.status === 'ACTIVE'"
+                  [class.badge-inactive]="doc.status === 'INACTIVE'"
+                  [class.badge-expired]="doc.status === 'CANCELLED'"
+                >
                   {{ doc.status || '—' }}
                 </span>
               </td>
               <td>
-                <span *ngIf="doc.expiryDate" [class.badge-present]="isNotExpired(doc.expiryDate)"
-                  [class.badge-expired]="!isNotExpired(doc.expiryDate)">
+                <span
+                  *ngIf="doc.expiryDate"
+                  [class.badge-present]="isNotExpired(doc.expiryDate)"
+                  [class.badge-expired]="!isNotExpired(doc.expiryDate)"
+                >
                   {{ doc.expiryDate | date: 'dd MMM yyyy' }}
                 </span>
                 <span *ngIf="!doc.expiryDate">—</span>
               </td>
               <td>
-                <a *ngIf="doc.fileUrl" [href]="doc.fileUrl" target="_blank" class="badge-status current">View</a>
+                <a
+                  *ngIf="doc.fileUrl"
+                  [href]="doc.fileUrl"
+                  target="_blank"
+                  class="badge-status current"
+                  >View</a
+                >
                 <span *ngIf="!doc.fileUrl">—</span>
               </td>
               <td>
                 <button class="btn-remove" (click)="removeDocument(i)" title="Remove">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
                     <polyline points="3 6 5 6 21 6" />
                     <path d="M19 6l-1 14H6L5 6" />
                     <path d="M10 11v6M14 11v6" />
@@ -881,7 +1250,14 @@
     </div>
 
     <div class="empty-hint" *ngIf="documents.length === 0">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
         <circle cx="12" cy="12" r="10" />
         <path d="M12 8v4M12 16h.01" />
       </svg>
@@ -901,9 +1277,12 @@
             <i class="fa-solid fa-caret-down" [class.rotate]="isBelongingTypeOpen"></i>
           </div>
           <div class="dropdown-options" *ngIf="isBelongingTypeOpen">
-            <div class="dropdown-option" *ngFor="let type of belongingTypeOptions"
-              (click)="selectBelongingType(type, $event)">
-              {{ type }}
+            <div
+              class="dropdown-option"
+              *ngFor="let type of belongingList"
+              (click)="selectBelongingType(type, $event)"
+            >
+              {{ type.name }}
             </div>
           </div>
         </div>
@@ -911,7 +1290,12 @@
 
       <div class="col-md-4">
         <label class="form-label">Serial Number</label>
-        <input type="text" class="form-control" name="serialNumber" [(ngModel)]="belongingForm.serialNumber" />
+        <input
+          type="text"
+          class="form-control"
+          name="serialNumber"
+          [(ngModel)]="belongingForm.serialNumber"
+        />
       </div>
 
       <div class="col-md-4">
@@ -922,8 +1306,11 @@
             <i class="fa-solid fa-caret-down" [class.rotate]="isConditionStatusOpen"></i>
           </div>
           <div class="dropdown-options" *ngIf="isConditionStatusOpen">
-            <div class="dropdown-option" *ngFor="let condition of conditionStatusOptions"
-              (click)="selectConditionStatus(condition, $event)">
+            <div
+              class="dropdown-option"
+              *ngFor="let condition of conditionStatusOptions"
+              (click)="selectConditionStatus(condition, $event)"
+            >
               {{ condition }}
             </div>
           </div>
@@ -932,12 +1319,22 @@
 
       <div class="col-md-4">
         <label class="form-label">Issued Date</label>
-        <input type="date" class="form-control" name="belongingIssuedDate" [(ngModel)]="belongingForm.issuedDate" />
+        <input
+          type="date"
+          class="form-control"
+          name="belongingIssuedDate"
+          [(ngModel)]="belongingForm.issuedDate"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label">Return Date</label>
-        <input type="date" class="form-control" name="returnDate" [(ngModel)]="belongingForm.returnDate" />
+        <input
+          type="date"
+          class="form-control"
+          name="returnDate"
+          [(ngModel)]="belongingForm.returnDate"
+        />
       </div>
       <div class="col-md-4">
         <label class="form-label">Status</label>
@@ -947,9 +1344,11 @@
             <i class="fa-solid fa-caret-down" [class.rotate]="isBelongingStatusOpen"></i>
           </div>
           <div class="dropdown-options" *ngIf="isBelongingStatusOpen">
-            <div class="dropdown-option" *ngFor="let status of statusOptions"
-              (click)="selectBelongingStatus(status, $event)">
-              
+            <div
+              class="dropdown-option"
+              *ngFor="let status of statusOptions"
+              (click)="selectBelongingStatus(status, $event)"
+            >
               {{ status }}
             </div>
           </div>
@@ -957,14 +1356,26 @@
       </div>
       <div class="col-12">
         <label class="form-label">Remarks</label>
-        <textarea class="form-control" name="belongingRemarks" rows="3" [(ngModel)]="belongingForm.remarks"></textarea>
+        <textarea
+          class="form-control"
+          name="belongingRemarks"
+          rows="3"
+          [(ngModel)]="belongingForm.remarks"
+        ></textarea>
       </div>
     </div>
 
     <!-- Button -->
     <div class="form-actions-footer">
       <button type="button" class="btn-submit-action me-3" (click)="addBelonging()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
           <path d="M12 5v14M5 12l7 7 7-7" />
         </svg>
         Add Belonging
@@ -975,9 +1386,17 @@
     <div class="experience-table-wrapper mt-1" *ngIf="belongings.length > 0">
       <div class="table-header-bar">
         <span class="table-title">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
             <path
-              d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z" />
+              d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"
+            />
           </svg>
           Belonging Records
         </span>
@@ -1002,12 +1421,14 @@
             <tr *ngFor="let b of belongings; let i = index" class="exp-row">
               <td>{{ i + 1 }}</td>
               <td>
-                <span class="company-name">{{ b.belongingTypePublicId || '—' }}</span>
+                <span class="company-name">{{ b.belongingname || '—' }}</span>
               </td>
               <td>{{ b.serialNumber || '—' }}</td>
               <td>
-                <span class="badge-status"
-                  [class.current]="b.conditionStatus === 'NEW' || b.conditionStatus === 'GOOD'">
+                <span
+                  class="badge-status"
+                  [class.current]="b.conditionStatus === 'NEW' || b.conditionStatus === 'GOOD'"
+                >
                   {{ b.conditionStatus || '—' }}
                 </span>
               </td>
@@ -1019,14 +1440,25 @@
                 <span *ngIf="!b.returnDate" class="badge-status current">In Use</span>
               </td>
               <td>
-                <span class="badge-status" [class.current]="b.status === 'ACTIVE'"
-                  [class.badge-inactive]="b.status === 'INACTIVE'" [class.badge-expired]="b.status === 'CANCELLED'">
+                <span
+                  class="badge-status"
+                  [class.current]="b.status === 'ACTIVE'"
+                  [class.badge-inactive]="b.status === 'INACTIVE'"
+                  [class.badge-expired]="b.status === 'CANCELLED'"
+                >
                   {{ b.status || '—' }}
                 </span>
               </td>
               <td>
                 <button class="btn-remove" (click)="removeBelonging(i)" title="Remove">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
                     <polyline points="3 6 5 6 21 6" />
                     <path d="M19 6l-1 14H6L5 6" />
                     <path d="M10 11v6M14 11v6" />
@@ -1041,7 +1473,14 @@
     </div>
 
     <div class="empty-hint" *ngIf="belongings.length === 0">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
         <circle cx="12" cy="12" r="10" />
         <path d="M12 8v4M12 16h.01" />
       </svg>
@@ -1055,7 +1494,12 @@
     <div class="row g-3">
       <div class="col-md-4">
         <label class="form-label">Member Name <span class="text-danger">*</span></label>
-        <input type="text" class="form-control" name="memberName" [(ngModel)]="familyMemberForm.memberName" />
+        <input
+          type="text"
+          class="form-control"
+          name="memberName"
+          [(ngModel)]="familyMemberForm.memberName"
+        />
       </div>
 
       <div class="col-md-4">
@@ -1066,8 +1510,11 @@
             <i class="fa-solid fa-caret-down" [class.rotate]="isRelationOpen"></i>
           </div>
           <div class="dropdown-options" *ngIf="isRelationOpen">
-            <div class="dropdown-option" *ngFor="let relation of relationOptions"
-              (click)="selectRelation(relation, $event)">
+            <div
+              class="dropdown-option"
+              *ngFor="let relation of relationOptions"
+              (click)="selectRelation(relation, $event)"
+            >
               {{ relation }}
             </div>
           </div>
@@ -1076,37 +1523,72 @@
 
       <div class="col-md-4">
         <label class="form-label">Date of Birth</label>
-        <input type="date" class="form-control" name="familyDob" [(ngModel)]="familyMemberForm.dateOfBirth" />
+        <input
+          type="date"
+          class="form-control"
+          name="familyDob"
+          [(ngModel)]="familyMemberForm.dateOfBirth"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label">Occupation</label>
-        <input type="text" class="form-control" name="occupation" [(ngModel)]="familyMemberForm.occupation" />
+        <input
+          type="text"
+          class="form-control"
+          name="occupation"
+          [(ngModel)]="familyMemberForm.occupation"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label">Contact Number</label>
-        <input type="text" class="form-control" name="familyContact" [(ngModel)]="familyMemberForm.contactNumber" />
+        <input
+          type="text"
+          class="form-control"
+          name="familyContact"
+          [(ngModel)]="familyMemberForm.contactNumber"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label">Passport No</label>
-        <input type="text" class="form-control" name="passportNo" [(ngModel)]="familyMemberForm.passportNo" />
+        <input
+          type="text"
+          class="form-control"
+          name="passportNo"
+          [(ngModel)]="familyMemberForm.passportNo"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label">Passport Expiry</label>
-        <input type="date" class="form-control" name="passportExpiry" [(ngModel)]="familyMemberForm.passportExpiry" />
+        <input
+          type="date"
+          class="form-control"
+          name="passportExpiry"
+          [(ngModel)]="familyMemberForm.passportExpiry"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label">Visa / Iqama No</label>
-        <input type="text" class="form-control" name="visaIqamaNo" [(ngModel)]="familyMemberForm.visaIqamaNo" />
+        <input
+          type="text"
+          class="form-control"
+          name="visaIqamaNo"
+          [(ngModel)]="familyMemberForm.visaIqamaNo"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label">Visa / Iqama Expiry</label>
-        <input type="date" class="form-control" name="visaIqamaExpiry" [(ngModel)]="familyMemberForm.visaIqamaExpiry" />
+        <input
+          type="date"
+          class="form-control"
+          name="visaIqamaExpiry"
+          [(ngModel)]="familyMemberForm.visaIqamaExpiry"
+        />
       </div>
       <div class="col-md-4">
         <label class="form-label">Status</label>
@@ -1116,8 +1598,11 @@
             <i class="fa-solid fa-caret-down" [class.rotate]="isFamilyMemberStatusOpen"></i>
           </div>
           <div class="dropdown-options" *ngIf="isFamilyMemberStatusOpen">
-            <div class="dropdown-option" *ngFor="let status of statusOptions"
-              (click)="selectFamilyMemberStatus(status, $event)">
+            <div
+              class="dropdown-option"
+              *ngFor="let status of statusOptions"
+              (click)="selectFamilyMemberStatus(status, $event)"
+            >
               {{ status }}
             </div>
           </div>
@@ -1128,8 +1613,12 @@
       <div class="col-md-2 d-flex align-items-end pb-2">
         <label class="checkbox-container">
           Dependent
-          <input type="checkbox" class="custom-checkbox" name="isDependent"
-            [(ngModel)]="familyMemberForm.isDependent" />
+          <input
+            type="checkbox"
+            class="custom-checkbox"
+            name="isDependent"
+            [(ngModel)]="familyMemberForm.isDependent"
+          />
           <span class="checkmark"></span>
         </label>
       </div>
@@ -1137,8 +1626,12 @@
       <div class="col-md-3 d-flex align-items-end pb-2">
         <label class="checkbox-container">
           Beneficiary
-          <input type="checkbox" class="custom-checkbox" name="isBeneficiary"
-            [(ngModel)]="familyMemberForm.isBeneficiary" />
+          <input
+            type="checkbox"
+            class="custom-checkbox"
+            name="isBeneficiary"
+            [(ngModel)]="familyMemberForm.isBeneficiary"
+          />
           <span class="checkmark"></span>
         </label>
       </div>
@@ -1146,22 +1639,38 @@
       <div class="col-md-3 d-flex align-items-end pb-2">
         <label class="checkbox-container">
           Emergency Contact
-          <input type="checkbox" class="custom-checkbox" name="isEmergencyContact"
-            [(ngModel)]="familyMemberForm.isEmergencyContact" />
+          <input
+            type="checkbox"
+            class="custom-checkbox"
+            name="isEmergencyContact"
+            [(ngModel)]="familyMemberForm.isEmergencyContact"
+          />
           <span class="checkmark"></span>
         </label>
       </div>
 
       <div class="col-12">
         <label class="form-label">Remarks</label>
-        <textarea class="form-control" name="familyRemarks" rows="3" [(ngModel)]="familyMemberForm.remarks"></textarea>
+        <textarea
+          class="form-control"
+          name="familyRemarks"
+          rows="3"
+          [(ngModel)]="familyMemberForm.remarks"
+        ></textarea>
       </div>
     </div>
 
     <!-- Button -->
     <div class="form-actions-footer">
       <button type="button" class="btn-submit-action me-3" (click)="addFamilyMember()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
           <path d="M12 5v14M5 12l7 7 7-7" />
         </svg>
         Add Family Member
@@ -1172,7 +1681,14 @@
     <div class="experience-table-wrapper mt-1" *ngIf="familyMembers.length > 0">
       <div class="table-header-bar">
         <span class="table-title">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
             <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
             <circle cx="9" cy="7" r="4" />
             <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
@@ -1223,14 +1739,25 @@
                 </span>
               </td>
               <td>
-                <span class="badge-status" [class.current]="fm.status === 'ACTIVE'"
-                  [class.badge-inactive]="fm.status === 'INACTIVE'" [class.badge-expired]="fm.status === 'CANCELLED'">
+                <span
+                  class="badge-status"
+                  [class.current]="fm.status === 'ACTIVE'"
+                  [class.badge-inactive]="fm.status === 'INACTIVE'"
+                  [class.badge-expired]="fm.status === 'CANCELLED'"
+                >
                   {{ fm.status || '—' }}
                 </span>
               </td>
               <td>
                 <button class="btn-remove" (click)="removeFamilyMember(i)" title="Remove">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
                     <polyline points="3 6 5 6 21 6" />
                     <path d="M19 6l-1 14H6L5 6" />
                     <path d="M10 11v6M14 11v6" />
@@ -1245,7 +1772,14 @@
     </div>
 
     <div class="empty-hint" *ngIf="familyMembers.length === 0">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
         <circle cx="12" cy="12" r="10" />
         <path d="M12 8v4M12 16h.01" />
       </svg>
@@ -1259,12 +1793,22 @@
     <div class="row g-3">
       <div class="col-md-4">
         <label class="form-label">Position Code</label>
-        <input type="text" class="form-control" name="positionCode" [(ngModel)]="positionForm.positionCode" />
+        <input
+          type="text"
+          class="form-control"
+          name="positionCode"
+          [(ngModel)]="positionForm.positionCode"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label">Position Name</label>
-        <input type="text" class="form-control" name="positionName" [(ngModel)]="positionForm.positionName" />
+        <input
+          type="text"
+          class="form-control"
+          name="positionName"
+          [(ngModel)]="positionForm.positionName"
+        />
       </div>
       <div class="col-md-4">
         <label class="form-label">Department</label>
@@ -1274,7 +1818,11 @@
             <i class="fa-solid fa-caret-down" [class.rotate]="isDepartmentOpen"></i>
           </div>
           <div class="dropdown-options" *ngIf="isDepartmentOpen">
-            <div class="dropdown-option" *ngFor="let dep of departmentList" (click)="selectDepartment(dep, $event)">
+            <div
+              class="dropdown-option"
+              *ngFor="let dep of departmentList"
+              (click)="selectDepartment(dep, $event)"
+            >
               {{ dep.code }}-{{ dep.name }}
             </div>
           </div>
@@ -1289,7 +1837,11 @@
             <i class="fa-solid fa-caret-down" [class.rotate]="isDesignatiomOpen"></i>
           </div>
           <div class="dropdown-options" *ngIf="isDesignatiomOpen">
-            <div class="dropdown-option" *ngFor="let des of designationList" (click)="selectDesignation(des, $event)">
+            <div
+              class="dropdown-option"
+              *ngFor="let des of designationList"
+              (click)="selectDesignation(des, $event)"
+            >
               {{ des.code }}-{{ des.name }}
             </div>
           </div>
@@ -1304,28 +1856,35 @@
             <i class="fa-solid fa-caret-down" [class.rotate]="isBranchOpen"></i>
           </div>
           <div class="dropdown-options" *ngIf="isBranchOpen">
-            <div class="dropdown-option" *ngFor="let branch of companyBranchList"
-              (click)="selectBranch(branch, $event)">
+            <div
+              class="dropdown-option"
+              *ngFor="let branch of companyBranchList"
+              (click)="selectBranch(branch, $event)"
+            >
               {{ branch.code }}-{{ branch.name }}
             </div>
           </div>
         </div>
       </div>
 
-     <div class="col-md-4">
-  <label class="form-label">Reporting Manager</label>
-  <div class="custom-dropdown" (click)="toggleDropdown($event, 'reportingManager')">
-    <div class="dropdown-selected">
-      <span>{{ selectedReportingManager?.fullName || 'Select Reporting Manager' }}</span>
-      <i class="fa-solid fa-caret-down" [class.rotate]="isReportingManagerOpen"></i>
-    </div>
-    <div class="dropdown-options" *ngIf="isReportingManagerOpen">
-      <div class="dropdown-option" *ngFor="let emp of EmployeeList" (click)="selectReportingManager(emp, $event)">
-        {{ emp.fullName }}
+      <div class="col-md-4">
+        <label class="form-label">Reporting Manager</label>
+        <div class="custom-dropdown" (click)="toggleDropdown($event, 'reportingManager')">
+          <div class="dropdown-selected">
+            <span>{{ selectedReportingManager?.fullName || 'Select Reporting Manager' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="isReportingManagerOpen"></i>
+          </div>
+          <div class="dropdown-options" *ngIf="isReportingManagerOpen">
+            <div
+              class="dropdown-option"
+              *ngFor="let emp of EmployeeList"
+              (click)="selectReportingManager(emp, $event)"
+            >
+              {{ emp.fullName }}
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </div>
-</div>
 
       <div class="col-md-4">
         <label class="form-label">Employee Grade</label>
@@ -1335,8 +1894,11 @@
             <i class="fa-solid fa-caret-down" [class.rotate]="isEmployeeGradeOpen"></i>
           </div>
           <div class="dropdown-options" *ngIf="isEmployeeGradeOpen">
-            <div class="dropdown-option" *ngFor="let emp of EmployeeGradeList"
-              (click)="selectEmployeeGrade(emp, $event)">
+            <div
+              class="dropdown-option"
+              *ngFor="let emp of EmployeeGradeList"
+              (click)="selectEmployeeGrade(emp, $event)"
+            >
               {{ emp.code }}-{{ emp.name }}
             </div>
           </div>
@@ -1347,12 +1909,15 @@
         <label class="form-label">Employee Category</label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'employeeCategory')">
           <div class="dropdown-selected">
-<span>{{ SlectedEmployeeCategory?.name || 'Select Employee Category' }}</span>
+            <span>{{ SlectedEmployeeCategory?.name || 'Select Employee Category' }}</span>
             <i class="fa-solid fa-caret-down" [class.rotate]="isEmployeeCategoryOpen"></i>
           </div>
           <div class="dropdown-options" *ngIf="isEmployeeCategoryOpen">
-            <div class="dropdown-option" *ngFor="let emp of EmployeeCategoryList"
-              (click)="selectemployeeCatergory(emp, $event)">
+            <div
+              class="dropdown-option"
+              *ngFor="let emp of EmployeeCategoryList"
+              (click)="selectemployeeCatergory(emp, $event)"
+            >
               {{ emp.code }}-{{ emp.name }}
             </div>
           </div>
@@ -1367,7 +1932,11 @@
             <i class="fa-solid fa-caret-down" [class.rotate]="isJobTitleOpen"></i>
           </div>
           <div class="dropdown-options" *ngIf="isJobTitleOpen">
-            <div class="dropdown-option" *ngFor="let job of JobTitleList" (click)="selectJobTitle(job, $event)">
+            <div
+              class="dropdown-option"
+              *ngFor="let job of JobTitleList"
+              (click)="selectJobTitle(job, $event)"
+            >
               {{ job.code }}-{{ job.name }}
             </div>
           </div>
@@ -1382,7 +1951,11 @@
             <i class="fa-solid fa-caret-down" [class.rotate]="isShiftOpen"></i>
           </div>
           <div class="dropdown-options" *ngIf="isShiftOpen">
-            <div class="dropdown-option" *ngFor="let shift of shiftList" (click)="selectShift(shift, $event)">
+            <div
+              class="dropdown-option"
+              *ngFor="let shift of shiftList"
+              (click)="selectShift(shift, $event)"
+            >
               {{ shift.code }}-{{ shift.name }}
             </div>
           </div>
@@ -1397,8 +1970,11 @@
             <i class="fa-solid fa-caret-down" [class.rotate]="isWorkScheduleOpen"></i>
           </div>
           <div class="dropdown-options" *ngIf="isWorkScheduleOpen">
-            <div class="dropdown-option" *ngFor="let work of WorkScheduleList"
-              (click)="selectWorkSchedule(work, $event)" >
+            <div
+              class="dropdown-option"
+              *ngFor="let work of WorkScheduleList"
+              (click)="selectWorkSchedule(work, $event)"
+            >
               {{ work.payPeriodName }}
             </div>
           </div>
@@ -1407,12 +1983,22 @@
 
       <div class="col-md-4">
         <label class="form-label">Effective From</label>
-        <input type="date" class="form-control" name="effectiveFrom" [(ngModel)]="positionForm.effectiveFrom" />
+        <input
+          type="date"
+          class="form-control"
+          name="effectiveFrom"
+          [(ngModel)]="positionForm.effectiveFrom"
+        />
       </div>
 
       <div class="col-md-4">
         <label class="form-label">Effective To</label>
-        <input type="date" class="form-control" name="effectiveTo" [(ngModel)]="positionForm.effectiveTo" />
+        <input
+          type="date"
+          class="form-control"
+          name="effectiveTo"
+          [(ngModel)]="positionForm.effectiveTo"
+        />
       </div>
       <div class="col-md-4">
         <label class="form-label">Status</label>
@@ -1422,8 +2008,11 @@
             <i class="fa-solid fa-caret-down" [class.rotate]="isPositionStatusOpen"></i>
           </div>
           <div class="dropdown-options" *ngIf="isPositionStatusOpen">
-            <div class="dropdown-option" *ngFor="let status of statusOptions"
-              (click)="selectPositionStatus(status, $event)">
+            <div
+              class="dropdown-option"
+              *ngFor="let status of statusOptions"
+              (click)="selectPositionStatus(status, $event)"
+            >
               {{ status }}
             </div>
           </div>
@@ -1432,22 +2021,38 @@
       <div class="col-md-4 d-flex align-items-end pb-2">
         <label class="checkbox-container">
           Primary Position
-          <input type="checkbox" class="custom-checkbox" name="isPrimaryPosition"
-            [(ngModel)]="positionForm.isPrimaryPosition" />
+          <input
+            type="checkbox"
+            class="custom-checkbox"
+            name="isPrimaryPosition"
+            [(ngModel)]="positionForm.isPrimaryPosition"
+          />
           <span class="checkmark"></span>
         </label>
       </div>
 
       <div class="col-12">
         <label class="form-label">Remarks</label>
-        <textarea class="form-control" name="positionRemarks" rows="3" [(ngModel)]="positionForm.remarks"></textarea>
+        <textarea
+          class="form-control"
+          name="positionRemarks"
+          rows="3"
+          [(ngModel)]="positionForm.remarks"
+        ></textarea>
       </div>
     </div>
 
     <!-- Button -->
     <div class="form-actions-footer">
       <button type="button" class="btn-submit-action me-3" (click)="addPosition()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
           <path d="M12 5v14M5 12l7 7 7-7" />
         </svg>
         Add Position
@@ -1458,7 +2063,14 @@
     <div class="experience-table-wrapper mt-1" *ngIf="positions.length > 0">
       <div class="table-header-bar">
         <span class="table-title">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
             <rect x="2" y="7" width="20" height="14" rx="2" />
             <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" />
           </svg>
@@ -1501,14 +2113,25 @@
                 </span>
               </td>
               <td>
-                <span class="badge-status" [class.current]="pos.status === 'ACTIVE'"
-                  [class.badge-inactive]="pos.status === 'INACTIVE'" [class.badge-expired]="pos.status === 'CANCELLED'">
+                <span
+                  class="badge-status"
+                  [class.current]="pos.status === 'ACTIVE'"
+                  [class.badge-inactive]="pos.status === 'INACTIVE'"
+                  [class.badge-expired]="pos.status === 'CANCELLED'"
+                >
                   {{ pos.status || '—' }}
                 </span>
               </td>
               <td>
                 <button class="btn-remove" (click)="removePosition(i)" title="Remove">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
                     <polyline points="3 6 5 6 21 6" />
                     <path d="M19 6l-1 14H6L5 6" />
                     <path d="M10 11v6M14 11v6" />
@@ -1523,11 +2146,177 @@
     </div>
 
     <div class="empty-hint" *ngIf="positions.length === 0">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
         <circle cx="12" cy="12" r="10" />
         <path d="M12 8v4M12 16h.01" />
       </svg>
       Fill the form above and click <strong>Add Position</strong> to add records
+    </div>
+  </div>
+  <!-- leaves Tabs -->
+  <div class="form-section tab-content-section" *ngIf="activeTab === 'leaves'">
+    <h3 class="section-heading mb-3">Leaves</h3>
+    <div class="row d-flex justify-content-end"></div>
+    <div class="col-auto d-flex justify-content-end pb-2">
+      <label class="checkbox-container">
+        Active
+        <input
+          type="checkbox"
+          class="custom-checkbox"
+          name="active"
+          [(ngModel)]="leaveForm.active"
+        />
+        <span class="checkmark"></span>
+      </label>
+    </div>
+    <div class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Leaves Type <span class="text-danger">*</span></label>
+        <div class="custom-dropdown" (click)="toggleDropdown($event, 'LeaveType')">
+          <div class="dropdown-selected">
+            <span>{{ selectLeaveType || 'Select type' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="isLeaveTypeOpen"></i>
+          </div>
+          <div class="dropdown-options" *ngIf="isLeaveTypeOpen">
+            <div
+              class="dropdown-option"
+              *ngFor="let type of LeaveTypeList"
+              (click)="selectedLeaveType(type, $event)"
+            >
+              {{ type.name }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Total Leave Per Year</label>
+        <input
+          type="text"
+          class="form-control"
+          name="totalLeavesPerYear"
+          [(ngModel)]="leaveForm.totalLeavesPerYear"
+        />
+      </div>
+      <div class="col-12">
+        <label class="form-label">Remarks</label>
+        <textarea
+          class="form-control"
+          name="remarks"
+          rows="3"
+          [(ngModel)]="leaveForm.remarks"
+        ></textarea>
+      </div>
+    </div>
+
+    <!-- Button -->
+    <div class="form-actions-footer">
+      <button type="button" class="btn-submit-action me-3" (click)="addLeaveForm()">
+        <svg
+          width="16"
+          height="16"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+        >
+          <path d="M12 5v14M5 12l7 7 7-7" />
+        </svg>
+        Add Leave
+      </button>
+    </div>
+
+    <!-- Table -->
+    <div class="experience-table-wrapper mt-1" *ngIf="Leaves.length > 0">
+      <div class="table-header-bar">
+        <span class="table-title">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"
+            />
+          </svg>
+          Leaves Records
+        </span>
+        <span class="table-count">{{ Leaves.length }} record(s)</span>
+      </div>
+
+      <div class="table-responsive">
+        <table class="exp-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Leave Type</th>
+              <th>Total Leaves</th>
+              <th>Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let leave of Leaves; let i = index" class="exp-row">
+              <td>{{ i + 1 }}</td>
+              <td>
+                <span class="company-name">{{ leave.leaveTypeName || '—' }}</span>
+              </td>
+              <td>{{ leave.totalLeavesPerYear || '—' }}</td>
+
+              <td>
+                <span
+                  class="badge-status"
+                  [class.current]="leave.active === true"
+                  [class.badge-inactive]="leave.active === false"
+                >
+                  {{ leave.active ? 'ACTIVE' : 'INACTIVE' }}
+                </span>
+              </td>
+              <td>
+                <button class="btn-remove" (click)="removeLeaveForm(i)" title="Remove">
+                  <svg
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <polyline points="3 6 5 6 21 6" />
+                    <path d="M19 6l-1 14H6L5 6" />
+                    <path d="M10 11v6M14 11v6" />
+                    <path d="M9 6V4h6v2" />
+                  </svg>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="empty-hint" *ngIf="belongings.length === 0">
+      <svg
+        width="20"
+        height="20"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="1.5"
+      >
+        <circle cx="12" cy="12" r="10" />
+        <path d="M12 8v4M12 16h.01" />
+      </svg>
+      Fill the form above and click <strong>Add Leaves</strong> to add records
     </div>
   </div>
 </div>
