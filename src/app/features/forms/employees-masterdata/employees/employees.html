@@ -949,6 +949,7 @@
           <div class="dropdown-options" *ngIf="isBelongingStatusOpen">
             <div class="dropdown-option" *ngFor="let status of statusOptions"
               (click)="selectBelongingStatus(status, $event)">
+              
               {{ status }}
             </div>
           </div>
