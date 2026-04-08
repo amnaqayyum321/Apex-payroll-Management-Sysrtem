@@ -1,14 +1,16 @@
 .user-form-wrapper {
-    padding: 20px;
-    background: var(--primary-color);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
+  padding: 30px;
+  background: var(--second-primary-color);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+    border-radius: 6px;
+
 }
 
 .user-card {
-background: var(--primary-color) !important;
+  background: var(--primary-color) !important;
   border-radius: 16px;
   padding: 24px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
@@ -77,272 +79,23 @@ label.required::after {
   gap: 6px;
 }
 
-/* Form Grid */
-.user-form {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-/* Inputs */
-input {
-  height: 42px;
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
-  padding: 0 14px;
-  font-size: 14px;
-  background: var(--second-primary-color);
-  outline: none;
-  color: var(--text-primary);
-  /* 👈 typed text color */
-
-  &::placeholder {
-    color: #98a2b3;
-  }
-
-  &:focus {
-    border-color: var(--border-color);
-    background: var(--primary-color);
-  }
-}
-
-textarea {
-  border-radius: 10px;
-  border: 1px solid var(--border-color);
-  background: var(--second-primary-color);
-  outline: none;
-  color: var(--text-primary);
-  /* 👈 typed text color */
-
-  &::placeholder {
-    color: #98a2b3;
-  }
-
-  &:focus {
-    border-color: var(--border-color);
-    background: var(--primary-color);
-  }
-}
-
-/* Buttons */
-.form-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 12px;
-}
-
-.cancel-btn {
-  height: 42px;
-  padding: 0 22px;
-  border-radius: 22px;
-  border: 1px solid var(--border-color);
-  background: var(--red-color);
-  color: white;
-  font-weight: 500;
-  cursor: pointer;
-
-  &:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.05);
-  }
-
-  &:active {
-    transform: scale(0.97);
-    box-shadow: none;
-  }
-}
-
-.submit-btn {
-  height: 42px;
-  padding: 0 22px;
-  border-radius: 22px;
-  border: 1px solid var(--border-color);
-  background: var(--purple-1);
-  color: white;
-  font-weight: 500;
-  cursor: pointer;
-
-  &:hover {
-    transform: translateY(-2px);
-    filter: brightness(1.02);
-  }
-
-  &:active {
-    transform: scale(0.97);
-    box-shadow: none;
-  }
-}
-
-/* ========================= */
-/* MODERN CHECKBOX */
-/* ========================= */
-
-.checkbox-container {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  position: relative;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-primary);
-  user-select: none;
-}
-
-/* Hide default checkbox */
-.custom-checkbox {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-}
-
-/* Custom box */
-.checkmark {
-  height: 20px;
-  width: 20px;
-  background-color: var(--primary-color);
-  border: 2px solid var(--border-color);
-  border-radius: 6px;
-  transition: all 0.25s ease;
-  display: inline-block;
-  position: relative;
-}
-
-/* Check icon */
-.checkmark:after {
-  content: '';
-  position: absolute;
-  display: none;
-  left: 6px;
-  top: 2px;
-  width: 5px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 2px 2px 0;
-  transform: rotate(45deg);
-}
-
-/* When checked */
-.custom-checkbox:checked + .checkmark {
-  background: var(--purple-1);
-  border-color: var(--purple-1);
-  box-shadow: 0 4px 10px rgba(71, 110, 144, 0.3);
-}
-
-.custom-checkbox:checked + .checkmark:after {
-  display: block;
-  animation: checkAnim 0.2s ease-in-out;
-}
-
-/* Animation */
-@keyframes checkAnim {
-  from {
-    transform: rotate(45deg) scale(0);
-  }
-
-  to {
-    transform: rotate(45deg) scale(1);
-  }
-}
-user-form-wrapper {
-  padding: 20px;
-  background: var(--primary-color);
-}
-
-.user-card {
-  background: var(--second-primary-color);
-  border-radius: 16px;
-  padding: 24px;
-margin-bottom: 20px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
-}
-
-/* Header */
-.card-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 10px;
-
-  h3 {
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin: 0;
-  }
-
-  .reset-btn {
-    background: var(--primary-color);
-    color: var(--purple-1);
-    padding: 8px 14px;
-    border-radius: 6px;
-    border: none;
-    font-size: 14px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-
-    &:hover {
-      background: var(--purple-1);
-      color: white;
-    }
-  }
-}
-
-.header-divider {
-  width: 100%;
-  height: 1px;
-  background: var(--border-color);
-  margin: 10px 0 25px 0;
-  opacity: 0.6;
-}
-
-label {
-  font-size: 15px;
-  font-weight: 500;
-  color: var(--text-primary);
-  margin-bottom: 4px;
-  display: block;
-  letter-spacing: 0.3px;
-}
-
-/* Agar required field ho */
-label.required::after {
-  content: ' *';
-  color: #ef4444;
-  font-weight: 600;
-}
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-/* Form Grid */
-.user-form {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-}
-
-/* Form Grid - 2 columns */
+/* ======================================== */
+/* MAIN EMPLOYEE FORM - 3 COLUMNS */
+/* ======================================== */
 .user-form {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, 1fr);
   gap: 18px;
 }
 
-/* Full width elements */
+/* Full width elements - Remarks aur buttons */
 .form-group.full-width,
-.checkbox-container,
 .form-actions {
   grid-column: 1 / -1;
 }
+
 /* Inputs */
-input {
+input, .form-control {
   height: 42px;
   border-radius: 10px;
   border: 1px solid var(--border-color);
@@ -351,14 +104,14 @@ input {
   background: var(--second-primary-color);
   outline: none;
   color: var(--text-primary);
-  /* 👈 typed text color */
+  width: 100%;
 
   &::placeholder {
     color: #98a2b3;
   }
 
   &:focus {
-    border-color: var(--border-color);
+    border-color: var(--purple-1);
     background: var(--primary-color);
   }
 }
@@ -369,14 +122,15 @@ textarea {
   background: var(--second-primary-color);
   outline: none;
   color: var(--text-primary);
-  /* 👈 typed text color */
+  width: 100%;
+  padding: 10px 14px;
 
   &::placeholder {
     color: #98a2b3;
   }
 
   &:focus {
-    border-color: var(--border-color);
+    border-color: var(--purple-1);
     background: var(--primary-color);
   }
 }
@@ -406,7 +160,6 @@ textarea {
 
   &:active {
     transform: scale(0.97);
-    box-shadow: none;
   }
 }
 
@@ -427,13 +180,55 @@ textarea {
 
   &:active {
     transform: scale(0.97);
-    box-shadow: none;
   }
 }
 
-/* ========================= */
+/* ======================================== */
+/* TABS KE ANDAR KE FORMS - 3 COLUMNS */
+/* ======================================== */
+.form-section .row.g-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+/* Full width inside tabs */
+.form-section .row.g-3 .col-12,
+.form-section .row.g-3 .col-md-12 {
+  grid-column: 1 / -1;
+}
+
+/* Keep col-md-* working properly */
+.form-section .row.g-3 [class*="col-"] {
+  width: 100%;
+}
+
+/* Checkbox containers ko properly align karna */
+.form-section .row.g-3 .d-flex.align-items-end {
+  display: flex;
+  align-items: flex-end;
+  padding-bottom: 0.5rem;
+}
+
+/* Responsive - Tablet */
+@media (max-width: 992px) {
+  .user-form,
+  .form-section .row.g-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 576px) {
+  .user-form,
+  .form-section .row.g-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ======================================== */
 /* MODERN CHECKBOX */
-/* ========================= */
+/* ======================================== */
 
 .checkbox-container {
   display: flex;
@@ -447,14 +242,12 @@ textarea {
   user-select: none;
 }
 
-/* Hide default checkbox */
 .custom-checkbox {
   position: absolute;
   opacity: 0;
   cursor: pointer;
 }
 
-/* Custom box */
 .checkmark {
   height: 20px;
   width: 20px;
@@ -466,7 +259,6 @@ textarea {
   position: relative;
 }
 
-/* Check icon */
 .checkmark:after {
   content: '';
   position: absolute;
@@ -480,11 +272,9 @@ textarea {
   transform: rotate(45deg);
 }
 
-/* When checked */
 .custom-checkbox:checked + .checkmark {
   background: var(--purple-1);
   border-color: var(--purple-1);
-  box-shadow: 0 4px 10px rgba(71, 110, 144, 0.3);
 }
 
 .custom-checkbox:checked + .checkmark:after {
@@ -492,149 +282,83 @@ textarea {
   animation: checkAnim 0.2s ease-in-out;
 }
 
-/* Animation */
 @keyframes checkAnim {
   from {
     transform: rotate(45deg) scale(0);
   }
-
   to {
     transform: rotate(45deg) scale(1);
   }
 }
-.mode-toggle {
-  display: flex;
-  grid-column: 1 / -1;
-  border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid var(--border-color);
 
-  button {
-    flex: 1;
-    padding: 11px;
-    border: none;
-    background: var(--primary-color);
-    color: var(--text-primary);
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
+/* ======================================== */
+/* HORIZONTAL TABS */
+/* ======================================== */
 
-    &.active {
-      background: var(--purple-1);
-      color: white;
-    }
-
-    &:hover:not(.active) {
-      background: var(--border-color);
-    }
-  }
-}
-.form-select {
-  width: 100%;
-  height: 42px;
-  padding: 0 16px;
-  font-size: 14px;
-  color: var(--text-primary);
-  background-color: var(--second-primary-color);
-  border: 1px solid var(--border-color);
-  border-radius: 10px;
-  appearance: none;
-  -webkit-appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 14px center;
-  cursor: pointer;
-  transition: border-color 0.2s ease;
-
-  &:focus {
-    outline: none;
-    border-color: var(--purple-1);
-    background: var(--primary-color);
-  }
-
-  &:hover {
-    border-color: var(--purple-1);
-  }
-
-  option {
-    color: var(--text-primary);
-    background: var(--second-primary-color);
-  }
-
-  option[value=''] {
-    color: #98a2b3;
-  }
-}
 .horizontal-tabs {
-background: var(--primary-color) !important; // ← white/dark card background
-    border-radius: 16px;
-    padding: 0;
-margin: 0 20px 20px 20px; // ← sides pe margin taake wrapper se match kare
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
-    border-bottom: none; // ← purani border hatao
+  background: var(--primary-color) !important;
+  border-radius: 16px;
+  padding: 0;
+  // margin: 0 20px 20px 20px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  border-bottom: none;
 
-    .tabs-container {
-        border-bottom: 2px solid var(--border-color);
-        padding: 0 16px;
-        display: flex;
-        gap: 0;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-        border-radius: 16px 16px 0 0; // ← top corners rounded
+  .tabs-container {
+    border-bottom: 2px solid var(--border-color);
+ padding: 24px;
+     display: flex;
+    gap: 0;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    border-radius: 16px 16px 0 0;
 
-        &::-webkit-scrollbar {
-            display: none;
-        }
+    &::-webkit-scrollbar {
+      display: none;
+    }
 
-        .tab-button {
-            background: transparent;
-            border: none;
-            padding: 14px 24px;
-            font-size: 15px;
-            font-weight: 500;
-            color: var(--white-color-1);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            border-bottom: 3px solid transparent;
-            white-space: nowrap;
-            flex-shrink: 0;
+    .tab-button {
+      background: transparent;
+      border: none;
+      padding: 14px 24px;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--white-color-1);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border-bottom: 3px solid transparent;
+      white-space: nowrap;
+      flex-shrink: 0;
 
-            &:hover {
-                color: var(--purple-1);
-                background-color: rgba(var(--purple-1-rgb), 0.1);
-            }
+      &:hover {
+        color: var(--purple-1);
+        background-color: rgba(71, 174, 238, 0.1);
+      }
 
-            &.active {
-                color: var(--purple-1);
-                border-bottom-color: var(--purple-1);
-                font-weight: 600;
-            }
-        }
-    }}
- .tab-content-section {
-     padding: 24px;
- }
+      &.active {
+        color: var(--purple-1);
+        border-bottom-color: var(--purple-1);
+        font-weight: 600;
+      }
+    }
+  }
+}
+
+.tab-content-section {
+  padding: 24px;
+}
+
+/* ======================================== */
+/* TABLES */
+/* ======================================== */
+
 .experience-table-wrapper {
   border: 1px solid var(--border-color);
   border-radius: 10px;
   overflow: hidden;
   background-color: var(--second-primary-color);
-  animation: slideDown 0.3s ease;
-
-  @keyframes slideDown {
-    from {
-      opacity: 0;
-      transform: translateY(-10px);
-    }
-
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
+  margin-top: 16px;
 }
 
 .table-header-bar {
@@ -657,7 +381,7 @@ margin: 0 20px 20px 20px; // ← sides pe margin taake wrapper se match kare
   .table-count {
     font-size: 12px;
     color: var(--purple-1);
-    background: rgba(112, 71, 238, 0.12);
+    background: rgba(91, 152, 198, 0.12);
     padding: 3px 10px;
     border-radius: 20px;
   }
@@ -701,17 +425,6 @@ margin: 0 20px 20px 20px; // ← sides pe margin taake wrapper se match kare
   }
 }
 
-.exp-table thead tr th,
-.exp-table tbody .exp-row td {
-  text-align: left;
-  padding-left: 16px;
-}
-
-.exp-table thead tr th:first-child,
-.exp-table tbody .exp-row td:first-child {
-  padding-left: 16px;
-}
-
 .company-name {
   font-weight: 500;
   color: var(--white-color-1);
@@ -735,8 +448,41 @@ margin: 0 20px 20px 20px; // ← sides pe margin taake wrapper se match kare
   color: var(--gray-color-1);
 
   &.current {
-    background: rgba(112, 71, 238, 0.15);
+    background: rgba(50, 131, 169, 0.385);
     color: var(--purple-1);
+  }
+}
+
+.badge-expired {
+  background: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+}
+
+.badge-inactive {
+  background: rgba(234, 179, 8, 0.15);
+  color: #eab308;
+}
+
+/* ======================================== */
+/* BUTTONS - EDIT & DELETE */
+/* ======================================== */
+
+.btn-edit {
+  background: rgba(70, 173, 229, 0.1);
+  border: 1px solid rgba(70, 171, 229, 0.25);
+  color: #1274ac;
+  border-radius: 6px;
+  padding: 6px 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  margin-right: 8px;
+
+  &:hover {
+    background: #1274ac;
+    color: white;
+    transform: scale(1.05);
   }
 }
 
@@ -758,71 +504,6 @@ margin: 0 20px 20px 20px; // ← sides pe margin taake wrapper se match kare
   }
 }
 
-.empty-hint {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 16px;
-  padding: 12px 16px;
-  border: 1px dashed var(--border-color);
-  border-radius: 8px;
-  color: var(--gray-color-1);
-  font-size: 13px;
-  opacity: 0.7;
-
-  strong {
-    color: var(--purple-1);
-  }
-}
-
-// Star Rating
-.star-display {
-  display: inline-flex;
-  gap: 2px;
-  font-size: 16px;
-
-  span {
-    color: rgba(255, 255, 255, 0.15);
-    transition: color 0.2s;
-
-    &.filled {
-      color: #f59e0b;
-    }
-  }
-}
-
-// Level Badges
-.badge-level {
-  padding: 3px 10px;
-  border-radius: 20px;
-  font-size: 12px;
-  font-weight: 500;
-
-  &.l1 {
-    background: rgba(156, 163, 175, 0.15);
-    color: #9ca3af;
-  }
-
-  &.l2 {
-    background: rgba(59, 130, 246, 0.15);
-    color: #3b82f6;
-  }
-
-  &.l3 {
-    background: rgba(234, 179, 8, 0.15);
-    color: #eab308;
-  }
-
-  &.l4 {
-    background: rgba(34, 197, 94, 0.15);
-    color: #22c55e;
-  }
-
-  &.l5 {
-    background: rgba(112, 71, 238, 0.15);
-    color: var(--purple-1);
-  }
-}
 .form-actions-footer {
   display: flex;
   align-items: center;
@@ -832,20 +513,22 @@ margin: 0 20px 20px 20px; // ← sides pe margin taake wrapper se match kare
   border-top: 1px solid var(--border-color);
   margin-top: 10px;
 
-  button {
+  .btn-submit-action {
+    height: 42px;
+    padding: 0 22px;
+    border-radius: 22px;
+    border: 1px solid var(--border-color);
+    background: var(--purple-1);
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    padding: 10px 22px;
-    border-radius: 6px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    border: none;
-    transition: all 0.25s ease;
 
-    svg {
-      flex-shrink: 0;
+    &:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.02);
     }
   }
 
@@ -863,70 +546,40 @@ margin: 0 20px 20px 20px; // ← sides pe margin taake wrapper se match kare
       transform: translateY(-2px);
       filter: brightness(1.05);
     }
-
-    &:active {
-      transform: scale(0.97);
-      box-shadow: none;
-    }
-  }
-
-  .btn-submit-action {
-    height: 42px;
-    padding: 0 22px;
-    border-radius: 22px;
-    border: 1px solid var(--border-color);
-    background: var(--purple-1);
-    color: white;
-    font-weight: 500;
-    cursor: pointer;
-
-    &:hover {
-      transform: translateY(-2px);
-      filter: brightness(1.02);
-    }
-
-    &:active {
-      transform: scale(0.97);
-      box-shadow: none;
-    }
   }
 }
-.badge-expired {
-  background: rgba(239, 68, 68, 0.15);
-  color: #ef4444;
+
+.empty-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 12px 16px;
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  color: var(--gray-color-1);
+  font-size: 13px;
+
+  strong {
+    color: var(--purple-1);
+  }
+}
+
+/* Level Badges */
+.badge-level {
   padding: 3px 10px;
   border-radius: 20px;
   font-size: 12px;
   font-weight: 500;
+
+  &.l1 { background: rgba(156, 163, 175, 0.15); color: #9ca3af; }
+  &.l2 { background: rgba(59, 130, 246, 0.15); color: #3b82f6; }
+  &.l3 { background: rgba(234, 179, 8, 0.15); color: #eab308; }
+  &.l4 { background: rgba(34, 197, 94, 0.15); color: #22c55e; }
+  &.l5 { background: rgba(112, 71, 238, 0.15); color: var(--purple-1); }
 }
 
-.badge-inactive {
-    background: rgba(234, 179, 8, 0.15);
-    color: #eab308;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 500;
-}
-// Gray background wrapper
-.user-form-wrapper {
-    padding: 20px;
-    background: var(--primary-color);
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    gap: 20px; // ← cards ke beech gap
-}
-
-// Submit buttons - cards ke bahar
-.form-actions-outer {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-}
-
-
-/* Custom Dropdown Styles */
+/* Custom Dropdown */
 .custom-dropdown {
   position: relative;
   cursor: pointer;
@@ -969,21 +622,6 @@ margin: 0 20px 20px 20px; // ← sides pe margin taake wrapper se match kare
   z-index: 10;
   max-height: 220px;
   overflow-y: auto;
-  overflow-x: hidden;
-  padding-right: 4px;
-}
-
-.dropdown-options::-webkit-scrollbar {
-  width: 6px;
-}
-
-.dropdown-options::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.dropdown-options::-webkit-scrollbar-thumb {
-  background: rgba(150, 150, 160, 0.35);
-  border-radius: 10px;
 }
 
 .dropdown-option {
@@ -993,8 +631,61 @@ margin: 0 20px 20px 20px; // ← sides pe margin taake wrapper se match kare
   transition: 0.2s;
 
   &:hover {
-    background: linear-gradient(90deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
-    backdrop-filter: blur(6px);
+    background: rgba(255, 255, 255, 0.05);
     transform: translateX(2px);
   }
+}
+
+.mode-toggle {
+  display: flex;
+  grid-column: 1 / -1;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border-color);
+
+  button {
+    flex: 1;
+    padding: 11px;
+    border: none;
+    background: var(--primary-color);
+    color: var(--text-primary);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+
+    &.active {
+      background: var(--purple-1);
+      color: white;
+    }
+  }
+}
+
+
+textarea, 
+textarea.form-control {
+  min-height: 100px;      /* ← Increased height */
+  border-radius: 10px;
+  border: 1px solid var(--border-color);
+  background: var(--second-primary-color);
+  outline: none;
+  color: var(--text-primary);
+  width: 100%;
+  padding: 12px 14px;
+  resize: vertical;       /* ← User resize kar sakta hai */
+  font-family: inherit;
+
+  &::placeholder {
+    color: #98a2b3;
+  }
+
+  &:focus {
+    border-color: var(--purple-1);
+    background: var(--primary-color);
+  }
+}
+
+/* Tabs ke andar ke textarea ke liye bhi */
+.form-section .row.g-3 textarea,
+.form-section textarea {
+  min-height: 80px;
 }
