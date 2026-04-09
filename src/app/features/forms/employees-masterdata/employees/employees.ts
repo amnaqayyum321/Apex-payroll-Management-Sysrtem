@@ -136,6 +136,8 @@ interface Tab {
   styleUrl: './employees.scss',
 })
 export class Employees implements OnInit {
+
+   title: 'create' | 'edit' = 'create';
   code: string = '';
   userFirstName: string = '';
   userLastName: string = '';

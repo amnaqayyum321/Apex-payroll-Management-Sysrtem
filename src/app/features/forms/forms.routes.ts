@@ -36,6 +36,7 @@ import { ViewLeaveApplication } from './attendence/view-leave-application/view-l
 import { LeaveApplicationApprovals } from './attendence/leave-application-approvals/leave-application-approvals';
 import { LeaveAppHr } from './attendence/leave-app-hr/leave-app-hr';
 import { ViewEmployeeList } from './employees-masterdata/view-employee-list/view-employee-list';
+import { AllSameForms } from './master-data/all-same-forms/all-same-forms';
 
 export const routes: Routes = [
   {
@@ -87,14 +88,14 @@ export const routes: Routes = [
     path: 'view-all-employees',
     component: ViewEmployeeList,
   },
-  {
-    path: 'employees-category',
-    component: EmployeeCategory,
-  },
-  {
-    path: 'employees-category/:id',
-    component: EmployeeCategory,
-  },
+  // {
+  //   path: 'employees-category',
+  //   component: EmployeeCategory,
+  // },
+  // {
+  //   path: 'employees-category/:id',
+  //   component: EmployeeCategory,
+  // },
   {
     path: 'view-employee-category-list',
     component: ViewEmployeeCategoryList,
@@ -103,18 +104,18 @@ export const routes: Routes = [
     path: 'company',
     component: Company,
   },
-  {
-    path: 'department',
-    component: Department,
-  },
-  {
-    path: 'department/:id',
-    component: Department,
-  },
-  {
-    path: 'designation',
-    component: Designation,
-  },
+  // {
+  //   path: 'department',
+  //   component: Department,
+  // },
+  // {
+  //   path: 'department/:id',
+  //   component: Department,
+  // },
+  // {
+  //   path: 'designation',
+  //   component: Designation,
+  // },
   {
     path: 'leaves',
     component: Leaves,
@@ -147,14 +148,14 @@ export const routes: Routes = [
     path: 'view-projects',
     component: ViewProjectList,
   },
-  {
-    path: 'id-type',
-    component: IDType,
-  },
-  {
-    path: 'id-type/:id',
-    component: IDType,
-  },
+  // {
+  //   path: 'id-type',
+  //   component: IDType,
+  // },
+  // {
+  //   path: 'id-type/:id',
+  //   component: IDType,
+  // },
   {
     path: 'view-id-type-list',
     component: ViewIDTypeList,
@@ -164,10 +165,10 @@ export const routes: Routes = [
   { path: 'pay-element', component: PayElement },
   { path: 'pay-element/:id', component: PayElement },
   { path: 'view-pay-element', component: ViewPayElementList },
-  {
-    path: 'designation/:id',
-    component: Designation,
-  },
+  // {
+  //   path: 'designation/:id',
+  //   component: Designation,
+  // },
   {
     path: 'company/:id',
     component: Company,
@@ -185,38 +186,38 @@ export const routes: Routes = [
     path: 'leaves/:id',
     component: Leaves,
   },
-  {
-    path: 'employees-grade',
-    component: EmployeesGrade,
-  },
-  {
-    path: 'employees-grade/:id',
-    component: EmployeesGrade,
-  },
+  // {
+  //   path: 'employees-grade',
+  //   component: EmployeesGrade,
+  // },
+  // {
+  //   path: 'employees-grade/:id',
+  //   component: EmployeesGrade,
+  // },
   {
     path: 'view-employees-grade-list',
     component: ViewEmployeesGradeList,
   },
-  {
-    path: 'belonging-type',
-    component: BelongingTypes,
-  },
-  {
-    path: 'belonging-type/:id',
-    component: BelongingTypes,
-  },
+  // {
+  //   path: 'belonging-type',
+  //   component: BelongingTypes,
+  // },
+  // {
+  //   path: 'belonging-type/:id',
+  //   component: BelongingTypes,
+  // },
   {
     path: 'view-belonging-types-list',
     component: ViewBelongingTypesList,
   },
-  {
-    path: 'job-title',
-    component: JobTitle,
-  },
-  {
-    path: 'job-title/:id',
-    component: JobTitle,
-  },
+  // {
+  //   path: 'job-title',
+  //   component: JobTitle,
+  // },
+  // {
+  //   path: 'job-title/:id',
+  //   component: JobTitle,
+  // },
   {
     path: 'view-job-title-list',
     component: ViewJobTitleList,
@@ -229,4 +230,12 @@ export const routes: Routes = [
     path: 'leave-app-hr',
     component: LeaveAppHr,
   },
+  {
+  path: 'manage/:type',
+  component: AllSameForms,
+},
+{
+  path: 'manage/:type/:id',
+  component: AllSameForms,
+},
 ];
