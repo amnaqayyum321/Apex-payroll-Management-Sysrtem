@@ -1,3 +1,4 @@
+// employees.component.ts
 import { Component, HostListener, OnInit } from '@angular/core';
 import { FormsService } from '../../Services/forms';
 import { ToastrService } from 'ngx-toastr';
@@ -65,6 +66,7 @@ interface BankAccount {
 interface EmployeeDocument {
   lineNumber: number;
   idTypePublicId: string;
+  idTypeName: string;
   documentNumber: string;
   issuedDate: string;
   expiryDate: string;
@@ -134,6 +136,8 @@ interface Tab {
   styleUrl: './employees.scss',
 })
 export class Employees implements OnInit {
+
+   title: 'create' | 'edit' = 'create';
   code: string = '';
   userFirstName: string = '';
   userLastName: string = '';
@@ -177,7 +181,7 @@ export class Employees implements OnInit {
     roleName: '',
     startDate: '',
     endDate: '',
-    currentlyWorking: '',
+    currentlyWorking: false,
     responsibilities: '',
     status: 'ACTIVE',
     remarks: '',
@@ -215,6 +219,7 @@ export class Employees implements OnInit {
   documents: EmployeeDocument[] = [];
   documentForm = {
     idTypePublicId: '',
+    idTypeName: '',
     documentNumber: '',
     issuedDate: '',
     expiryDate: '',
@@ -295,6 +300,26 @@ export class Employees implements OnInit {
     { id: 'leaves', title: 'Leaves' },
   ];
 
+  // Edit tracking flags and indices
+  isEditingExperience: boolean = false;
+  editingExperienceIndex: number = -1;
+  isEditingSkill: boolean = false;
+  editingSkillIndex: number = -1;
+  isEditingQualification: boolean = false;
+  editingQualificationIndex: number = -1;
+  isEditingBankAccount: boolean = false;
+  editingBankAccountIndex: number = -1;
+  isEditingDocument: boolean = false;
+  editingDocumentIndex: number = -1;
+  isEditingBelonging: boolean = false;
+  editingBelongingIndex: number = -1;
+  isEditingFamilyMember: boolean = false;
+  editingFamilyMemberIndex: number = -1;
+  isEditingPosition: boolean = false;
+  editingPositionIndex: number = -1;
+  isEditingLeave: boolean = false;
+  editingLeaveIndex: number = -1;
+
   // Dropdown toggle states
   isEmploymentStatusOpen = false;
   isLeaveTypeOpen = false;
@@ -323,8 +348,6 @@ export class Employees implements OnInit {
   isPositionStatusOpen = false;
   isBelongingStatusOpen = false;
   isExperienceStatusOpen = false;
-
-  // ... aise hi baaki ke liye bhi
 
   // Selected values
   selectedEmploymentStatus: string = '';
@@ -355,7 +378,6 @@ export class Employees implements OnInit {
   selectedJobTitle: any = null;
   selectedShift: any = null;
   selectedWorkSchedule: any = null;
-  // ... baaki ke liye bhi
 
   // Options arrays
   employmentStatusOptions = ['ONBOARDING', 'PROBATION', 'ACTIVE', 'NOTICE_PERIOD', 'INACTIVE'];
@@ -398,23 +420,65 @@ export class Employees implements OnInit {
     this.getBelongingType();
     this.getLeaveType();
   }
+
   setTab(tab: string) {
     this.activeTab = tab;
     this.activeTabId = tab;
   }
 
+  // --- Qualification Methods ---
   addQualification() {
-    this.qualifications.push({
-      lineNumber: this.qualifications.length + 1,
-      qualificationName: this.qualificationForm.qualificationName,
-      institutionName: this.qualificationForm.institutionName,
-      passingYear: this.qualificationForm.passingYear,
-      grade: this.qualificationForm.grade,
-      resultStatus: this.qualificationForm.resultStatus,
-      status: this.qualificationForm.status,
-      remarks: this.qualificationForm.remarks,
-    });
-    this.resetQualificationForm();
+    if (this.isEditingQualification) {
+      this.updateQualification();
+    } else {
+      this.qualifications.push({
+        lineNumber: this.qualifications.length + 1,
+        qualificationName: this.qualificationForm.qualificationName,
+        institutionName: this.qualificationForm.institutionName,
+        passingYear: this.qualificationForm.passingYear,
+        grade: this.qualificationForm.grade,
+        resultStatus: this.qualificationForm.resultStatus,
+        status: this.qualificationForm.status,
+        remarks: this.qualificationForm.remarks,
+      });
+      this.resetQualificationForm();
+    }
+  }
+
+  editQualification(index: number) {
+    const qual = this.qualifications[index];
+    this.qualificationForm = {
+      qualificationName: qual.qualificationName,
+      institutionName: qual.institutionName,
+      passingYear: qual.passingYear,
+      grade: qual.grade,
+      resultStatus: qual.resultStatus,
+      status: qual.status,
+      remarks: qual.remarks,
+    };
+    this.selectedResultStatus = qual.resultStatus;
+    this.selectedQualificationStatus = qual.status;
+    this.isEditingQualification = true;
+    this.editingQualificationIndex = index;
+  }
+
+  updateQualification() {
+    if (this.editingQualificationIndex !== -1) {
+      this.qualifications[this.editingQualificationIndex] = {
+        ...this.qualifications[this.editingQualificationIndex],
+        qualificationName: this.qualificationForm.qualificationName,
+        institutionName: this.qualificationForm.institutionName,
+        passingYear: this.qualificationForm.passingYear,
+        grade: this.qualificationForm.grade,
+        resultStatus: this.qualificationForm.resultStatus,
+        status: this.qualificationForm.status,
+        remarks: this.qualificationForm.remarks,
+      };
+      this.reindexArray(this.qualifications);
+      this.resetQualificationForm();
+      this.isEditingQualification = false;
+      this.editingQualificationIndex = -1;
+    }
   }
 
   resetQualificationForm() {
@@ -425,25 +489,69 @@ export class Employees implements OnInit {
       grade: '',
       resultStatus: '',
       remarks: '',
-      status: '',
+      status: 'ACTIVE',
     };
+    this.selectedResultStatus = '';
+    this.selectedQualificationStatus = '';
+    this.isEditingQualification = false;
+    this.editingQualificationIndex = -1;
   }
+
   removeQualification(index: number) {
     this.qualifications.splice(index, 1);
     this.reindexArray(this.qualifications);
   }
 
+  // --- Skill Methods ---
   addSkill() {
-    this.skills.push({
-      lineNumber: this.skills.length + 1,
-      skillName: this.skillsForm.skillName,
-      proficiencyLevel: this.skillsForm.proficiencyLevel,
-      yearsOfExperience: this.skillsForm.yearsOfExperience,
-      lastUsedYear: this.skillsForm.lastUsedYear,
-      status: this.skillsForm.status,
-      remarks: this.skillsForm.remarks,
-    });
-    this.resetSkillForm();
+    if (this.isEditingSkill) {
+      this.updateSkill();
+    } else {
+      this.skills.push({
+        lineNumber: this.skills.length + 1,
+        skillName: this.skillsForm.skillName,
+        proficiencyLevel: this.skillsForm.proficiencyLevel,
+        yearsOfExperience: this.skillsForm.yearsOfExperience,
+        lastUsedYear: this.skillsForm.lastUsedYear,
+        status: this.skillsForm.status,
+        remarks: this.skillsForm.remarks,
+      });
+      this.resetSkillForm();
+    }
+  }
+
+  editSkill(index: number) {
+    const skill = this.skills[index];
+    this.skillsForm = {
+      skillName: skill.skillName,
+      proficiencyLevel: skill.proficiencyLevel,
+      yearsOfExperience: skill.yearsOfExperience,
+      lastUsedYear: skill.lastUsedYear,
+      remarks: skill.remarks,
+      status: skill.status,
+    };
+    this.selectedProficiency = skill.proficiencyLevel;
+    this.selectedSkillStatus = skill.status;
+    this.isEditingSkill = true;
+    this.editingSkillIndex = index;
+  }
+
+  updateSkill() {
+    if (this.editingSkillIndex !== -1) {
+      this.skills[this.editingSkillIndex] = {
+        ...this.skills[this.editingSkillIndex],
+        skillName: this.skillsForm.skillName,
+        proficiencyLevel: this.skillsForm.proficiencyLevel,
+        yearsOfExperience: this.skillsForm.yearsOfExperience,
+        lastUsedYear: this.skillsForm.lastUsedYear,
+        status: this.skillsForm.status,
+        remarks: this.skillsForm.remarks,
+      };
+      this.reindexArray(this.skills);
+      this.resetSkillForm();
+      this.isEditingSkill = false;
+      this.editingSkillIndex = -1;
+    }
   }
 
   resetSkillForm() {
@@ -453,8 +561,12 @@ export class Employees implements OnInit {
       yearsOfExperience: null,
       lastUsedYear: null,
       remarks: '',
-      status: '',
+      status: 'ACTIVE',
     };
+    this.selectedProficiency = '';
+    this.selectedSkillStatus = '';
+    this.isEditingSkill = false;
+    this.editingSkillIndex = -1;
   }
 
   removeSkill(index: number) {
@@ -462,24 +574,64 @@ export class Employees implements OnInit {
     this.reindexArray(this.skills);
   }
 
+  // --- Experience Methods ---
   addExperience() {
-    this.experiences.push({
-      lineNumber: this.experiences.length + 1,
-      organizationName: this.expform.organizationName,
-      roleName: this.expform.roleName,
-      startDate: this.expform.startDate,
-      endDate: this.expform.endDate,
-      currentlyWorking: !!this.expform.currentlyWorking,
-      responsibilities: this.expform.responsibilities,
-      status: this.expform.status,
-      remarks: this.expform.remarks,
-    });
-    this.resetExpForm();
+    if (this.isEditingExperience) {
+      this.updateExperience();
+    } else {
+      this.experiences.push({
+        lineNumber: this.experiences.length + 1,
+        organizationName: this.expform.organizationName,
+        roleName: this.expform.roleName,
+        startDate: this.expform.startDate,
+        endDate: this.expform.endDate,
+        currentlyWorking: this.expform.currentlyWorking,
+        responsibilities: this.expform.responsibilities,
+        status: this.expform.status,
+        remarks: this.expform.remarks,
+      });
+      this.resetExpForm();
+    }
   }
-  removeExperience(index: number) {
-    this.experiences.splice(index, 1);
-    this.reindexArray(this.experiences);
+
+  editExperience(index: number) {
+    const exp = this.experiences[index];
+    this.expform = {
+      lineNumber: '',
+      organizationName: exp.organizationName,
+      roleName: exp.roleName,
+      startDate: exp.startDate,
+      endDate: exp.endDate,
+      currentlyWorking: exp.currentlyWorking,
+      responsibilities: exp.responsibilities,
+      status: exp.status,
+      remarks: exp.remarks,
+    };
+    this.selectedExperienceStatus = exp.status;
+    this.isEditingExperience = true;
+    this.editingExperienceIndex = index;
   }
+
+  updateExperience() {
+    if (this.editingExperienceIndex !== -1) {
+      this.experiences[this.editingExperienceIndex] = {
+        ...this.experiences[this.editingExperienceIndex],
+        organizationName: this.expform.organizationName,
+        roleName: this.expform.roleName,
+        startDate: this.expform.startDate,
+        endDate: this.expform.endDate,
+        currentlyWorking: this.expform.currentlyWorking,
+        responsibilities: this.expform.responsibilities,
+        status: this.expform.status,
+        remarks: this.expform.remarks,
+      };
+      this.reindexArray(this.experiences);
+      this.resetExpForm();
+      this.isEditingExperience = false;
+      this.editingExperienceIndex = -1;
+    }
+  }
+
   resetExpForm() {
     this.expform = {
       lineNumber: '',
@@ -487,28 +639,79 @@ export class Employees implements OnInit {
       roleName: '',
       startDate: '',
       endDate: '',
-      currentlyWorking: '',
+      currentlyWorking: false,
       responsibilities: '',
-      status: '',
+      status: 'ACTIVE',
       remarks: '',
     };
+    this.selectedExperienceStatus = '';
+    this.isEditingExperience = false;
+    this.editingExperienceIndex = -1;
   }
 
+  removeExperience(index: number) {
+    this.experiences.splice(index, 1);
+    this.reindexArray(this.experiences);
+  }
+
+  // --- Bank Account Methods ---
   addBankAccount() {
-    this.bankAccounts.push({
-      lineNumber: this.bankAccounts.length + 1,
-      bankName: this.bankAccountForm.bankName,
-      branchCode: this.bankAccountForm.branchCode,
-      accountNumber: this.bankAccountForm.accountNumber,
-      accountHolderName: this.bankAccountForm.accountHolderName,
-      iban: this.bankAccountForm.iban,
-      swiftCode: this.bankAccountForm.swiftCode,
-      isPrimaryAccount:
-        this.bankAccounts.length === 0 ? true : this.bankAccountForm.isPrimaryAccount,
-      status: this.bankAccountForm.status,
-      remarks: this.bankAccountForm.remarks,
-    });
-    this.resetBankAccountForm();
+    if (this.isEditingBankAccount) {
+      this.updateBankAccount();
+    } else {
+      this.bankAccounts.push({
+        lineNumber: this.bankAccounts.length + 1,
+        bankName: this.bankAccountForm.bankName,
+        branchCode: this.bankAccountForm.branchCode,
+        accountNumber: this.bankAccountForm.accountNumber,
+        accountHolderName: this.bankAccountForm.accountHolderName,
+        iban: this.bankAccountForm.iban,
+        swiftCode: this.bankAccountForm.swiftCode,
+        isPrimaryAccount: this.bankAccounts.length === 0 ? true : this.bankAccountForm.isPrimaryAccount,
+        status: this.bankAccountForm.status,
+        remarks: this.bankAccountForm.remarks,
+      });
+      this.resetBankAccountForm();
+    }
+  }
+
+  editBankAccount(index: number) {
+    const acc = this.bankAccounts[index];
+    this.bankAccountForm = {
+      bankName: acc.bankName,
+      branchCode: acc.branchCode,
+      accountNumber: acc.accountNumber,
+      accountHolderName: acc.accountHolderName,
+      iban: acc.iban,
+      swiftCode: acc.swiftCode,
+      isPrimaryAccount: acc.isPrimaryAccount,
+      status: acc.status,
+      remarks: acc.remarks,
+    };
+    this.selectedBankStatus = acc.status;
+    this.isEditingBankAccount = true;
+    this.editingBankAccountIndex = index;
+  }
+
+  updateBankAccount() {
+    if (this.editingBankAccountIndex !== -1) {
+      this.bankAccounts[this.editingBankAccountIndex] = {
+        ...this.bankAccounts[this.editingBankAccountIndex],
+        bankName: this.bankAccountForm.bankName,
+        branchCode: this.bankAccountForm.branchCode,
+        accountNumber: this.bankAccountForm.accountNumber,
+        accountHolderName: this.bankAccountForm.accountHolderName,
+        iban: this.bankAccountForm.iban,
+        swiftCode: this.bankAccountForm.swiftCode,
+        isPrimaryAccount: this.bankAccountForm.isPrimaryAccount,
+        status: this.bankAccountForm.status,
+        remarks: this.bankAccountForm.remarks,
+      };
+      this.reindexArray(this.bankAccounts);
+      this.resetBankAccountForm();
+      this.isEditingBankAccount = false;
+      this.editingBankAccountIndex = -1;
+    }
   }
 
   resetBankAccountForm() {
@@ -520,9 +723,12 @@ export class Employees implements OnInit {
       iban: '',
       swiftCode: '',
       isPrimaryAccount: false,
-      status: '',
+      status: 'ACTIVE',
       remarks: '',
     };
+    this.selectedBankStatus = '';
+    this.isEditingBankAccount = false;
+    this.editingBankAccountIndex = -1;
   }
 
   removeBankAccount(index: number) {
@@ -533,49 +739,144 @@ export class Employees implements OnInit {
   setPrimaryAccount(index: number) {
     this.bankAccounts.forEach((acc, i) => (acc.isPrimaryAccount = i === index));
   }
+
+  // --- Document Methods ---
   addDocument() {
-    this.documents.push({
-      lineNumber: this.documents.length + 1,
-      idTypePublicId: this.documentForm.idTypePublicId,
-      documentNumber: this.documentForm.documentNumber,
-      issuedDate: this.documentForm.issuedDate,
-      expiryDate: this.documentForm.expiryDate,
-      fileUrl: this.documentForm.fileUrl,
-      status: this.documentForm.status,
-      remarks: this.documentForm.remarks,
-    });
-    this.resetDocumentForm();
+    if (this.isEditingDocument) {
+      this.updateDocument();
+    } else {
+      this.documents.push({
+        lineNumber: this.documents.length + 1,
+        idTypePublicId: this.documentForm.idTypePublicId,
+        idTypeName: this.documentForm.idTypeName,
+        documentNumber: this.documentForm.documentNumber,
+        issuedDate: this.documentForm.issuedDate,
+        expiryDate: this.documentForm.expiryDate,
+        fileUrl: this.documentForm.fileUrl,
+        status: this.documentForm.status,
+        remarks: this.documentForm.remarks,
+      });
+      this.resetDocumentForm();
+    }
+  }
+
+  editDocument(index: number) {
+    const doc = this.documents[index];
+    this.documentForm = {
+      idTypePublicId: doc.idTypePublicId,
+      idTypeName: doc.idTypeName,
+      documentNumber: doc.documentNumber,
+      issuedDate: doc.issuedDate,
+      expiryDate: doc.expiryDate,
+      fileUrl: doc.fileUrl,
+      status: doc.status,
+      remarks: doc.remarks,
+    };
+    this.selectedDocType = doc.idTypeName;
+    this.selectedDocStatus = doc.status;
+    this.isEditingDocument = true;
+    this.editingDocumentIndex = index;
+  }
+
+  updateDocument() {
+    if (this.editingDocumentIndex !== -1) {
+      this.documents[this.editingDocumentIndex] = {
+        ...this.documents[this.editingDocumentIndex],
+        idTypePublicId: this.documentForm.idTypePublicId,
+        idTypeName: this.documentForm.idTypeName,
+        documentNumber: this.documentForm.documentNumber,
+        issuedDate: this.documentForm.issuedDate,
+        expiryDate: this.documentForm.expiryDate,
+        fileUrl: this.documentForm.fileUrl,
+        status: this.documentForm.status,
+        remarks: this.documentForm.remarks,
+      };
+      this.reindexArray(this.documents);
+      this.resetDocumentForm();
+      this.isEditingDocument = false;
+      this.editingDocumentIndex = -1;
+    }
   }
 
   resetDocumentForm() {
     this.documentForm = {
       idTypePublicId: '',
+      idTypeName: '',
       documentNumber: '',
       issuedDate: '',
       expiryDate: '',
       fileUrl: '',
-      status: '',
+      status: 'ACTIVE',
       remarks: '',
     };
+    this.selectedDocType = '';
+    this.selectedDocStatus = '';
+    this.isEditingDocument = false;
+    this.editingDocumentIndex = -1;
   }
+
   removeDocument(index: number) {
     this.documents.splice(index, 1);
     this.reindexArray(this.documents);
   }
 
+  // --- Belonging Methods ---
   addBelonging() {
-    this.belongings.push({
-      lineNumber: this.belongings.length + 1,
-      belongingTypePublicId: this.belongingForm.belongingTypePublicId,
-      belongingname: this.belongingForm.belongingname,
-      serialNumber: this.belongingForm.serialNumber,
-      issuedDate: this.belongingForm.issuedDate,
-      returnDate: this.belongingForm.returnDate,
-      conditionStatus: this.belongingForm.conditionStatus,
-      status: this.belongingForm.status,
-      remarks: this.belongingForm.remarks,
-    });
-    this.resetBelongingForm();
+    if (this.isEditingBelonging) {
+      this.updateBelonging();
+    } else {
+      this.belongings.push({
+        lineNumber: this.belongings.length + 1,
+        belongingTypePublicId: this.belongingForm.belongingTypePublicId,
+        belongingname: this.belongingForm.belongingname,
+        serialNumber: this.belongingForm.serialNumber,
+        issuedDate: this.belongingForm.issuedDate,
+        returnDate: this.belongingForm.returnDate,
+        conditionStatus: this.belongingForm.conditionStatus,
+        status: this.belongingForm.status,
+        remarks: this.belongingForm.remarks,
+      });
+      this.resetBelongingForm();
+    }
+  }
+
+  editBelonging(index: number) {
+    const b = this.belongings[index];
+    this.belongingForm = {
+      belongingTypePublicId: b.belongingTypePublicId,
+      belongingname: b.belongingname,
+      serialNumber: b.serialNumber,
+      issuedDate: b.issuedDate,
+      returnDate: b.returnDate,
+      conditionStatus: b.conditionStatus,
+      status: b.status,
+      remarks: b.remarks,
+    };
+    this.selectedBelongingType = b.belongingname;
+    this.selectedConditionStatus = b.conditionStatus;
+    this.selectedBelongingStatus = b.status;
+    this.isEditingBelonging = true;
+    this.editingBelongingIndex = index;
+  }
+
+  updateBelonging() {
+    if (this.editingBelongingIndex !== -1) {
+      this.belongings[this.editingBelongingIndex] = {
+        ...this.belongings[this.editingBelongingIndex],
+        belongingTypePublicId: this.belongingForm.belongingTypePublicId,
+        belongingname: this.belongingForm.belongingname,
+        serialNumber: this.belongingForm.serialNumber,
+        issuedDate: this.belongingForm.issuedDate,
+        returnDate: this.belongingForm.returnDate,
+        conditionStatus: this.belongingForm.conditionStatus,
+        status: this.belongingForm.status,
+        remarks: this.belongingForm.remarks,
+      };
+      this.reindexArray(this.belongings);
+      this.resetBelongingForm();
+      this.isEditingBelonging = false;
+      this.editingBelongingIndex = -1;
+    }
   }
 
   resetBelongingForm() {
@@ -586,34 +887,95 @@ export class Employees implements OnInit {
       issuedDate: '',
       returnDate: '',
       conditionStatus: '',
-      status: '',
+      status: 'ACTIVE',
       remarks: '',
     };
+    this.selectedBelongingType = '';
+    this.selectedConditionStatus = '';
+    this.selectedBelongingStatus = '';
+    this.isEditingBelonging = false;
+    this.editingBelongingIndex = -1;
   }
 
   removeBelonging(index: number) {
     this.belongings.splice(index, 1);
     this.reindexArray(this.belongings);
   }
+
+  // --- Family Member Methods ---
   addFamilyMember() {
-    this.familyMembers.push({
-      lineNumber: this.familyMembers.length + 1,
-      memberName: this.familyMemberForm.memberName,
-      relationName: this.familyMemberForm.relationName,
-      dateOfBirth: this.familyMemberForm.dateOfBirth,
-      occupation: this.familyMemberForm.occupation,
-      contactNumber: this.familyMemberForm.contactNumber,
-      passportNo: this.familyMemberForm.passportNo,
-      passportExpiry: this.familyMemberForm.passportExpiry,
-      visaIqamaNo: this.familyMemberForm.visaIqamaNo,
-      visaIqamaExpiry: this.familyMemberForm.visaIqamaExpiry,
-      isDependent: this.familyMemberForm.isDependent,
-      isBeneficiary: this.familyMemberForm.isBeneficiary,
-      isEmergencyContact: this.familyMemberForm.isEmergencyContact,
-      status: this.familyMemberForm.status,
-      remarks: this.familyMemberForm.remarks,
-    });
-    this.resetFamilyMemberForm();
+    if (this.isEditingFamilyMember) {
+      this.updateFamilyMember();
+    } else {
+      this.familyMembers.push({
+        lineNumber: this.familyMembers.length + 1,
+        memberName: this.familyMemberForm.memberName,
+        relationName: this.familyMemberForm.relationName,
+        dateOfBirth: this.familyMemberForm.dateOfBirth,
+        occupation: this.familyMemberForm.occupation,
+        contactNumber: this.familyMemberForm.contactNumber,
+        passportNo: this.familyMemberForm.passportNo,
+        passportExpiry: this.familyMemberForm.passportExpiry,
+        visaIqamaNo: this.familyMemberForm.visaIqamaNo,
+        visaIqamaExpiry: this.familyMemberForm.visaIqamaExpiry,
+        isDependent: this.familyMemberForm.isDependent,
+        isBeneficiary: this.familyMemberForm.isBeneficiary,
+        isEmergencyContact: this.familyMemberForm.isEmergencyContact,
+        status: this.familyMemberForm.status,
+        remarks: this.familyMemberForm.remarks,
+      });
+      this.resetFamilyMemberForm();
+    }
+  }
+
+  editFamilyMember(index: number) {
+    const fm = this.familyMembers[index];
+    this.familyMemberForm = {
+      memberName: fm.memberName,
+      relationName: fm.relationName,
+      dateOfBirth: fm.dateOfBirth,
+      occupation: fm.occupation,
+      contactNumber: fm.contactNumber,
+      passportNo: fm.passportNo,
+      passportExpiry: fm.passportExpiry,
+      visaIqamaNo: fm.visaIqamaNo,
+      visaIqamaExpiry: fm.visaIqamaExpiry,
+      isDependent: fm.isDependent,
+      isBeneficiary: fm.isBeneficiary,
+      isEmergencyContact: fm.isEmergencyContact,
+      status: fm.status,
+      remarks: fm.remarks,
+    };
+    this.selectedRelation = fm.relationName;
+    this.selectedFamilyMemberStatus = fm.status;
+    this.isEditingFamilyMember = true;
+    this.editingFamilyMemberIndex = index;
+  }
+
+  updateFamilyMember() {
+    if (this.editingFamilyMemberIndex !== -1) {
+      this.familyMembers[this.editingFamilyMemberIndex] = {
+        ...this.familyMembers[this.editingFamilyMemberIndex],
+        memberName: this.familyMemberForm.memberName,
+        relationName: this.familyMemberForm.relationName,
+        dateOfBirth: this.familyMemberForm.dateOfBirth,
+        occupation: this.familyMemberForm.occupation,
+        contactNumber: this.familyMemberForm.contactNumber,
+        passportNo: this.familyMemberForm.passportNo,
+        passportExpiry: this.familyMemberForm.passportExpiry,
+        visaIqamaNo: this.familyMemberForm.visaIqamaNo,
+        visaIqamaExpiry: this.familyMemberForm.visaIqamaExpiry,
+        isDependent: this.familyMemberForm.isDependent,
+        isBeneficiary: this.familyMemberForm.isBeneficiary,
+        isEmergencyContact: this.familyMemberForm.isEmergencyContact,
+        status: this.familyMemberForm.status,
+        remarks: this.familyMemberForm.remarks,
+      };
+      this.reindexArray(this.familyMembers);
+      this.resetFamilyMemberForm();
+      this.isEditingFamilyMember = false;
+      this.editingFamilyMemberIndex = -1;
+    }
   }
 
   resetFamilyMemberForm() {
@@ -627,39 +989,171 @@ export class Employees implements OnInit {
       passportExpiry: '',
       visaIqamaNo: '',
       visaIqamaExpiry: '',
-      status: '',
+      status: 'ACTIVE',
       isDependent: false,
       isBeneficiary: false,
       isEmergencyContact: false,
       remarks: '',
     };
+    this.selectedRelation = '';
+    this.selectedFamilyMemberStatus = '';
+    this.isEditingFamilyMember = false;
+    this.editingFamilyMemberIndex = -1;
   }
 
   removeFamilyMember(index: number) {
     this.familyMembers.splice(index, 1);
     this.reindexArray(this.familyMembers);
   }
+
+  // --- Position Methods ---
   addPosition() {
-    this.positions.push({
-      lineNumber: this.positions.length + 1,
-      departmentPublicId: this.positionForm.departmentPublicId,
-      designationPublicId: this.positionForm.designationPublicId,
-      branchPublicId: this.positionForm.branchPublicId,
-      reportingManagerPublicId: this.positionForm.reportingManagerPublicId,
-      employeeGradePublicId: this.positionForm.employeeGradePublicId,
-      employeeCategoryPublicId: this.positionForm.employeeCategoryPublicId,
-      jobTitlePublicId: this.positionForm.jobTitlePublicId,
-      shiftPublicId: this.positionForm.shiftPublicId,
-      workSchedulePublicId: this.positionForm.workSchedulePublicId,
-      positionCode: this.positionForm.positionCode,
-      positionName: this.positionForm.positionName,
-      effectiveFrom: this.positionForm.effectiveFrom,
-      effectiveTo: this.positionForm.effectiveTo,
-      isPrimaryPosition: this.positions.length === 0 ? true : this.positionForm.isPrimaryPosition,
-      status: this.positionForm.status,
-      remarks: this.positionForm.remarks,
-    });
-    this.resetPositionForm();
+    if (this.isEditingPosition) {
+      this.updatePosition();
+    } else {
+      this.positions.push({
+        lineNumber: this.positions.length + 1,
+        departmentPublicId: this.positionForm.departmentPublicId,
+        designationPublicId: this.positionForm.designationPublicId,
+        branchPublicId: this.positionForm.branchPublicId,
+        reportingManagerPublicId: this.positionForm.reportingManagerPublicId,
+        employeeGradePublicId: this.positionForm.employeeGradePublicId,
+        employeeCategoryPublicId: this.positionForm.employeeCategoryPublicId,
+        jobTitlePublicId: this.positionForm.jobTitlePublicId,
+        shiftPublicId: this.positionForm.shiftPublicId,
+        workSchedulePublicId: this.positionForm.workSchedulePublicId,
+        positionCode: this.positionForm.positionCode,
+        positionName: this.positionForm.positionName,
+        effectiveFrom: this.positionForm.effectiveFrom,
+        effectiveTo: this.positionForm.effectiveTo,
+        isPrimaryPosition: this.positions.length === 0 ? true : this.positionForm.isPrimaryPosition,
+        status: this.positionForm.status,
+        remarks: this.positionForm.remarks,
+      });
+      this.resetPositionForm();
+    }
+  }
+
+ // employees.component.ts mein editPosition method ko replace karein
+
+editPosition(index: number) {
+  const pos = this.positions[index];
+  
+  // Form data set karein
+  this.positionForm = {
+    departmentPublicId: pos.departmentPublicId,
+    designationPublicId: pos.designationPublicId,
+    branchPublicId: pos.branchPublicId,
+    reportingManagerPublicId: pos.reportingManagerPublicId,
+    employeeGradePublicId: pos.employeeGradePublicId,
+    employeeCategoryPublicId: pos.employeeCategoryPublicId,
+    jobTitlePublicId: pos.jobTitlePublicId,
+    shiftPublicId: pos.shiftPublicId,
+    workSchedulePublicId: pos.workSchedulePublicId,
+    positionCode: pos.positionCode,
+    positionName: pos.positionName,
+    effectiveFrom: pos.effectiveFrom,
+    effectiveTo: pos.effectiveTo,
+    isPrimaryPosition: pos.isPrimaryPosition,
+    status: pos.status,
+    remarks: pos.remarks,
+  };
+  
+  this.selectedPositionStatus = pos.status;
+  
+  // 👇 IMPORTANT: Dropdown objects set karein (display ke liye)
+  // Department set karein
+  if (pos.departmentPublicId && this.departmentList) {
+    this.selectedDepartment = this.departmentList.find(
+      (dept: any) => dept.publicId === pos.departmentPublicId
+    );
+  }
+  
+  // Designation set karein
+  if (pos.designationPublicId && this.designationList) {
+    this.selectedDesignation = this.designationList.find(
+      (des: any) => des.publicId === pos.designationPublicId
+    );
+  }
+  
+  // Branch set karein
+  if (pos.branchPublicId && this.companyBranchList) {
+    this.selcetedBranch = this.companyBranchList.find(
+      (branch: any) => branch.publicId === pos.branchPublicId
+    );
+  }
+  
+  // Reporting Manager set karein
+  if (pos.reportingManagerPublicId && this.EmployeeList) {
+    this.selectedReportingManager = this.EmployeeList.find(
+      (emp: any) => emp.employeePublicId === pos.reportingManagerPublicId
+    );
+  }
+  
+  // Employee Grade set karein
+  if (pos.employeeGradePublicId && this.EmployeeGradeList) {
+    this.selectedEmployeeGrade = this.EmployeeGradeList.find(
+      (grade: any) => grade.publicId === pos.employeeGradePublicId
+    );
+  }
+  
+  // Employee Category set karein
+  if (pos.employeeCategoryPublicId && this.EmployeeCategoryList) {
+    this.SlectedEmployeeCategory = this.EmployeeCategoryList.find(
+      (cat: any) => cat.publicId === pos.employeeCategoryPublicId
+    );
+  }
+  
+  // Job Title set karein
+  if (pos.jobTitlePublicId && this.JobTitleList) {
+    this.selectedJobTitle = this.JobTitleList.find(
+      (job: any) => job.publicId === pos.jobTitlePublicId
+    );
+  }
+  
+  // Shift set karein
+  if (pos.shiftPublicId && this.shiftList) {
+    this.selectedShift = this.shiftList.find(
+      (shift: any) => shift.publicId === pos.shiftPublicId
+    );
+  }
+  
+  // Work Schedule set karein
+ if (pos.workSchedulePublicId && this.WorkScheduleList) {
+  this.selectedWorkSchedule = this.WorkScheduleList.find(
+    (ws: any) => ws.publicId === pos.workSchedulePublicId
+  );
+  }
+  
+  this.isEditingPosition = true;
+  this.editingPositionIndex = index;
+}
+  updatePosition() {
+    if (this.editingPositionIndex !== -1) {
+      this.positions[this.editingPositionIndex] = {
+        ...this.positions[this.editingPositionIndex],
+        departmentPublicId: this.positionForm.departmentPublicId,
+        designationPublicId: this.positionForm.designationPublicId,
+        branchPublicId: this.positionForm.branchPublicId,
+        reportingManagerPublicId: this.positionForm.reportingManagerPublicId,
+        employeeGradePublicId: this.positionForm.employeeGradePublicId,
+        employeeCategoryPublicId: this.positionForm.employeeCategoryPublicId,
+        jobTitlePublicId: this.positionForm.jobTitlePublicId,
+        shiftPublicId: this.positionForm.shiftPublicId,
+        workSchedulePublicId: this.positionForm.workSchedulePublicId,
+        positionCode: this.positionForm.positionCode,
+        positionName: this.positionForm.positionName,
+        effectiveFrom: this.positionForm.effectiveFrom,
+        effectiveTo: this.positionForm.effectiveTo,
+        isPrimaryPosition: this.positionForm.isPrimaryPosition,
+        status: this.positionForm.status,
+        remarks: this.positionForm.remarks,
+      };
+      this.reindexArray(this.positions);
+      this.resetPositionForm();
+      this.isEditingPosition = false;
+      this.editingPositionIndex = -1;
+    }
   }
 
   resetPositionForm() {
@@ -679,8 +1173,20 @@ export class Employees implements OnInit {
       effectiveTo: '',
       isPrimaryPosition: false,
       remarks: '',
-      status: '',
+      status: 'ACTIVE',
     };
+    this.selectedDepartment = null;
+    this.selectedDesignation = null;
+    this.selcetedBranch = null;
+    this.selectedReportingManager = null;
+    this.selectedEmployeeGrade = null;
+    this.SlectedEmployeeCategory = null;
+    this.selectedJobTitle = null;
+    this.selectedShift = null;
+    this.selectedWorkSchedule = null;
+    this.selectedPositionStatus = '';
+    this.isEditingPosition = false;
+    this.editingPositionIndex = -1;
   }
 
   removePosition(index: number) {
@@ -692,9 +1198,73 @@ export class Employees implements OnInit {
     this.positions.forEach((pos, i) => (pos.isPrimaryPosition = i === index));
   }
 
+  // --- Leave Methods ---
+  addLeaveForm() {
+    if (this.isEditingLeave) {
+      this.updateLeave();
+    } else {
+      this.Leaves.push({
+        leaveTypeName: this.leaveForm.leaveTypeName,
+        leaveTypePublicId: this.leaveForm.leaveTypePublicId,
+        totalLeavesPerYear: this.leaveForm.totalLeavesPerYear,
+        remarks: this.leaveForm.remarks,
+        active: this.leaveForm.active,
+      });
+      this.resetLeaveForm();
+    }
+  }
+
+  editLeave(index: number) {
+    const leave = this.Leaves[index];
+    this.leaveForm = {
+      leaveTypeName: leave.leaveTypeName,
+      leaveTypePublicId: leave.leaveTypePublicId,
+      totalLeavesPerYear: leave.totalLeavesPerYear,
+      remarks: leave.remarks,
+      active: leave.active,
+    };
+    this.selectLeaveType = leave.leaveTypeName;
+    this.isEditingLeave = true;
+    this.editingLeaveIndex = index;
+  }
+
+  updateLeave() {
+    if (this.editingLeaveIndex !== -1) {
+      this.Leaves[this.editingLeaveIndex] = {
+        leaveTypeName: this.leaveForm.leaveTypeName,
+        leaveTypePublicId: this.leaveForm.leaveTypePublicId,
+        totalLeavesPerYear: this.leaveForm.totalLeavesPerYear,
+        remarks: this.leaveForm.remarks,
+        active: this.leaveForm.active,
+      };
+      this.resetLeaveForm();
+      this.isEditingLeave = false;
+      this.editingLeaveIndex = -1;
+    }
+  }
+
+  resetLeaveForm() {
+    this.leaveForm = {
+      leaveTypeName: '',
+      leaveTypePublicId: '',
+      totalLeavesPerYear: '',
+      remarks: '',
+      active: false,
+    };
+    this.selectLeaveType = '';
+    this.isEditingLeave = false;
+    this.editingLeaveIndex = -1;
+  }
+
+  removeLeaveForm(index: number) {
+    this.Leaves.splice(index, 1);
+  }
+
+  // --- Helper Methods ---
   private reindexArray(arr: { lineNumber: number }[]) {
     arr.forEach((item, i) => (item.lineNumber = i + 1));
   }
+
   private validateCoreFields(): boolean {
     if (
       !this.code ||
@@ -721,30 +1291,6 @@ export class Employees implements OnInit {
     return true;
   }
 
-  // private buildEmployeePayload() {
-  //   return {
-  //     code: this.code,
-  //     userFirstName: this.userFirstName,
-  //     userLastName: this.userLastName,
-  //     email: this.email,
-  //     mobileNumber: this.mobileNumber,
-  //     employmentStatus: this.employmentStatus,
-  //     onboardingStatus: this.onboardingStatus,
-  //     employeeType: this.employeeType,
-  //     dateOfBirth: this.dateOfBirth || null,
-  //     dateOfJoining: this.dateOfJoining || null,
-  //     dateOfLeaving: this.dateOfLeaving || null,
-  //     remarks: this.remarks,
-  //     qualifications: this.qualifications,
-  //     skills: this.skills,
-  //     experiences: this.experiences,
-  //     bankAccounts: this.bankAccounts,
-  //     documents: this.documents,
-  //     belongings: this.belongings,
-  //     familyMembers: this.familyMembers,
-  //     positions: this.positions,
-  //   };
-  // }
   private buildEmployeePayload() {
     return {
       code: this.code,
@@ -767,11 +1313,14 @@ export class Employees implements OnInit {
       })),
       bankAccounts: this.bankAccounts,
       documents: this.documents.map((doc) => ({
-        ...doc,
-        idTypePublicId:
-          typeof doc.idTypePublicId === 'object'
-            ? ((doc.idTypePublicId as any)?.publicId ?? null)
-            : doc.idTypePublicId,
+        lineNumber: doc.lineNumber,
+        idTypePublicId: doc.idTypePublicId,
+        documentNumber: doc.documentNumber,
+        issuedDate: doc.issuedDate,
+        expiryDate: doc.expiryDate,
+        fileUrl: doc.fileUrl,
+        status: doc.status,
+        remarks: doc.remarks,
       })),
       belongings: this.belongings,
       familyMembers: this.familyMembers,
@@ -823,7 +1372,7 @@ export class Employees implements OnInit {
       next: () => {
         this.loader.hide();
         this.toastr.success('Employee created successfully', 'Success');
-        this.resetForm();
+        this.resetFullForm();
         setTimeout(() => this.router.navigate(['/panel/forms/view-all-employees']), 1500);
       },
       error: (error: any) => {
@@ -847,13 +1396,10 @@ export class Employees implements OnInit {
         this.code = d.code ?? '';
         this.email = d.email ?? '';
         this.mobileNumber = d.mobileNumber ?? '';
-        this.employmentStatus = d.employmentStatus ?? '';
-        this.onboardingStatus = d.onboardingStatus ?? '';
-        this.employeeType = d.employeeType ?? '';
+        this.remarks = d.remarks ?? '';
         this.dateOfBirth = d.dateOfBirth ?? '';
         this.dateOfJoining = d.dateOfJoining ?? '';
         this.dateOfLeaving = d.dateOfLeaving ?? '';
-        this.remarks = d.remarks ?? '';
         this.qualifications = d.qualifications ?? [];
         this.skills = d.skills ?? [];
         this.experiences = d.experiences ?? [];
@@ -863,6 +1409,15 @@ export class Employees implements OnInit {
         this.familyMembers = d.familyMembers ?? [];
         this.positions = d.positions ?? [];
         this.Leaves = d.leaveEntitlements ?? [];
+
+        this.employmentStatus = d.employmentStatus ?? '';
+        this.selectedEmploymentStatus = d.employmentStatus ?? '';
+
+        this.onboardingStatus = d.onboardingStatus ?? '';
+        this.selectedOnboardingStatus = d.onboardingStatus ?? '';
+
+        this.employeeType = d.employeeType ?? '';
+        this.selectedEmployeeType = d.employeeType ?? '';
       },
       error: () => {
         this.loader.hide();
@@ -895,7 +1450,8 @@ export class Employees implements OnInit {
     });
   }
 
-  resetForm() {
+  resetFullForm() {
+    // Core fields
     this.code = '';
     this.userFirstName = '';
     this.userLastName = '';
@@ -909,6 +1465,12 @@ export class Employees implements OnInit {
     this.dateOfLeaving = '';
     this.remarks = '';
 
+    // Main card dropdowns
+    this.selectedEmploymentStatus = '';
+    this.selectedOnboardingStatus = '';
+    this.selectedEmployeeType = '';
+
+    // Arrays
     this.qualifications = [];
     this.skills = [];
     this.experiences = [];
@@ -918,6 +1480,8 @@ export class Employees implements OnInit {
     this.familyMembers = [];
     this.positions = [];
     this.Leaves = [];
+
+    // User account fields
     this.userPublicId = '';
     this.userEmail = '';
     this.userPassword = '';
@@ -926,132 +1490,131 @@ export class Employees implements OnInit {
     this.userLastNameNew = '';
     this.userPhoneNumber = '';
     this.disabled = false;
+
+    // Sub-form resets (each also clears their dropdown selected values)
+    this.resetExpForm();
+    this.resetSkillForm();
+    this.resetQualificationForm();
+    this.resetBankAccountForm();
+    this.resetDocumentForm();
+    this.resetBelongingForm();
+    this.resetFamilyMemberForm();
+    this.resetPositionForm();
+    this.resetLeaveForm();
+  }
+
+  resetForm() {
+    this.resetFullForm();
   }
 
   cancel() {
     this.router.navigate(['/panel/forms/view-all-employees']);
   }
+
   isNotExpired(dateStr: string): boolean {
     if (!dateStr) return true;
     return new Date(dateStr) >= new Date();
   }
+
   loadDepartment() {
     this.formSv.GetDepartment(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.departmentList = res.data;
-          console.log('deaprtment Lsit', res);
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => { console.log(err); },
     );
   }
+
   loadDesignation() {
     this.formSv.getAllDesignations(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.designationList = res.data;
-          console.log('designation Lsit', res);
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => { console.log(err); },
     );
   }
+
   loadCompanyBranch() {
     this.formSv.getAllComapnyBranches(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.companyBranchList = res.data;
-          console.log('companyBranch Lsit', res);
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => { console.log(err); },
     );
   }
+
   loadEmployeeGrade() {
     this.formSv.GetEmployeeGrade(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.EmployeeGradeList = res.data;
-          console.log('EmployeeGrade Lsit', res);
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => { console.log(err); },
     );
   }
+
   loadEmployeeCategory() {
     this.formSv.GetEmployeeCaterogy(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.EmployeeCategoryList = res.data;
-          console.log('EmployeeCategory Lsit', res);
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => { console.log(err); },
     );
   }
+
   loadJobTitle() {
     this.formSv.GetJobTitle(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.JobTitleList = res.data;
-          console.log('JobTitle Lsit', res);
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => { console.log(err); },
     );
   }
+
   loadshift() {
     this.formSv.getAllShifts(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.shiftList = res.data;
-          console.log('shift Lsit', res);
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => { console.log(err); },
     );
   }
+
   loadWorkSchedule() {
     this.formSv.getAllWorkSchedules(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.WorkScheduleList = res.data;
-          console.log('WorkSchedule Lsit', res);
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => { console.log(err); },
     );
   }
+
   loadEmployee() {
     this.formSv.GetEmployees(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.EmployeeList = res.data;
-          console.log('employee Lsit', res);
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => { console.log(err); },
     );
   }
+
   tabPage: number = 0;
   tabsPerPage: number = 7;
 
@@ -1075,17 +1638,15 @@ export class Employees implements OnInit {
   prevTabPage() {
     if (this.hasPrevPage) this.tabPage--;
   }
+
   getRole() {
     this.usersv.getRoles(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.roleList = res.data;
-          console.log('role List', res);
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => { console.log(err); },
     );
   }
 
@@ -1173,7 +1734,6 @@ export class Employees implements OnInit {
       case 'LeaveType':
         this.isLeaveTypeOpen = !this.isLeaveTypeOpen;
         break;
-
       default:
         break;
     }
@@ -1225,15 +1785,17 @@ export class Employees implements OnInit {
   selectFamilyMemberStatus(status: string, event: Event) {
     event.stopPropagation();
     this.selectedFamilyMemberStatus = status;
-    this.belongingForm.status = status;
+    this.familyMemberForm.status = status;
     this.isFamilyMemberStatusOpen = false;
   }
+
   selectPositionStatus(status: string, event: Event) {
     event.stopPropagation();
     this.selectedPositionStatus = status;
     this.positionForm.status = status;
     this.isPositionStatusOpen = false;
   }
+
   selectResultStatus(result: string, event: Event) {
     event.stopPropagation();
     this.selectedResultStatus = result;
@@ -1245,7 +1807,7 @@ export class Employees implements OnInit {
     event.stopPropagation();
     this.selectedBelongingStatus = status;
     this.belongingForm.status = status;
-    this.isBelongingTypeOpen = false;
+    this.isBelongingStatusOpen = false;
   }
 
   selectQualificationStatus(status: string, event: Event) {
@@ -1266,6 +1828,7 @@ export class Employees implements OnInit {
     event.stopPropagation();
     this.selectedDocType = type.name;
     this.documentForm.idTypePublicId = type.publicId;
+    this.documentForm.idTypeName = type.name;
     this.isDocTypeOpen = false;
   }
 
@@ -1278,11 +1841,9 @@ export class Employees implements OnInit {
 
   selectBelongingType(belonging: any, event: Event) {
     event.stopPropagation();
-
     this.selectedBelongingType = belonging.name;
     this.belongingForm.belongingTypePublicId = belonging.publicId;
     this.belongingForm.belongingname = belonging.name;
-
     this.isBelongingTypeOpen = false;
   }
 
@@ -1309,7 +1870,7 @@ export class Employees implements OnInit {
 
   selectDesignation(designation: any, event: Event) {
     event.stopPropagation();
-    this.selectedDesignation = designation; // ✅ variable use karo
+    this.selectedDesignation = designation;
     this.positionForm.designationPublicId = designation.publicId;
     this.isDesignatiomOpen = false;
   }
@@ -1334,6 +1895,7 @@ export class Employees implements OnInit {
     this.positionForm.employeeGradePublicId = employeeGrade.publicId;
     this.isEmployeeGradeOpen = false;
   }
+
   selectedLeaveType(leaveType: any, event: Event) {
     event.stopPropagation();
     this.selectLeaveType = leaveType.name;
@@ -1362,14 +1924,14 @@ export class Employees implements OnInit {
     this.positionForm.shiftPublicId = shift.publicId;
     this.isShiftOpen = false;
   }
-  selectWorkSchedule(workSchedule: any, event: Event) {
-    event.stopPropagation();
-    this.selectedWorkSchedule = workSchedule;
-    this.positionForm.workSchedulePublicId = workSchedule.publicId;
-    this.isWorkScheduleOpen = false;
-  }
 
-  // @HostListener for closing dropdowns on outside click
+
+selectWorkSchedule(workSchedule: any, event: Event) {
+  event.stopPropagation();
+  this.selectedWorkSchedule = workSchedule;
+  this.positionForm.workSchedulePublicId = workSchedule.publicId;
+  this.isWorkScheduleOpen = false;
+}
   @HostListener('document:click', ['$event'])
   closeAllDropdowns(event: Event) {
     this.isEmploymentStatusOpen = false;
@@ -1381,13 +1943,11 @@ export class Employees implements OnInit {
     this.isBelongingTypeOpen = false;
     this.isFamilyMemberStatusOpen = false;
     this.isExperienceStatusOpen = false;
-
     this.isResultStatusOpen = false;
     this.isQualificationStatusOpen = false;
     this.isBankStatusOpen = false;
     this.isDocTypeOpen = false;
     this.isDocStatusOpen = false;
-    this.isBelongingTypeOpen = false;
     this.isConditionStatusOpen = false;
     this.isRelationOpen = false;
     this.isDepartmentOpen = false;
@@ -1400,64 +1960,39 @@ export class Employees implements OnInit {
     this.isJobTitleOpen = false;
     this.isShiftOpen = false;
     this.isWorkScheduleOpen = false;
+    this.isBelongingStatusOpen = false;
   }
+
   GetIdType() {
     this.formSv.GetIDType(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.IdTypeList = res.data;
-          console.log('Id Type List', res);
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => { console.log(err); },
     );
   }
+
   getBelongingType() {
     this.formSv.GetBelongingTypes(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.belongingList = res.data;
-          console.log('belonging Type', res);
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => { console.log(err); },
     );
   }
+
   getLeaveType() {
     this.formSv.GetLeaveType(this.currentPage, this.pageSize).subscribe(
       (res: any) => {
         if (res.success) {
           this.LeaveTypeList = res.data;
-          console.log('Leave Type List', res);
         }
       },
-      (err: any) => {
-        console.log(err);
-      },
+      (err: any) => { console.log(err); },
     );
-  }
-  addLeaveForm() {
-    this.Leaves.push({
-      leaveTypeName: this.leaveForm.leaveTypeName,
-      leaveTypePublicId: this.leaveForm.leaveTypePublicId,
-      totalLeavesPerYear: this.leaveForm.totalLeavesPerYear,
-      remarks: this.leaveForm.remarks,
-      active: this.leaveForm.active,
-    });
-    this.resetLeaveForm();
-  }
-  resetLeaveForm() {
-    this.leaveForm.leaveTypeName = '';
-    this.leaveForm.leaveTypePublicId = '';
-    this.leaveForm.totalLeavesPerYear = '';
-    this.leaveForm.remarks = '';
-    this.leaveForm.active = false;
-  }
-  removeLeaveForm(index: number) {
-    this.Leaves.splice(index, 1);
   }
 }

@@ -1,0 +1,81 @@
+<div  class="user-form-wrapper">
+  <div class="user-card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h3>{{ isEditMode ? 'Update ' + title : 'Create ' + title }}</h3>
+
+      <button class="reset-btn" (click)="resetForm()">
+        <i class="fa fa-refresh"></i> Reset
+      </button>
+    </div>
+
+    <div class="header-divider"></div>
+
+    <form class="user-form">
+      <div class="row">
+        <div class="col-12 d-flex justify-content-end">
+          <label class="checkbox-container">
+            Active
+            <input
+              type="checkbox"
+              class="custom-checkbox"
+              [(ngModel)]="formData.active"
+              name="active"
+            />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <label>Code</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="formData.code"
+            name="code"
+            placeholder="Enter Code..."
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label>Name</label>
+          <input
+            type="text"
+            class="form-control"
+            [(ngModel)]="formData.name"
+            name="name"
+            placeholder="Enter Name..."
+          />
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12">
+          <label>Remarks</label>
+          <textarea
+            class="form-control"
+            [(ngModel)]="formData.description"
+            name="description"
+            placeholder="Enter Remarks..."
+          ></textarea>
+        </div>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="cancel-btn" (click)="cancel()">
+          Cancel
+        </button>
+
+        <button
+          type="button"
+          class="submit-btn"
+          [disabled]="disabled"
+          (click)="submit()"
+        >
+          {{ isEditMode ? 'Update' : 'Create' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -68,7 +68,9 @@
             <th class="px-3 py-2">Name</th>
             <th class="px-3 py-2">Email</th>
             <th class="px-3 py-2">Status</th>
-            <th class="px-3 py-2">Emp Status</th>
+            <th class="px-3 py-2">Employment Status</th>
+             <th> Update Status</th>
+
             <th class="px-3 py-2">Actions</th>
           </tr>
         </thead>
@@ -92,6 +94,13 @@
               </span>
             </td>
             <td class="px-3 py-3 font-medium">{{ employee.employmentStatus }}</td>
+                        <td class="px-3 py-3 font-medium">       <!-- Status Button (NEXT ACTION show karega) -->
+              <div class="toggle-switch" (click)="openStatusModal(employee)">
+    <div class="toggle-track" [class.active]="employee.active">
+      <div class="toggle-thumb"></div>
+    </div>
+  </div></td>
+
             <td class="px-3 py-3 font-medium actions-cell">
               <!-- Edit Icon -->
               <i
@@ -101,16 +110,7 @@
                 [routerLink]="['/panel/forms/employees', employee.publicId]"
               ></i>
 
-              <!-- Status Button (NEXT ACTION show karega) -->
-              <button
-                class="status-chip-btn"
-                [ngClass]="employee.active ? 'status-chip--inactive' : 'status-chip--active'"
-                (click)="openStatusModal(employee)"
-                title="Change Status"
-              >
-                <span class="status-chip-dot"></span>
-                {{ employee.active ? 'Inactive' : 'Active' }}
-              </button>
+       
             </td>
           </tr>
 

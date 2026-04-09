@@ -1,10 +1,20 @@
+<!-- employees.html -->
 <div class="user-form-wrapper">
+
+   <div class="form-header">
+      <h2 class="form-title">
+        {{ title === 'create' ? 'Create New Employee' : 'Edit Employee' }}
+      </h2>
+      <p class="form-subtitle">
+        {{ title === 'create' ? 'Define a new Employee' : 'Modify Employee details' }}
+      </p>
+    </div>
   <div class="user-card">
     <div class="card-header">
       <h3>{{ isEditMode ? 'Edit Employee' : 'Add Employee' }}</h3>
-      <button class="reset-btn" type="button" (click)="resetForm()">
-        <i class="fa fa-rotate-right"></i>
-      </button>
+       <div class="d-flex gap-2">
+      <button class="reset-btn" (click)="resetForm()"><i class="fa fa-refresh"></i> Reset</button>
+    </div>
     </div>
     <div class="header-divider"></div>
 
@@ -72,7 +82,6 @@
       </div>
 
       <!-- Employment Status -->
-      <!-- Employment Status -->
       <div class="form-group">
         <label class="required">Employment Status</label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'employmentStatus')">
@@ -93,7 +102,6 @@
       </div>
 
       <!-- Onboarding Status -->
-      <!-- Onboarding Status -->
       <div class="form-group">
         <label>Onboarding Status</label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'onboardingStatus')">
@@ -113,7 +121,6 @@
         </div>
       </div>
 
-      <!-- Employee Type -->
       <!-- Employee Type -->
       <div class="form-group">
         <label class="required">Employee Type</label>
@@ -199,10 +206,12 @@
         />
       </div>
     </form>
-  </div>
-</div>
 
-<div class="horizontal-tabs" *ngIf="sidebarTabs.length > 0">
+
+    
+  </div>
+
+  <div class="horizontal-tabs" *ngIf="sidebarTabs.length > 0">
   <div class="tabs-container">
     <!-- Back Button -->
     <div *ngIf="hasPrevPage" class="tab-button tab-nav-btn" (click)="prevTabPage()">← Back</div>
@@ -221,6 +230,7 @@
     <div *ngIf="hasNextPage" class="tab-nav-btn tab-button" (click)="nextTabPage()">More →</div>
   </div>
 
+  <!-- Experience Tab -->
   <div class="form-section tab-content-section" *ngIf="activeTab === 'experience'">
     <h3 class="section-heading mb-3">Experience</h3>
 
@@ -320,7 +330,10 @@
         >
           <path d="M12 5v14M5 12l7 7 7-7" />
         </svg>
-        Add Experience
+        {{ isEditingExperience ? 'Update Experience' : 'Add Experience' }}
+      </button>
+      <button *ngIf="isEditingExperience" type="button" class="btn-cancel-action" (click)="resetExpForm()">
+        Cancel Edit
       </button>
     </div>
 
@@ -350,10 +363,9 @@
             <tr>
               <th>#</th>
               <th>Company</th>
-              <th>Organization Name</th>
+              <th>Role</th>
               <th>From</th>
               <th>To</th>
-              <!-- <th>Salary</th> -->
               <th>Working Status</th>
               <th>Status</th>
               <th>Action</th>
@@ -371,10 +383,6 @@
                 <span *ngIf="!exp.currentlyWorking">{{ exp.endDate | date: 'dd MMM yyyy' }}</span>
                 <span *ngIf="exp.currentlyWorking" class="badge-present">Present</span>
               </td>
-              <!-- <td>
-                <span *ngIf="exp.salary">{{ exp.salary | number }}</span>
-                <span *ngIf="!exp.salary" class="text-muted">—</span>
-              </td> -->
               <td>
                 <span class="badge-status" [class.current]="exp.currentlyWorking">
                   {{ exp.currentlyWorking ? 'Current' : 'Past' }}
@@ -391,6 +399,11 @@
                 </span>
               </td>
               <td>
+                <button class="btn-edit" (click)="editExperience(i)" title="Edit">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 3l4 4L7 21H3v-4L17 3z" />
+                  </svg>
+                </button>
                 <button class="btn-remove" (click)="removeExperience(i)" title="Remove">
                   <svg
                     width="14"
@@ -406,8 +419,8 @@
                     <path d="M9 6V4h6v2" />
                   </svg>
                 </button>
-              </td>
-            </tr>
+               </td>
+             </tr>
           </tbody>
         </table>
       </div>
@@ -427,7 +440,8 @@
       Fill the form above and click <strong>Add Experience</strong> to add records
     </div>
   </div>
-  <!-- Skills Tabs -->
+
+  <!-- Skills Tab -->
   <div class="form-section tab-content-section" *ngIf="activeTab === 'skills'">
     <h3 class="section-heading mb-3">Skills</h3>
 
@@ -520,7 +534,10 @@
         >
           <path d="M12 5v14M5 12l7 7 7-7" />
         </svg>
-        Add Skill
+        {{ isEditingSkill ? 'Update Skill' : 'Add Skill' }}
+      </button>
+      <button *ngIf="isEditingSkill" type="button" class="btn-cancel-action" (click)="resetSkillForm()">
+        Cancel Edit
       </button>
     </div>
     <div class="experience-table-wrapper mt-1" *ngIf="skills.length > 0">
@@ -572,7 +589,7 @@
                 >
                   {{ skill.proficiencyLevel || '—' }}
                 </span>
-              </td>
+               </td>
               <td>{{ skill.yearsOfExperience ?? '—' }}</td>
               <td>{{ skill.lastUsedYear ?? '—' }}</td>
               <td>
@@ -584,8 +601,13 @@
                 >
                   {{ skill.status || '—' }}
                 </span>
-              </td>
+               </td>
               <td>
+                <button class="btn-edit" (click)="editSkill(i)" title="Edit">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 3l4 4L7 21H3v-4L17 3z" />
+                  </svg>
+                </button>
                 <button class="btn-remove" (click)="removeSkill(i)" title="Remove">
                   <svg
                     width="14"
@@ -601,8 +623,8 @@
                     <path d="M9 6V4h6v2" />
                   </svg>
                 </button>
-              </td>
-            </tr>
+               </td>
+             </tr>
           </tbody>
         </table>
       </div>
@@ -623,7 +645,8 @@
       Fill the form above and click <strong>Add Skill</strong> to add records
     </div>
   </div>
-  <!-- Qualification Tabs -->
+
+  <!-- Qualification Tab -->
   <div class="form-section tab-content-section" *ngIf="activeTab === 'qualification'">
     <h3 class="section-heading mb-3">Qualification</h3>
 
@@ -729,7 +752,10 @@
         >
           <path d="M12 5v14M5 12l7 7 7-7" />
         </svg>
-        Add Qualification
+        {{ isEditingQualification ? 'Update Qualification' : 'Add Qualification' }}
+      </button>
+      <button *ngIf="isEditingQualification" type="button" class="btn-cancel-action" (click)="resetQualificationForm()">
+        Cancel Edit
       </button>
     </div>
 
@@ -772,7 +798,7 @@
               <td>{{ i + 1 }}</td>
               <td>
                 <span class="company-name">{{ qual.qualificationName }}</span>
-              </td>
+               </td>
               <td>{{ qual.institutionName }}</td>
               <td>{{ qual.passingYear ?? '—' }}</td>
               <td>{{ qual.grade || '—' }}</td>
@@ -780,7 +806,7 @@
                 <span class="badge-status" [class.current]="qual.resultStatus === 'PASS'">
                   {{ qual.resultStatus || '—' }}
                 </span>
-              </td>
+               </td>
               <td>
                 <span
                   class="badge-status"
@@ -790,8 +816,13 @@
                 >
                   {{ qual.status || '—' }}
                 </span>
-              </td>
+               </td>
               <td>
+                <button class="btn-edit" (click)="editQualification(i)" title="Edit">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 3l4 4L7 21H3v-4L17 3z" />
+                  </svg>
+                </button>
                 <button class="btn-remove" (click)="removeQualification(i)" title="Remove">
                   <svg
                     width="14"
@@ -807,8 +838,8 @@
                     <path d="M9 6V4h6v2" />
                   </svg>
                 </button>
-              </td>
-            </tr>
+               </td>
+             </tr>
           </tbody>
         </table>
       </div>
@@ -829,7 +860,8 @@
       Fill the form above and click <strong>Add Qualification</strong> to add records
     </div>
   </div>
-  <!-- Bank Account -->
+
+  <!-- Bank Account Tab -->
   <div class="form-section tab-content-section" *ngIf="activeTab === 'bankAccounts'">
     <h3 class="section-heading mb-3">Bank Accounts</h3>
 
@@ -943,7 +975,10 @@
         >
           <path d="M12 5v14M5 12l7 7 7-7" />
         </svg>
-        Add Bank Account
+        {{ isEditingBankAccount ? 'Update Bank Account' : 'Add Bank Account' }}
+      </button>
+      <button *ngIf="isEditingBankAccount" type="button" class="btn-cancel-action" (click)="resetBankAccountForm()">
+        Cancel Edit
       </button>
     </div>
 
@@ -979,6 +1014,7 @@
               <th>Primary</th>
               <th>Status</th>
               <th>Action</th>
+              
             </tr>
           </thead>
           <tbody>
@@ -986,7 +1022,7 @@
               <td>{{ i + 1 }}</td>
               <td>
                 <span class="company-name">{{ acc.bankName }}</span>
-              </td>
+               </td>
               <td>{{ acc.accountHolderName }}</td>
               <td>{{ acc.accountNumber }}</td>
               <td>{{ acc.iban || '—' }}</td>
@@ -994,7 +1030,7 @@
                 <span class="badge-status" [class.current]="acc.isPrimaryAccount">
                   {{ acc.isPrimaryAccount ? 'Primary' : 'Secondary' }}
                 </span>
-              </td>
+               </td>
               <td>
                 <span
                   class="badge-status"
@@ -1004,8 +1040,13 @@
                 >
                   {{ acc.status || '—' }}
                 </span>
-              </td>
+               </td>
               <td>
+                <button class="btn-edit" (click)="editBankAccount(i)" title="Edit">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 3l4 4L7 21H3v-4L17 3z" />
+                  </svg>
+                </button>
                 <button class="btn-remove" (click)="removeBankAccount(i)" title="Remove">
                   <svg
                     width="14"
@@ -1021,8 +1062,8 @@
                     <path d="M9 6V4h6v2" />
                   </svg>
                 </button>
-              </td>
-            </tr>
+               </td>
+             </tr>
           </tbody>
         </table>
       </div>
@@ -1043,7 +1084,8 @@
       Fill the form above and click <strong>Add Bank Account</strong> to add records
     </div>
   </div>
-  <!-- Document Tabs -->
+
+  <!-- Documents Tab -->
   <div class="form-section tab-content-section" *ngIf="activeTab === 'documents'">
     <h3 class="section-heading mb-3">Documents</h3>
 
@@ -1150,7 +1192,10 @@
         >
           <path d="M12 5v14M5 12l7 7 7-7" />
         </svg>
-        Add Document
+        {{ isEditingDocument ? 'Update Document' : 'Add Document' }}
+      </button>
+      <button *ngIf="isEditingDocument" type="button" class="btn-cancel-action" (click)="resetDocumentForm()">
+        Cancel Edit
       </button>
     </div>
 
@@ -1192,20 +1237,10 @@
             <tr *ngFor="let doc of documents; let i = index" class="exp-row">
               <td>{{ i + 1 }}</td>
               <td>
-                <span class="company-name">{{ doc.idTypePublicId || '—' }}</span>
+               <span class="company-name">{{ doc.idTypeName || '—' }}</span>
               </td>
               <td>{{ doc.documentNumber || '—' }}</td>
               <td>{{ doc.issuedDate ? (doc.issuedDate | date: 'dd MMM yyyy') : '—' }}</td>
-              <td>
-                <span
-                  class="badge-status"
-                  [class.current]="doc.status === 'ACTIVE'"
-                  [class.badge-inactive]="doc.status === 'INACTIVE'"
-                  [class.badge-expired]="doc.status === 'CANCELLED'"
-                >
-                  {{ doc.status || '—' }}
-                </span>
-              </td>
               <td>
                 <span
                   *ngIf="doc.expiryDate"
@@ -1227,6 +1262,21 @@
                 <span *ngIf="!doc.fileUrl">—</span>
               </td>
               <td>
+                <span
+                  class="badge-status"
+                  [class.current]="doc.status === 'ACTIVE'"
+                  [class.badge-inactive]="doc.status === 'INACTIVE'"
+                  [class.badge-expired]="doc.status === 'CANCELLED'"
+                >
+                  {{ doc.status || '—' }}
+                </span>
+              </td>
+              <td>
+                <button class="btn-edit" (click)="editDocument(i)" title="Edit">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 3l4 4L7 21H3v-4L17 3z" />
+                  </svg>
+                </button>
                 <button class="btn-remove" (click)="removeDocument(i)" title="Remove">
                   <svg
                     width="14"
@@ -1242,8 +1292,8 @@
                     <path d="M9 6V4h6v2" />
                   </svg>
                 </button>
-              </td>
-            </tr>
+               </td>
+             </tr>
           </tbody>
         </table>
       </div>
@@ -1264,7 +1314,8 @@
       Fill the form above and click <strong>Add Document</strong> to add records
     </div>
   </div>
-  <!-- Belonging Tabs -->
+
+  <!-- Belongings Tab -->
   <div class="form-section tab-content-section" *ngIf="activeTab === 'belongings'">
     <h3 class="section-heading mb-3">Belongings</h3>
 
@@ -1378,7 +1429,10 @@
         >
           <path d="M12 5v14M5 12l7 7 7-7" />
         </svg>
-        Add Belonging
+        {{ isEditingBelonging ? 'Update Belonging' : 'Add Belonging' }}
+      </button>
+      <button *ngIf="isEditingBelonging" type="button" class="btn-cancel-action" (click)="resetBelongingForm()">
+        Cancel Edit
       </button>
     </div>
 
@@ -1431,7 +1485,7 @@
                 >
                   {{ b.conditionStatus || '—' }}
                 </span>
-              </td>
+               </td>
               <td>{{ b.issuedDate ? (b.issuedDate | date: 'dd MMM yyyy') : '—' }}</td>
               <td>
                 <span *ngIf="b.returnDate" class="badge-present">
@@ -1450,6 +1504,11 @@
                 </span>
               </td>
               <td>
+                <button class="btn-edit" (click)="editBelonging(i)" title="Edit">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 3l4 4L7 21H3v-4L17 3z" />
+                  </svg>
+                </button>
                 <button class="btn-remove" (click)="removeBelonging(i)" title="Remove">
                   <svg
                     width="14"
@@ -1487,7 +1546,8 @@
       Fill the form above and click <strong>Add Belonging</strong> to add records
     </div>
   </div>
-  <!-- Family Member -->
+
+  <!-- Family Members Tab -->
   <div class="form-section tab-content-section" *ngIf="activeTab === 'familyMembers'">
     <h3 class="section-heading mb-3">Family Members</h3>
 
@@ -1673,7 +1733,10 @@
         >
           <path d="M12 5v14M5 12l7 7 7-7" />
         </svg>
-        Add Family Member
+        {{ isEditingFamilyMember ? 'Update Family Member' : 'Add Family Member' }}
+      </button>
+      <button *ngIf="isEditingFamilyMember" type="button" class="btn-cancel-action" (click)="resetFamilyMemberForm()">
+        Cancel Edit
       </button>
     </div>
 
@@ -1749,6 +1812,11 @@
                 </span>
               </td>
               <td>
+                <button class="btn-edit" (click)="editFamilyMember(i)" title="Edit">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 3l4 4L7 21H3v-4L17 3z" />
+                  </svg>
+                </button>
                 <button class="btn-remove" (click)="removeFamilyMember(i)" title="Remove">
                   <svg
                     width="14"
@@ -1786,7 +1854,8 @@
       Fill the form above and click <strong>Add Family Member</strong> to add records
     </div>
   </div>
-  <!-- Postion Tabs -->
+
+  <!-- Positions Tab -->
   <div class="form-section tab-content-section" *ngIf="activeTab === 'positions'">
     <h3 class="section-heading mb-3">Positions</h3>
 
@@ -1962,24 +2031,25 @@
         </div>
       </div>
 
-      <div class="col-md-4">
-        <label class="form-label">Work Schedule</label>
-        <div class="custom-dropdown" (click)="toggleDropdown($event, 'workSchedule')">
-          <div class="dropdown-selected">
-            <span>{{ selectedWorkSchedule?.name || 'Select Work Schedule By Pay Period' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isWorkScheduleOpen"></i>
-          </div>
-          <div class="dropdown-options" *ngIf="isWorkScheduleOpen">
-            <div
-              class="dropdown-option"
-              *ngFor="let work of WorkScheduleList"
-              (click)="selectWorkSchedule(work, $event)"
-            >
-              {{ work.payPeriodName }}
-            </div>
-          </div>
-        </div>
+      <!-- Work Schedule dropdown - "name" ki jagah "payPeriodName" use karein -->
+<div class="col-md-4">
+  <label class="form-label">Work Schedule</label>
+  <div class="custom-dropdown" (click)="toggleDropdown($event, 'workSchedule')">
+    <div class="dropdown-selected">
+      <span>{{ selectedWorkSchedule?.payPeriodName || 'Select Work Schedule By Pay Period' }}</span>
+      <i class="fa-solid fa-caret-down" [class.rotate]="isWorkScheduleOpen"></i>
+    </div>
+    <div class="dropdown-options" *ngIf="isWorkScheduleOpen">
+      <div
+        class="dropdown-option"
+        *ngFor="let work of WorkScheduleList"
+        (click)="selectWorkSchedule(work, $event)"
+      >
+        {{ work.payPeriodName }}
       </div>
+    </div>
+  </div>
+</div>
 
       <div class="col-md-4">
         <label class="form-label">Effective From</label>
@@ -2055,7 +2125,10 @@
         >
           <path d="M12 5v14M5 12l7 7 7-7" />
         </svg>
-        Add Position
+        {{ isEditingPosition ? 'Update Position' : 'Add Position' }}
+      </button>
+      <button *ngIf="isEditingPosition" type="button" class="btn-cancel-action" (click)="resetPositionForm()">
+        Cancel Edit
       </button>
     </div>
 
@@ -2123,6 +2196,11 @@
                 </span>
               </td>
               <td>
+                <button class="btn-edit" (click)="editPosition(i)" title="Edit">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 3l4 4L7 21H3v-4L17 3z" />
+                  </svg>
+                </button>
                 <button class="btn-remove" (click)="removePosition(i)" title="Remove">
                   <svg
                     width="14"
@@ -2160,7 +2238,8 @@
       Fill the form above and click <strong>Add Position</strong> to add records
     </div>
   </div>
-  <!-- leaves Tabs -->
+
+  <!-- Leaves Tab -->
   <div class="form-section tab-content-section" *ngIf="activeTab === 'leaves'">
     <h3 class="section-heading mb-3">Leaves</h3>
     <div class="row d-flex justify-content-end"></div>
@@ -2228,7 +2307,10 @@
         >
           <path d="M12 5v14M5 12l7 7 7-7" />
         </svg>
-        Add Leave
+        {{ isEditingLeave ? 'Update Leave' : 'Add Leave' }}
+      </button>
+      <button *ngIf="isEditingLeave" type="button" class="btn-cancel-action" (click)="resetLeaveForm()">
+        Cancel Edit
       </button>
     </div>
 
@@ -2282,6 +2364,11 @@
                 </span>
               </td>
               <td>
+                <button class="btn-edit" (click)="editLeave(i)" title="Edit">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 3l4 4L7 21H3v-4L17 3z" />
+                  </svg>
+                </button>
                 <button class="btn-remove" (click)="removeLeaveForm(i)" title="Remove">
                   <svg
                     width="14"
@@ -2304,7 +2391,7 @@
       </div>
     </div>
 
-    <div class="empty-hint" *ngIf="belongings.length === 0">
+    <div class="empty-hint" *ngIf="Leaves.length === 0">
       <svg
         width="20"
         height="20"
@@ -2320,3 +2407,5 @@
     </div>
   </div>
 </div>
+</div>
+

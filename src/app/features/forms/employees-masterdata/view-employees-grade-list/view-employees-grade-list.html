@@ -13,12 +13,7 @@
       <div class="search-wrapper">
         <div class="search-note">*Search by Name or Code</div>
         <div class="search-box">
-          <input
-            type="text"
-            placeholder="Search here"
-            [(ngModel)]="searchTerm"
-            (input)="onSearch()"
-          />
+          <input type="text" placeholder="Search here" [(ngModel)]="searchTerm" (input)="onSearch()" />
           <i class="fa fa-search"></i>
         </div>
       </div>
@@ -38,19 +33,14 @@
 
       <!-- Reset Button -->
       <div class="mb-1">
-        <button
-          class="reset-btn"
-          (click)="resetFilters()"
-          title="Reset All Filters"
-          [disabled]="!isAnyFilterActive"
-        >
+        <button class="reset-btn" (click)="resetFilters()" title="Reset All Filters" [disabled]="!isAnyFilterActive">
           <i class="fa-solid fa-rotate-left"></i>
         </button>
       </div>
 
       <!-- Create Button -->
       <div class="mb-1">
-        <button class="create-btn" [routerLink]="['/panel/forms/employees-grade']">
+        <button class="create-btn" [routerLink]="['/panel/forms/manage/employees-grade']">
           <i class="fa-solid fa-plus icon"></i>
           Create Employees Grade
         </button>
@@ -72,28 +62,19 @@
         </thead>
 
         <tbody>
-          <tr
-            *ngFor="let user of paginatedEmployeesGradeList; let i = index"
-            class="bg-[#1e293b] hover:bg-[#27354a] rounded-lg"
-          >
+          <tr *ngFor="let user of paginatedEmployeesGradeList; let i = index"
+            class="bg-[#1e293b] hover:bg-[#27354a] rounded-lg">
             <td class="px-3 py-3 font-medium">{{ (currentPage - 1) * itemsPerPage + i + 1 }}</td>
             <td class="px-3 py-3 font-medium">{{ user.code }}</td>
             <td class="px-3 py-3 font-medium">{{ user.name }}</td>
             <td class="px-3 py-3 font-medium">
-              <span
-                class="status-badge"
-                [ngClass]="user.isActive ? 'active-badge' : 'inactive-badge'"
-              >
+              <span class="status-badge" [ngClass]="user.isActive ? 'active-badge' : 'inactive-badge'">
                 {{ user.isActive ? 'Active' : 'Inactive' }}
               </span>
             </td>
             <td class="px-3 py-3 font-medium">
-              <i
-                class="fa-solid fa-pen-to-square"
-                style="color: #1274ac; cursor: pointer"
-                title="Edit Grade"
-                [routerLink]="['/panel/forms/employees-grade', user.publicId]"
-              ></i>
+              <i class="fa-solid fa-pen-to-square" style="color: #1274ac; cursor: pointer" title="Edit Grade"
+                [routerLink]="['/panel/forms/manage/employees-grade', user.publicId]"></i>
             </td>
           </tr>
 
@@ -125,11 +106,7 @@
             <li class="page-item" [class.disabled]="currentPage === 1">
               <a class="page-link" (click)="changePage(currentPage - 1)">&laquo;</a>
             </li>
-            <li
-              class="page-item"
-              *ngFor="let page of totalPagesArray"
-              [class.active]="page === currentPage"
-            >
+            <li class="page-item" *ngFor="let page of totalPagesArray" [class.active]="page === currentPage">
               <a class="page-link" (click)="changePage(page)">{{ page }}</a>
             </li>
             <li class="page-item" [class.disabled]="currentPage === totalPages">
