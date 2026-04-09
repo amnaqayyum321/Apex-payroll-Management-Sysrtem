@@ -77,10 +77,10 @@
         <label class="required">Employment Status</label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'employmentStatus')">
           <div class="dropdown-selected">
-            <span>{{ selectedEmploymentStatus || 'Select employment status' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isEmploymentStatusOpen"></i>
+            <span>{{ dd.selectedEmploymentStatus || 'Select employment status' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="dd.isEmploymentStatusOpen"></i>
           </div>
-          <div class="dropdown-options" *ngIf="isEmploymentStatusOpen">
+          <div class="dropdown-options" *ngIf="dd.isEmploymentStatusOpen">
             <div
               class="dropdown-option"
               *ngFor="let status of employmentStatusOptions"
@@ -98,10 +98,10 @@
         <label>Onboarding Status</label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'onboardingStatus')">
           <div class="dropdown-selected">
-            <span>{{ selectedOnboardingStatus || 'Select onboarding status' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isOnboardingStatusOpen"></i>
+            <span>{{ dd.selectedOnboardingStatus || 'Select onboarding status' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="dd.isOnboardingStatusOpen"></i>
           </div>
-          <div class="dropdown-options" *ngIf="isOnboardingStatusOpen">
+          <div class="dropdown-options" *ngIf="dd.isOnboardingStatusOpen">
             <div
               class="dropdown-option"
               *ngFor="let status of onboardingStatusOptions"
@@ -119,10 +119,10 @@
         <label class="required">Employee Type</label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'employeeType')">
           <div class="dropdown-selected">
-            <span>{{ selectedEmployeeType || 'Select employee type' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isEmployeeTypeOpen"></i>
+            <span>{{ dd.selectedEmployeeType || 'Select employee type' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="dd.isEmployeeTypeOpen"></i>
           </div>
-          <div class="dropdown-options" *ngIf="isEmployeeTypeOpen">
+          <div class="dropdown-options" *ngIf="dd.isEmployeeTypeOpen">
             <div
               class="dropdown-option"
               *ngFor="let type of employeeTypeOptions"
@@ -269,10 +269,10 @@
         <label class="form-label">Status</label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'experienceStatus')">
           <div class="dropdown-selected">
-            <span>{{ selectedExperienceStatus || 'Select status' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isExperienceStatusOpen"></i>
+            <span>{{ dd.selectedExperienceStatus || 'Select status' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="dd.isExperienceStatusOpen"></i>
           </div>
-          <div class="dropdown-options" *ngIf="isExperienceStatusOpen">
+          <div class="dropdown-options" *ngIf="dd.isExperienceStatusOpen">
             <div
               class="dropdown-option"
               *ngFor="let status of statusOptions"
@@ -446,10 +446,10 @@
         <label class="form-label">Proficiency Level</label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'proficiency')">
           <div class="dropdown-selected">
-            <span>{{ selectedProficiency || 'Select proficiency' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isProficiencyOpen"></i>
+            <span>{{ dd.selectedProficiency || 'Select proficiency' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="dd.isProficiencyOpen"></i>
           </div>
-          <div class="dropdown-options" *ngIf="isProficiencyOpen">
+          <div class="dropdown-options" *ngIf="dd.isProficiencyOpen">
             <div
               class="dropdown-option"
               *ngFor="let level of proficiencyOptions"
@@ -484,10 +484,10 @@
         <label class="form-label">Status</label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'skillStatus')">
           <div class="dropdown-selected">
-            <span>{{ selectedSkillStatus || 'Select status' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isSkillStatusOpen"></i>
+            <span>{{ dd.selectedSkillStatus || 'Select status' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="dd.isSkillStatusOpen"></i>
           </div>
-          <div class="dropdown-options" *ngIf="isSkillStatusOpen">
+          <div class="dropdown-options" *ngIf="dd.isSkillStatusOpen">
             <div
               class="dropdown-option"
               *ngFor="let status of statusOptions"
@@ -672,10 +672,10 @@
         <label class="form-label">Result Status</label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'resultStatus')">
           <div class="dropdown-selected">
-            <span>{{ selectedResultStatus || 'Select result' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isResultStatusOpen"></i>
+            <span>{{ dd.selectedResultStatus || 'Select result' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="dd.isResultStatusOpen"></i>
           </div>
-          <div class="dropdown-options" *ngIf="isResultStatusOpen">
+          <div class="dropdown-options" *ngIf="dd.isResultStatusOpen">
             <div
               class="dropdown-option"
               *ngFor="let result of resultStatusOptions"
@@ -690,10 +690,10 @@
         <label class="form-label">Status</label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'qualificationStatus')">
           <div class="dropdown-selected">
-            <span>{{ selectedQualificationStatus || 'Select status' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isQualificationStatusOpen"></i>
+            <span>{{ dd.selectedQualificationStatus || 'Select status' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="dd.isQualificationStatusOpen"></i>
           </div>
-          <div class="dropdown-options" *ngIf="isQualificationStatusOpen">
+          <div class="dropdown-options" *ngIf="dd.isQualificationStatusOpen">
             <div
               class="dropdown-option"
               *ngFor="let status of statusOptions"
@@ -892,10 +892,10 @@
         <label class="form-label">Status</label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'bankStatus')">
           <div class="dropdown-selected">
-            <span>{{ selectedBankStatus || 'Select status' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isBankStatusOpen"></i>
+            <span>{{ dd.selectedBankStatus || 'Select status' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="dd.isBankStatusOpen"></i>
           </div>
-          <div class="dropdown-options" *ngIf="isBankStatusOpen">
+          <div class="dropdown-options" *ngIf="dd.isBankStatusOpen">
             <div
               class="dropdown-option"
               *ngFor="let status of statusOptions"
@@ -1052,10 +1052,10 @@
         <label class="form-label">Document Type <span class="text-danger">*</span></label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'docType')">
           <div class="dropdown-selected">
-            <span>{{ selectedDocType || 'Select document type' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isDocTypeOpen"></i>
+            <span>{{ dd.selectedDocType || 'Select document type' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="dd.isDocTypeOpen"></i>
           </div>
-          <div class="dropdown-options" *ngIf="isDocTypeOpen">
+          <div class="dropdown-options" *ngIf="dd.isDocTypeOpen">
             <div
               class="dropdown-option"
               *ngFor="let type of IdTypeList"
@@ -1111,10 +1111,10 @@
         <label class="form-label">Status</label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'docStatus')">
           <div class="dropdown-selected">
-            <span>{{ selectedDocStatus || 'Select status' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isDocStatusOpen"></i>
+            <span>{{ dd.selectedDocStatus || 'Select status' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="dd.isDocStatusOpen"></i>
           </div>
-          <div class="dropdown-options" *ngIf="isDocStatusOpen">
+          <div class="dropdown-options" *ngIf="dd.isDocStatusOpen">
             <div
               class="dropdown-option"
               *ngFor="let status of statusOptions"
@@ -1273,10 +1273,10 @@
         <label class="form-label">Belonging Type <span class="text-danger">*</span></label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'belongingType')">
           <div class="dropdown-selected">
-            <span>{{ selectedBelongingType || 'Select type' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isBelongingTypeOpen"></i>
+            <span>{{ dd.selectedBelongingType || 'Select type' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="dd.isBelongingTypeOpen"></i>
           </div>
-          <div class="dropdown-options" *ngIf="isBelongingTypeOpen">
+          <div class="dropdown-options" *ngIf="dd.isBelongingTypeOpen">
             <div
               class="dropdown-option"
               *ngFor="let type of belongingList"
@@ -1302,10 +1302,10 @@
         <label class="form-label">Condition Status</label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'conditionStatus')">
           <div class="dropdown-selected">
-            <span>{{ selectedConditionStatus || 'Select condition' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isConditionStatusOpen"></i>
+            <span>{{ dd.selectedConditionStatus || 'Select condition' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="dd.isConditionStatusOpen"></i>
           </div>
-          <div class="dropdown-options" *ngIf="isConditionStatusOpen">
+          <div class="dropdown-options" *ngIf="dd.isConditionStatusOpen">
             <div
               class="dropdown-option"
               *ngFor="let condition of conditionStatusOptions"
@@ -1340,10 +1340,10 @@
         <label class="form-label">Status</label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'belongingStatus')">
           <div class="dropdown-selected">
-            <span>{{ selectedBelongingStatus || 'Select status' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isBelongingStatusOpen"></i>
+            <span>{{ dd.selectedBelongingStatus || 'Select status' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="dd.isBelongingStatusOpen"></i>
           </div>
-          <div class="dropdown-options" *ngIf="isBelongingStatusOpen">
+          <div class="dropdown-options" *ngIf="dd.isBelongingStatusOpen">
             <div
               class="dropdown-option"
               *ngFor="let status of statusOptions"
@@ -1506,10 +1506,10 @@
         <label class="form-label">Relation <span class="text-danger">*</span></label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'relation')">
           <div class="dropdown-selected">
-            <span>{{ selectedRelation || 'Select relation' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isRelationOpen"></i>
+            <span>{{ dd.selectedRelation || 'Select relation' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="dd.isRelationOpen"></i>
           </div>
-          <div class="dropdown-options" *ngIf="isRelationOpen">
+          <div class="dropdown-options" *ngIf="dd.isRelationOpen">
             <div
               class="dropdown-option"
               *ngFor="let relation of relationOptions"
@@ -1594,10 +1594,10 @@
         <label class="form-label">Status</label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'familyMemberStatus')">
           <div class="dropdown-selected">
-            <span>{{ selectedFamilyMemberStatus || 'Select status' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isFamilyMemberStatusOpen"></i>
+            <span>{{ dd.selectedFamilyMemberStatus || 'Select status' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="dd.isFamilyMemberStatusOpen"></i>
           </div>
-          <div class="dropdown-options" *ngIf="isFamilyMemberStatusOpen">
+          <div class="dropdown-options" *ngIf="dd.isFamilyMemberStatusOpen">
             <div
               class="dropdown-option"
               *ngFor="let status of statusOptions"
@@ -1814,10 +1814,10 @@
         <label class="form-label">Department</label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'department')">
           <div class="dropdown-selected">
-            <span>{{ selectedDepartment?.name || 'Select Department' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isDepartmentOpen"></i>
+            <span>{{ dd.selectedDepartment?.name || 'Select Department' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="dd.isDepartmentOpen"></i>
           </div>
-          <div class="dropdown-options" *ngIf="isDepartmentOpen">
+          <div class="dropdown-options" *ngIf="dd.isDepartmentOpen">
             <div
               class="dropdown-option"
               *ngFor="let dep of departmentList"
@@ -1833,10 +1833,10 @@
         <label class="form-label">Designation</label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'designation')">
           <div class="dropdown-selected">
-            <span>{{ selectedDesignation?.name || 'Select Designation' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isDesignatiomOpen"></i>
+            <span>{{ dd.selectedDesignation?.name || 'Select Designation' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="dd.isDesignatiomOpen"></i>
           </div>
-          <div class="dropdown-options" *ngIf="isDesignatiomOpen">
+          <div class="dropdown-options" *ngIf="dd.isDesignatiomOpen">
             <div
               class="dropdown-option"
               *ngFor="let des of designationList"
@@ -1852,10 +1852,10 @@
         <label class="form-label">Branch</label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'branch')">
           <div class="dropdown-selected">
-            <span>{{ selcetedBranch?.name || 'Select Branch/Company' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isBranchOpen"></i>
+            <span>{{ dd.selcetedBranch?.name || 'Select Branch/Company' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="dd.isBranchOpen"></i>
           </div>
-          <div class="dropdown-options" *ngIf="isBranchOpen">
+          <div class="dropdown-options" *ngIf="dd.isBranchOpen">
             <div
               class="dropdown-option"
               *ngFor="let branch of companyBranchList"
@@ -1871,10 +1871,10 @@
         <label class="form-label">Reporting Manager</label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'reportingManager')">
           <div class="dropdown-selected">
-            <span>{{ selectedReportingManager?.fullName || 'Select Reporting Manager' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isReportingManagerOpen"></i>
+            <span>{{ dd.selectedReportingManager?.fullName || 'Select Reporting Manager' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="dd.isReportingManagerOpen"></i>
           </div>
-          <div class="dropdown-options" *ngIf="isReportingManagerOpen">
+          <div class="dropdown-options" *ngIf="dd.isReportingManagerOpen">
             <div
               class="dropdown-option"
               *ngFor="let emp of EmployeeList"
@@ -1890,10 +1890,10 @@
         <label class="form-label">Employee Grade</label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'employeeGrade')">
           <div class="dropdown-selected">
-            <span>{{ selectedEmployeeGrade?.name || 'Select Employee Grade' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isEmployeeGradeOpen"></i>
+            <span>{{ dd.selectedEmployeeGrade?.name || 'Select Employee Grade' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="dd.isEmployeeGradeOpen"></i>
           </div>
-          <div class="dropdown-options" *ngIf="isEmployeeGradeOpen">
+          <div class="dropdown-options" *ngIf="dd.isEmployeeGradeOpen">
             <div
               class="dropdown-option"
               *ngFor="let emp of EmployeeGradeList"
@@ -1909,10 +1909,10 @@
         <label class="form-label">Employee Category</label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'employeeCategory')">
           <div class="dropdown-selected">
-            <span>{{ SlectedEmployeeCategory?.name || 'Select Employee Category' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isEmployeeCategoryOpen"></i>
+            <span>{{ dd.SlectedEmployeeCategory?.name || 'Select Employee Category' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="dd.isEmployeeCategoryOpen"></i>
           </div>
-          <div class="dropdown-options" *ngIf="isEmployeeCategoryOpen">
+          <div class="dropdown-options" *ngIf="dd.isEmployeeCategoryOpen">
             <div
               class="dropdown-option"
               *ngFor="let emp of EmployeeCategoryList"
@@ -1928,10 +1928,10 @@
         <label class="form-label">Job Title</label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'jobTitle')">
           <div class="dropdown-selected">
-            <span>{{ selectedJobTitle?.name || 'Select Job Title' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isJobTitleOpen"></i>
+            <span>{{ dd.selectedJobTitle?.name || 'Select Job Title' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="dd.isJobTitleOpen"></i>
           </div>
-          <div class="dropdown-options" *ngIf="isJobTitleOpen">
+          <div class="dropdown-options" *ngIf="dd.isJobTitleOpen">
             <div
               class="dropdown-option"
               *ngFor="let job of JobTitleList"
@@ -1947,10 +1947,10 @@
         <label class="form-label">Shift</label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'shift')">
           <div class="dropdown-selected">
-            <span>{{ selectedShift?.name || 'Select Shift' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isShiftOpen"></i>
+            <span>{{ dd.selectedShift?.name || 'Select Shift' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="dd.isShiftOpen"></i>
           </div>
-          <div class="dropdown-options" *ngIf="isShiftOpen">
+          <div class="dropdown-options" *ngIf="dd.isShiftOpen">
             <div
               class="dropdown-option"
               *ngFor="let shift of shiftList"
@@ -1966,10 +1966,10 @@
         <label class="form-label">Work Schedule</label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'workSchedule')">
           <div class="dropdown-selected">
-            <span>{{ selectedWorkSchedule?.name || 'Select Work Schedule By Pay Period' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isWorkScheduleOpen"></i>
+            <span>{{ dd.selectedWorkSchedule?.name || 'Select Work Schedule By Pay Period' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="dd.isWorkScheduleOpen"></i>
           </div>
-          <div class="dropdown-options" *ngIf="isWorkScheduleOpen">
+          <div class="dropdown-options" *ngIf="dd.isWorkScheduleOpen">
             <div
               class="dropdown-option"
               *ngFor="let work of WorkScheduleList"
@@ -2004,10 +2004,10 @@
         <label class="form-label">Status</label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'positionStatus')">
           <div class="dropdown-selected">
-            <span>{{ selectedPositionStatus || 'Select status' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isPositionStatusOpen"></i>
+            <span>{{ dd.selectedPositionStatus || 'Select status' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="dd.isPositionStatusOpen"></i>
           </div>
-          <div class="dropdown-options" *ngIf="isPositionStatusOpen">
+          <div class="dropdown-options" *ngIf="dd.isPositionStatusOpen">
             <div
               class="dropdown-option"
               *ngFor="let status of statusOptions"
@@ -2181,10 +2181,10 @@
         <label class="form-label">Leaves Type <span class="text-danger">*</span></label>
         <div class="custom-dropdown" (click)="toggleDropdown($event, 'LeaveType')">
           <div class="dropdown-selected">
-            <span>{{ selectLeaveType || 'Select type' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isLeaveTypeOpen"></i>
+            <span>{{ dd.selectLeaveType || 'Select type' }}</span>
+            <i class="fa-solid fa-caret-down" [class.rotate]="dd.isLeaveTypeOpen"></i>
           </div>
-          <div class="dropdown-options" *ngIf="isLeaveTypeOpen">
+          <div class="dropdown-options" *ngIf="dd.isLeaveTypeOpen">
             <div
               class="dropdown-option"
               *ngFor="let type of LeaveTypeList"
