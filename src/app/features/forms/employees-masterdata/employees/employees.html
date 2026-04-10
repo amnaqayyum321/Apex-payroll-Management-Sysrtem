@@ -1,20 +1,19 @@
 <!-- employees.html -->
 <div class="user-form-wrapper">
-
-   <div class="form-header">
-      <h2 class="form-title">
-        {{ title === 'create' ? 'Create New Employee' : 'Edit Employee' }}
-      </h2>
-      <p class="form-subtitle">
-        {{ title === 'create' ? 'Define a new Employee' : 'Modify Employee details' }}
-      </p>
-    </div>
+  <div class="form-header">
+    <h2 class="form-title">
+      {{ title === 'create' ? 'Create New Employee' : 'Edit Employee' }}
+    </h2>
+    <p class="form-subtitle">
+      {{ title === 'create' ? 'Define a new Employee' : 'Modify Employee details' }}
+    </p>
+  </div>
   <div class="user-card">
     <div class="card-header">
       <h3>{{ isEditMode ? 'Edit Employee' : 'Add Employee' }}</h3>
-       <div class="d-flex gap-2">
-      <button class="reset-btn" (click)="resetForm()"><i class="fa fa-refresh"></i> Reset</button>
-    </div>
+      <div class="d-flex gap-2">
+        <button class="reset-btn" (click)="resetForm()"><i class="fa fa-refresh"></i> Reset</button>
+      </div>
     </div>
     <div class="header-divider"></div>
 
@@ -206,2118 +205,2196 @@
         />
       </div>
     </form>
-
-
-    
   </div>
 
   <div class="horizontal-tabs" *ngIf="sidebarTabs.length > 0">
-  <div class="tabs-container">
-    <!-- Back Button -->
-    <div *ngIf="hasPrevPage" class="tab-button tab-nav-btn" (click)="prevTabPage()">← Back</div>
-
-    <!-- Visible Tabs -->
-    <div
-      *ngFor="let tab of visibleTabs"
-      class="tab-button"
-      [class.active]="activeTabId === tab.id"
-      (click)="setTab(tab.id)"
-    >
-      {{ tab.title }}
-    </div>
-
-    <!-- More Button -->
-    <div *ngIf="hasNextPage" class="tab-nav-btn tab-button" (click)="nextTabPage()">More →</div>
-  </div>
-
-  <!-- Experience Tab -->
-  <div class="form-section tab-content-section" *ngIf="activeTab === 'experience'">
-    <h3 class="section-heading mb-3">Experience</h3>
-
-    <div class="row g-3">
-      <div class="col-md-4">
-        <label class="form-label">Organization Name <span class="text-danger">*</span></label>
-        <input
-          type="text"
-          class="form-control"
-          name="organizationName"
-          [(ngModel)]="expform.organizationName"
-        />
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Role Name <span class="text-danger">*</span></label>
-        <input type="text" class="form-control" name="roleName" [(ngModel)]="expform.roleName" />
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Start Date <span class="text-danger">*</span></label>
-        <input type="date" class="form-control" name="startDate" [(ngModel)]="expform.startDate" />
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">End Date<span class="text-danger">*</span></label>
-        <input
-          type="date"
-          class="form-control"
-          name="endDate"
-          [(ngModel)]="expform.endDate"
-          [attr.disabled]="expform.currentlyWorking ? true : null"
-        />
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Responsibilities</label>
-        <input
-          type="text"
-          class="form-control"
-          name="responsibilities"
-          [(ngModel)]="expform.responsibilities"
-        />
-      </div>
-      <div class="col-md-4">
-        <label class="form-label">Status</label>
-        <div class="custom-dropdown" (click)="toggleDropdown($event, 'experienceStatus')">
-          <div class="dropdown-selected">
-            <span>{{ selectedExperienceStatus || 'Select status' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isExperienceStatusOpen"></i>
-          </div>
-          <div class="dropdown-options" *ngIf="isExperienceStatusOpen">
-            <div
-              class="dropdown-option"
-              *ngFor="let status of statusOptions"
-              (click)="selectExperienceStatus(status, $event)"
-            >
-              {{ status }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 d-flex align-items-end pb-2">
-        <label class="checkbox-container">
-          Currently Working Here
-          <input
-            type="checkbox"
-            class="custom-checkbox"
-            [(ngModel)]="expform.currentlyWorking"
-            name="currentlyWorking"
-          />
-          <span class="checkmark"></span>
-        </label>
-      </div>
-
-      <div class="col-12">
-        <label class="form-label">Remarks</label>
-        <textarea
-          class="form-control"
-          name="remarks"
-          rows="3"
-          [(ngModel)]="expform.remarks"
-        ></textarea>
-      </div>
-    </div>
-
-    <!-- Buttons -->
-    <div class="form-actions-footer">
-      <button type="button" class="btn-submit-action me-3" (click)="addExperience()">
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path d="M12 5v14M5 12l7 7 7-7" />
-        </svg>
-        {{ isEditingExperience ? 'Update Experience' : 'Add Experience' }}
-      </button>
-      <button *ngIf="isEditingExperience" type="button" class="btn-cancel-action" (click)="resetExpForm()">
-        Cancel Edit
-      </button>
-    </div>
-
-    <!-- Runtime Table -->
-    <div class="experience-table-wrapper mt-1" *ngIf="experiences.length > 0">
-      <div class="table-header-bar" *ngIf="activeTab === 'experience'">
-        <span class="table-title">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z" />
-            <path d="M16 3H8a2 2 0 00-2 2v2h12V5a2 2 0 00-2-2z" />
-          </svg>
-          Experience Records
-        </span>
-        <span class="table-count">{{ experiences.length }} record(s)</span>
-      </div>
-
-      <div class="table-responsive">
-        <table class="exp-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Company</th>
-              <th>Role</th>
-              <th>From</th>
-              <th>To</th>
-              <th>Working Status</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let exp of experiences; let i = index" class="exp-row">
-              <td>{{ i + 1 }}</td>
-              <td>
-                <span class="company-name">{{ exp.organizationName }}</span>
-              </td>
-              <td>{{ exp.roleName }}</td>
-              <td>{{ exp.startDate | date: 'dd MMM yyyy' }}</td>
-              <td>
-                <span *ngIf="!exp.currentlyWorking">{{ exp.endDate | date: 'dd MMM yyyy' }}</span>
-                <span *ngIf="exp.currentlyWorking" class="badge-present">Present</span>
-              </td>
-              <td>
-                <span class="badge-status" [class.current]="exp.currentlyWorking">
-                  {{ exp.currentlyWorking ? 'Current' : 'Past' }}
-                </span>
-              </td>
-              <td>
-                <span
-                  class="badge-status"
-                  [class.current]="exp.status === 'ACTIVE'"
-                  [class.badge-expired]="exp.status === 'CANCELLED'"
-                  [class.badge-inactive]="exp.status === 'INACTIVE'"
-                >
-                  {{ exp.status || '—' }}
-                </span>
-              </td>
-              <td>
-                <button class="btn-edit" (click)="editExperience(i)" title="Edit">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M17 3l4 4L7 21H3v-4L17 3z" />
-                  </svg>
-                </button>
-                <button class="btn-remove" (click)="removeExperience(i)" title="Remove">
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <polyline points="3 6 5 6 21 6" />
-                    <path d="M19 6l-1 14H6L5 6" />
-                    <path d="M10 11v6M14 11v6" />
-                    <path d="M9 6V4h6v2" />
-                  </svg>
-                </button>
-               </td>
-             </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <div class="empty-hint" *ngIf="experiences.length === 0 && activeTab === 'experience'">
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.5"
-      >
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 8v4M12 16h.01" />
-      </svg>
-      Fill the form above and click <strong>Add Experience</strong> to add records
-    </div>
-  </div>
-
-  <!-- Skills Tab -->
-  <div class="form-section tab-content-section" *ngIf="activeTab === 'skills'">
-    <h3 class="section-heading mb-3">Skills</h3>
-
-    <div class="row g-3">
-      <div class="col-md-6">
-        <label class="form-label">Skill Name <span class="text-danger">*</span></label>
-        <input
-          type="text"
-          class="form-control"
-          name="skillName"
-          [(ngModel)]="skillsForm.skillName"
-        />
-      </div>
-
-      <div class="col-md-6">
-        <label class="form-label">Proficiency Level</label>
-        <div class="custom-dropdown" (click)="toggleDropdown($event, 'proficiency')">
-          <div class="dropdown-selected">
-            <span>{{ selectedProficiency || 'Select proficiency' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isProficiencyOpen"></i>
-          </div>
-          <div class="dropdown-options" *ngIf="isProficiencyOpen">
-            <div
-              class="dropdown-option"
-              *ngFor="let level of proficiencyOptions"
-              (click)="selectProficiency(level, $event)"
-            >
-              {{ level }}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Years of Experience</label>
-        <input
-          type="number"
-          class="form-control"
-          name="yearsOfExperience"
-          [(ngModel)]="skillsForm.yearsOfExperience"
-        />
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Last Used Year</label>
-        <input
-          type="number"
-          class="form-control"
-          name="lastUsedYear"
-          [(ngModel)]="skillsForm.lastUsedYear"
-        />
-      </div>
-      <div class="col-md-4">
-        <label class="form-label">Status</label>
-        <div class="custom-dropdown" (click)="toggleDropdown($event, 'skillStatus')">
-          <div class="dropdown-selected">
-            <span>{{ selectedSkillStatus || 'Select status' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isSkillStatusOpen"></i>
-          </div>
-          <div class="dropdown-options" *ngIf="isSkillStatusOpen">
-            <div
-              class="dropdown-option"
-              *ngFor="let status of statusOptions"
-              (click)="selectSkillStatus(status, $event)"
-            >
-              {{ status }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-12">
-        <label class="form-label">Remarks</label>
-        <textarea
-          class="form-control"
-          name="skillRemarks"
-          rows="3"
-          [(ngModel)]="skillsForm.remarks"
-        ></textarea>
-      </div>
-    </div>
-    <div class="form-actions-footer">
-      <button type="button" class="btn-submit-action me-3" (click)="addSkill()">
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path d="M12 5v14M5 12l7 7 7-7" />
-        </svg>
-        {{ isEditingSkill ? 'Update Skill' : 'Add Skill' }}
-      </button>
-      <button *ngIf="isEditingSkill" type="button" class="btn-cancel-action" (click)="resetSkillForm()">
-        Cancel Edit
-      </button>
-    </div>
-    <div class="experience-table-wrapper mt-1" *ngIf="skills.length > 0">
-      <div class="table-header-bar">
-        <span class="table-title">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2v-4M9 21H5a2 2 0 01-2-2v-4m0 0h18"
-            />
-          </svg>
-          Skill Records
-        </span>
-        <span class="table-count">{{ skills.length }} record(s)</span>
-      </div>
-
-      <div class="table-responsive">
-        <table class="exp-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Skill Name</th>
-              <th>Proficiency</th>
-              <th>Years Exp</th>
-              <th>Last Used</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let skill of skills; let i = index" class="exp-row">
-              <td>{{ i + 1 }}</td>
-              <td>
-                <span class="company-name">{{ skill.skillName }}</span>
-              </td>
-              <td>
-                <span
-                  class="badge-level"
-                  [class.l1]="skill.proficiencyLevel === 'BEGINNER'"
-                  [class.l2]="skill.proficiencyLevel === 'INTERMEDIATE'"
-                  [class.l3]="skill.proficiencyLevel === 'ADVANCED'"
-                  [class.l4]="skill.proficiencyLevel === 'EXPERT'"
-                >
-                  {{ skill.proficiencyLevel || '—' }}
-                </span>
-               </td>
-              <td>{{ skill.yearsOfExperience ?? '—' }}</td>
-              <td>{{ skill.lastUsedYear ?? '—' }}</td>
-              <td>
-                <span
-                  class="badge-status"
-                  [class.current]="skill.status === 'ACTIVE'"
-                  [class.badge-inactive]="skill.status === 'INACTIVE'"
-                  [class.badge-expired]="skill.status === 'CANCELLED'"
-                >
-                  {{ skill.status || '—' }}
-                </span>
-               </td>
-              <td>
-                <button class="btn-edit" (click)="editSkill(i)" title="Edit">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M17 3l4 4L7 21H3v-4L17 3z" />
-                  </svg>
-                </button>
-                <button class="btn-remove" (click)="removeSkill(i)" title="Remove">
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <polyline points="3 6 5 6 21 6" />
-                    <path d="M19 6l-1 14H6L5 6" />
-                    <path d="M10 11v6M14 11v6" />
-                    <path d="M9 6V4h6v2" />
-                  </svg>
-                </button>
-               </td>
-             </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="empty-hint" *ngIf="skills.length === 0">
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.5"
-      >
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 8v4M12 16h.01" />
-      </svg>
-      Fill the form above and click <strong>Add Skill</strong> to add records
-    </div>
-  </div>
-
-  <!-- Qualification Tab -->
-  <div class="form-section tab-content-section" *ngIf="activeTab === 'qualification'">
-    <h3 class="section-heading mb-3">Qualification</h3>
-
-    <div class="row g-3">
-      <div class="col-md-4">
-        <label class="form-label">Qualification Name <span class="text-danger">*</span></label>
-        <input
-          type="text"
-          class="form-control"
-          name="qualificationName"
-          [(ngModel)]="qualificationForm.qualificationName"
-        />
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Institution Name <span class="text-danger">*</span></label>
-        <input
-          type="text"
-          class="form-control"
-          name="institutionName"
-          [(ngModel)]="qualificationForm.institutionName"
-        />
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Passing Year</label>
-        <input
-          type="number"
-          class="form-control"
-          name="passingYear"
-          [(ngModel)]="qualificationForm.passingYear"
-        />
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Grade</label>
-        <input
-          type="text"
-          class="form-control"
-          name="grade"
-          [(ngModel)]="qualificationForm.grade"
-        />
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Result Status</label>
-        <div class="custom-dropdown" (click)="toggleDropdown($event, 'resultStatus')">
-          <div class="dropdown-selected">
-            <span>{{ selectedResultStatus || 'Select result' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isResultStatusOpen"></i>
-          </div>
-          <div class="dropdown-options" *ngIf="isResultStatusOpen">
-            <div
-              class="dropdown-option"
-              *ngFor="let result of resultStatusOptions"
-              (click)="selectResultStatus(result, $event)"
-            >
-              {{ result }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4">
-        <label class="form-label">Status</label>
-        <div class="custom-dropdown" (click)="toggleDropdown($event, 'qualificationStatus')">
-          <div class="dropdown-selected">
-            <span>{{ selectedQualificationStatus || 'Select status' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isQualificationStatusOpen"></i>
-          </div>
-          <div class="dropdown-options" *ngIf="isQualificationStatusOpen">
-            <div
-              class="dropdown-option"
-              *ngFor="let status of statusOptions"
-              (click)="selectQualificationStatus(status, $event)"
-            >
-              {{ status }}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12">
-        <label class="form-label">Remarks</label>
-        <textarea
-          class="form-control"
-          name="qualRemarks"
-          rows="3"
-          [(ngModel)]="qualificationForm.remarks"
-        ></textarea>
-      </div>
-    </div>
-
-    <!-- Button -->
-    <div class="form-actions-footer">
-      <button type="button" class="btn-submit-action me-3" (click)="addQualification()">
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path d="M12 5v14M5 12l7 7 7-7" />
-        </svg>
-        {{ isEditingQualification ? 'Update Qualification' : 'Add Qualification' }}
-      </button>
-      <button *ngIf="isEditingQualification" type="button" class="btn-cancel-action" (click)="resetQualificationForm()">
-        Cancel Edit
-      </button>
-    </div>
-
-    <!-- Table -->
-    <div class="experience-table-wrapper mt-1" *ngIf="qualifications.length > 0">
-      <div class="table-header-bar">
-        <span class="table-title">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M12 2L2 7l10 5 10-5-10-5z" />
-            <path d="M2 17l10 5 10-5M2 12l10 5 10-5" />
-          </svg>
-          Qualification Records
-        </span>
-        <span class="table-count">{{ qualifications.length }} record(s)</span>
-      </div>
-
-      <div class="table-responsive">
-        <table class="exp-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Qualification</th>
-              <th>Institution</th>
-              <th>Passing Year</th>
-              <th>Grade</th>
-              <th>Result</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let qual of qualifications; let i = index" class="exp-row">
-              <td>{{ i + 1 }}</td>
-              <td>
-                <span class="company-name">{{ qual.qualificationName }}</span>
-               </td>
-              <td>{{ qual.institutionName }}</td>
-              <td>{{ qual.passingYear ?? '—' }}</td>
-              <td>{{ qual.grade || '—' }}</td>
-              <td>
-                <span class="badge-status" [class.current]="qual.resultStatus === 'PASS'">
-                  {{ qual.resultStatus || '—' }}
-                </span>
-               </td>
-              <td>
-                <span
-                  class="badge-status"
-                  [class.current]="qual.status === 'ACTIVE'"
-                  [class.badge-inactive]="qual.status === 'INACTIVE'"
-                  [class.badge-expired]="qual.status === 'CANCELLED'"
-                >
-                  {{ qual.status || '—' }}
-                </span>
-               </td>
-              <td>
-                <button class="btn-edit" (click)="editQualification(i)" title="Edit">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M17 3l4 4L7 21H3v-4L17 3z" />
-                  </svg>
-                </button>
-                <button class="btn-remove" (click)="removeQualification(i)" title="Remove">
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <polyline points="3 6 5 6 21 6" />
-                    <path d="M19 6l-1 14H6L5 6" />
-                    <path d="M10 11v6M14 11v6" />
-                    <path d="M9 6V4h6v2" />
-                  </svg>
-                </button>
-               </td>
-             </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="empty-hint" *ngIf="qualifications.length === 0">
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.5"
-      >
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 8v4M12 16h.01" />
-      </svg>
-      Fill the form above and click <strong>Add Qualification</strong> to add records
-    </div>
-  </div>
-
-  <!-- Bank Account Tab -->
-  <div class="form-section tab-content-section" *ngIf="activeTab === 'bankAccounts'">
-    <h3 class="section-heading mb-3">Bank Accounts</h3>
-
-    <div class="row g-3">
-      <div class="col-md-4">
-        <label class="form-label">Bank Name <span class="text-danger">*</span></label>
-        <input
-          type="text"
-          class="form-control"
-          name="bankName"
-          [(ngModel)]="bankAccountForm.bankName"
-        />
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Account Holder Name <span class="text-danger">*</span></label>
-        <input
-          type="text"
-          class="form-control"
-          name="accountHolderName"
-          [(ngModel)]="bankAccountForm.accountHolderName"
-        />
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Account Number <span class="text-danger">*</span></label>
-        <input
-          type="text"
-          class="form-control"
-          name="accountNumber"
-          [(ngModel)]="bankAccountForm.accountNumber"
-        />
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Branch Code</label>
-        <input
-          type="text"
-          class="form-control"
-          name="branchCode"
-          [(ngModel)]="bankAccountForm.branchCode"
-        />
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">IBAN</label>
-        <input type="text" class="form-control" name="iban" [(ngModel)]="bankAccountForm.iban" />
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Swift Code</label>
-        <input
-          type="text"
-          class="form-control"
-          name="swiftCode"
-          [(ngModel)]="bankAccountForm.swiftCode"
-        />
-      </div>
-      <div class="col-md-4">
-        <label class="form-label">Status</label>
-        <div class="custom-dropdown" (click)="toggleDropdown($event, 'bankStatus')">
-          <div class="dropdown-selected">
-            <span>{{ selectedBankStatus || 'Select status' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isBankStatusOpen"></i>
-          </div>
-          <div class="dropdown-options" *ngIf="isBankStatusOpen">
-            <div
-              class="dropdown-option"
-              *ngFor="let status of statusOptions"
-              (click)="selectBankStatus(status, $event)"
-            >
-              {{ status }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-4 d-flex align-items-end pb-2">
-        <label class="checkbox-container">
-          Primary Account
-          <input
-            type="checkbox"
-            class="custom-checkbox"
-            name="isPrimaryAccount"
-            [(ngModel)]="bankAccountForm.isPrimaryAccount"
-          />
-          <span class="checkmark"></span>
-        </label>
-      </div>
-
-      <div class="col-12">
-        <label class="form-label">Remarks</label>
-        <textarea
-          class="form-control"
-          name="bankRemarks"
-          rows="3"
-          [(ngModel)]="bankAccountForm.remarks"
-        ></textarea>
-      </div>
-    </div>
-
-    <!-- Button -->
-    <div class="form-actions-footer">
-      <button type="button" class="btn-submit-action me-3" (click)="addBankAccount()">
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path d="M12 5v14M5 12l7 7 7-7" />
-        </svg>
-        {{ isEditingBankAccount ? 'Update Bank Account' : 'Add Bank Account' }}
-      </button>
-      <button *ngIf="isEditingBankAccount" type="button" class="btn-cancel-action" (click)="resetBankAccountForm()">
-        Cancel Edit
-      </button>
-    </div>
-
-    <!-- Table -->
-    <div class="experience-table-wrapper mt-1" *ngIf="bankAccounts.length > 0">
-      <div class="table-header-bar">
-        <span class="table-title">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <rect x="2" y="5" width="20" height="14" rx="2" />
-            <path d="M2 10h20" />
-          </svg>
-          Bank Account Records
-        </span>
-        <span class="table-count">{{ bankAccounts.length }} record(s)</span>
-      </div>
-
-      <div class="table-responsive">
-        <table class="exp-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Bank Name</th>
-              <th>Account Holder</th>
-              <th>Account No</th>
-              <th>IBAN</th>
-              <th>Primary</th>
-              <th>Status</th>
-              <th>Action</th>
-              
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let acc of bankAccounts; let i = index" class="exp-row">
-              <td>{{ i + 1 }}</td>
-              <td>
-                <span class="company-name">{{ acc.bankName }}</span>
-               </td>
-              <td>{{ acc.accountHolderName }}</td>
-              <td>{{ acc.accountNumber }}</td>
-              <td>{{ acc.iban || '—' }}</td>
-              <td>
-                <span class="badge-status" [class.current]="acc.isPrimaryAccount">
-                  {{ acc.isPrimaryAccount ? 'Primary' : 'Secondary' }}
-                </span>
-               </td>
-              <td>
-                <span
-                  class="badge-status"
-                  [class.current]="acc.status === 'ACTIVE'"
-                  [class.badge-inactive]="acc.status === 'INACTIVE'"
-                  [class.badge-expired]="acc.status === 'CANCELLED'"
-                >
-                  {{ acc.status || '—' }}
-                </span>
-               </td>
-              <td>
-                <button class="btn-edit" (click)="editBankAccount(i)" title="Edit">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M17 3l4 4L7 21H3v-4L17 3z" />
-                  </svg>
-                </button>
-                <button class="btn-remove" (click)="removeBankAccount(i)" title="Remove">
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <polyline points="3 6 5 6 21 6" />
-                    <path d="M19 6l-1 14H6L5 6" />
-                    <path d="M10 11v6M14 11v6" />
-                    <path d="M9 6V4h6v2" />
-                  </svg>
-                </button>
-               </td>
-             </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="empty-hint" *ngIf="bankAccounts.length === 0">
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.5"
-      >
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 8v4M12 16h.01" />
-      </svg>
-      Fill the form above and click <strong>Add Bank Account</strong> to add records
-    </div>
-  </div>
-
-  <!-- Documents Tab -->
-  <div class="form-section tab-content-section" *ngIf="activeTab === 'documents'">
-    <h3 class="section-heading mb-3">Documents</h3>
-
-    <div class="row g-3">
-      <div class="col-md-4">
-        <label class="form-label">Document Type <span class="text-danger">*</span></label>
-        <div class="custom-dropdown" (click)="toggleDropdown($event, 'docType')">
-          <div class="dropdown-selected">
-            <span>{{ selectedDocType || 'Select document type' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isDocTypeOpen"></i>
-          </div>
-          <div class="dropdown-options" *ngIf="isDocTypeOpen">
-            <div
-              class="dropdown-option"
-              *ngFor="let type of IdTypeList"
-              (click)="selectDocType(type, $event)"
-            >
-              {{ type.name }}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Document Number <span class="text-danger">*</span></label>
-        <input
-          type="text"
-          class="form-control"
-          name="documentNumber"
-          [(ngModel)]="documentForm.documentNumber"
-        />
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Issued Date</label>
-        <input
-          type="date"
-          class="form-control"
-          name="issuedDate"
-          [(ngModel)]="documentForm.issuedDate"
-        />
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Expiry Date</label>
-        <input
-          type="date"
-          class="form-control"
-          name="expiryDate"
-          [(ngModel)]="documentForm.expiryDate"
-        />
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">File URL</label>
-        <input
-          type="text"
-          class="form-control"
-          name="fileUrl"
-          placeholder="https://..."
-          [(ngModel)]="documentForm.fileUrl"
-        />
-      </div>
-      <div class="col-md-4">
-        <label class="form-label">Status</label>
-        <div class="custom-dropdown" (click)="toggleDropdown($event, 'docStatus')">
-          <div class="dropdown-selected">
-            <span>{{ selectedDocStatus || 'Select status' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isDocStatusOpen"></i>
-          </div>
-          <div class="dropdown-options" *ngIf="isDocStatusOpen">
-            <div
-              class="dropdown-option"
-              *ngFor="let status of statusOptions"
-              (click)="selectDocStatus(status, $event)"
-            >
-              {{ status }}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-12">
-        <label class="form-label">Remarks</label>
-        <textarea
-          class="form-control"
-          name="docRemarks"
-          rows="3"
-          [(ngModel)]="documentForm.remarks"
-        ></textarea>
-      </div>
-    </div>
-
-    <!-- Button -->
-    <div class="form-actions-footer">
-      <button type="button" class="btn-submit-action me-3" (click)="addDocument()">
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path d="M12 5v14M5 12l7 7 7-7" />
-        </svg>
-        {{ isEditingDocument ? 'Update Document' : 'Add Document' }}
-      </button>
-      <button *ngIf="isEditingDocument" type="button" class="btn-cancel-action" (click)="resetDocumentForm()">
-        Cancel Edit
-      </button>
-    </div>
-
-    <!-- Table -->
-    <div class="experience-table-wrapper mt-1" *ngIf="documents.length > 0">
-      <div class="table-header-bar">
-        <span class="table-title">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
-            <polyline points="14 2 14 8 20 8" />
-          </svg>
-          Document Records
-        </span>
-        <span class="table-count">{{ documents.length }} record(s)</span>
-      </div>
-
-      <div class="table-responsive">
-        <table class="exp-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Doc Type</th>
-              <th>Doc Number</th>
-              <th>Issued Date</th>
-              <th>Expiry Date</th>
-              <th>File</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let doc of documents; let i = index" class="exp-row">
-              <td>{{ i + 1 }}</td>
-              <td>
-               <span class="company-name">{{ doc.idTypeName || '—' }}</span>
-              </td>
-              <td>{{ doc.documentNumber || '—' }}</td>
-              <td>{{ doc.issuedDate ? (doc.issuedDate | date: 'dd MMM yyyy') : '—' }}</td>
-              <td>
-                <span
-                  *ngIf="doc.expiryDate"
-                  [class.badge-present]="isNotExpired(doc.expiryDate)"
-                  [class.badge-expired]="!isNotExpired(doc.expiryDate)"
-                >
-                  {{ doc.expiryDate | date: 'dd MMM yyyy' }}
-                </span>
-                <span *ngIf="!doc.expiryDate">—</span>
-              </td>
-              <td>
-                <a
-                  *ngIf="doc.fileUrl"
-                  [href]="doc.fileUrl"
-                  target="_blank"
-                  class="badge-status current"
-                  >View</a
-                >
-                <span *ngIf="!doc.fileUrl">—</span>
-              </td>
-              <td>
-                <span
-                  class="badge-status"
-                  [class.current]="doc.status === 'ACTIVE'"
-                  [class.badge-inactive]="doc.status === 'INACTIVE'"
-                  [class.badge-expired]="doc.status === 'CANCELLED'"
-                >
-                  {{ doc.status || '—' }}
-                </span>
-              </td>
-              <td>
-                <button class="btn-edit" (click)="editDocument(i)" title="Edit">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M17 3l4 4L7 21H3v-4L17 3z" />
-                  </svg>
-                </button>
-                <button class="btn-remove" (click)="removeDocument(i)" title="Remove">
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <polyline points="3 6 5 6 21 6" />
-                    <path d="M19 6l-1 14H6L5 6" />
-                    <path d="M10 11v6M14 11v6" />
-                    <path d="M9 6V4h6v2" />
-                  </svg>
-                </button>
-               </td>
-             </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="empty-hint" *ngIf="documents.length === 0">
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.5"
-      >
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 8v4M12 16h.01" />
-      </svg>
-      Fill the form above and click <strong>Add Document</strong> to add records
-    </div>
-  </div>
-
-  <!-- Belongings Tab -->
-  <div class="form-section tab-content-section" *ngIf="activeTab === 'belongings'">
-    <h3 class="section-heading mb-3">Belongings</h3>
-
-    <div class="row g-3">
-      <div class="col-md-4">
-        <label class="form-label">Belonging Type <span class="text-danger">*</span></label>
-        <div class="custom-dropdown" (click)="toggleDropdown($event, 'belongingType')">
-          <div class="dropdown-selected">
-            <span>{{ selectedBelongingType || 'Select type' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isBelongingTypeOpen"></i>
-          </div>
-          <div class="dropdown-options" *ngIf="isBelongingTypeOpen">
-            <div
-              class="dropdown-option"
-              *ngFor="let type of belongingList"
-              (click)="selectBelongingType(type, $event)"
-            >
-              {{ type.name }}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Serial Number</label>
-        <input
-          type="text"
-          class="form-control"
-          name="serialNumber"
-          [(ngModel)]="belongingForm.serialNumber"
-        />
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Condition Status</label>
-        <div class="custom-dropdown" (click)="toggleDropdown($event, 'conditionStatus')">
-          <div class="dropdown-selected">
-            <span>{{ selectedConditionStatus || 'Select condition' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isConditionStatusOpen"></i>
-          </div>
-          <div class="dropdown-options" *ngIf="isConditionStatusOpen">
-            <div
-              class="dropdown-option"
-              *ngFor="let condition of conditionStatusOptions"
-              (click)="selectConditionStatus(condition, $event)"
-            >
-              {{ condition }}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Issued Date</label>
-        <input
-          type="date"
-          class="form-control"
-          name="belongingIssuedDate"
-          [(ngModel)]="belongingForm.issuedDate"
-        />
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Return Date</label>
-        <input
-          type="date"
-          class="form-control"
-          name="returnDate"
-          [(ngModel)]="belongingForm.returnDate"
-        />
-      </div>
-      <div class="col-md-4">
-        <label class="form-label">Status</label>
-        <div class="custom-dropdown" (click)="toggleDropdown($event, 'belongingStatus')">
-          <div class="dropdown-selected">
-            <span>{{ selectedBelongingStatus || 'Select status' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isBelongingStatusOpen"></i>
-          </div>
-          <div class="dropdown-options" *ngIf="isBelongingStatusOpen">
-            <div
-              class="dropdown-option"
-              *ngFor="let status of statusOptions"
-              (click)="selectBelongingStatus(status, $event)"
-            >
-              {{ status }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-12">
-        <label class="form-label">Remarks</label>
-        <textarea
-          class="form-control"
-          name="belongingRemarks"
-          rows="3"
-          [(ngModel)]="belongingForm.remarks"
-        ></textarea>
-      </div>
-    </div>
-
-    <!-- Button -->
-    <div class="form-actions-footer">
-      <button type="button" class="btn-submit-action me-3" (click)="addBelonging()">
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path d="M12 5v14M5 12l7 7 7-7" />
-        </svg>
-        {{ isEditingBelonging ? 'Update Belonging' : 'Add Belonging' }}
-      </button>
-      <button *ngIf="isEditingBelonging" type="button" class="btn-cancel-action" (click)="resetBelongingForm()">
-        Cancel Edit
-      </button>
-    </div>
-
-    <!-- Table -->
-    <div class="experience-table-wrapper mt-1" *ngIf="belongings.length > 0">
-      <div class="table-header-bar">
-        <span class="table-title">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"
-            />
-          </svg>
-          Belonging Records
-        </span>
-        <span class="table-count">{{ belongings.length }} record(s)</span>
-      </div>
-
-      <div class="table-responsive">
-        <table class="exp-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Type</th>
-              <th>Serial No</th>
-              <th>Condition</th>
-              <th>Issued Date</th>
-              <th>Return Date</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let b of belongings; let i = index" class="exp-row">
-              <td>{{ i + 1 }}</td>
-              <td>
-                <span class="company-name">{{ b.belongingname || '—' }}</span>
-              </td>
-              <td>{{ b.serialNumber || '—' }}</td>
-              <td>
-                <span
-                  class="badge-status"
-                  [class.current]="b.conditionStatus === 'NEW' || b.conditionStatus === 'GOOD'"
-                >
-                  {{ b.conditionStatus || '—' }}
-                </span>
-               </td>
-              <td>{{ b.issuedDate ? (b.issuedDate | date: 'dd MMM yyyy') : '—' }}</td>
-              <td>
-                <span *ngIf="b.returnDate" class="badge-present">
-                  {{ b.returnDate | date: 'dd MMM yyyy' }}
-                </span>
-                <span *ngIf="!b.returnDate" class="badge-status current">In Use</span>
-              </td>
-              <td>
-                <span
-                  class="badge-status"
-                  [class.current]="b.status === 'ACTIVE'"
-                  [class.badge-inactive]="b.status === 'INACTIVE'"
-                  [class.badge-expired]="b.status === 'CANCELLED'"
-                >
-                  {{ b.status || '—' }}
-                </span>
-              </td>
-              <td>
-                <button class="btn-edit" (click)="editBelonging(i)" title="Edit">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M17 3l4 4L7 21H3v-4L17 3z" />
-                  </svg>
-                </button>
-                <button class="btn-remove" (click)="removeBelonging(i)" title="Remove">
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <polyline points="3 6 5 6 21 6" />
-                    <path d="M19 6l-1 14H6L5 6" />
-                    <path d="M10 11v6M14 11v6" />
-                    <path d="M9 6V4h6v2" />
-                  </svg>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="empty-hint" *ngIf="belongings.length === 0">
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.5"
-      >
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 8v4M12 16h.01" />
-      </svg>
-      Fill the form above and click <strong>Add Belonging</strong> to add records
-    </div>
-  </div>
-
-  <!-- Family Members Tab -->
-  <div class="form-section tab-content-section" *ngIf="activeTab === 'familyMembers'">
-    <h3 class="section-heading mb-3">Family Members</h3>
-
-    <div class="row g-3">
-      <div class="col-md-4">
-        <label class="form-label">Member Name <span class="text-danger">*</span></label>
-        <input
-          type="text"
-          class="form-control"
-          name="memberName"
-          [(ngModel)]="familyMemberForm.memberName"
-        />
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Relation <span class="text-danger">*</span></label>
-        <div class="custom-dropdown" (click)="toggleDropdown($event, 'relation')">
-          <div class="dropdown-selected">
-            <span>{{ selectedRelation || 'Select relation' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isRelationOpen"></i>
-          </div>
-          <div class="dropdown-options" *ngIf="isRelationOpen">
-            <div
-              class="dropdown-option"
-              *ngFor="let relation of relationOptions"
-              (click)="selectRelation(relation, $event)"
-            >
-              {{ relation }}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Date of Birth</label>
-        <input
-          type="date"
-          class="form-control"
-          name="familyDob"
-          [(ngModel)]="familyMemberForm.dateOfBirth"
-        />
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Occupation</label>
-        <input
-          type="text"
-          class="form-control"
-          name="occupation"
-          [(ngModel)]="familyMemberForm.occupation"
-        />
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Contact Number</label>
-        <input
-          type="text"
-          class="form-control"
-          name="familyContact"
-          [(ngModel)]="familyMemberForm.contactNumber"
-        />
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Passport No</label>
-        <input
-          type="text"
-          class="form-control"
-          name="passportNo"
-          [(ngModel)]="familyMemberForm.passportNo"
-        />
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Passport Expiry</label>
-        <input
-          type="date"
-          class="form-control"
-          name="passportExpiry"
-          [(ngModel)]="familyMemberForm.passportExpiry"
-        />
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Visa / Iqama No</label>
-        <input
-          type="text"
-          class="form-control"
-          name="visaIqamaNo"
-          [(ngModel)]="familyMemberForm.visaIqamaNo"
-        />
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Visa / Iqama Expiry</label>
-        <input
-          type="date"
-          class="form-control"
-          name="visaIqamaExpiry"
-          [(ngModel)]="familyMemberForm.visaIqamaExpiry"
-        />
-      </div>
-      <div class="col-md-4">
-        <label class="form-label">Status</label>
-        <div class="custom-dropdown" (click)="toggleDropdown($event, 'familyMemberStatus')">
-          <div class="dropdown-selected">
-            <span>{{ selectedFamilyMemberStatus || 'Select status' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isFamilyMemberStatusOpen"></i>
-          </div>
-          <div class="dropdown-options" *ngIf="isFamilyMemberStatusOpen">
-            <div
-              class="dropdown-option"
-              *ngFor="let status of statusOptions"
-              (click)="selectFamilyMemberStatus(status, $event)"
-            >
-              {{ status }}
-            </div>
-          </div>
-        </div>
-      </div>
-      <!-- Checkboxes -->
-
-      <div class="col-md-2 d-flex align-items-end pb-2">
-        <label class="checkbox-container">
-          Dependent
-          <input
-            type="checkbox"
-            class="custom-checkbox"
-            name="isDependent"
-            [(ngModel)]="familyMemberForm.isDependent"
-          />
-          <span class="checkmark"></span>
-        </label>
-      </div>
-
-      <div class="col-md-3 d-flex align-items-end pb-2">
-        <label class="checkbox-container">
-          Beneficiary
-          <input
-            type="checkbox"
-            class="custom-checkbox"
-            name="isBeneficiary"
-            [(ngModel)]="familyMemberForm.isBeneficiary"
-          />
-          <span class="checkmark"></span>
-        </label>
-      </div>
-
-      <div class="col-md-3 d-flex align-items-end pb-2">
-        <label class="checkbox-container">
-          Emergency Contact
-          <input
-            type="checkbox"
-            class="custom-checkbox"
-            name="isEmergencyContact"
-            [(ngModel)]="familyMemberForm.isEmergencyContact"
-          />
-          <span class="checkmark"></span>
-        </label>
-      </div>
-
-      <div class="col-12">
-        <label class="form-label">Remarks</label>
-        <textarea
-          class="form-control"
-          name="familyRemarks"
-          rows="3"
-          [(ngModel)]="familyMemberForm.remarks"
-        ></textarea>
-      </div>
-    </div>
-
-    <!-- Button -->
-    <div class="form-actions-footer">
-      <button type="button" class="btn-submit-action me-3" (click)="addFamilyMember()">
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path d="M12 5v14M5 12l7 7 7-7" />
-        </svg>
-        {{ isEditingFamilyMember ? 'Update Family Member' : 'Add Family Member' }}
-      </button>
-      <button *ngIf="isEditingFamilyMember" type="button" class="btn-cancel-action" (click)="resetFamilyMemberForm()">
-        Cancel Edit
-      </button>
-    </div>
-
-    <!-- Table -->
-    <div class="experience-table-wrapper mt-1" *ngIf="familyMembers.length > 0">
-      <div class="table-header-bar">
-        <span class="table-title">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
-            <circle cx="9" cy="7" r="4" />
-            <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
-          </svg>
-          Family Member Records
-        </span>
-        <span class="table-count">{{ familyMembers.length }} record(s)</span>
-      </div>
-
-      <div class="table-responsive">
-        <table class="exp-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Name</th>
-              <th>Relation</th>
-              <th>Contact</th>
-              <th>Dependent</th>
-              <th>Beneficiary</th>
-              <th>Emergency</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let fm of familyMembers; let i = index" class="exp-row">
-              <td>{{ i + 1 }}</td>
-              <td>
-                <span class="company-name">{{ fm.memberName }}</span>
-              </td>
-              <td>
-                <span class="badge-status">{{ fm.relationName || '—' }}</span>
-              </td>
-              <td>{{ fm.contactNumber || '—' }}</td>
-              <td>
-                <span class="badge-status" [class.current]="fm.isDependent">
-                  {{ fm.isDependent ? 'Yes' : 'No' }}
-                </span>
-              </td>
-              <td>
-                <span class="badge-status" [class.current]="fm.isBeneficiary">
-                  {{ fm.isBeneficiary ? 'Yes' : 'No' }}
-                </span>
-              </td>
-              <td>
-                <span class="badge-status" [class.current]="fm.isEmergencyContact">
-                  {{ fm.isEmergencyContact ? 'Yes' : 'No' }}
-                </span>
-              </td>
-              <td>
-                <span
-                  class="badge-status"
-                  [class.current]="fm.status === 'ACTIVE'"
-                  [class.badge-inactive]="fm.status === 'INACTIVE'"
-                  [class.badge-expired]="fm.status === 'CANCELLED'"
-                >
-                  {{ fm.status || '—' }}
-                </span>
-              </td>
-              <td>
-                <button class="btn-edit" (click)="editFamilyMember(i)" title="Edit">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M17 3l4 4L7 21H3v-4L17 3z" />
-                  </svg>
-                </button>
-                <button class="btn-remove" (click)="removeFamilyMember(i)" title="Remove">
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <polyline points="3 6 5 6 21 6" />
-                    <path d="M19 6l-1 14H6L5 6" />
-                    <path d="M10 11v6M14 11v6" />
-                    <path d="M9 6V4h6v2" />
-                  </svg>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="empty-hint" *ngIf="familyMembers.length === 0">
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.5"
-      >
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 8v4M12 16h.01" />
-      </svg>
-      Fill the form above and click <strong>Add Family Member</strong> to add records
-    </div>
-  </div>
-
-  <!-- Positions Tab -->
-  <div class="form-section tab-content-section" *ngIf="activeTab === 'positions'">
-    <h3 class="section-heading mb-3">Positions</h3>
-
-    <div class="row g-3">
-      <div class="col-md-4">
-        <label class="form-label">Position Code</label>
-        <input
-          type="text"
-          class="form-control"
-          name="positionCode"
-          [(ngModel)]="positionForm.positionCode"
-        />
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Position Name</label>
-        <input
-          type="text"
-          class="form-control"
-          name="positionName"
-          [(ngModel)]="positionForm.positionName"
-        />
-      </div>
-      <div class="col-md-4">
-        <label class="form-label">Department</label>
-        <div class="custom-dropdown" (click)="toggleDropdown($event, 'department')">
-          <div class="dropdown-selected">
-            <span>{{ selectedDepartment?.name || 'Select Department' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isDepartmentOpen"></i>
-          </div>
-          <div class="dropdown-options" *ngIf="isDepartmentOpen">
-            <div
-              class="dropdown-option"
-              *ngFor="let dep of departmentList"
-              (click)="selectDepartment(dep, $event)"
-            >
-              {{ dep.code }}-{{ dep.name }}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Designation</label>
-        <div class="custom-dropdown" (click)="toggleDropdown($event, 'designation')">
-          <div class="dropdown-selected">
-            <span>{{ selectedDesignation?.name || 'Select Designation' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isDesignatiomOpen"></i>
-          </div>
-          <div class="dropdown-options" *ngIf="isDesignatiomOpen">
-            <div
-              class="dropdown-option"
-              *ngFor="let des of designationList"
-              (click)="selectDesignation(des, $event)"
-            >
-              {{ des.code }}-{{ des.name }}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Branch</label>
-        <div class="custom-dropdown" (click)="toggleDropdown($event, 'branch')">
-          <div class="dropdown-selected">
-            <span>{{ selcetedBranch?.name || 'Select Branch/Company' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isBranchOpen"></i>
-          </div>
-          <div class="dropdown-options" *ngIf="isBranchOpen">
-            <div
-              class="dropdown-option"
-              *ngFor="let branch of companyBranchList"
-              (click)="selectBranch(branch, $event)"
-            >
-              {{ branch.code }}-{{ branch.name }}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Reporting Manager</label>
-        <div class="custom-dropdown" (click)="toggleDropdown($event, 'reportingManager')">
-          <div class="dropdown-selected">
-            <span>{{ selectedReportingManager?.fullName || 'Select Reporting Manager' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isReportingManagerOpen"></i>
-          </div>
-          <div class="dropdown-options" *ngIf="isReportingManagerOpen">
-            <div
-              class="dropdown-option"
-              *ngFor="let emp of EmployeeList"
-              (click)="selectReportingManager(emp, $event)"
-            >
-              {{ emp.fullName }}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Employee Grade</label>
-        <div class="custom-dropdown" (click)="toggleDropdown($event, 'employeeGrade')">
-          <div class="dropdown-selected">
-            <span>{{ selectedEmployeeGrade?.name || 'Select Employee Grade' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isEmployeeGradeOpen"></i>
-          </div>
-          <div class="dropdown-options" *ngIf="isEmployeeGradeOpen">
-            <div
-              class="dropdown-option"
-              *ngFor="let emp of EmployeeGradeList"
-              (click)="selectEmployeeGrade(emp, $event)"
-            >
-              {{ emp.code }}-{{ emp.name }}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Employee Category</label>
-        <div class="custom-dropdown" (click)="toggleDropdown($event, 'employeeCategory')">
-          <div class="dropdown-selected">
-            <span>{{ SlectedEmployeeCategory?.name || 'Select Employee Category' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isEmployeeCategoryOpen"></i>
-          </div>
-          <div class="dropdown-options" *ngIf="isEmployeeCategoryOpen">
-            <div
-              class="dropdown-option"
-              *ngFor="let emp of EmployeeCategoryList"
-              (click)="selectemployeeCatergory(emp, $event)"
-            >
-              {{ emp.code }}-{{ emp.name }}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Job Title</label>
-        <div class="custom-dropdown" (click)="toggleDropdown($event, 'jobTitle')">
-          <div class="dropdown-selected">
-            <span>{{ selectedJobTitle?.name || 'Select Job Title' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isJobTitleOpen"></i>
-          </div>
-          <div class="dropdown-options" *ngIf="isJobTitleOpen">
-            <div
-              class="dropdown-option"
-              *ngFor="let job of JobTitleList"
-              (click)="selectJobTitle(job, $event)"
-            >
-              {{ job.code }}-{{ job.name }}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-md-4">
-        <label class="form-label">Shift</label>
-        <div class="custom-dropdown" (click)="toggleDropdown($event, 'shift')">
-          <div class="dropdown-selected">
-            <span>{{ selectedShift?.name || 'Select Shift' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isShiftOpen"></i>
-          </div>
-          <div class="dropdown-options" *ngIf="isShiftOpen">
-            <div
-              class="dropdown-option"
-              *ngFor="let shift of shiftList"
-              (click)="selectShift(shift, $event)"
-            >
-              {{ shift.code }}-{{ shift.name }}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Work Schedule dropdown - "name" ki jagah "payPeriodName" use karein -->
-<div class="col-md-4">
-  <label class="form-label">Work Schedule</label>
-  <div class="custom-dropdown" (click)="toggleDropdown($event, 'workSchedule')">
-    <div class="dropdown-selected">
-      <span>{{ selectedWorkSchedule?.payPeriodName || 'Select Work Schedule By Pay Period' }}</span>
-      <i class="fa-solid fa-caret-down" [class.rotate]="isWorkScheduleOpen"></i>
-    </div>
-    <div class="dropdown-options" *ngIf="isWorkScheduleOpen">
+    <div class="tabs-container">
+      <!-- Back Button -->
+      <div *ngIf="hasPrevPage" class="tab-button tab-nav-btn" (click)="prevTabPage()">← Back</div>
+
+      <!-- Visible Tabs -->
       <div
-        class="dropdown-option"
-        *ngFor="let work of WorkScheduleList"
-        (click)="selectWorkSchedule(work, $event)"
+        *ngFor="let tab of visibleTabs"
+        class="tab-button"
+        [class.active]="activeTabId === tab.id"
+        (click)="setTab(tab.id)"
       >
-        {{ work.payPeriodName }}
+        {{ tab.title }}
       </div>
+
+      <!-- More Button -->
+      <div *ngIf="hasNextPage" class="tab-nav-btn tab-button" (click)="nextTabPage()">More →</div>
     </div>
-  </div>
-</div>
 
-      <div class="col-md-4">
-        <label class="form-label">Effective From</label>
-        <input
-          type="date"
-          class="form-control"
-          name="effectiveFrom"
-          [(ngModel)]="positionForm.effectiveFrom"
-        />
-      </div>
+    <!-- Experience Tab -->
+    <div class="form-section tab-content-section" *ngIf="activeTab === 'experience'">
+      <h3 class="section-heading mb-3">Experience</h3>
 
-      <div class="col-md-4">
-        <label class="form-label">Effective To</label>
-        <input
-          type="date"
-          class="form-control"
-          name="effectiveTo"
-          [(ngModel)]="positionForm.effectiveTo"
-        />
-      </div>
-      <div class="col-md-4">
-        <label class="form-label">Status</label>
-        <div class="custom-dropdown" (click)="toggleDropdown($event, 'positionStatus')">
-          <div class="dropdown-selected">
-            <span>{{ selectedPositionStatus || 'Select status' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isPositionStatusOpen"></i>
-          </div>
-          <div class="dropdown-options" *ngIf="isPositionStatusOpen">
-            <div
-              class="dropdown-option"
-              *ngFor="let status of statusOptions"
-              (click)="selectPositionStatus(status, $event)"
-            >
-              {{ status }}
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Organization Name <span class="text-danger">*</span></label>
+          <input
+            type="text"
+            class="form-control"
+            name="organizationName"
+            [(ngModel)]="expform.organizationName"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Role Name <span class="text-danger">*</span></label>
+          <input type="text" class="form-control" name="roleName" [(ngModel)]="expform.roleName" />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Start Date <span class="text-danger">*</span></label>
+          <input
+            type="date"
+            class="form-control"
+            name="startDate"
+            [(ngModel)]="expform.startDate"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">End Date<span class="text-danger">*</span></label>
+          <input
+            type="date"
+            class="form-control"
+            name="endDate"
+            [(ngModel)]="expform.endDate"
+            [attr.disabled]="expform.currentlyWorking ? true : null"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Responsibilities</label>
+          <input
+            type="text"
+            class="form-control"
+            name="responsibilities"
+            [(ngModel)]="expform.responsibilities"
+          />
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Status</label>
+          <div class="custom-dropdown" (click)="toggleDropdown($event, 'experienceStatus')">
+            <div class="dropdown-selected">
+              <span>{{ selectedExperienceStatus || 'Select status' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isExperienceStatusOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isExperienceStatusOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let status of statusOptions"
+                (click)="selectExperienceStatus(status, $event)"
+              >
+                {{ status }}
+              </div>
             </div>
           </div>
         </div>
+        <div class="col-md-4 d-flex align-items-end pb-2">
+          <label class="checkbox-container">
+            Currently Working Here
+            <input
+              type="checkbox"
+              class="custom-checkbox"
+              [(ngModel)]="expform.currentlyWorking"
+              name="currentlyWorking"
+            />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+
+        <div class="col-12">
+          <label class="form-label">Remarks</label>
+          <textarea
+            class="form-control"
+            name="remarks"
+            rows="3"
+            [(ngModel)]="expform.remarks"
+          ></textarea>
+        </div>
       </div>
-      <div class="col-md-4 d-flex align-items-end pb-2">
+
+      <!-- Buttons -->
+      <div class="form-actions-footer">
+        <button type="button" class="btn-submit-action me-3" (click)="addExperience()">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M12 5v14M5 12l7 7 7-7" />
+          </svg>
+          {{ isEditingExperience ? 'Update Experience' : 'Add Experience' }}
+        </button>
+        <button
+          *ngIf="isEditingExperience"
+          type="button"
+          class="btn-cancel-action"
+          (click)="resetExpForm()"
+        >
+          Cancel Edit
+        </button>
+      </div>
+
+      <!-- Runtime Table -->
+      <div class="experience-table-wrapper mt-1" *ngIf="experiences.length > 0">
+        <div class="table-header-bar" *ngIf="activeTab === 'experience'">
+          <span class="table-title">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2z" />
+              <path d="M16 3H8a2 2 0 00-2 2v2h12V5a2 2 0 00-2-2z" />
+            </svg>
+            Experience Records
+          </span>
+          <span class="table-count">{{ experiences.length }} record(s)</span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="exp-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Company</th>
+                <th>Role</th>
+                <th>From</th>
+                <th>To</th>
+                <th>Working Status</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let exp of experiences; let i = index" class="exp-row">
+                <td>{{ i + 1 }}</td>
+                <td>
+                  <span class="company-name">{{ exp.organizationName }}</span>
+                </td>
+                <td>{{ exp.roleName }}</td>
+                <td>{{ exp.startDate | date: 'dd MMM yyyy' }}</td>
+                <td>
+                  <span *ngIf="!exp.currentlyWorking">{{ exp.endDate | date: 'dd MMM yyyy' }}</span>
+                  <span *ngIf="exp.currentlyWorking" class="badge-present">Present</span>
+                </td>
+                <td>
+                  <span class="badge-status" [class.current]="exp.currentlyWorking">
+                    {{ exp.currentlyWorking ? 'Current' : 'Past' }}
+                  </span>
+                </td>
+                <td>
+                  <span
+                    class="badge-status"
+                    [class.current]="exp.status === 'ACTIVE'"
+                    [class.badge-expired]="exp.status === 'CANCELLED'"
+                    [class.badge-inactive]="exp.status === 'INACTIVE'"
+                  >
+                    {{ exp.status || '—' }}
+                  </span>
+                </td>
+                <td>
+                  <button class="btn-edit" (click)="editExperience(i)" title="Edit">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path d="M17 3l4 4L7 21H3v-4L17 3z" />
+                    </svg>
+                  </button>
+                  <button class="btn-remove" (click)="removeExperience(i)" title="Remove">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polyline points="3 6 5 6 21 6" />
+                      <path d="M19 6l-1 14H6L5 6" />
+                      <path d="M10 11v6M14 11v6" />
+                      <path d="M9 6V4h6v2" />
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="empty-hint" *ngIf="experiences.length === 0 && activeTab === 'experience'">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 8v4M12 16h.01" />
+        </svg>
+        Fill the form above and click <strong>Add Experience</strong> to add records
+      </div>
+    </div>
+
+    <!-- Skills Tab -->
+    <div class="form-section tab-content-section" *ngIf="activeTab === 'skills'">
+      <h3 class="section-heading mb-3">Skills</h3>
+
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Skill Name <span class="text-danger">*</span></label>
+          <input
+            type="text"
+            class="form-control"
+            name="skillName"
+            [(ngModel)]="skillsForm.skillName"
+          />
+        </div>
+
+        <div class="col-md-6">
+          <label class="form-label">Proficiency Level</label>
+          <div class="custom-dropdown" (click)="toggleDropdown($event, 'proficiency')">
+            <div class="dropdown-selected">
+              <span>{{ selectedProficiency || 'Select proficiency' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isProficiencyOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isProficiencyOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let level of proficiencyOptions"
+                (click)="selectProficiency(level, $event)"
+              >
+                {{ level }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Years of Experience</label>
+          <input
+            type="number"
+            class="form-control"
+            name="yearsOfExperience"
+            [(ngModel)]="skillsForm.yearsOfExperience"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Last Used Year</label>
+          <input
+            type="number"
+            class="form-control"
+            name="lastUsedYear"
+            [(ngModel)]="skillsForm.lastUsedYear"
+          />
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Status</label>
+          <div class="custom-dropdown" (click)="toggleDropdown($event, 'skillStatus')">
+            <div class="dropdown-selected">
+              <span>{{ selectedSkillStatus || 'Select status' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isSkillStatusOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isSkillStatusOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let status of statusOptions"
+                (click)="selectSkillStatus(status, $event)"
+              >
+                {{ status }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <label class="form-label">Remarks</label>
+          <textarea
+            class="form-control"
+            name="skillRemarks"
+            rows="3"
+            [(ngModel)]="skillsForm.remarks"
+          ></textarea>
+        </div>
+      </div>
+      <div class="form-actions-footer">
+        <button type="button" class="btn-submit-action me-3" (click)="addSkill()">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M12 5v14M5 12l7 7 7-7" />
+          </svg>
+          {{ isEditingSkill ? 'Update Skill' : 'Add Skill' }}
+        </button>
+        <button
+          *ngIf="isEditingSkill"
+          type="button"
+          class="btn-cancel-action"
+          (click)="resetSkillForm()"
+        >
+          Cancel Edit
+        </button>
+      </div>
+      <div class="experience-table-wrapper mt-1" *ngIf="skills.length > 0">
+        <div class="table-header-bar">
+          <span class="table-title">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2v-4M9 21H5a2 2 0 01-2-2v-4m0 0h18"
+              />
+            </svg>
+            Skill Records
+          </span>
+          <span class="table-count">{{ skills.length }} record(s)</span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="exp-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Skill Name</th>
+                <th>Proficiency</th>
+                <th>Years Exp</th>
+                <th>Last Used</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let skill of skills; let i = index" class="exp-row">
+                <td>{{ i + 1 }}</td>
+                <td>
+                  <span class="company-name">{{ skill.skillName }}</span>
+                </td>
+                <td>
+                  <span
+                    class="badge-level"
+                    [class.l1]="skill.proficiencyLevel === 'BEGINNER'"
+                    [class.l2]="skill.proficiencyLevel === 'INTERMEDIATE'"
+                    [class.l3]="skill.proficiencyLevel === 'ADVANCED'"
+                    [class.l4]="skill.proficiencyLevel === 'EXPERT'"
+                  >
+                    {{ skill.proficiencyLevel || '—' }}
+                  </span>
+                </td>
+                <td>{{ skill.yearsOfExperience ?? '—' }}</td>
+                <td>{{ skill.lastUsedYear ?? '—' }}</td>
+                <td>
+                  <span
+                    class="badge-status"
+                    [class.current]="skill.status === 'ACTIVE'"
+                    [class.badge-inactive]="skill.status === 'INACTIVE'"
+                    [class.badge-expired]="skill.status === 'CANCELLED'"
+                  >
+                    {{ skill.status || '—' }}
+                  </span>
+                </td>
+                <td>
+                  <button class="btn-edit" (click)="editSkill(i)" title="Edit">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path d="M17 3l4 4L7 21H3v-4L17 3z" />
+                    </svg>
+                  </button>
+                  <button class="btn-remove" (click)="removeSkill(i)" title="Remove">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polyline points="3 6 5 6 21 6" />
+                      <path d="M19 6l-1 14H6L5 6" />
+                      <path d="M10 11v6M14 11v6" />
+                      <path d="M9 6V4h6v2" />
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="empty-hint" *ngIf="skills.length === 0">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 8v4M12 16h.01" />
+        </svg>
+        Fill the form above and click <strong>Add Skill</strong> to add records
+      </div>
+    </div>
+
+    <!-- Qualification Tab -->
+    <div class="form-section tab-content-section" *ngIf="activeTab === 'qualification'">
+      <h3 class="section-heading mb-3">Qualification</h3>
+
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Qualification Name <span class="text-danger">*</span></label>
+          <input
+            type="text"
+            class="form-control"
+            name="qualificationName"
+            [(ngModel)]="qualificationForm.qualificationName"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Institution Name <span class="text-danger">*</span></label>
+          <input
+            type="text"
+            class="form-control"
+            name="institutionName"
+            [(ngModel)]="qualificationForm.institutionName"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Passing Year</label>
+          <input
+            type="number"
+            class="form-control"
+            name="passingYear"
+            [(ngModel)]="qualificationForm.passingYear"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Grade</label>
+          <input
+            type="text"
+            class="form-control"
+            name="grade"
+            [(ngModel)]="qualificationForm.grade"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Result Status</label>
+          <div class="custom-dropdown" (click)="toggleDropdown($event, 'resultStatus')">
+            <div class="dropdown-selected">
+              <span>{{ selectedResultStatus || 'Select result' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isResultStatusOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isResultStatusOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let result of resultStatusOptions"
+                (click)="selectResultStatus(result, $event)"
+              >
+                {{ result }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Status</label>
+          <div class="custom-dropdown" (click)="toggleDropdown($event, 'qualificationStatus')">
+            <div class="dropdown-selected">
+              <span>{{ selectedQualificationStatus || 'Select status' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isQualificationStatusOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isQualificationStatusOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let status of statusOptions"
+                (click)="selectQualificationStatus(status, $event)"
+              >
+                {{ status }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <label class="form-label">Remarks</label>
+          <textarea
+            class="form-control"
+            name="qualRemarks"
+            rows="3"
+            [(ngModel)]="qualificationForm.remarks"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Button -->
+      <div class="form-actions-footer">
+        <button type="button" class="btn-submit-action me-3" (click)="addQualification()">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M12 5v14M5 12l7 7 7-7" />
+          </svg>
+          {{ isEditingQualification ? 'Update Qualification' : 'Add Qualification' }}
+        </button>
+        <button
+          *ngIf="isEditingQualification"
+          type="button"
+          class="btn-cancel-action"
+          (click)="resetQualificationForm()"
+        >
+          Cancel Edit
+        </button>
+      </div>
+
+      <!-- Table -->
+      <div class="experience-table-wrapper mt-1" *ngIf="qualifications.length > 0">
+        <div class="table-header-bar">
+          <span class="table-title">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M12 2L2 7l10 5 10-5-10-5z" />
+              <path d="M2 17l10 5 10-5M2 12l10 5 10-5" />
+            </svg>
+            Qualification Records
+          </span>
+          <span class="table-count">{{ qualifications.length }} record(s)</span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="exp-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Qualification</th>
+                <th>Institution</th>
+                <th>Passing Year</th>
+                <th>Grade</th>
+                <th>Result</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let qual of qualifications; let i = index" class="exp-row">
+                <td>{{ i + 1 }}</td>
+                <td>
+                  <span class="company-name">{{ qual.qualificationName }}</span>
+                </td>
+                <td>{{ qual.institutionName }}</td>
+                <td>{{ qual.passingYear ?? '—' }}</td>
+                <td>{{ qual.grade || '—' }}</td>
+                <td>
+                  <span class="badge-status" [class.current]="qual.resultStatus === 'PASS'">
+                    {{ qual.resultStatus || '—' }}
+                  </span>
+                </td>
+                <td>
+                  <span
+                    class="badge-status"
+                    [class.current]="qual.status === 'ACTIVE'"
+                    [class.badge-inactive]="qual.status === 'INACTIVE'"
+                    [class.badge-expired]="qual.status === 'CANCELLED'"
+                  >
+                    {{ qual.status || '—' }}
+                  </span>
+                </td>
+                <td>
+                  <button class="btn-edit" (click)="editQualification(i)" title="Edit">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path d="M17 3l4 4L7 21H3v-4L17 3z" />
+                    </svg>
+                  </button>
+                  <button class="btn-remove" (click)="removeQualification(i)" title="Remove">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polyline points="3 6 5 6 21 6" />
+                      <path d="M19 6l-1 14H6L5 6" />
+                      <path d="M10 11v6M14 11v6" />
+                      <path d="M9 6V4h6v2" />
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="empty-hint" *ngIf="qualifications.length === 0">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 8v4M12 16h.01" />
+        </svg>
+        Fill the form above and click <strong>Add Qualification</strong> to add records
+      </div>
+    </div>
+
+    <!-- Bank Account Tab -->
+    <div class="form-section tab-content-section" *ngIf="activeTab === 'bankAccounts'">
+      <h3 class="section-heading mb-3">Bank Accounts</h3>
+
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Bank Name <span class="text-danger">*</span></label>
+          <input
+            type="text"
+            class="form-control"
+            name="bankName"
+            [(ngModel)]="bankAccountForm.bankName"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Account Holder Name <span class="text-danger">*</span></label>
+          <input
+            type="text"
+            class="form-control"
+            name="accountHolderName"
+            [(ngModel)]="bankAccountForm.accountHolderName"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Account Number <span class="text-danger">*</span></label>
+          <input
+            type="text"
+            class="form-control"
+            name="accountNumber"
+            [(ngModel)]="bankAccountForm.accountNumber"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Branch Code</label>
+          <input
+            type="text"
+            class="form-control"
+            name="branchCode"
+            [(ngModel)]="bankAccountForm.branchCode"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">IBAN</label>
+          <input type="text" class="form-control" name="iban" [(ngModel)]="bankAccountForm.iban" />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Swift Code</label>
+          <input
+            type="text"
+            class="form-control"
+            name="swiftCode"
+            [(ngModel)]="bankAccountForm.swiftCode"
+          />
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Status</label>
+          <div class="custom-dropdown" (click)="toggleDropdown($event, 'bankStatus')">
+            <div class="dropdown-selected">
+              <span>{{ selectedBankStatus || 'Select status' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isBankStatusOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isBankStatusOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let status of statusOptions"
+                (click)="selectBankStatus(status, $event)"
+              >
+                {{ status }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 d-flex align-items-end pb-2">
+          <label class="checkbox-container">
+            Primary Account
+            <input
+              type="checkbox"
+              class="custom-checkbox"
+              name="isPrimaryAccount"
+              [(ngModel)]="bankAccountForm.isPrimaryAccount"
+            />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+
+        <div class="col-12">
+          <label class="form-label">Remarks</label>
+          <textarea
+            class="form-control"
+            name="bankRemarks"
+            rows="3"
+            [(ngModel)]="bankAccountForm.remarks"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Button -->
+      <div class="form-actions-footer">
+        <button type="button" class="btn-submit-action me-3" (click)="addBankAccount()">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M12 5v14M5 12l7 7 7-7" />
+          </svg>
+          {{ isEditingBankAccount ? 'Update Bank Account' : 'Add Bank Account' }}
+        </button>
+        <button
+          *ngIf="isEditingBankAccount"
+          type="button"
+          class="btn-cancel-action"
+          (click)="resetBankAccountForm()"
+        >
+          Cancel Edit
+        </button>
+      </div>
+
+      <!-- Table -->
+      <div class="experience-table-wrapper mt-1" *ngIf="bankAccounts.length > 0">
+        <div class="table-header-bar">
+          <span class="table-title">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="2" y="5" width="20" height="14" rx="2" />
+              <path d="M2 10h20" />
+            </svg>
+            Bank Account Records
+          </span>
+          <span class="table-count">{{ bankAccounts.length }} record(s)</span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="exp-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Bank Name</th>
+                <th>Account Holder</th>
+                <th>Account No</th>
+                <th>IBAN</th>
+                <th>Primary</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let acc of bankAccounts; let i = index" class="exp-row">
+                <td>{{ i + 1 }}</td>
+                <td>
+                  <span class="company-name">{{ acc.bankName }}</span>
+                </td>
+                <td>{{ acc.accountHolderName }}</td>
+                <td>{{ acc.accountNumber }}</td>
+                <td>{{ acc.iban || '—' }}</td>
+                <td>
+                  <span class="badge-status" [class.current]="acc.isPrimaryAccount">
+                    {{ acc.isPrimaryAccount ? 'Primary' : 'Secondary' }}
+                  </span>
+                </td>
+                <td>
+                  <span
+                    class="badge-status"
+                    [class.current]="acc.status === 'ACTIVE'"
+                    [class.badge-inactive]="acc.status === 'INACTIVE'"
+                    [class.badge-expired]="acc.status === 'CANCELLED'"
+                  >
+                    {{ acc.status || '—' }}
+                  </span>
+                </td>
+                <td>
+                  <button class="btn-edit" (click)="editBankAccount(i)" title="Edit">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path d="M17 3l4 4L7 21H3v-4L17 3z" />
+                    </svg>
+                  </button>
+                  <button class="btn-remove" (click)="removeBankAccount(i)" title="Remove">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polyline points="3 6 5 6 21 6" />
+                      <path d="M19 6l-1 14H6L5 6" />
+                      <path d="M10 11v6M14 11v6" />
+                      <path d="M9 6V4h6v2" />
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="empty-hint" *ngIf="bankAccounts.length === 0">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 8v4M12 16h.01" />
+        </svg>
+        Fill the form above and click <strong>Add Bank Account</strong> to add records
+      </div>
+    </div>
+
+    <!-- Documents Tab -->
+    <div class="form-section tab-content-section" *ngIf="activeTab === 'documents'">
+      <h3 class="section-heading mb-3">Documents</h3>
+
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Document Type <span class="text-danger">*</span></label>
+          <div class="custom-dropdown" (click)="toggleDropdown($event, 'docType')">
+            <div class="dropdown-selected">
+              <span>{{ selectedDocType || 'Select document type' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isDocTypeOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isDocTypeOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let type of IdTypeList"
+                (click)="selectDocType(type, $event)"
+              >
+                {{ type.name }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Document Number <span class="text-danger">*</span></label>
+          <input
+            type="text"
+            class="form-control"
+            name="documentNumber"
+            [(ngModel)]="documentForm.documentNumber"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Issued Date</label>
+          <input
+            type="date"
+            class="form-control"
+            name="issuedDate"
+            [(ngModel)]="documentForm.issuedDate"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Expiry Date</label>
+          <input
+            type="date"
+            class="form-control"
+            name="expiryDate"
+            [(ngModel)]="documentForm.expiryDate"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">File URL</label>
+          <input
+            type="text"
+            class="form-control"
+            name="fileUrl"
+            placeholder="https://..."
+            [(ngModel)]="documentForm.fileUrl"
+          />
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Status</label>
+          <div class="custom-dropdown" (click)="toggleDropdown($event, 'docStatus')">
+            <div class="dropdown-selected">
+              <span>{{ selectedDocStatus || 'Select status' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isDocStatusOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isDocStatusOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let status of statusOptions"
+                (click)="selectDocStatus(status, $event)"
+              >
+                {{ status }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12">
+          <label class="form-label">Remarks</label>
+          <textarea
+            class="form-control"
+            name="docRemarks"
+            rows="3"
+            [(ngModel)]="documentForm.remarks"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Button -->
+      <div class="form-actions-footer">
+        <button type="button" class="btn-submit-action me-3" (click)="addDocument()">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M12 5v14M5 12l7 7 7-7" />
+          </svg>
+          {{ isEditingDocument ? 'Update Document' : 'Add Document' }}
+        </button>
+        <button
+          *ngIf="isEditingDocument"
+          type="button"
+          class="btn-cancel-action"
+          (click)="resetDocumentForm()"
+        >
+          Cancel Edit
+        </button>
+      </div>
+
+      <!-- Table -->
+      <div class="experience-table-wrapper mt-1" *ngIf="documents.length > 0">
+        <div class="table-header-bar">
+          <span class="table-title">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z" />
+              <polyline points="14 2 14 8 20 8" />
+            </svg>
+            Document Records
+          </span>
+          <span class="table-count">{{ documents.length }} record(s)</span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="exp-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Doc Type</th>
+                <th>Doc Number</th>
+                <th>Issued Date</th>
+                <th>Expiry Date</th>
+                <th>File</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let doc of documents; let i = index" class="exp-row">
+                <td>{{ i + 1 }}</td>
+                <td>
+                  <span class="company-name">{{ doc.idTypeName || '—' }}</span>
+                </td>
+                <td>{{ doc.documentNumber || '—' }}</td>
+                <td>{{ doc.issuedDate ? (doc.issuedDate | date: 'dd MMM yyyy') : '—' }}</td>
+                <td>
+                  <span
+                    *ngIf="doc.expiryDate"
+                    [class.badge-present]="isNotExpired(doc.expiryDate)"
+                    [class.badge-expired]="!isNotExpired(doc.expiryDate)"
+                  >
+                    {{ doc.expiryDate | date: 'dd MMM yyyy' }}
+                  </span>
+                  <span *ngIf="!doc.expiryDate">—</span>
+                </td>
+                <td>
+                  <a
+                    *ngIf="doc.fileUrl"
+                    [href]="doc.fileUrl"
+                    target="_blank"
+                    class="badge-status current"
+                    >View</a
+                  >
+                  <span *ngIf="!doc.fileUrl">—</span>
+                </td>
+                <td>
+                  <span
+                    class="badge-status"
+                    [class.current]="doc.status === 'ACTIVE'"
+                    [class.badge-inactive]="doc.status === 'INACTIVE'"
+                    [class.badge-expired]="doc.status === 'CANCELLED'"
+                  >
+                    {{ doc.status || '—' }}
+                  </span>
+                </td>
+                <td>
+                  <button class="btn-edit" (click)="editDocument(i)" title="Edit">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path d="M17 3l4 4L7 21H3v-4L17 3z" />
+                    </svg>
+                  </button>
+                  <button class="btn-remove" (click)="removeDocument(i)" title="Remove">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polyline points="3 6 5 6 21 6" />
+                      <path d="M19 6l-1 14H6L5 6" />
+                      <path d="M10 11v6M14 11v6" />
+                      <path d="M9 6V4h6v2" />
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="empty-hint" *ngIf="documents.length === 0">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 8v4M12 16h.01" />
+        </svg>
+        Fill the form above and click <strong>Add Document</strong> to add records
+      </div>
+    </div>
+
+    <!-- Belongings Tab -->
+    <div class="form-section tab-content-section" *ngIf="activeTab === 'belongings'">
+      <h3 class="section-heading mb-3">Belongings</h3>
+
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Belonging Type <span class="text-danger">*</span></label>
+          <div class="custom-dropdown" (click)="toggleDropdown($event, 'belongingType')">
+            <div class="dropdown-selected">
+              <span>{{ selectedBelongingType || 'Select type' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isBelongingTypeOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isBelongingTypeOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let type of belongingList"
+                (click)="selectBelongingType(type, $event)"
+              >
+                {{ type.name }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Serial Number</label>
+          <input
+            type="text"
+            class="form-control"
+            name="serialNumber"
+            [(ngModel)]="belongingForm.serialNumber"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Condition Status</label>
+          <div class="custom-dropdown" (click)="toggleDropdown($event, 'conditionStatus')">
+            <div class="dropdown-selected">
+              <span>{{ selectedConditionStatus || 'Select condition' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isConditionStatusOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isConditionStatusOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let condition of conditionStatusOptions"
+                (click)="selectConditionStatus(condition, $event)"
+              >
+                {{ condition }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Issued Date</label>
+          <input
+            type="date"
+            class="form-control"
+            name="belongingIssuedDate"
+            [(ngModel)]="belongingForm.issuedDate"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Return Date</label>
+          <input
+            type="date"
+            class="form-control"
+            name="returnDate"
+            [(ngModel)]="belongingForm.returnDate"
+          />
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Status</label>
+          <div class="custom-dropdown" (click)="toggleDropdown($event, 'belongingStatus')">
+            <div class="dropdown-selected">
+              <span>{{ selectedBelongingStatus || 'Select status' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isBelongingStatusOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isBelongingStatusOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let status of statusOptions"
+                (click)="selectBelongingStatus(status, $event)"
+              >
+                {{ status }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <label class="form-label">Remarks</label>
+          <textarea
+            class="form-control"
+            name="belongingRemarks"
+            rows="3"
+            [(ngModel)]="belongingForm.remarks"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Button -->
+      <div class="form-actions-footer">
+        <button type="button" class="btn-submit-action me-3" (click)="addBelonging()">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M12 5v14M5 12l7 7 7-7" />
+          </svg>
+          {{ isEditingBelonging ? 'Update Belonging' : 'Add Belonging' }}
+        </button>
+        <button
+          *ngIf="isEditingBelonging"
+          type="button"
+          class="btn-cancel-action"
+          (click)="resetBelongingForm()"
+        >
+          Cancel Edit
+        </button>
+      </div>
+
+      <!-- Table -->
+      <div class="experience-table-wrapper mt-1" *ngIf="belongings.length > 0">
+        <div class="table-header-bar">
+          <span class="table-title">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"
+              />
+            </svg>
+            Belonging Records
+          </span>
+          <span class="table-count">{{ belongings.length }} record(s)</span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="exp-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Type</th>
+                <th>Serial No</th>
+                <th>Condition</th>
+                <th>Issued Date</th>
+                <th>Return Date</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let b of belongings; let i = index" class="exp-row">
+                <td>{{ i + 1 }}</td>
+                <td>
+                  <span class="company-name">{{ b.belongingname || '—' }}</span>
+                </td>
+                <td>{{ b.serialNumber || '—' }}</td>
+                <td>
+                  <span
+                    class="badge-status"
+                    [class.current]="b.conditionStatus === 'NEW' || b.conditionStatus === 'GOOD'"
+                  >
+                    {{ b.conditionStatus || '—' }}
+                  </span>
+                </td>
+                <td>{{ b.issuedDate ? (b.issuedDate | date: 'dd MMM yyyy') : '—' }}</td>
+                <td>
+                  <span *ngIf="b.returnDate" class="badge-present">
+                    {{ b.returnDate | date: 'dd MMM yyyy' }}
+                  </span>
+                  <span *ngIf="!b.returnDate" class="badge-status current">In Use</span>
+                </td>
+                <td>
+                  <span
+                    class="badge-status"
+                    [class.current]="b.status === 'ACTIVE'"
+                    [class.badge-inactive]="b.status === 'INACTIVE'"
+                    [class.badge-expired]="b.status === 'CANCELLED'"
+                  >
+                    {{ b.status || '—' }}
+                  </span>
+                </td>
+                <td>
+                  <button class="btn-edit" (click)="editBelonging(i)" title="Edit">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path d="M17 3l4 4L7 21H3v-4L17 3z" />
+                    </svg>
+                  </button>
+                  <button class="btn-remove" (click)="removeBelonging(i)" title="Remove">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polyline points="3 6 5 6 21 6" />
+                      <path d="M19 6l-1 14H6L5 6" />
+                      <path d="M10 11v6M14 11v6" />
+                      <path d="M9 6V4h6v2" />
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="empty-hint" *ngIf="belongings.length === 0">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 8v4M12 16h.01" />
+        </svg>
+        Fill the form above and click <strong>Add Belonging</strong> to add records
+      </div>
+    </div>
+
+    <!-- Family Members Tab -->
+    <div class="form-section tab-content-section" *ngIf="activeTab === 'familyMembers'">
+      <h3 class="section-heading mb-3">Family Members</h3>
+
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Member Name <span class="text-danger">*</span></label>
+          <input
+            type="text"
+            class="form-control"
+            name="memberName"
+            [(ngModel)]="familyMemberForm.memberName"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Relation <span class="text-danger">*</span></label>
+          <div class="custom-dropdown" (click)="toggleDropdown($event, 'relation')">
+            <div class="dropdown-selected">
+              <span>{{ selectedRelation || 'Select relation' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isRelationOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isRelationOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let relation of relationOptions"
+                (click)="selectRelation(relation, $event)"
+              >
+                {{ relation }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Date of Birth</label>
+          <input
+            type="date"
+            class="form-control"
+            name="familyDob"
+            [(ngModel)]="familyMemberForm.dateOfBirth"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Occupation</label>
+          <input
+            type="text"
+            class="form-control"
+            name="occupation"
+            [(ngModel)]="familyMemberForm.occupation"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Contact Number</label>
+          <input
+            type="text"
+            class="form-control"
+            name="familyContact"
+            [(ngModel)]="familyMemberForm.contactNumber"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Passport No</label>
+          <input
+            type="text"
+            class="form-control"
+            name="passportNo"
+            [(ngModel)]="familyMemberForm.passportNo"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Passport Expiry</label>
+          <input
+            type="date"
+            class="form-control"
+            name="passportExpiry"
+            [(ngModel)]="familyMemberForm.passportExpiry"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Visa / Iqama No</label>
+          <input
+            type="text"
+            class="form-control"
+            name="visaIqamaNo"
+            [(ngModel)]="familyMemberForm.visaIqamaNo"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Visa / Iqama Expiry</label>
+          <input
+            type="date"
+            class="form-control"
+            name="visaIqamaExpiry"
+            [(ngModel)]="familyMemberForm.visaIqamaExpiry"
+          />
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Status</label>
+          <div class="custom-dropdown" (click)="toggleDropdown($event, 'familyMemberStatus')">
+            <div class="dropdown-selected">
+              <span>{{ selectedFamilyMemberStatus || 'Select status' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isFamilyMemberStatusOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isFamilyMemberStatusOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let status of statusOptions"
+                (click)="selectFamilyMemberStatus(status, $event)"
+              >
+                {{ status }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Checkboxes -->
+
+        <div class="col-md-2 d-flex align-items-end pb-2">
+          <label class="checkbox-container">
+            Dependent
+            <input
+              type="checkbox"
+              class="custom-checkbox"
+              name="isDependent"
+              [(ngModel)]="familyMemberForm.isDependent"
+            />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+
+        <div class="col-md-3 d-flex align-items-end pb-2">
+          <label class="checkbox-container">
+            Beneficiary
+            <input
+              type="checkbox"
+              class="custom-checkbox"
+              name="isBeneficiary"
+              [(ngModel)]="familyMemberForm.isBeneficiary"
+            />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+
+        <div class="col-md-3 d-flex align-items-end pb-2">
+          <label class="checkbox-container">
+            Emergency Contact
+            <input
+              type="checkbox"
+              class="custom-checkbox"
+              name="isEmergencyContact"
+              [(ngModel)]="familyMemberForm.isEmergencyContact"
+            />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+
+        <div class="col-12">
+          <label class="form-label">Remarks</label>
+          <textarea
+            class="form-control"
+            name="familyRemarks"
+            rows="3"
+            [(ngModel)]="familyMemberForm.remarks"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Button -->
+      <div class="form-actions-footer">
+        <button type="button" class="btn-submit-action me-3" (click)="addFamilyMember()">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M12 5v14M5 12l7 7 7-7" />
+          </svg>
+          {{ isEditingFamilyMember ? 'Update Family Member' : 'Add Family Member' }}
+        </button>
+        <button
+          *ngIf="isEditingFamilyMember"
+          type="button"
+          class="btn-cancel-action"
+          (click)="resetFamilyMemberForm()"
+        >
+          Cancel Edit
+        </button>
+      </div>
+
+      <!-- Table -->
+      <div class="experience-table-wrapper mt-1" *ngIf="familyMembers.length > 0">
+        <div class="table-header-bar">
+          <span class="table-title">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+              <circle cx="9" cy="7" r="4" />
+              <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75" />
+            </svg>
+            Family Member Records
+          </span>
+          <span class="table-count">{{ familyMembers.length }} record(s)</span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="exp-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Name</th>
+                <th>Relation</th>
+                <th>Contact</th>
+                <th>Dependent</th>
+                <th>Beneficiary</th>
+                <th>Emergency</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let fm of familyMembers; let i = index" class="exp-row">
+                <td>{{ i + 1 }}</td>
+                <td>
+                  <span class="company-name">{{ fm.memberName }}</span>
+                </td>
+                <td>
+                  <span class="badge-status">{{ fm.relationName || '—' }}</span>
+                </td>
+                <td>{{ fm.contactNumber || '—' }}</td>
+                <td>
+                  <span class="badge-status" [class.current]="fm.isDependent">
+                    {{ fm.isDependent ? 'Yes' : 'No' }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge-status" [class.current]="fm.isBeneficiary">
+                    {{ fm.isBeneficiary ? 'Yes' : 'No' }}
+                  </span>
+                </td>
+                <td>
+                  <span class="badge-status" [class.current]="fm.isEmergencyContact">
+                    {{ fm.isEmergencyContact ? 'Yes' : 'No' }}
+                  </span>
+                </td>
+                <td>
+                  <span
+                    class="badge-status"
+                    [class.current]="fm.status === 'ACTIVE'"
+                    [class.badge-inactive]="fm.status === 'INACTIVE'"
+                    [class.badge-expired]="fm.status === 'CANCELLED'"
+                  >
+                    {{ fm.status || '—' }}
+                  </span>
+                </td>
+                <td>
+                  <button class="btn-edit" (click)="editFamilyMember(i)" title="Edit">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path d="M17 3l4 4L7 21H3v-4L17 3z" />
+                    </svg>
+                  </button>
+                  <button class="btn-remove" (click)="removeFamilyMember(i)" title="Remove">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polyline points="3 6 5 6 21 6" />
+                      <path d="M19 6l-1 14H6L5 6" />
+                      <path d="M10 11v6M14 11v6" />
+                      <path d="M9 6V4h6v2" />
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="empty-hint" *ngIf="familyMembers.length === 0">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 8v4M12 16h.01" />
+        </svg>
+        Fill the form above and click <strong>Add Family Member</strong> to add records
+      </div>
+    </div>
+
+    <!-- Positions Tab -->
+    <div class="form-section tab-content-section" *ngIf="activeTab === 'positions'">
+      <h3 class="section-heading mb-3">Positions</h3>
+
+      <div class="row g-3">
+        <div class="col-md-4">
+          <label class="form-label">Position Code</label>
+          <input
+            type="text"
+            class="form-control"
+            name="positionCode"
+            [(ngModel)]="positionForm.positionCode"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Position Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="positionName"
+            [(ngModel)]="positionForm.positionName"
+          />
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Department</label>
+          <div class="custom-dropdown" (click)="toggleDropdown($event, 'department')">
+            <div class="dropdown-selected">
+              <span>{{ selectedDepartment?.name || 'Select Department' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isDepartmentOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isDepartmentOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let dep of departmentList"
+                (click)="selectDepartment(dep, $event)"
+              >
+                {{ dep.code }}-{{ dep.name }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Designation</label>
+          <div class="custom-dropdown" (click)="toggleDropdown($event, 'designation')">
+            <div class="dropdown-selected">
+              <span>{{ selectedDesignation?.name || 'Select Designation' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isDesignatiomOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isDesignatiomOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let des of designationList"
+                (click)="selectDesignation(des, $event)"
+              >
+                {{ des.code }}-{{ des.name }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Branch</label>
+          <div class="custom-dropdown" (click)="toggleDropdown($event, 'branch')">
+            <div class="dropdown-selected">
+              <span>{{ selcetedBranch?.name || 'Select Branch/Company' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isBranchOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isBranchOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let branch of companyBranchList"
+                (click)="selectBranch(branch, $event)"
+              >
+                {{ branch.code }}-{{ branch.name }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Reporting Manager</label>
+          <div class="custom-dropdown" (click)="toggleDropdown($event, 'reportingManager')">
+            <div class="dropdown-selected">
+              <span>{{ selectedReportingManager?.fullName || 'Select Reporting Manager' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isReportingManagerOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isReportingManagerOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let emp of EmployeeList"
+                (click)="selectReportingManager(emp, $event)"
+              >
+                {{ emp.fullName }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Employee Grade</label>
+          <div class="custom-dropdown" (click)="toggleDropdown($event, 'employeeGrade')">
+            <div class="dropdown-selected">
+              <span>{{ selectedEmployeeGrade?.name || 'Select Employee Grade' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isEmployeeGradeOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isEmployeeGradeOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let emp of EmployeeGradeList"
+                (click)="selectEmployeeGrade(emp, $event)"
+              >
+                {{ emp.code }}-{{ emp.name }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Employee Category</label>
+          <div class="custom-dropdown" (click)="toggleDropdown($event, 'employeeCategory')">
+            <div class="dropdown-selected">
+              <span>{{ SlectedEmployeeCategory?.name || 'Select Employee Category' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isEmployeeCategoryOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isEmployeeCategoryOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let emp of EmployeeCategoryList"
+                (click)="selectemployeeCatergory(emp, $event)"
+              >
+                {{ emp.code }}-{{ emp.name }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Job Title</label>
+          <div class="custom-dropdown" (click)="toggleDropdown($event, 'jobTitle')">
+            <div class="dropdown-selected">
+              <span>{{ selectedJobTitle?.name || 'Select Job Title' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isJobTitleOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isJobTitleOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let job of JobTitleList"
+                (click)="selectJobTitle(job, $event)"
+              >
+                {{ job.code }}-{{ job.name }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Shift</label>
+          <div class="custom-dropdown" (click)="toggleDropdown($event, 'shift')">
+            <div class="dropdown-selected">
+              <span>{{ selectedShift?.name || 'Select Shift' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isShiftOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isShiftOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let shift of shiftList"
+                (click)="selectShift(shift, $event)"
+              >
+                {{ shift.code }}-{{ shift.name }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Work Schedule dropdown - "name" ki jagah "payPeriodName" use karein -->
+        <div class="col-md-4">
+          <label class="form-label">Work Schedule</label>
+          <div class="custom-dropdown" (click)="toggleDropdown($event, 'workSchedule')">
+            <div class="dropdown-selected">
+              <span>{{
+                selectedWorkSchedule?.payPeriodName || 'Select Work Schedule By Pay Period'
+              }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isWorkScheduleOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isWorkScheduleOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let work of WorkScheduleList"
+                (click)="selectWorkSchedule(work, $event)"
+              >
+                {{ work.payPeriodName }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Effective From</label>
+          <input
+            type="date"
+            class="form-control"
+            name="effectiveFrom"
+            [(ngModel)]="positionForm.effectiveFrom"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <label class="form-label">Effective To</label>
+          <input
+            type="date"
+            class="form-control"
+            name="effectiveTo"
+            [(ngModel)]="positionForm.effectiveTo"
+          />
+        </div>
+        <div class="col-md-4">
+          <label class="form-label">Status</label>
+          <div class="custom-dropdown" (click)="toggleDropdown($event, 'positionStatus')">
+            <div class="dropdown-selected">
+              <span>{{ selectedPositionStatus || 'Select status' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isPositionStatusOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isPositionStatusOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let status of statusOptions"
+                (click)="selectPositionStatus(status, $event)"
+              >
+                {{ status }}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4 d-flex align-items-end pb-2">
+          <label class="checkbox-container">
+            Primary Position
+            <input
+              type="checkbox"
+              class="custom-checkbox"
+              name="isPrimaryPosition"
+              [(ngModel)]="positionForm.isPrimaryPosition"
+            />
+            <span class="checkmark"></span>
+          </label>
+        </div>
+
+        <div class="col-12">
+          <label class="form-label">Remarks</label>
+          <textarea
+            class="form-control"
+            name="positionRemarks"
+            rows="3"
+            [(ngModel)]="positionForm.remarks"
+          ></textarea>
+        </div>
+      </div>
+
+      <!-- Button -->
+      <div class="form-actions-footer">
+        <button type="button" class="btn-submit-action me-3" (click)="addPosition()">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M12 5v14M5 12l7 7 7-7" />
+          </svg>
+          {{ isEditingPosition ? 'Update Position' : 'Add Position' }}
+        </button>
+        <button
+          *ngIf="isEditingPosition"
+          type="button"
+          class="btn-cancel-action"
+          (click)="resetPositionForm()"
+        >
+          Cancel Edit
+        </button>
+      </div>
+
+      <!-- Table -->
+      <div class="experience-table-wrapper mt-1" *ngIf="positions.length > 0">
+        <div class="table-header-bar">
+          <span class="table-title">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <rect x="2" y="7" width="20" height="14" rx="2" />
+              <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" />
+            </svg>
+            Position Records
+          </span>
+          <span class="table-count">{{ positions.length }} record(s)</span>
+        </div>
+
+        <div class="table-responsive">
+          <table class="exp-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Position Code</th>
+                <th>Position Name</th>
+                <th>Effective From</th>
+                <th>Effective To</th>
+                <th>Primary</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let pos of positions; let i = index" class="exp-row">
+                <td>{{ i + 1 }}</td>
+                <td>
+                  <span class="company-name">{{ pos.positionCode || '—' }}</span>
+                </td>
+                <td>{{ pos.positionName || '—' }}</td>
+                <td>{{ pos.effectiveFrom ? (pos.effectiveFrom | date: 'dd MMM yyyy') : '—' }}</td>
+                <td>
+                  <span *ngIf="pos.effectiveTo">
+                    {{ pos.effectiveTo | date: 'dd MMM yyyy' }}
+                  </span>
+                  <span *ngIf="!pos.effectiveTo" class="badge-status current">Ongoing</span>
+                </td>
+                <td>
+                  <span class="badge-status" [class.current]="pos.isPrimaryPosition">
+                    {{ pos.isPrimaryPosition ? 'Primary' : 'Secondary' }}
+                  </span>
+                </td>
+                <td>
+                  <span
+                    class="badge-status"
+                    [class.current]="pos.status === 'ACTIVE'"
+                    [class.badge-inactive]="pos.status === 'INACTIVE'"
+                    [class.badge-expired]="pos.status === 'CANCELLED'"
+                  >
+                    {{ pos.status || '—' }}
+                  </span>
+                </td>
+                <td>
+                  <button class="btn-edit" (click)="editPosition(i)" title="Edit">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path d="M17 3l4 4L7 21H3v-4L17 3z" />
+                    </svg>
+                  </button>
+                  <button class="btn-remove" (click)="removePosition(i)" title="Remove">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polyline points="3 6 5 6 21 6" />
+                      <path d="M19 6l-1 14H6L5 6" />
+                      <path d="M10 11v6M14 11v6" />
+                      <path d="M9 6V4h6v2" />
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="empty-hint" *ngIf="positions.length === 0">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 8v4M12 16h.01" />
+        </svg>
+        Fill the form above and click <strong>Add Position</strong> to add records
+      </div>
+    </div>
+
+    <!-- Leaves Tab -->
+    <div class="form-section tab-content-section" *ngIf="activeTab === 'leaves'">
+      <h3 class="section-heading mb-3">Leaves</h3>
+      <div class="row d-flex justify-content-end"></div>
+      <div class="col-auto d-flex justify-content-end pb-2">
         <label class="checkbox-container">
-          Primary Position
+          Active
           <input
             type="checkbox"
             class="custom-checkbox"
-            name="isPrimaryPosition"
-            [(ngModel)]="positionForm.isPrimaryPosition"
+            name="active"
+            [(ngModel)]="leaveForm.active"
           />
           <span class="checkmark"></span>
         </label>
       </div>
-
-      <div class="col-12">
-        <label class="form-label">Remarks</label>
-        <textarea
-          class="form-control"
-          name="positionRemarks"
-          rows="3"
-          [(ngModel)]="positionForm.remarks"
-        ></textarea>
-      </div>
-    </div>
-
-    <!-- Button -->
-    <div class="form-actions-footer">
-      <button type="button" class="btn-submit-action me-3" (click)="addPosition()">
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path d="M12 5v14M5 12l7 7 7-7" />
-        </svg>
-        {{ isEditingPosition ? 'Update Position' : 'Add Position' }}
-      </button>
-      <button *ngIf="isEditingPosition" type="button" class="btn-cancel-action" (click)="resetPositionForm()">
-        Cancel Edit
-      </button>
-    </div>
-
-    <!-- Table -->
-    <div class="experience-table-wrapper mt-1" *ngIf="positions.length > 0">
-      <div class="table-header-bar">
-        <span class="table-title">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <rect x="2" y="7" width="20" height="14" rx="2" />
-            <path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2" />
-          </svg>
-          Position Records
-        </span>
-        <span class="table-count">{{ positions.length }} record(s)</span>
-      </div>
-
-      <div class="table-responsive">
-        <table class="exp-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Position Code</th>
-              <th>Position Name</th>
-              <th>Effective From</th>
-              <th>Effective To</th>
-              <th>Primary</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let pos of positions; let i = index" class="exp-row">
-              <td>{{ i + 1 }}</td>
-              <td>
-                <span class="company-name">{{ pos.positionCode || '—' }}</span>
-              </td>
-              <td>{{ pos.positionName || '—' }}</td>
-              <td>{{ pos.effectiveFrom ? (pos.effectiveFrom | date: 'dd MMM yyyy') : '—' }}</td>
-              <td>
-                <span *ngIf="pos.effectiveTo">
-                  {{ pos.effectiveTo | date: 'dd MMM yyyy' }}
-                </span>
-                <span *ngIf="!pos.effectiveTo" class="badge-status current">Ongoing</span>
-              </td>
-              <td>
-                <span class="badge-status" [class.current]="pos.isPrimaryPosition">
-                  {{ pos.isPrimaryPosition ? 'Primary' : 'Secondary' }}
-                </span>
-              </td>
-              <td>
-                <span
-                  class="badge-status"
-                  [class.current]="pos.status === 'ACTIVE'"
-                  [class.badge-inactive]="pos.status === 'INACTIVE'"
-                  [class.badge-expired]="pos.status === 'CANCELLED'"
-                >
-                  {{ pos.status || '—' }}
-                </span>
-              </td>
-              <td>
-                <button class="btn-edit" (click)="editPosition(i)" title="Edit">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M17 3l4 4L7 21H3v-4L17 3z" />
-                  </svg>
-                </button>
-                <button class="btn-remove" (click)="removePosition(i)" title="Remove">
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <polyline points="3 6 5 6 21 6" />
-                    <path d="M19 6l-1 14H6L5 6" />
-                    <path d="M10 11v6M14 11v6" />
-                    <path d="M9 6V4h6v2" />
-                  </svg>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-
-    <div class="empty-hint" *ngIf="positions.length === 0">
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.5"
-      >
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 8v4M12 16h.01" />
-      </svg>
-      Fill the form above and click <strong>Add Position</strong> to add records
-    </div>
-  </div>
-
-  <!-- Leaves Tab -->
-  <div class="form-section tab-content-section" *ngIf="activeTab === 'leaves'">
-    <h3 class="section-heading mb-3">Leaves</h3>
-    <div class="row d-flex justify-content-end"></div>
-    <div class="col-auto d-flex justify-content-end pb-2">
-      <label class="checkbox-container">
-        Active
-        <input
-          type="checkbox"
-          class="custom-checkbox"
-          name="active"
-          [(ngModel)]="leaveForm.active"
-        />
-        <span class="checkmark"></span>
-      </label>
-    </div>
-    <div class="row g-3">
-      <div class="col-md-6">
-        <label class="form-label">Leaves Type <span class="text-danger">*</span></label>
-        <div class="custom-dropdown" (click)="toggleDropdown($event, 'LeaveType')">
-          <div class="dropdown-selected">
-            <span>{{ selectLeaveType || 'Select type' }}</span>
-            <i class="fa-solid fa-caret-down" [class.rotate]="isLeaveTypeOpen"></i>
-          </div>
-          <div class="dropdown-options" *ngIf="isLeaveTypeOpen">
-            <div
-              class="dropdown-option"
-              *ngFor="let type of LeaveTypeList"
-              (click)="selectedLeaveType(type, $event)"
-            >
-              {{ type.name }}
+      <div class="row g-3">
+        <div class="col-md-6">
+          <label class="form-label">Leaves Type <span class="text-danger">*</span></label>
+          <div class="custom-dropdown" (click)="toggleDropdown($event, 'LeaveType')">
+            <div class="dropdown-selected">
+              <span>{{ selectLeaveType || 'Select type' }}</span>
+              <i class="fa-solid fa-caret-down" [class.rotate]="isLeaveTypeOpen"></i>
+            </div>
+            <div class="dropdown-options" *ngIf="isLeaveTypeOpen">
+              <div
+                class="dropdown-option"
+                *ngFor="let type of LeaveTypeList"
+                (click)="selectedLeaveType(type, $event)"
+              >
+                {{ type.name }}
+              </div>
             </div>
           </div>
         </div>
+        <div class="col-md-6">
+          <label class="form-label">Total Leave Per Year</label>
+          <input
+            type="text"
+            class="form-control"
+            name="totalLeavesPerYear"
+            [(ngModel)]="leaveForm.totalLeavesPerYear"
+          />
+        </div>
+        <div class="col-12">
+          <label class="form-label">Remarks</label>
+          <textarea
+            class="form-control"
+            name="remarks"
+            rows="3"
+            [(ngModel)]="leaveForm.remarks"
+          ></textarea>
+        </div>
       </div>
-      <div class="col-md-6">
-        <label class="form-label">Total Leave Per Year</label>
-        <input
-          type="text"
-          class="form-control"
-          name="totalLeavesPerYear"
-          [(ngModel)]="leaveForm.totalLeavesPerYear"
-        />
-      </div>
-      <div class="col-12">
-        <label class="form-label">Remarks</label>
-        <textarea
-          class="form-control"
-          name="remarks"
-          rows="3"
-          [(ngModel)]="leaveForm.remarks"
-        ></textarea>
-      </div>
-    </div>
 
-    <!-- Button -->
-    <div class="form-actions-footer">
-      <button type="button" class="btn-submit-action me-3" (click)="addLeaveForm()">
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-        >
-          <path d="M12 5v14M5 12l7 7 7-7" />
-        </svg>
-        {{ isEditingLeave ? 'Update Leave' : 'Add Leave' }}
-      </button>
-      <button *ngIf="isEditingLeave" type="button" class="btn-cancel-action" (click)="resetLeaveForm()">
-        Cancel Edit
-      </button>
-    </div>
-
-    <!-- Table -->
-    <div class="experience-table-wrapper mt-1" *ngIf="Leaves.length > 0">
-      <div class="table-header-bar">
-        <span class="table-title">
+      <!-- Button -->
+      <div class="form-actions-footer">
+        <button type="button" class="btn-submit-action me-3" (click)="addLeaveForm()">
           <svg
             width="16"
             height="16"
@@ -2326,86 +2403,118 @@
             stroke="currentColor"
             stroke-width="2"
           >
-            <path
-              d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"
-            />
+            <path d="M12 5v14M5 12l7 7 7-7" />
           </svg>
-          Leaves Records
-        </span>
-        <span class="table-count">{{ Leaves.length }} record(s)</span>
+          {{ isEditingLeave ? 'Update Leave' : 'Add Leave' }}
+        </button>
+        <button
+          *ngIf="isEditingLeave"
+          type="button"
+          class="btn-cancel-action"
+          (click)="resetLeaveForm()"
+        >
+          Cancel Edit
+        </button>
       </div>
 
-      <div class="table-responsive">
-        <table class="exp-table">
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Leave Type</th>
-              <th>Total Leaves</th>
-              <th>Status</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let leave of Leaves; let i = index" class="exp-row">
-              <td>{{ i + 1 }}</td>
-              <td>
-                <span class="company-name">{{ leave.leaveTypeName || '—' }}</span>
-              </td>
-              <td>{{ leave.totalLeavesPerYear || '—' }}</td>
+      <!-- Table -->
+      <div class="experience-table-wrapper mt-1" *ngIf="Leaves.length > 0">
+        <div class="table-header-bar">
+          <span class="table-title">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"
+              />
+            </svg>
+            Leaves Records
+          </span>
+          <span class="table-count">{{ Leaves.length }} record(s)</span>
+        </div>
 
-              <td>
-                <span
-                  class="badge-status"
-                  [class.current]="leave.active === true"
-                  [class.badge-inactive]="leave.active === false"
-                >
-                  {{ leave.active ? 'ACTIVE' : 'INACTIVE' }}
-                </span>
-              </td>
-              <td>
-                <button class="btn-edit" (click)="editLeave(i)" title="Edit">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M17 3l4 4L7 21H3v-4L17 3z" />
-                  </svg>
-                </button>
-                <button class="btn-remove" (click)="removeLeaveForm(i)" title="Remove">
-                  <svg
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
+        <div class="table-responsive">
+          <table class="exp-table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Leave Type</th>
+                <th>Total Leaves</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let leave of Leaves; let i = index" class="exp-row">
+                <td>{{ i + 1 }}</td>
+                <td>
+                  <span class="company-name">{{ leave.leaveTypeName || '—' }}</span>
+                </td>
+                <td>{{ leave.totalLeavesPerYear || '—' }}</td>
+
+                <td>
+                  <span
+                    class="badge-status"
+                    [class.current]="leave.active === true"
+                    [class.badge-inactive]="leave.active === false"
                   >
-                    <polyline points="3 6 5 6 21 6" />
-                    <path d="M19 6l-1 14H6L5 6" />
-                    <path d="M10 11v6M14 11v6" />
-                    <path d="M9 6V4h6v2" />
-                  </svg>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+                    {{ leave.active ? 'ACTIVE' : 'INACTIVE' }}
+                  </span>
+                </td>
+                <td>
+                  <button class="btn-edit" (click)="editLeave(i)" title="Edit">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path d="M17 3l4 4L7 21H3v-4L17 3z" />
+                    </svg>
+                  </button>
+                  <button class="btn-remove" (click)="removeLeaveForm(i)" title="Remove">
+                    <svg
+                      width="14"
+                      height="14"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <polyline points="3 6 5 6 21 6" />
+                      <path d="M19 6l-1 14H6L5 6" />
+                      <path d="M10 11v6M14 11v6" />
+                      <path d="M9 6V4h6v2" />
+                    </svg>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
 
-    <div class="empty-hint" *ngIf="Leaves.length === 0">
-      <svg
-        width="20"
-        height="20"
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="1.5"
-      >
-        <circle cx="12" cy="12" r="10" />
-        <path d="M12 8v4M12 16h.01" />
-      </svg>
-      Fill the form above and click <strong>Add Leaves</strong> to add records
+      <div class="empty-hint" *ngIf="Leaves.length === 0">
+        <svg
+          width="20"
+          height="20"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.5"
+        >
+          <circle cx="12" cy="12" r="10" />
+          <path d="M12 8v4M12 16h.01" />
+        </svg>
+        Fill the form above and click <strong>Add Leaves</strong> to add records
+      </div>
     </div>
   </div>
 </div>
-</div>
-

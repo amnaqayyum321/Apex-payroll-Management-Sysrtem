@@ -136,8 +136,7 @@ interface Tab {
   styleUrl: './employees.scss',
 })
 export class Employees implements OnInit {
-
-   title: 'create' | 'edit' = 'create';
+  title: 'create' | 'edit' = 'create';
   code: string = '';
   userFirstName: string = '';
   userLastName: string = '';
@@ -667,7 +666,8 @@ export class Employees implements OnInit {
         accountHolderName: this.bankAccountForm.accountHolderName,
         iban: this.bankAccountForm.iban,
         swiftCode: this.bankAccountForm.swiftCode,
-        isPrimaryAccount: this.bankAccounts.length === 0 ? true : this.bankAccountForm.isPrimaryAccount,
+        isPrimaryAccount:
+          this.bankAccounts.length === 0 ? true : this.bankAccountForm.isPrimaryAccount,
         status: this.bankAccountForm.status,
         remarks: this.bankAccountForm.remarks,
       });
@@ -1034,100 +1034,100 @@ export class Employees implements OnInit {
     }
   }
 
- // employees.component.ts mein editPosition method ko replace karein
+  // employees.component.ts mein editPosition method ko replace karein
 
-editPosition(index: number) {
-  const pos = this.positions[index];
-  
-  // Form data set karein
-  this.positionForm = {
-    departmentPublicId: pos.departmentPublicId,
-    designationPublicId: pos.designationPublicId,
-    branchPublicId: pos.branchPublicId,
-    reportingManagerPublicId: pos.reportingManagerPublicId,
-    employeeGradePublicId: pos.employeeGradePublicId,
-    employeeCategoryPublicId: pos.employeeCategoryPublicId,
-    jobTitlePublicId: pos.jobTitlePublicId,
-    shiftPublicId: pos.shiftPublicId,
-    workSchedulePublicId: pos.workSchedulePublicId,
-    positionCode: pos.positionCode,
-    positionName: pos.positionName,
-    effectiveFrom: pos.effectiveFrom,
-    effectiveTo: pos.effectiveTo,
-    isPrimaryPosition: pos.isPrimaryPosition,
-    status: pos.status,
-    remarks: pos.remarks,
-  };
-  
-  this.selectedPositionStatus = pos.status;
-  
-  // 👇 IMPORTANT: Dropdown objects set karein (display ke liye)
-  // Department set karein
-  if (pos.departmentPublicId && this.departmentList) {
-    this.selectedDepartment = this.departmentList.find(
-      (dept: any) => dept.publicId === pos.departmentPublicId
-    );
+  editPosition(index: number) {
+    const pos = this.positions[index];
+
+    // Form data set karein
+    this.positionForm = {
+      departmentPublicId: pos.departmentPublicId,
+      designationPublicId: pos.designationPublicId,
+      branchPublicId: pos.branchPublicId,
+      reportingManagerPublicId: pos.reportingManagerPublicId,
+      employeeGradePublicId: pos.employeeGradePublicId,
+      employeeCategoryPublicId: pos.employeeCategoryPublicId,
+      jobTitlePublicId: pos.jobTitlePublicId,
+      shiftPublicId: pos.shiftPublicId,
+      workSchedulePublicId: pos.workSchedulePublicId,
+      positionCode: pos.positionCode,
+      positionName: pos.positionName,
+      effectiveFrom: pos.effectiveFrom,
+      effectiveTo: pos.effectiveTo,
+      isPrimaryPosition: pos.isPrimaryPosition,
+      status: pos.status,
+      remarks: pos.remarks,
+    };
+
+    this.selectedPositionStatus = pos.status;
+
+    // 👇 IMPORTANT: Dropdown objects set karein (display ke liye)
+    // Department set karein
+    if (pos.departmentPublicId && this.departmentList) {
+      this.selectedDepartment = this.departmentList.find(
+        (dept: any) => dept.publicId === pos.departmentPublicId,
+      );
+    }
+
+    // Designation set karein
+    if (pos.designationPublicId && this.designationList) {
+      this.selectedDesignation = this.designationList.find(
+        (des: any) => des.publicId === pos.designationPublicId,
+      );
+    }
+
+    // Branch set karein
+    if (pos.branchPublicId && this.companyBranchList) {
+      this.selcetedBranch = this.companyBranchList.find(
+        (branch: any) => branch.publicId === pos.branchPublicId,
+      );
+    }
+
+    // Reporting Manager set karein
+    if (pos.reportingManagerPublicId && this.EmployeeList) {
+      this.selectedReportingManager = this.EmployeeList.find(
+        (emp: any) => emp.employeePublicId === pos.reportingManagerPublicId,
+      );
+    }
+
+    // Employee Grade set karein
+    if (pos.employeeGradePublicId && this.EmployeeGradeList) {
+      this.selectedEmployeeGrade = this.EmployeeGradeList.find(
+        (grade: any) => grade.publicId === pos.employeeGradePublicId,
+      );
+    }
+
+    // Employee Category set karein
+    if (pos.employeeCategoryPublicId && this.EmployeeCategoryList) {
+      this.SlectedEmployeeCategory = this.EmployeeCategoryList.find(
+        (cat: any) => cat.publicId === pos.employeeCategoryPublicId,
+      );
+    }
+
+    // Job Title set karein
+    if (pos.jobTitlePublicId && this.JobTitleList) {
+      this.selectedJobTitle = this.JobTitleList.find(
+        (job: any) => job.publicId === pos.jobTitlePublicId,
+      );
+    }
+
+    // Shift set karein
+    if (pos.shiftPublicId && this.shiftList) {
+      this.selectedShift = this.shiftList.find(
+        (shift: any) => shift.publicId === pos.shiftPublicId,
+      );
+    }
+
+    // Work Schedule set karein
+    if (pos.workSchedulePublicId && this.WorkScheduleList) {
+      this.selectedWorkSchedule = this.WorkScheduleList.find(
+        (ws: any) => ws.publicId === pos.workSchedulePublicId,
+      );
+    }
+
+    this.isEditingPosition = true;
+    this.editingPositionIndex = index;
   }
-  
-  // Designation set karein
-  if (pos.designationPublicId && this.designationList) {
-    this.selectedDesignation = this.designationList.find(
-      (des: any) => des.publicId === pos.designationPublicId
-    );
-  }
-  
-  // Branch set karein
-  if (pos.branchPublicId && this.companyBranchList) {
-    this.selcetedBranch = this.companyBranchList.find(
-      (branch: any) => branch.publicId === pos.branchPublicId
-    );
-  }
-  
-  // Reporting Manager set karein
-  if (pos.reportingManagerPublicId && this.EmployeeList) {
-    this.selectedReportingManager = this.EmployeeList.find(
-      (emp: any) => emp.employeePublicId === pos.reportingManagerPublicId
-    );
-  }
-  
-  // Employee Grade set karein
-  if (pos.employeeGradePublicId && this.EmployeeGradeList) {
-    this.selectedEmployeeGrade = this.EmployeeGradeList.find(
-      (grade: any) => grade.publicId === pos.employeeGradePublicId
-    );
-  }
-  
-  // Employee Category set karein
-  if (pos.employeeCategoryPublicId && this.EmployeeCategoryList) {
-    this.SlectedEmployeeCategory = this.EmployeeCategoryList.find(
-      (cat: any) => cat.publicId === pos.employeeCategoryPublicId
-    );
-  }
-  
-  // Job Title set karein
-  if (pos.jobTitlePublicId && this.JobTitleList) {
-    this.selectedJobTitle = this.JobTitleList.find(
-      (job: any) => job.publicId === pos.jobTitlePublicId
-    );
-  }
-  
-  // Shift set karein
-  if (pos.shiftPublicId && this.shiftList) {
-    this.selectedShift = this.shiftList.find(
-      (shift: any) => shift.publicId === pos.shiftPublicId
-    );
-  }
-  
-  // Work Schedule set karein
- if (pos.workSchedulePublicId && this.WorkScheduleList) {
-  this.selectedWorkSchedule = this.WorkScheduleList.find(
-    (ws: any) => ws.publicId === pos.workSchedulePublicId
-  );
-  }
-  
-  this.isEditingPosition = true;
-  this.editingPositionIndex = index;
-}
   updatePosition() {
     if (this.editingPositionIndex !== -1) {
       this.positions[this.editingPositionIndex] = {
@@ -1523,7 +1523,9 @@ editPosition(index: number) {
           this.departmentList = res.data;
         }
       },
-      (err: any) => { console.log(err); },
+      (err: any) => {
+        console.log(err);
+      },
     );
   }
 
@@ -1534,7 +1536,9 @@ editPosition(index: number) {
           this.designationList = res.data;
         }
       },
-      (err: any) => { console.log(err); },
+      (err: any) => {
+        console.log(err);
+      },
     );
   }
 
@@ -1545,7 +1549,9 @@ editPosition(index: number) {
           this.companyBranchList = res.data;
         }
       },
-      (err: any) => { console.log(err); },
+      (err: any) => {
+        console.log(err);
+      },
     );
   }
 
@@ -1556,7 +1562,9 @@ editPosition(index: number) {
           this.EmployeeGradeList = res.data;
         }
       },
-      (err: any) => { console.log(err); },
+      (err: any) => {
+        console.log(err);
+      },
     );
   }
 
@@ -1567,7 +1575,9 @@ editPosition(index: number) {
           this.EmployeeCategoryList = res.data;
         }
       },
-      (err: any) => { console.log(err); },
+      (err: any) => {
+        console.log(err);
+      },
     );
   }
 
@@ -1578,7 +1588,9 @@ editPosition(index: number) {
           this.JobTitleList = res.data;
         }
       },
-      (err: any) => { console.log(err); },
+      (err: any) => {
+        console.log(err);
+      },
     );
   }
 
@@ -1589,7 +1601,9 @@ editPosition(index: number) {
           this.shiftList = res.data;
         }
       },
-      (err: any) => { console.log(err); },
+      (err: any) => {
+        console.log(err);
+      },
     );
   }
 
@@ -1600,7 +1614,9 @@ editPosition(index: number) {
           this.WorkScheduleList = res.data;
         }
       },
-      (err: any) => { console.log(err); },
+      (err: any) => {
+        console.log(err);
+      },
     );
   }
 
@@ -1611,7 +1627,9 @@ editPosition(index: number) {
           this.EmployeeList = res.data;
         }
       },
-      (err: any) => { console.log(err); },
+      (err: any) => {
+        console.log(err);
+      },
     );
   }
 
@@ -1646,7 +1664,9 @@ editPosition(index: number) {
           this.roleList = res.data;
         }
       },
-      (err: any) => { console.log(err); },
+      (err: any) => {
+        console.log(err);
+      },
     );
   }
 
@@ -1925,13 +1945,12 @@ editPosition(index: number) {
     this.isShiftOpen = false;
   }
 
-
-selectWorkSchedule(workSchedule: any, event: Event) {
-  event.stopPropagation();
-  this.selectedWorkSchedule = workSchedule;
-  this.positionForm.workSchedulePublicId = workSchedule.publicId;
-  this.isWorkScheduleOpen = false;
-}
+  selectWorkSchedule(workSchedule: any, event: Event) {
+    event.stopPropagation();
+    this.selectedWorkSchedule = workSchedule;
+    this.positionForm.workSchedulePublicId = workSchedule.publicId;
+    this.isWorkScheduleOpen = false;
+  }
   @HostListener('document:click', ['$event'])
   closeAllDropdowns(event: Event) {
     this.isEmploymentStatusOpen = false;
@@ -1970,7 +1989,9 @@ selectWorkSchedule(workSchedule: any, event: Event) {
           this.IdTypeList = res.data;
         }
       },
-      (err: any) => { console.log(err); },
+      (err: any) => {
+        console.log(err);
+      },
     );
   }
 
@@ -1981,7 +2002,9 @@ selectWorkSchedule(workSchedule: any, event: Event) {
           this.belongingList = res.data;
         }
       },
-      (err: any) => { console.log(err); },
+      (err: any) => {
+        console.log(err);
+      },
     );
   }
 
@@ -1992,7 +2015,9 @@ selectWorkSchedule(workSchedule: any, event: Event) {
           this.LeaveTypeList = res.data;
         }
       },
-      (err: any) => { console.log(err); },
+      (err: any) => {
+        console.log(err);
+      },
     );
   }
 }
