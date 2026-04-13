@@ -26,7 +26,7 @@ export class MasterTable implements OnInit {
 
   searchTerm: string = '';
   statusFilter: string = '';
-  itemsPerPage: number = 7;
+  itemsPerPage: number = 6;
   currentPage: number = 1;
   totalItems: number = 0;
    Math = Math; // <
@@ -49,16 +49,15 @@ export class MasterTable implements OnInit {
     return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 
- loadData() {
+loadData() {
   this.loader.show();
   this.fetchService(this.currentPage - 1, this.itemsPerPage).subscribe({
     next: (res: any) => {
       this.loader.hide();
-      this.data = res.data.map(this.transformFn);
-      this.totalItems = res.paginator?.totalItems || this.data.length;
 
-      // For backend pagination, do not slice again
-      this.paginatedData = this.data; 
+      this.data = res.data.map(this.transformFn);
+      this.paginatedData = this.data; // direct use
+      this.totalItems = res.paginator?.totalItems || 0;
     },
     error: () => {
       this.loader.hide();
@@ -95,19 +94,23 @@ export class MasterTable implements OnInit {
 
 changePage(page: number) {
   if (page < 1 || page > this.totalPages) return;
+
   this.currentPage = page;
-  this.loadData(); // fetch the next page
+  this.loadData();
 }
 
-  onItemsPerPageChange() {
-    this.currentPage = 1;
-    this.updatePaginatedList();
-  }
+onItemsPerPageChange() {
+  this.currentPage = 1;
+  this.loadData(); // IMPORTANT
+}
 
   resetFilters() {
     this.searchTerm = '';
     this.statusFilter = '';
     this.currentPage = 1;
+     this.itemsPerPage = 6;   
     this.applyFilter();
   }
+
+  
 }
